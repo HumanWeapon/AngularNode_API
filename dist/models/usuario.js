@@ -14,7 +14,7 @@ exports.User = connection_1.default.define('usuarios', {
     },
     creado_por: {
         type: sequelize_1.DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     fecha_creacion: {
         type: sequelize_1.DataTypes.DATE,
@@ -22,15 +22,15 @@ exports.User = connection_1.default.define('usuarios', {
     },
     modificado_por: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     fecha_modificacion: {
         type: sequelize_1.DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     usuario: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     nombre_usuario: {
         type: sequelize_1.DataTypes.STRING,
@@ -42,25 +42,32 @@ exports.User = connection_1.default.define('usuarios', {
     },
     estado_usuario: {
         type: sequelize_1.DataTypes.BOOLEAN,
+        allowNull: true
     },
     contrasena: {
         type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     },
     id_rol: {
         type: sequelize_1.DataTypes.NUMBER,
+        allowNull: true
     },
     fecha_ultima_conexion: {
         type: sequelize_1.DataTypes.DATE,
+        allowNull: true
     },
     preguntas_contestadas: {
         type: sequelize_1.DataTypes.STRING,
+        allowNull: true
     },
     primer_ingreso: {
         type: sequelize_1.DataTypes.BOOLEAN,
+        allowNull: true
     },
     fecha_vencimiento: {
         type: sequelize_1.DataTypes.DATE,
-    },
+        allowNull: true
+    }
 }, {
     tableName: 'tbl_ms_usuario',
     schema: 'mipyme',

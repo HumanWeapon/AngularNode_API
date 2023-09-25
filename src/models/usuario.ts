@@ -9,7 +9,7 @@ export const User = sequelize.define('usuarios', {
     },
     creado_por: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     fecha_creacion: {
         type: DataTypes.DATE,
@@ -17,15 +17,15 @@ export const User = sequelize.define('usuarios', {
     },
     modificado_por: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     fecha_modificacion: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     usuario: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     nombre_usuario: {
         type: DataTypes.STRING,
@@ -37,29 +37,34 @@ export const User = sequelize.define('usuarios', {
     },
     estado_usuario: {
         type: DataTypes.BOOLEAN,
+        allowNull: true
     },
     contrasena: {
         type: DataTypes.STRING,
+        allowNull: false
     },
     id_rol: {
         type: DataTypes.NUMBER,
+        allowNull: true
     },
     fecha_ultima_conexion: {
         type: DataTypes.DATE,
+        allowNull: true
     },
     preguntas_contestadas: {
         type: DataTypes.STRING,
+        allowNull: true
     },
     primer_ingreso: {
         type: DataTypes.BOOLEAN,
+        allowNull: true
     },
     fecha_vencimiento: {
         type: DataTypes.DATE,
-    },
-    
-
-
-}, {
+        allowNull: true
+    }
+    }, 
+    {
     tableName: 'tbl_ms_usuario',
     schema: 'mipyme',
     timestamps: false
