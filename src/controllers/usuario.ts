@@ -122,9 +122,26 @@ export const postUsuario = async (req: Request, res: Response) => {
             error
         }); 
     }
-    // Generamos token
+    /*// Generamos token
     const token = jwt.sign({
         usuario: usuario
     }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);
+    res.json(token);*/
+}
+export const deleteUsuario = async (req: Request, res: Response) => {
+    const { usuario } = req.body;
+
+    const user = await User.findOne({
+        where: {usuario: usuario}
+    });
+    if(!user){
+        return res.status(404).json({
+            msg: "El usuario no existe: "+ usuario
+        });
+    }
+
+    await user.destroy();
+    res.json({
+        msg: 'Usuario: '+ usuario+  ' eliminado exitosamente',
+    });
 }

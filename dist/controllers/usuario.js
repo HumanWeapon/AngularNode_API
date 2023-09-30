@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
+exports.deleteUsuario = exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const usuario_1 = require("../models/usuario");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -110,10 +110,26 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             error
         });
     }
-    // Generamos token
-    const token = jsonwebtoken_1.default.sign({
+    /*// Generamos token
+    const token = jwt.sign({
         usuario: usuario
     }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);
+    res.json(token);*/
 });
 exports.postUsuario = postUsuario;
+const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { usuario } = req.body;
+    const user = yield usuario_1.User.findOne({
+        where: { usuario: usuario }
+    });
+    if (!user) {
+        return res.status(404).json({
+            msg: "El usuario no existe: " + usuario
+        });
+    }
+    yield user.destroy();
+    res.json({
+        msg: 'Usuario: ' + usuario + ' eliminado exitosamente',
+    });
+});
+exports.deleteUsuario = deleteUsuario;

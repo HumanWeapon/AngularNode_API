@@ -10,5 +10,6 @@ const router = (0, express_1.Router)();
 router.post('/login', validarToken_1.default, usuario_1.loginUser); //Inicia sesión en la DB
 router.post('/postUsuario', validarToken_1.default, usuario_1.postUsuario); //Inserta un usuario en la DB
 router.get('/getAllUsuarios', usuario_1.getAllUsuarios); // obtiene todos los usuarios
-router.get('/getAusuario', usuario_1.getUsuario); // obtiene el usuario especificado
+router.get('/getUsuario', usuario_1.getUsuario); // obtiene el usuario especificado
+router.delete('/deleteUsuario', usuario_1.deleteUsuario); // elimina el registro con el usuario especificado
 exports.default = router;
