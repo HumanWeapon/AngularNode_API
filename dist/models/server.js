@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const product_1 = __importDefault(require("../routes/product"));
 const usuario_1 = __importDefault(require("../routes/usuario"));
 const usuario_2 = require("./usuario");
 const connection_1 = __importDefault(require("../db/connection"));
@@ -34,9 +33,7 @@ class Server {
         });
     }
     routes() {
-        this.app.use('/api/products', product_1.default);
         this.app.use('/api/users', usuario_1.default);
-        this.app.use('/api/users/login', usuario_1.default);
     }
     midlewares() {
         this.app.use(express_1.default.json());
