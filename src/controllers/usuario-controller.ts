@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import bcrypt from 'bcrypt';
-import { User } from '../models/usuario';
+import { User } from '../models/usuario-models';
 import jwt from 'jsonwebtoken';
 
 export const loginUser = async (req: Request, res: Response) => {
@@ -181,5 +181,42 @@ export const activateUsuario = async (req: Request, res: Response) => {
     });
     res.json({
         msg: 'Usuario: '+ usuario+  ' ha sido activado exitosamente',
+    });
+}
+//Actualiza el usuario en la base de datos
+export const updateUsuario = async (req: Request, res: Response) => {
+    const { 
+        id_usuario,
+        usuario,
+        modificado_por,
+        fecha_modificacion,
+        nombre_usuario,
+        correo_electronico,
+        estado_usuario,
+        id_rol,
+        fecha_vencimiento
+     } = req.body;
+
+    const user = await User.findOne({
+        where: {usuario: usuario}
+    });
+    if(!user){
+        return res.status(404).json({
+            msg: "El usuario no existe: "+ usuario
+        });
+    }
+
+    await user.update({
+        id_usuario: id_usuario,
+        modificado_por: modificado_por,
+        fecha_modificacion: fecha_modificacion,
+        nombre_usuario: nombre_usuario,
+        correo_electronico: correo_electronico,
+        estado_usuario: estado_usuario,
+        id_rol: id_rol,
+        fecha_vencimiento: fecha_vencimiento
+    });
+    res.json({
+        msg: 'Usuario: '+ usuario+  ' ha sido actualizado exitosamente',
     });
 }

@@ -14,9 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const usuario_1 = __importDefault(require("../routes/usuario"));
-const usuario_2 = require("./usuario");
+const usuario_models_1 = require("./usuario-models");
 const connection_1 = __importDefault(require("../db/connection"));
+// Rutas API
+const preguntas_1 = __importDefault(require("../routes/preguntas"));
+const usuario_1 = __importDefault(require("../routes/usuario"));
 class Server {
     constructor() {
         console.log('Estoy en el constructor');
@@ -34,6 +36,7 @@ class Server {
     }
     routes() {
         this.app.use('/api/users', usuario_1.default);
+        this.app.use('/api/preguntas', preguntas_1.default);
     }
     midlewares() {
         this.app.use(express_1.default.json());
@@ -43,7 +46,7 @@ class Server {
     dbConnect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield usuario_2.User.sync();
+                yield usuario_models_1.User.sync();
             }
             catch (error) {
                 console.error('Unable to connect to the database:', error);

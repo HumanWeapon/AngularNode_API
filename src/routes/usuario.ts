@@ -1,15 +1,16 @@
 import {Router} from 'express';
-import {activateUsuario, inactivateUsuario, deleteUsuario, postUsuario, getAllUsuarios, getUsuario, loginUser } from '../controllers/usuario';
+import {updateUsuario, activateUsuario, inactivateUsuario, deleteUsuario, postUsuario, getAllUsuarios, getUsuario, loginUser } from '../controllers/usuario-controller';
 import validarToken from './validarToken';
 
-const router = Router()
+const routerUser = Router()
 
-router.post('/login',validarToken, loginUser);//Inicia sesión en la DB
-router.post('/postUsuario', validarToken, postUsuario);//Inserta un usuario en la DB
-router.get('/getAllUsuarios', getAllUsuarios); // obtiene todos los usuarios
-router.get('/getUsuario', getUsuario); // obtiene el usuario especificado
-router.delete('/deleteUsuario', deleteUsuario); // elimina el registro con el usuario especificado
-router.post('/inactivateUsuario', inactivateUsuario);//Inactiva un usuario en la DB
-router.post('/activateUsuario', activateUsuario);//Activa un usuario en la DB
+routerUser.post('/login',validarToken, loginUser);//Inicia sesión en la DB
+routerUser.post('/postUsuario', validarToken, postUsuario);//Inserta un usuario en la DB
+routerUser.get('/getAllUsuarios', getAllUsuarios); // obtiene todos los usuarios
+routerUser.get('/getUsuario', getUsuario); // obtiene el usuario especificado
+routerUser.delete('/deleteUsuario', deleteUsuario); // elimina el registro con el usuario especificado
+routerUser.post('/inactivateUsuario', inactivateUsuario);//Inactiva un usuario en la DB
+routerUser.post('/activateUsuario', activateUsuario);//Activa un usuario en la DB
+routerUser.post('/updateUsuario', updateUsuario);//Activa un usuario en la DB
 
-export default router;
+export default routerUser;

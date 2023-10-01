@@ -12,14 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateUsuario = exports.inactivateUsuario = exports.deleteUsuario = exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
+exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.deleteUsuario = exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const usuario_1 = require("../models/usuario");
+const usuario_models_1 = require("../models/usuario-models");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_usuario, creado_por, fecha_creacion, modificado_por, fecha_modificacion, usuario, nombre_usuario, correo_electronico, estado_usuario, contrasena, id_rol, fecha_ultima_conexion, preguntas_contestadas, primer_ingreso, fecha_vencimiento } = req.body;
     //Validar si el usuario existe en la base de datos
-    const user = yield usuario_1.User.findOne({
+    const user = yield usuario_models_1.User.findOne({
         where: { usuario: usuario }
     });
     try {
@@ -57,14 +57,14 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.loginUser = loginUser;
 //Obtiene todos los usuarios de la base de datos
 const getAllUsuarios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const usuarios = yield usuario_1.User.findAll();
+    const usuarios = yield usuario_models_1.User.findAll();
     res.json({ usuarios });
 });
 exports.getAllUsuarios = getAllUsuarios;
 //Obtiene un usuario especifico de la base de datos
 const getUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario } = req.body;
-    const user = yield usuario_1.User.findOne({
+    const user = yield usuario_models_1.User.findOne({
         where: { usuario: usuario }
     });
     if (user) {
@@ -83,7 +83,7 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const hashedPassword = yield bcrypt_1.default.hash(contrasena, 10);
     const fecha_creacion = Date.now();
     try {
-        const user = yield usuario_1.User.findOne({
+        const user = yield usuario_models_1.User.findOne({
             where: { usuario: usuario }
         });
         if (user) {
@@ -92,7 +92,7 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             });
         }
         else {
-            yield usuario_1.User.create({
+            yield usuario_models_1.User.create({
                 fecha_creacion: fecha_creacion,
                 usuario: usuario,
                 nombre_usuario: nombre_usuario,
@@ -119,7 +119,7 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.postUsuario = postUsuario;
 const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario } = req.body;
-    const user = yield usuario_1.User.findOne({
+    const user = yield usuario_models_1.User.findOne({
         where: { usuario: usuario }
     });
     if (!user) {
@@ -135,7 +135,7 @@ const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.deleteUsuario = deleteUsuario;
 const inactivateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario } = req.body;
-    const user = yield usuario_1.User.findOne({
+    const user = yield usuario_models_1.User.findOne({
         where: { usuario: usuario }
     });
     if (!user) {
@@ -153,7 +153,7 @@ const inactivateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.inactivateUsuario = inactivateUsuario;
 const activateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario } = req.body;
-    const user = yield usuario_1.User.findOne({
+    const user = yield usuario_models_1.User.findOne({
         where: { usuario: usuario }
     });
     if (!user) {
@@ -169,3 +169,29 @@ const activateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function
     });
 });
 exports.activateUsuario = activateUsuario;
+//Actualiza el usuario en la base de datos
+const updateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_usuario, usuario, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_vencimiento } = req.body;
+    const user = yield usuario_models_1.User.findOne({
+        where: { usuario: usuario }
+    });
+    if (!user) {
+        return res.status(404).json({
+            msg: "El usuario no existe: " + usuario
+        });
+    }
+    yield user.update({
+        id_usuario: id_usuario,
+        modificado_por: modificado_por,
+        fecha_modificacion: fecha_modificacion,
+        nombre_usuario: nombre_usuario,
+        correo_electronico: correo_electronico,
+        estado_usuario: estado_usuario,
+        id_rol: id_rol,
+        fecha_vencimiento: fecha_vencimiento
+    });
+    res.json({
+        msg: 'Usuario: ' + usuario + ' ha sido actualizado exitosamente',
+    });
+});
+exports.updateUsuario = updateUsuario;

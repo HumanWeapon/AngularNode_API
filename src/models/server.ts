@@ -1,9 +1,12 @@
 import express, {Application} from 'express';
 import cors from 'cors';
-import routesUser from '../routes/usuario';
-import { User } from './usuario';
-import sequelize from '../db/connection';
+
+import { User } from './usuario-models';
 import dataBase from '../db/connection';
+
+// Rutas API
+import routerPreguntas from '../routes/preguntas';
+import routesUser from '../routes/usuario';
 
 class Server{
     private app: Application;
@@ -25,6 +28,7 @@ class Server{
     }
     routes(){
         this.app.use('/api/users', routesUser);
+        this.app.use('/api/preguntas',routerPreguntas)
     }
     midlewares(){
         this.app.use(express.json());
