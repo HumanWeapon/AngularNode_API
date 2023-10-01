@@ -186,7 +186,6 @@ export const activateUsuario = async (req: Request, res: Response) => {
 //Actualiza el usuario en la base de datos
 export const updateUsuario = async (req: Request, res: Response) => {
     const { 
-        id_usuario,
         usuario,
         modificado_por,
         fecha_modificacion,
@@ -207,7 +206,7 @@ export const updateUsuario = async (req: Request, res: Response) => {
     }
 
     await user.update({
-        id_usuario: id_usuario,
+        usuario: usuario,
         modificado_por: modificado_por,
         fecha_modificacion: fecha_modificacion,
         nombre_usuario: nombre_usuario,
