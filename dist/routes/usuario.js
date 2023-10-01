@@ -12,4 +12,6 @@ router.post('/postUsuario', validarToken_1.default, usuario_1.postUsuario); //In
 router.get('/getAllUsuarios', usuario_1.getAllUsuarios); // obtiene todos los usuarios
 router.get('/getUsuario', usuario_1.getUsuario); // obtiene el usuario especificado
 router.delete('/deleteUsuario', usuario_1.deleteUsuario); // elimina el registro con el usuario especificado
+router.post('/inactivateUsuario', usuario_1.inactivateUsuario); //Inactiva un usuario en la DB
+router.post('/activateUsuario', usuario_1.activateUsuario); //Activa un usuario en la DB
 exports.default = router;

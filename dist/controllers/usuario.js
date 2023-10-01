@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUsuario = exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
+exports.activateUsuario = exports.inactivateUsuario = exports.deleteUsuario = exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const usuario_1 = require("../models/usuario");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -133,3 +133,39 @@ const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     });
 });
 exports.deleteUsuario = deleteUsuario;
+const inactivateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { usuario } = req.body;
+    const user = yield usuario_1.User.findOne({
+        where: { usuario: usuario }
+    });
+    if (!user) {
+        return res.status(404).json({
+            msg: "El usuario no existe: " + usuario
+        });
+    }
+    yield user.update({
+        estado_usuario: false
+    });
+    res.json({
+        msg: 'Usuario: ' + usuario + ' inactivado exitosamente',
+    });
+});
+exports.inactivateUsuario = inactivateUsuario;
+const activateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { usuario } = req.body;
+    const user = yield usuario_1.User.findOne({
+        where: { usuario: usuario }
+    });
+    if (!user) {
+        return res.status(404).json({
+            msg: "El usuario no existe: " + usuario
+        });
+    }
+    yield user.update({
+        estado_usuario: true
+    });
+    res.json({
+        msg: 'Usuario: ' + usuario + ' ha sido activado exitosamente',
+    });
+});
+exports.activateUsuario = activateUsuario;

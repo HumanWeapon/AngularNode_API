@@ -145,3 +145,41 @@ export const deleteUsuario = async (req: Request, res: Response) => {
         msg: 'Usuario: '+ usuario+  ' eliminado exitosamente',
     });
 }
+export const inactivateUsuario = async (req: Request, res: Response) => {
+    const { usuario } = req.body;
+
+    const user = await User.findOne({
+        where: {usuario: usuario}
+    });
+    if(!user){
+        return res.status(404).json({
+            msg: "El usuario no existe: "+ usuario
+        });
+    }
+
+    await user.update({
+        estado_usuario: false
+    });
+    res.json({
+        msg: 'Usuario: '+ usuario+  ' inactivado exitosamente',
+    });
+}
+export const activateUsuario = async (req: Request, res: Response) => {
+    const { usuario } = req.body;
+
+    const user = await User.findOne({
+        where: {usuario: usuario}
+    });
+    if(!user){
+        return res.status(404).json({
+            msg: "El usuario no existe: "+ usuario
+        });
+    }
+
+    await user.update({
+        estado_usuario: true
+    });
+    res.json({
+        msg: 'Usuario: '+ usuario+  ' ha sido activado exitosamente',
+    });
+}
