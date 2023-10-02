@@ -7,6 +7,7 @@ import dataBase from '../db/connection';
 // Rutas API
 import routerPreguntas from '../routes/preguntas';
 import routesUser from '../routes/usuario';
+import routerPreguntasUsuario from '../routes/preguntas_usuario';
 
 class Server{
     private app: Application;
@@ -29,6 +30,7 @@ class Server{
     routes(){
         this.app.use('/api/users', routesUser);
         this.app.use('/api/preguntas',routerPreguntas)
+        this.app.use('/api/preguntasusuario',routerPreguntasUsuario)
     }
     midlewares(){
         this.app.use(express.json());
