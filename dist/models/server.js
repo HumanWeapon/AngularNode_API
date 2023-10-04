@@ -20,6 +20,7 @@ const connection_1 = __importDefault(require("../db/connection"));
 const preguntas_1 = __importDefault(require("../routes/preguntas"));
 const usuario_1 = __importDefault(require("../routes/usuario"));
 const preguntas_usuario_1 = __importDefault(require("../routes/preguntas_usuario"));
+const parametros_1 = __importDefault(require("../routes/parametros"));
 class Server {
     constructor() {
         console.log('Estoy en el constructor');
@@ -39,6 +40,7 @@ class Server {
         this.app.use('/api/users', usuario_1.default);
         this.app.use('/api/preguntas', preguntas_1.default);
         this.app.use('/api/preguntasusuario', preguntas_usuario_1.default);
+        this.app.use('/api/parametros', parametros_1.default);
     }
     midlewares() {
         this.app.use(express_1.default.json());
