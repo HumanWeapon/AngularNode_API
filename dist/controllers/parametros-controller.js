@@ -28,7 +28,7 @@ const getParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     else {
         res.status(404).json({
-            msg: `el ID del parametro no existe: ${id_parametro}`
+            msg: `el ID del parametro: ${id_parametro} no existe `
         });
     }
 });
@@ -72,21 +72,31 @@ const postParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     res.json(token);*/
 });
 exports.postParametro = postParametro;
-//Elimina la pregunta de la base de datos
+//Elimina un parametro de la base de datos
 const deleteParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_parametro } = req.body;
-    const _parametro = yield parametros_models_1.Parametros.findOne({
-        where: { id_parametro: id_parametro }
-    });
-    if (_parametro) {
-        return res.status(404).json({
-            msg: 'Parametro ya registrada en la base de datos: ' + id_parametro
+    try {
+        const _parametro = yield parametros_models_1.Parametros.findOne({
+            where: { id_parametro: id_parametro }
+        });
+        if (_parametro) {
+            yield _parametro.destroy();
+            res.json({
+                msg: 'El parámetro con el ID: ' + id_parametro + ' ha sido eliminado exitosamente',
+            });
+        }
+        else {
+            res.status(404).json({
+                msg: 'No se encontró un parámetro con el ID: ' + id_parametro,
+            });
+        }
+    }
+    catch (error) {
+        console.error('Error al eliminar el parámetro:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al eliminar el parámetro',
         });
     }
-    yield _parametro.destroy();
-    res.json({
-        msg: 'El parametro con el ID: ' + id_parametro + ' ha eliminada exitosamente',
-    });
 });
 exports.deleteParametro = deleteParametro;
 //actualiza la pregunta de la base de datos

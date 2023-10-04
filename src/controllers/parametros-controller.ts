@@ -23,7 +23,7 @@ export const getParametro = async (req: Request, res: Response) => {
     }
     else{
         res.status(404).json({
-            msg: `el ID del parametro no existe: ${id_parametro}`
+            msg: `el ID del parametro: ${id_parametro} no existe `
         })
     }
 }
@@ -69,24 +69,34 @@ export const postParametro = async (req: Request, res: Response) => {
     res.json(token);*/
 }
 
-//Elimina la pregunta de la base de datos
+//Elimina un parametro de la base de datos
 export const deleteParametro = async (req: Request, res: Response) => {
     const { id_parametro } = req.body;
 
-    const _parametro = await Parametros.findOne({
-        where: {id_parametro: id_parametro}
-    });
-    if(_parametro){
-        return res.status(404).json({
-            msg: 'Parametro ya registrada en la base de datos: '+ id_parametro
+    try {
+        const _parametro = await Parametros.findOne({
+            where: { id_parametro: id_parametro }
+        });
+
+        if (_parametro) {
+            await _parametro.destroy();
+            res.json({
+                msg: 'El parámetro con el ID: ' + id_parametro + ' ha sido eliminado exitosamente',
+            });
+        } else {
+            res.status(404).json({
+                msg: 'No se encontró un parámetro con el ID: ' + id_parametro,
+            });
+        }
+    } catch (error) {
+        console.error('Error al eliminar el parámetro:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al eliminar el parámetro',
         });
     }
+};
 
-    await _parametro.destroy();
-    res.json({
-        msg: 'El parametro con el ID: '+ id_parametro+  ' ha eliminada exitosamente',
-    });
-}
+
 
 //actualiza la pregunta de la base de datos
 export const updateParametro = async (req: Request, res: Response) => {
