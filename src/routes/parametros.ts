@@ -4,10 +4,10 @@ import { updateParametro, deleteParametro, postParametro, getAllParametros, getP
 
 const routerParametros = Router()
 
-routerParametros.get('/getAllParametros', getAllParametros);//Inicia sesión en la DB
-routerParametros.get('/getPregunta', getParametro);//Inserta un usuario en la DB
-routerParametros.post('/postPregunta', postParametro); // obtiene todos los usuarios
-routerParametros.delete('/deletePregunta', deleteParametro); // obtiene el usuario especificado
-routerParametros.post('/updatePregunta', updateParametro); // elimina el registro con el usuario especificado
+routerParametros.get('/getAllParametros', getAllParametros);//Consulta todos los parametros en la base de datos
+routerParametros.get('/getParametro', getParametro);//Consulta un parametro en la base de datos
+routerParametros.post('/postParametro', postParametro); // inserta un parametro en la base de datos
+routerParametros.delete('/deleteParametro', deleteParametro); // elimina un parametro en la base de datos
+routerParametros.post('/updateParametro', updateParametro); // actualiza un parametro en la base de datos
 
 export default routerParametros;
