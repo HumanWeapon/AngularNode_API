@@ -25,7 +25,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!user) {
             return res.status(400).json({
-                msg: 'Usuario no existe ' + usuario
+                msg: 'usuario/contraseña invalidos.'
             });
         }
     }
@@ -36,17 +36,18 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     //Validamos password
+    // Compara la contraseña proporcionada con la almacenada en la base de datos
     const passwordValid = yield bcrypt_1.default.compare(contrasena, user.contrasena);
-    if (!contrasena) {
+    if (!passwordValid) {
         return res.status(400).json({
-            msg: 'Contraseña incorrecta',
+            msg: 'usuario/contraseña invalidos.',
         });
     }
-    // Validar estado
+    // Validar estado del usuario
     if (!user.estado_usuario) {
-        console.log('Usuario inactivo');
-    }
-    else {
+        return res.status(400).json({
+            msg: 'Usuario Inactivo',
+        });
     }
     // Generamos token
     const token = jsonwebtoken_1.default.sign({
@@ -68,7 +69,7 @@ const getUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         where: { usuario: usuario }
     });
     if (user) {
-        res.json({ user });
+        res.json(user);
     }
     else {
         res.status(404).json({
@@ -133,6 +134,7 @@ const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     });
 });
 exports.deleteUsuario = deleteUsuario;
+//
 const inactivateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario } = req.body;
     const user = yield usuario_models_1.User.findOne({
@@ -151,6 +153,7 @@ const inactivateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, functi
     });
 });
 exports.inactivateUsuario = inactivateUsuario;
+//
 const activateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario } = req.body;
     const user = yield usuario_models_1.User.findOne({

@@ -14,7 +14,7 @@ const preguntas_model_1 = require("../models/preguntas-model");
 //Obtiene todas las preguntas de la base de datos
 const getAllPreguntas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const _pregunta = yield preguntas_model_1.Preguntas.findAll();
-    res.json({ _pregunta });
+    res.json(_pregunta);
 });
 exports.getAllPreguntas = getAllPreguntas;
 //Obtiene una pregunta de la base de datos
@@ -24,7 +24,7 @@ const getPregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         where: { id_pregunta: id_pregunta }
     });
     if (_pregunta) {
-        res.json({ _pregunta });
+        res.json(_pregunta);
     }
     else {
         res.status(404).json({

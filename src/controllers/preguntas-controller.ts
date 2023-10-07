@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 export const getAllPreguntas = async (req: Request, res: Response) => {
 
     const _pregunta = await Preguntas.findAll();
-    res.json({_pregunta})
+    res.json(_pregunta)
 
 }
 
@@ -19,7 +19,7 @@ export const getPregunta = async (req: Request, res: Response) => {
         where: {id_pregunta: id_pregunta}
     });
     if(_pregunta){
-        res.json({_pregunta})
+        res.json(_pregunta)
     }
     else{
         res.status(404).json({

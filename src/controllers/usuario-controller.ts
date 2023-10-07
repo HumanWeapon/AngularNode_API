@@ -33,7 +33,7 @@ export const loginUser = async (req: Request, res: Response) => {
     try{
         if(!user){
             return res.status(400).json({
-                msg: 'Usuario no existe '+ usuario
+                msg: 'usuario/contraseña invalidos.'
             })
         }
     }catch(error){
@@ -45,25 +45,27 @@ export const loginUser = async (req: Request, res: Response) => {
 
     //Validamos password
 
+// Compara la contraseña proporcionada con la almacenada en la base de datos
     const passwordValid = await bcrypt.compare(contrasena, user.contrasena);
-    if(!contrasena){
+
+    if (!passwordValid) {
         return res.status(400).json({
-            msg: 'Contraseña incorrecta',
-        }); 
+            msg: 'usuario/contraseña invalidos.',
+        });
     }
 
-    // Validar estado
-    if(!user.estado_usuario){
-        console.log('Usuario inactivo')
-    }else{
-    
+// Validar estado del usuario
+    if (!user.estado_usuario) {
+        return res.status(400).json({
+        msg: 'Usuario Inactivo',
+        });
     }
     // Generamos token
 
     const token = jwt.sign({
         usuario: usuario
     }, process.env.SECRET_KEY || 'Lamers005*');
-       
+        
     res.json(token);
 }
 
@@ -79,7 +81,7 @@ export const getUsuario = async (req: Request, res: Response) => {
         where: {usuario: usuario}
     });
     if(user){
-        res.json({user})
+        res.json(user)
     }
     else{
         res.status(404).json({
@@ -145,6 +147,8 @@ export const deleteUsuario = async (req: Request, res: Response) => {
         msg: 'Usuario: '+ usuario+  ' eliminado exitosamente',
     });
 }
+
+//
 export const inactivateUsuario = async (req: Request, res: Response) => {
     const { usuario } = req.body;
 
@@ -164,6 +168,8 @@ export const inactivateUsuario = async (req: Request, res: Response) => {
         msg: 'Usuario: '+ usuario+  ' inactivado exitosamente',
     });
 }
+
+//
 export const activateUsuario = async (req: Request, res: Response) => {
     const { usuario } = req.body;
 

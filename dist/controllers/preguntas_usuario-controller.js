@@ -29,7 +29,7 @@ const getPreguntasusuario = (req, res) => __awaiter(void 0, void 0, void 0, func
             where: { id_usuario: id_usuario }
         });
         if (_pregunta) {
-            res.json({ _pregunta });
+            res.json(_pregunta);
         }
         else {
             res.status(404).json({

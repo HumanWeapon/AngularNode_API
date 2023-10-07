@@ -18,7 +18,7 @@ export const getPreguntasusuario = async (req: Request, res: Response) => {
         })
 
         if(_pregunta){
-            res.json({_pregunta})
+            res.json(_pregunta)
         }
         else{
             res.status(404).json({

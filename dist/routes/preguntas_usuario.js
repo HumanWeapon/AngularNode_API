@@ -8,4 +8,3 @@ routerPreguntasUsuario.post('/getPreguntasusuario', preguntas_usuario_controller
 routerPreguntasUsuario.post('/postPreguntaUsuario', preguntas_usuario_controller_1.postPreguntaUsuario); // obtiene todos los usuarios
 routerPreguntasUsuario.put('/updatePreguntaUsuario', preguntas_usuario_controller_1.updatePreguntaUsuario); // Actualiza las preguntas por el usuario seleccionado
 exports.default = routerPreguntasUsuario;
-;
