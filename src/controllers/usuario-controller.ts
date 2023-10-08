@@ -72,7 +72,7 @@ export const loginUser = async (req: Request, res: Response) => {
 //Obtiene todos los usuarios de la base de datos
 export const getAllUsuarios = async (req: Request, res: Response) => {
     const usuarios = await User.findAll();
-    res.json({usuarios})
+    res.json(usuarios)
 }
 //Obtiene un usuario especifico de la base de datos
 export const getUsuario = async (req: Request, res: Response) => {

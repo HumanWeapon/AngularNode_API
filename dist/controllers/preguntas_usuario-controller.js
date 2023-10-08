@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePreguntaUsuario = exports.postPreguntaUsuario = exports.getPreguntasusuario = exports.getAllPreguntasUsuario = void 0;
+exports.validarRespuestas = exports.updatePreguntaUsuario = exports.postPreguntaUsuario = exports.getPreguntasusuario = exports.getAllPreguntasUsuario = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const preguntas_usuario_model_1 = require("../models/preguntas_usuario-model");
 //Obtiene todas las preguntas de los usuarios en la base de datos
@@ -122,3 +122,33 @@ const updatePreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.updatePreguntaUsuario = updatePreguntaUsuario;
+const validarRespuestas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_preguntas_usuario, respuesta } = req.body;
+    //Validar si el usuario existe en la base de datos
+    const preguntaUsuario = yield preguntas_usuario_model_1.PreguntasUsuario.findOne({
+        where: { id_preguntas_usuario: id_preguntas_usuario }
+    });
+    try {
+        if (!preguntaUsuario) {
+            return res.status(400).json({
+                msg: 'No existen preguntas para el usuario'
+            });
+        }
+        //Validamos Preguntas
+        // Compara la pregunta proporcionada con la almacenada en la base de datos
+        const respuestaValid = yield bcrypt_1.default.compare(respuesta, preguntaUsuario.respuesta);
+        if (!respuestaValid) {
+            return res.status(400).json({
+                msg: 'Respuesta incorrecta',
+            });
+        }
+        res.json({ respuestaValid });
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Error',
+            error
+        });
+    }
+});
+exports.validarRespuestas = validarRespuestas;

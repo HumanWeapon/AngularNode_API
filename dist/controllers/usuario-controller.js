@@ -59,7 +59,7 @@ exports.loginUser = loginUser;
 //Obtiene todos los usuarios de la base de datos
 const getAllUsuarios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const usuarios = yield usuario_models_1.User.findAll();
-    res.json({ usuarios });
+    res.json(usuarios);
 });
 exports.getAllUsuarios = getAllUsuarios;
 //Obtiene un usuario especifico de la base de datos

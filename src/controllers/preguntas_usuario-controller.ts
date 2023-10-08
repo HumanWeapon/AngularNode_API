@@ -118,3 +118,36 @@ export const updatePreguntaUsuario = async (req: Request, res: Response) => {
         }); 
     }
 }
+export const validarRespuestas = async (req: Request, res: Response) => {
+    const { 
+        id_preguntas_usuario,
+        respuesta } = req.body;
+    //Validar si el usuario existe en la base de datos
+    const preguntaUsuario: any = await PreguntasUsuario.findOne({
+        where: {id_preguntas_usuario: id_preguntas_usuario}
+    })
+
+    try{
+        if(!preguntaUsuario){
+            return res.status(400).json({
+                msg: 'No existen preguntas para el usuario'
+            })
+        }
+
+        //Validamos Preguntas
+        // Compara la pregunta proporcionada con la almacenada en la base de datos
+        const respuestaValid = await bcrypt.compare(respuesta, preguntaUsuario.respuesta);
+
+        if (!respuestaValid) {
+            return res.status(400).json({
+                msg: 'Respuesta incorrecta',
+            });
+        }
+        res.json({respuestaValid})
+    }catch(error){
+        res.status(400).json({
+            msg: 'Error',
+            error
+        }); 
+    }
+}

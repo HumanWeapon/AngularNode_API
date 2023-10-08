@@ -7,4 +7,5 @@ routerPreguntasUsuario.get('/getAllPreguntasUsuario', preguntas_usuario_controll
 routerPreguntasUsuario.post('/getPreguntasusuario', preguntas_usuario_controller_1.getPreguntasusuario); //Inserta un usuario en la DB
 routerPreguntasUsuario.post('/postPreguntaUsuario', preguntas_usuario_controller_1.postPreguntaUsuario); // obtiene todos los usuarios
 routerPreguntasUsuario.put('/updatePreguntaUsuario', preguntas_usuario_controller_1.updatePreguntaUsuario); // Actualiza las preguntas por el usuario seleccionado
+routerPreguntasUsuario.post('/validarRespuestas', preguntas_usuario_controller_1.validarRespuestas); //Inserta un usuario en la DB
 exports.default = routerPreguntasUsuario;
