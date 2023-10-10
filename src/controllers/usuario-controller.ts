@@ -52,14 +52,14 @@ export const loginUser = async (req: Request, res: Response) => {
             return res.status(400).json({
                 msg: 'Usuario/contraseña inválidos.',
             });
+        }else{
+            // Si el inicio de sesión es exitoso, restablece los intentos fallidos
+            user.intentos_fallidos = 0;
+            await user.save();
         }
 
-        // Si el inicio de sesión es exitoso, restablece los intentos fallidos
-        user.intentos_fallidos = 0;
-        await user.save();
-
         // Validar estado del usuario
-        if (user.estado_usuario !== 'Activo') {
+        if (!user.estado_usuario) {
             return res.status(400).json({
                 msg: 'Usuario Inactivo',
             });

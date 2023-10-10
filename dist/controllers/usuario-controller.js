@@ -43,11 +43,13 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 msg: 'Usuario/contraseña inválidos.',
             });
         }
-        // Si el inicio de sesión es exitoso, restablece los intentos fallidos
-        user.intentos_fallidos = 0;
-        yield user.save();
+        else {
+            // Si el inicio de sesión es exitoso, restablece los intentos fallidos
+            user.intentos_fallidos = 0;
+            yield user.save();
+        }
         // Validar estado del usuario
-        if (user.estado_usuario !== 'Activo') {
+        if (!user.estado_usuario) {
             return res.status(400).json({
                 msg: 'Usuario Inactivo',
             });
