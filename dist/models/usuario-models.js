@@ -56,16 +56,16 @@ exports.User = connection_1.default.define('usuario', {
         type: sequelize_1.DataTypes.DATE,
         allowNull: true
     },
-    preguntas_contestadas: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: true
-    },
     primer_ingreso: {
         type: sequelize_1.DataTypes.BOOLEAN,
         allowNull: true
     },
     fecha_vencimiento: {
         type: sequelize_1.DataTypes.DATE,
+        allowNull: true
+    },
+    intentos_fallidos: {
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: true
     }
 }, {

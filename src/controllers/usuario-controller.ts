@@ -4,69 +4,88 @@ import { User } from '../models/usuario-models';
 import jwt from 'jsonwebtoken';
 
 export const loginUser = async (req: Request, res: Response) => {
-    const { 
+
+    const {
+        usuario,
+        contrasena,
         id_usuario,
         creado_por,
         fecha_creacion,
         modificado_por,
         fecha_modificacion,
-        usuario, 
         nombre_usuario,
         correo_electronico,
         estado_usuario,
-        contrasena,
         id_rol,
         fecha_ultima_conexion,
-        preguntas_contestadas,
         primer_ingreso,
-        fecha_vencimiento
-
-     } = req.body;
-
+        fecha_vencimiento,
+        intentos_fallidos
+    } = req.body
     
-    
-    //Validar si el usuario existe en la base de datos
-    const user: any = await User.findOne({
-        where: {usuario: usuario}
-    })
+    try {
+        // Busca el usuario en la base de datos
+        const user: any = await User.findOne({
+            where: { usuario: usuario }
+        });
 
-    try{
-        if(!user){
+        if (!user) {
             return res.status(400).json({
-                msg: 'usuario/contraseña invalidos.'
-            })
+                msg: 'Usuario/contraseña inválidos.'
+            });
         }
-    }catch(error){
-        res.status(400).json({
-            msg: 'Error',
-            error
-        }); 
+
+        // Compara la contraseña proporcionada con la almacenada en la base de datos
+        const passwordValid = await bcrypt.compare(contrasena, user.contrasena);
+
+        if (!passwordValid) {
+            // Si la contraseña es incorrecta, aumenta el contador de intentos fallidos
+            user.intentos_fallidos = (user.intentos_fallidos || 0) + 1;
+            await user.save();
+
+            if (user.intentos_fallidos >= 3) {
+                // Si el usuario ha alcanzado 3 intentos fallidos, bloquea el usuario
+                user.estado_usuario = false;
+                await user.save();
+            }
+
+            return res.status(400).json({
+                msg: 'Usuario/contraseña inválidos.',
+            });
+        }
+
+        // Si el inicio de sesión es exitoso, restablece los intentos fallidos
+        user.intentos_fallidos = 0;
+        await user.save();
+
+        // Validar estado del usuario
+        if (user.estado_usuario !== 'Activo') {
+            return res.status(400).json({
+                msg: 'Usuario Inactivo',
+            });
+        }
+
+        // Genera el token
+        const token = jwt.sign({
+            usuario: usuario
+        }, process.env.SECRET_KEY || 'Lamers005*');
+            
+        res.json(token);
+    } catch (error) {
+        console.error('Error en loginUser:', error);
+        if (error instanceof Error) {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: error.message
+            });
+        } else {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: 'Error desconocido' // Otra manejo de errores si no es una instancia de Error
+            });
+        }
     }
-
-    //Validamos password
-
-// Compara la contraseña proporcionada con la almacenada en la base de datos
-    const passwordValid = await bcrypt.compare(contrasena, user.contrasena);
-
-    if (!passwordValid) {
-        return res.status(400).json({
-            msg: 'usuario/contraseña invalidos.',
-        });
-    }
-
-// Validar estado del usuario
-    if (!user.estado_usuario) {
-        return res.status(400).json({
-        msg: 'Usuario Inactivo',
-        });
-    }
-    // Generamos token
-
-    const token = jwt.sign({
-        usuario: usuario
-    }, process.env.SECRET_KEY || 'Lamers005*');
-        
-    res.json(token);
+    
 }
 
 //Obtiene todos los usuarios de la base de datos
