@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PreguntasUsuario = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
+const preguntas_model_1 = require("./preguntas-model");
 exports.PreguntasUsuario = connection_1.default.define('preguntas_usuario', {
     id_preguntas_usuario: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -44,4 +45,9 @@ exports.PreguntasUsuario = connection_1.default.define('preguntas_usuario', {
     tableName: 'tbl_ms_preguntas_usuario',
     schema: 'mipyme',
     timestamps: false
+});
+// Configura la asociación con el modelo Preguntas
+exports.PreguntasUsuario.belongsTo(preguntas_model_1.Preguntas, {
+    foreignKey: 'id_pregunta',
+    as: 'pregunta' // Alias para la relación
 });

@@ -1,7 +1,9 @@
-import {Request, Response} from 'express';
+import express, {Request, Response} from 'express';
 import bcrypt from 'bcrypt';
 import { PreguntasUsuario } from "../models/preguntas_usuario-model";
+import { Preguntas } from "../models/preguntas-model";
 
+const app = express();
 
 //Obtiene todas las preguntas de los usuarios en la base de datos
 export const getAllPreguntasUsuario = async (req: Request, res: Response) => {
@@ -149,5 +151,24 @@ export const validarRespuestas = async (req: Request, res: Response) => {
             msg: 'Error',
             error
         }); 
+    }
+}
+
+// Realiza una consulta INNER JOIN entre las tablas Preguntas_Usuario y Preguntas
+export const preguntasUsuarioPreguntas = async (req: Request, res: Response) => {
+    try {
+        const preguntasUsuario = await PreguntasUsuario.findAll({
+            include: [
+                {
+                    model: Preguntas,
+                    as: 'pregunta' // Usa el mismo alias que en la definición de la asociación
+                },
+            ],
+        });
+
+        res.json(preguntasUsuario);
+    } catch (error) {
+        console.error('Error al obtener preguntas de usuario:', error);
+        res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
     }
 }

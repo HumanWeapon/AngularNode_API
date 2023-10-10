@@ -21,7 +21,7 @@ exports.Preguntas = connection_1.default.define('preguntas', {
         allowNull: false
     },
     fecha_creacion: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.DATE,
         allowNull: false
     },
     modificado_por: {
@@ -29,7 +29,7 @@ exports.Preguntas = connection_1.default.define('preguntas', {
         allowNull: false
     },
     fecha_modificacion: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.DATE,
         allowNull: false
     }
 }, {

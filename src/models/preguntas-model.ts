@@ -16,7 +16,7 @@ export const Preguntas: any = dataBase.define('preguntas', {
         allowNull: false
     },
     fecha_creacion: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DATE,
         allowNull: false
     },
     modificado_por: {
@@ -24,7 +24,7 @@ export const Preguntas: any = dataBase.define('preguntas', {
         allowNull: false
     },
     fecha_modificacion: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DATE,
         allowNull: false
     }
     }, 

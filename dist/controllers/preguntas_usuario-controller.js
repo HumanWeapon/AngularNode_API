@@ -12,9 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validarRespuestas = exports.updatePreguntaUsuario = exports.postPreguntaUsuario = exports.getPreguntasusuario = exports.getAllPreguntasUsuario = void 0;
+exports.preguntasUsuarioPreguntas = exports.validarRespuestas = exports.updatePreguntaUsuario = exports.postPreguntaUsuario = exports.getPreguntasusuario = exports.getAllPreguntasUsuario = void 0;
+const express_1 = __importDefault(require("express"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const preguntas_usuario_model_1 = require("../models/preguntas_usuario-model");
+const preguntas_model_1 = require("../models/preguntas-model");
+const app = (0, express_1.default)();
 //Obtiene todas las preguntas de los usuarios en la base de datos
 const getAllPreguntasUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const _pregunta = yield preguntas_usuario_model_1.PreguntasUsuario.findAll();
@@ -152,3 +155,22 @@ const validarRespuestas = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.validarRespuestas = validarRespuestas;
+// Realiza una consulta INNER JOIN entre las tablas Preguntas_Usuario y Preguntas
+const preguntasUsuarioPreguntas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const preguntasUsuario = yield preguntas_usuario_model_1.PreguntasUsuario.findAll({
+            include: [
+                {
+                    model: preguntas_model_1.Preguntas,
+                    as: 'pregunta' // Usa el mismo alias que en la definición de la asociación
+                },
+            ],
+        });
+        res.json(preguntasUsuario);
+    }
+    catch (error) {
+        console.error('Error al obtener preguntas de usuario:', error);
+        res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
+    }
+});
+exports.preguntasUsuarioPreguntas = preguntasUsuarioPreguntas;

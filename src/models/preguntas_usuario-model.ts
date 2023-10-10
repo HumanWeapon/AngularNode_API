@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import dataBase from "../db/connection";
+import { Preguntas } from "./preguntas-model";
 
 export const PreguntasUsuario: any = dataBase.define('preguntas_usuario', {
     id_preguntas_usuario: {
@@ -41,3 +42,8 @@ export const PreguntasUsuario: any = dataBase.define('preguntas_usuario', {
     schema: 'mipyme',
     timestamps: false
 })
+// Configura la asociación con el modelo Preguntas
+PreguntasUsuario.belongsTo(Preguntas, {
+    foreignKey: 'id_pregunta', // Campo en PreguntasUsuario que hace referencia a Preguntas
+    as: 'pregunta' // Alias para la relación
+});
