@@ -14,7 +14,7 @@ const roles_models_1 = require("../models/roles-models");
 //Obtiene todos los roles de la base de datos
 const getAllRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const _roles = yield roles_models_1.Roles.findAll();
-    res.json({ _roles });
+    res.json(_roles);
 });
 exports.getAllRoles = getAllRoles;
 //Obtiene un rol de la base de datos

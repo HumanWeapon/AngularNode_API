@@ -14,21 +14,21 @@ const objetos_models_1 = require("../models/objetos-models");
 //Obtiene todos los objetos de la base de datos
 const getAllObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const _objetos = yield objetos_models_1.Objetos.findAll();
-    res.json({ _objetos });
+    res.json(_objetos);
 });
 exports.getAllObjetos = getAllObjetos;
 //Obtiene un objeto de la base de datos
 const getObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_objeto } = req.body;
+    const { objeto } = req.body;
     const _objeto = yield objetos_models_1.Objetos.findOne({
-        where: { id_objeto: id_objeto }
+        where: { objeto: objeto }
     });
     if (_objeto) {
         res.json({ _objeto });
     }
     else {
         res.status(404).json({
-            msg: `el Id del objeto no existe: ${id_objeto}`
+            msg: `el  objeto no existe: ${objeto}`
         });
     }
 });
