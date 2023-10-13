@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.preguntasUsuarioPreguntas = exports.validarRespuestas = exports.updatePreguntaUsuario = exports.postPreguntaUsuario = exports.getPreguntasusuario = exports.getAllPreguntasUsuario = void 0;
+exports.preguntasRespuestas = exports.validarRespuestas = exports.updatePreguntaUsuario = exports.postPreguntaUsuario = exports.getPreguntasusuario = exports.getAllPreguntasUsuario = void 0;
 const express_1 = __importDefault(require("express"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const preguntas_usuario_model_1 = require("../models/preguntas_usuario-model");
@@ -156,9 +156,11 @@ const validarRespuestas = (req, res) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.validarRespuestas = validarRespuestas;
 // Realiza una consulta INNER JOIN entre las tablas Preguntas_Usuario y Preguntas
-const preguntasUsuarioPreguntas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const preguntasRespuestas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const { id_usuario } = req.body;
         const preguntasUsuario = yield preguntas_usuario_model_1.PreguntasUsuario.findAll({
+            where: { id_usuario: id_usuario },
             include: [
                 {
                     model: preguntas_model_1.Preguntas,
@@ -173,4 +175,4 @@ const preguntasUsuarioPreguntas = (req, res) => __awaiter(void 0, void 0, void 0
         res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
     }
 });
-exports.preguntasUsuarioPreguntas = preguntasUsuarioPreguntas;
+exports.preguntasRespuestas = preguntasRespuestas;
