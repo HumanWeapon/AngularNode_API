@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 export const getAllParametros = async (req: Request, res: Response) => {
 
     const _parametro = await Parametros.findAll();
-    res.json({_parametro})
+    res.json(_parametro)
 
 }
 

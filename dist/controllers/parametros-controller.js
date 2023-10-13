@@ -14,7 +14,7 @@ const parametros_models_1 = require("../models/parametros-models");
 //Obtiene todos los parametros de la base de datos
 const getAllParametros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const _parametro = yield parametros_models_1.Parametros.findAll();
-    res.json({ _parametro });
+    res.json(_parametro);
 });
 exports.getAllParametros = getAllParametros;
 //Obtiene un parametro de la base de datos

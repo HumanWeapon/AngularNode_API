@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 export const getAllRoles = async (req: Request, res: Response) => {
 
     const _roles = await Roles.findAll();
-    res.json({_roles})
+    res.json(_roles)
 
 }
 

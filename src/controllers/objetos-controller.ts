@@ -7,23 +7,23 @@ import jwt from 'jsonwebtoken';
 export const getAllObjetos = async (req: Request, res: Response) => {
 
     const _objetos = await Objetos.findAll();
-    res.json({_objetos})
+    res.json(_objetos)
 
 }
 
 //Obtiene un objeto de la base de datos
 export const getObjeto = async (req: Request, res: Response) => {
-    const { id_objeto } = req.body;
+    const { objeto } = req.body;
 
     const _objeto = await Objetos.findOne({
-        where: {id_objeto: id_objeto}
+        where: {objeto: objeto}
     });
     if(_objeto){
         res.json({_objeto})
     }
     else{
         res.status(404).json({
-            msg: `el Id del objeto no existe: ${id_objeto}`
+            msg: `el  objeto no existe: ${objeto}`
         })
     }
 }
