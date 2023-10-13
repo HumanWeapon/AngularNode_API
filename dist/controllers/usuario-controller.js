@@ -101,7 +101,7 @@ const getUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.getUsuario = getUsuario;
 //Inserta un usuario en la base de datos
 const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { usuario, nombre_usuario, correo_electronico, contrasena } = req.body;
+    const { id_usuario, usuario, nombre_usuario, correo_electronico, contrasena, intentos_fallidos } = req.body;
     const hashedPassword = yield bcrypt_1.default.hash(contrasena, 10);
     const fecha_creacion = Date.now();
     try {
@@ -115,11 +115,13 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         else {
             yield usuario_models_1.User.create({
+                //id_usuario: id_usuario,  
                 fecha_creacion: fecha_creacion,
                 usuario: usuario,
                 nombre_usuario: nombre_usuario,
                 correo_electronico: correo_electronico,
-                contrasena: hashedPassword
+                contrasena: hashedPassword,
+                intentos_fallidos: intentos_fallidos
             });
             res.json({
                 msg: 'Usuario: ' + usuario + ' creado exitosamente',

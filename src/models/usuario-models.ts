@@ -3,7 +3,7 @@ import dataBase from '../db/connection';
 
 export const User: any = dataBase.define('usuario', {
         id_usuario: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.NUMBER,
             primaryKey: true,
             autoIncrement: true
         },

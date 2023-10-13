@@ -111,7 +111,7 @@ export const getUsuario = async (req: Request, res: Response) => {
 //Inserta un usuario en la base de datos
 export const postUsuario = async (req: Request, res: Response) => {
 
-    const { usuario, nombre_usuario, correo_electronico, contrasena  } = req.body;
+    const { id_usuario, usuario, nombre_usuario, correo_electronico, contrasena, intentos_fallidos  } = req.body;
     const hashedPassword = await bcrypt.hash(contrasena, 10);
     const fecha_creacion = Date.now();
 
@@ -126,11 +126,13 @@ export const postUsuario = async (req: Request, res: Response) => {
             })
         }else{
             await User.create({
+                //id_usuario: id_usuario,  
                 fecha_creacion: fecha_creacion,
                 usuario: usuario,
                 nombre_usuario: nombre_usuario,
                 correo_electronico: correo_electronico,
-                contrasena: hashedPassword
+                contrasena: hashedPassword,
+                intentos_fallidos: intentos_fallidos
             })
             res.json({
                 msg: 'Usuario: '+ usuario+  ' creado exitosamente',
