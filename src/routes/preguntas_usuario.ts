@@ -12,5 +12,4 @@ routerPreguntasUsuario.post('/validarRespuestas', validarRespuestas);//Inserta u
 routerPreguntasUsuario.post('/preguntasRespuestas', preguntasRespuestas);//
 
 
-
 export default routerPreguntasUsuario;

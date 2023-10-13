@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.deleteUsuario = exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
+exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.deleteUsuario = exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const usuario_models_1 = require("../models/usuario-models");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -115,7 +115,7 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         else {
             yield usuario_models_1.User.create({
-                //id_usuario: id_usuario,  
+                id_usuario: id_usuario,
                 fecha_creacion: fecha_creacion,
                 usuario: usuario,
                 nombre_usuario: nombre_usuario,
@@ -221,3 +221,30 @@ const updateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     });
 });
 exports.updateUsuario = updateUsuario;
+//Desbloquea la contraseña
+const cambiarContrasena = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { usuario, contrasena } = req.body;
+        const hashedPassword = yield bcrypt_1.default.hash(contrasena, 10);
+        const user = yield usuario_models_1.User.findOne({
+            where: { usuario: usuario }
+        });
+        if (!user) {
+            return res.status(400).json({
+                msg: 'Usuario no existe',
+            });
+        }
+        yield user.update({
+            contrasena: hashedPassword,
+            estado_usuario: true,
+            intentos_fallidos: 0
+        });
+        res.json({
+            msg: 'Tu contraseña ha sido cambiada con éxito',
+        });
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Error al cambiar tu contraseña' });
+    }
+});
+exports.cambiarContrasena = cambiarContrasena;

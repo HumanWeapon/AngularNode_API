@@ -145,7 +145,7 @@ export const validarRespuestas = async (req: Request, res: Response) => {
                 msg: 'Respuesta incorrecta',
             });
         }
-        res.json({respuestaValid})
+        res.json(respuestaValid)
     }catch(error){
         res.status(400).json({
             msg: 'Error',
@@ -174,3 +174,4 @@ export const preguntasRespuestas = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
     }
 }
+

@@ -63,7 +63,6 @@ export const User: any = dataBase.define('usuario', {
             type: DataTypes.INTEGER,
             allowNull: true
         }
-
     }, 
     {
     tableName: 'tbl_ms_usuario',

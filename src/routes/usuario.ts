@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {updateUsuario, activateUsuario, inactivateUsuario, deleteUsuario, postUsuario, getAllUsuarios, getUsuario, loginUser } from '../controllers/usuario-controller';
+import {updateUsuario, activateUsuario, inactivateUsuario, deleteUsuario, postUsuario, getAllUsuarios, getUsuario, loginUser, cambiarContrasena } from '../controllers/usuario-controller';
 import validarToken from './validarToken';
 
 const routerUser = Router()
@@ -12,5 +12,6 @@ routerUser.delete('/deleteUsuario', deleteUsuario); // elimina el registro con e
 routerUser.post('/inactivateUsuario', inactivateUsuario);//Inactiva un usuario en la DB
 routerUser.post('/activateUsuario', activateUsuario);//Activa un usuario en la DB
 routerUser.post('/updateUsuario', updateUsuario);//Activa un usuario en la DB
+routerUser.put('/cambiarContrasena', cambiarContrasena);//Activa un usuario en la DB
 
 export default routerUser;

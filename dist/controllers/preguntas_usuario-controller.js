@@ -145,7 +145,7 @@ const validarRespuestas = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 msg: 'Respuesta incorrecta',
             });
         }
-        res.json({ respuestaValid });
+        res.json(respuestaValid);
     }
     catch (error) {
         res.status(400).json({

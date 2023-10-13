@@ -15,4 +15,5 @@ routerUser.delete('/deleteUsuario', usuario_controller_1.deleteUsuario); // elim
 routerUser.post('/inactivateUsuario', usuario_controller_1.inactivateUsuario); //Inactiva un usuario en la DB
 routerUser.post('/activateUsuario', usuario_controller_1.activateUsuario); //Activa un usuario en la DB
 routerUser.post('/updateUsuario', usuario_controller_1.updateUsuario); //Activa un usuario en la DB
+routerUser.put('/cambiarContrasena', usuario_controller_1.cambiarContrasena); //Activa un usuario en la DB
 exports.default = routerUser;

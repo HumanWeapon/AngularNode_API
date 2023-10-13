@@ -246,3 +246,29 @@ export const updateUsuario = async (req: Request, res: Response) => {
         msg: 'Usuario: '+ usuario+  ' ha sido actualizado exitosamente',
     });
 }
+//Desbloquea la contraseña
+export const cambiarContrasena = async (req: Request, res: Response) => {
+    try {
+        const { usuario, contrasena } = req.body;
+        const hashedPassword = await bcrypt.hash(contrasena, 10);
+        const user = await User.findOne({
+            where: {usuario: usuario}
+        });
+        if(!user){
+            return res.status(400).json({
+                msg: 'Usuario no existe',
+            });
+        }
+        await user.update({
+            contrasena: hashedPassword,
+            estado_usuario: true,
+            intentos_fallidos: 0
+        });
+        res.json({
+            msg: 'Tu contraseña ha sido cambiada con éxito',
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: 'Error al cambiar tu contraseña'});
+    }
+}
