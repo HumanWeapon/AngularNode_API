@@ -1,25 +1,36 @@
-import { DataTypes } from "sequelize";
-import dataBase from "../db/connection";
-import { Preguntas } from "./preguntas-model";
+import { DataTypes } from 'sequelize';
+import dataBase from '../db/connection';
 
-export const PreguntasUsuario: any = dataBase.define('preguntas_usuario', {
-    id_preguntas_usuario: {
+export const Permisos: any = dataBase.define('permisos', {
+    id_permisos: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    id_pregunta: {
+    id_rol: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    id_usuario: {
+    id_objeto: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    respuesta: {
+    permiso_insercion: {
         type: DataTypes.STRING,
         allowNull: false
     },
+    permiso_eliminacion: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },  
+    permiso_actualizacion: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },  
+    permiso_consultar: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },   
     creado_por: {
         type: DataTypes.STRING,
         allowNull: false
@@ -29,21 +40,16 @@ export const PreguntasUsuario: any = dataBase.define('preguntas_usuario', {
         allowNull: false
     },
     modificado_por: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     fecha_modificacion: {
         type: DataTypes.DATE,
         allowNull: false
-    }
+    }   
     }, 
     {
-    tableName: 'tbl_ms_preguntas_usuario',
+    tableName: 'tbl_ms_permisos',
     schema: 'mipyme',
     timestamps: false
 })
-// Configura la asociación con el modelo Preguntas
-PreguntasUsuario.belongsTo(Preguntas, {
-    foreignKey: 'id_pregunta', // Campo en PreguntasUsuario que hace referencia a Preguntas
-    as: 'pregunta' // Alias para la relación
-});

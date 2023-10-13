@@ -1,7 +1,9 @@
-import {Request, Response} from 'express';
+import express, {Request, Response} from 'express';
 import bcrypt from 'bcrypt';
 import { PreguntasUsuario } from "../models/preguntas_usuario-model";
+import { Preguntas } from "../models/preguntas-model";
 
+const app = express();
 
 //Obtiene todas las preguntas de los usuarios en la base de datos
 export const getAllPreguntasUsuario = async (req: Request, res: Response) => {
@@ -18,7 +20,7 @@ export const getPreguntasusuario = async (req: Request, res: Response) => {
         })
 
         if(_pregunta){
-            res.json({_pregunta})
+            res.json(_pregunta)
         }
         else{
             res.status(404).json({
@@ -116,5 +118,57 @@ export const updatePreguntaUsuario = async (req: Request, res: Response) => {
             msg: 'Contactate con el administrador',
             error
         }); 
+    }
+}
+export const validarRespuestas = async (req: Request, res: Response) => {
+    const { 
+        id_preguntas_usuario,
+        respuesta } = req.body;
+    //Validar si el usuario existe en la base de datos
+    const preguntaUsuario: any = await PreguntasUsuario.findOne({
+        where: {id_preguntas_usuario: id_preguntas_usuario}
+    })
+
+    try{
+        if(!preguntaUsuario){
+            return res.status(400).json({
+                msg: 'No existen preguntas para el usuario'
+            })
+        }
+
+        //Validamos Preguntas
+        // Compara la pregunta proporcionada con la almacenada en la base de datos
+        const respuestaValid = await bcrypt.compare(respuesta, preguntaUsuario.respuesta);
+
+        if (!respuestaValid) {
+            return res.status(400).json({
+                msg: 'Respuesta incorrecta',
+            });
+        }
+        res.json({respuestaValid})
+    }catch(error){
+        res.status(400).json({
+            msg: 'Error',
+            error
+        }); 
+    }
+}
+
+// Realiza una consulta INNER JOIN entre las tablas Preguntas_Usuario y Preguntas
+export const preguntasUsuarioPreguntas = async (req: Request, res: Response) => {
+    try {
+        const preguntasUsuario = await PreguntasUsuario.findAll({
+            include: [
+                {
+                    model: Preguntas,
+                    as: 'pregunta' // Usa el mismo alias que en la definición de la asociación
+                },
+            ],
+        });
+
+        res.json(preguntasUsuario);
+    } catch (error) {
+        console.error('Error al obtener preguntas de usuario:', error);
+        res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
     }
 }

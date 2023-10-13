@@ -1,18 +1,26 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../db/connection';
 
-export const Preguntas: any = dataBase.define('preguntas', {
-    id_pregunta: {
+export const Objetos: any = dataBase.define('objetos', {
+    id_objeto: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    pregunta: {
+    objeto: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    descripcion: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    tipo_objeto: {
         type: DataTypes.STRING,
         allowNull: false
     },
     creado_por: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     fecha_creacion: {
@@ -20,7 +28,7 @@ export const Preguntas: any = dataBase.define('preguntas', {
         allowNull: false
     },
     modificado_por: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     fecha_modificacion: {
@@ -29,7 +37,7 @@ export const Preguntas: any = dataBase.define('preguntas', {
     }
     }, 
     {
-    tableName: 'tbl_ms_preguntas',
+    tableName: 'tbl_ms_objetos',
     schema: 'mipyme',
     timestamps: false
 })

@@ -8,6 +8,10 @@ import dataBase from '../db/connection';
 import routerPreguntas from '../routes/preguntas';
 import routesUser from '../routes/usuario';
 import routerPreguntasUsuario from '../routes/preguntas_usuario';
+import routerParametros from '../routes/parametros';
+import routerRoles from '../routes/rol';
+import routerObjetos from '../routes/objetos';
+import routerPermisos from '../routes/permisos';
 
 class Server{
     private app: Application;
@@ -29,8 +33,12 @@ class Server{
     }
     routes(){
         this.app.use('/api/users', routesUser);
-        this.app.use('/api/preguntas',routerPreguntas)
-        this.app.use('/api/preguntasusuario',routerPreguntasUsuario)
+        this.app.use('/api/preguntas',routerPreguntas);
+        this.app.use('/api/preguntasusuario',routerPreguntasUsuario);
+        this.app.use('/api/parametros',routerParametros);
+        this.app.use('/api/roles',routerRoles);
+        this.app.use('/api/objetos',routerObjetos);
+        this.app.use('/api/permisos', routerPermisos)
     }
     midlewares(){
         this.app.use(express.json());

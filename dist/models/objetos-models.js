@@ -3,25 +3,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PreguntasUsuario = void 0;
+exports.Objetos = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
-const preguntas_model_1 = require("./preguntas-model");
-exports.PreguntasUsuario = connection_1.default.define('preguntas_usuario', {
-    id_preguntas_usuario: {
+exports.Objetos = connection_1.default.define('objetos', {
+    id_objeto: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    id_pregunta: {
-        type: sequelize_1.DataTypes.INTEGER,
+    objeto: {
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
-    id_usuario: {
-        type: sequelize_1.DataTypes.INTEGER,
+    descripcion: {
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
-    respuesta: {
+    tipo_objeto: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
@@ -34,7 +33,7 @@ exports.PreguntasUsuario = connection_1.default.define('preguntas_usuario', {
         allowNull: false
     },
     modificado_por: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
     fecha_modificacion: {
@@ -42,12 +41,7 @@ exports.PreguntasUsuario = connection_1.default.define('preguntas_usuario', {
         allowNull: false
     }
 }, {
-    tableName: 'tbl_ms_preguntas_usuario',
+    tableName: 'tbl_ms_objetos',
     schema: 'mipyme',
     timestamps: false
-});
-// Configura la asociación con el modelo Preguntas
-exports.PreguntasUsuario.belongsTo(preguntas_model_1.Preguntas, {
-    foreignKey: 'id_pregunta',
-    as: 'pregunta' // Alias para la relación
 });
