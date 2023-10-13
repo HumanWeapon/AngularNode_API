@@ -126,7 +126,7 @@ export const postUsuario = async (req: Request, res: Response) => {
             })
         }else{
             await User.create({
-                //id_usuario: id_usuario,  
+                id_usuario: id_usuario,  
                 fecha_creacion: fecha_creacion,
                 usuario: usuario,
                 nombre_usuario: nombre_usuario,
