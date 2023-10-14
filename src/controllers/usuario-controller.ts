@@ -111,9 +111,10 @@ export const getUsuario = async (req: Request, res: Response) => {
 //Inserta un usuario en la base de datos
 export const postUsuario = async (req: Request, res: Response) => {
 
-    const { id_usuario, usuario, nombre_usuario, correo_electronico, contrasena, intentos_fallidos  } = req.body;
+    const { 
+        creado_por, fecha_creacion, modificado_por, fecha_modificacion, usuario, nombre_usuario, correo_electronico, 
+        contrasena, id_rol, fecha_ultima_conexion, fecha_vencimiento, intentos_fallidos, estado_usuario  } = req.body;
     const hashedPassword = await bcrypt.hash(contrasena, 10);
-    const fecha_creacion = Date.now();
 
     try{
         const user = await User.findOne({
@@ -126,12 +127,18 @@ export const postUsuario = async (req: Request, res: Response) => {
             })
         }else{
             await User.create({
-                id_usuario: id_usuario,  
-                fecha_creacion: fecha_creacion,
+                creado_por: creado_por,
+                fecha_creacion: Date.now(),
+                modificado_por: modificado_por,
+                fecha_modificacion: Date.now(),
                 usuario: usuario,
                 nombre_usuario: nombre_usuario,
                 correo_electronico: correo_electronico,
+                estado_usuario: estado_usuario,
                 contrasena: hashedPassword,
+                id_rol: id_rol,
+                fecha_ultima_conexion: null,
+                fecha_vencimiento: Date.now(),
                 intentos_fallidos: intentos_fallidos
             })
             res.json({
