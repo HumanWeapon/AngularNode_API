@@ -137,7 +137,7 @@ export const postUsuario = async (req: Request, res: Response) => {
                 contrasena: hashedPassword,
                 id_rol: id_rol,
                 fecha_ultima_conexion: null,
-                fecha_vencimiento: Date.now(),
+                fecha_vencimiento: fecha_vencimiento,
                 intentos_fallidos: intentos_fallidos
             })
             res.json({
@@ -266,7 +266,7 @@ export const cambiarContrasena = async (req: Request, res: Response) => {
         }
         await user.update({
             contrasena: hashedPassword,
-            estado_usuario: true,
+            estado_usuario: 1,
             intentos_fallidos: 0
         });
         res.json({
