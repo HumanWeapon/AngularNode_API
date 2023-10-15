@@ -36,7 +36,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             yield user.save();
             if (user.intentos_fallidos >= 3) {
                 // Si el usuario ha alcanzado 3 intentos fallidos, bloquea el usuario
-                user.estado_usuario = false;
+                user.estado_usuario = 3;
                 yield user.save();
             }
             return res.status(400).json({
@@ -146,6 +146,7 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     res.json(token);*/
 });
 exports.postUsuario = postUsuario;
+//Destruye el usuario de la DBA
 const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario } = req.body;
     const user = yield usuario_models_1.User.findOne({
@@ -162,7 +163,7 @@ const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     });
 });
 exports.deleteUsuario = deleteUsuario;
-//
+//Inactiva el usuario de la DBA
 const inactivateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario } = req.body;
     const user = yield usuario_models_1.User.findOne({
@@ -174,14 +175,14 @@ const inactivateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
     }
     yield user.update({
-        estado_usuario: false
+        estado_usuario: 2
     });
     res.json({
         msg: 'Usuario: ' + usuario + ' inactivado exitosamente',
     });
 });
 exports.inactivateUsuario = inactivateUsuario;
-//
+//Activa el usuario de la DBA
 const activateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario } = req.body;
     const user = yield usuario_models_1.User.findOne({
@@ -193,7 +194,7 @@ const activateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
     }
     yield user.update({
-        estado_usuario: true
+        estado_usuario: 1
     });
     res.json({
         msg: 'Usuario: ' + usuario + ' ha sido activado exitosamente',

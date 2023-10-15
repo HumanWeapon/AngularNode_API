@@ -45,7 +45,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
             if (user.intentos_fallidos >= 3) {
                 // Si el usuario ha alcanzado 3 intentos fallidos, bloquea el usuario
-                user.estado_usuario = false;
+                user.estado_usuario = 3;
                 await user.save();
             }
 
@@ -87,7 +87,6 @@ export const loginUser = async (req: Request, res: Response) => {
     }
     
 }
-
 //Obtiene todos los usuarios de la base de datos
 export const getAllUsuarios = async (req: Request, res: Response) => {
     const usuarios = await User.findAll();
@@ -158,6 +157,7 @@ export const postUsuario = async (req: Request, res: Response) => {
     }, process.env.SECRET_KEY || 'Lamers005*');
     res.json(token);*/
 }
+//Destruye el usuario de la DBA
 export const deleteUsuario = async (req: Request, res: Response) => {
     const { usuario } = req.body;
 
@@ -175,8 +175,7 @@ export const deleteUsuario = async (req: Request, res: Response) => {
         msg: 'Usuario: '+ usuario+  ' eliminado exitosamente',
     });
 }
-
-//
+//Inactiva el usuario de la DBA
 export const inactivateUsuario = async (req: Request, res: Response) => {
     const { usuario } = req.body;
 
@@ -190,14 +189,13 @@ export const inactivateUsuario = async (req: Request, res: Response) => {
     }
 
     await user.update({
-        estado_usuario: false
+        estado_usuario: 2
     });
     res.json({
         msg: 'Usuario: '+ usuario+  ' inactivado exitosamente',
     });
 }
-
-//
+//Activa el usuario de la DBA
 export const activateUsuario = async (req: Request, res: Response) => {
     const { usuario } = req.body;
 
@@ -211,7 +209,7 @@ export const activateUsuario = async (req: Request, res: Response) => {
     }
 
     await user.update({
-        estado_usuario: true
+        estado_usuario: 1
     });
     res.json({
         msg: 'Usuario: '+ usuario+  ' ha sido activado exitosamente',
