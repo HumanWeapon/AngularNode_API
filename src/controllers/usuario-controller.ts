@@ -58,8 +58,12 @@ export const loginUser = async (req: Request, res: Response) => {
             await user.save();
         }
 
+        if(user.fecha_ultima_conexion == null){
+            return res.json(user.fecha_ultima_conexion);
+        }
+
         // Validar estado del usuario
-        if (!user.estado_usuario) {
+        if (user.estado_usuario != 1) {
             return res.status(400).json({
                 msg: 'Usuario Inactivo',
             });
