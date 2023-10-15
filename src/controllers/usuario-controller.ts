@@ -45,7 +45,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
             if (user.intentos_fallidos >= 3) {
                 // Si el usuario ha alcanzado 3 intentos fallidos, bloquea el usuario
-                user.estado_usuario = false;
+                user.estado_usuario = 3;
                 await user.save();
             }
 
@@ -87,7 +87,6 @@ export const loginUser = async (req: Request, res: Response) => {
     }
     
 }
-
 //Obtiene todos los usuarios de la base de datos
 export const getAllUsuarios = async (req: Request, res: Response) => {
     const usuarios = await User.findAll();
@@ -111,9 +110,10 @@ export const getUsuario = async (req: Request, res: Response) => {
 //Inserta un usuario en la base de datos
 export const postUsuario = async (req: Request, res: Response) => {
 
-    const { usuario, nombre_usuario, correo_electronico, contrasena  } = req.body;
+    const { 
+        creado_por, fecha_creacion, modificado_por, fecha_modificacion, usuario, nombre_usuario, correo_electronico, 
+        contrasena, id_rol, fecha_ultima_conexion, fecha_vencimiento, intentos_fallidos, estado_usuario  } = req.body;
     const hashedPassword = await bcrypt.hash(contrasena, 10);
-    const fecha_creacion = Date.now();
 
     try{
         const user = await User.findOne({
@@ -126,11 +126,19 @@ export const postUsuario = async (req: Request, res: Response) => {
             })
         }else{
             await User.create({
-                fecha_creacion: fecha_creacion,
+                creado_por: creado_por,
+                fecha_creacion: Date.now(),
+                modificado_por: modificado_por,
+                fecha_modificacion: Date.now(),
                 usuario: usuario,
                 nombre_usuario: nombre_usuario,
                 correo_electronico: correo_electronico,
-                contrasena: hashedPassword
+                estado_usuario: estado_usuario,
+                contrasena: hashedPassword,
+                id_rol: id_rol,
+                fecha_ultima_conexion: null,
+                fecha_vencimiento: fecha_vencimiento,
+                intentos_fallidos: intentos_fallidos
             })
             res.json({
                 msg: 'Usuario: '+ usuario+  ' creado exitosamente',
@@ -149,6 +157,7 @@ export const postUsuario = async (req: Request, res: Response) => {
     }, process.env.SECRET_KEY || 'Lamers005*');
     res.json(token);*/
 }
+//Destruye el usuario de la DBA
 export const deleteUsuario = async (req: Request, res: Response) => {
     const { usuario } = req.body;
 
@@ -166,8 +175,7 @@ export const deleteUsuario = async (req: Request, res: Response) => {
         msg: 'Usuario: '+ usuario+  ' eliminado exitosamente',
     });
 }
-
-//
+//Inactiva el usuario de la DBA
 export const inactivateUsuario = async (req: Request, res: Response) => {
     const { usuario } = req.body;
 
@@ -181,14 +189,13 @@ export const inactivateUsuario = async (req: Request, res: Response) => {
     }
 
     await user.update({
-        estado_usuario: false
+        estado_usuario: 2
     });
     res.json({
         msg: 'Usuario: '+ usuario+  ' inactivado exitosamente',
     });
 }
-
-//
+//Activa el usuario de la DBA
 export const activateUsuario = async (req: Request, res: Response) => {
     const { usuario } = req.body;
 
@@ -202,7 +209,7 @@ export const activateUsuario = async (req: Request, res: Response) => {
     }
 
     await user.update({
-        estado_usuario: true
+        estado_usuario: 1
     });
     res.json({
         msg: 'Usuario: '+ usuario+  ' ha sido activado exitosamente',
@@ -243,4 +250,30 @@ export const updateUsuario = async (req: Request, res: Response) => {
     res.json({
         msg: 'Usuario: '+ usuario+  ' ha sido actualizado exitosamente',
     });
+}
+//Desbloquea la contraseña
+export const cambiarContrasena = async (req: Request, res: Response) => {
+    try {
+        const { usuario, contrasena } = req.body;
+        const hashedPassword = await bcrypt.hash(contrasena, 10);
+        const user = await User.findOne({
+            where: {usuario: usuario}
+        });
+        if(!user){
+            return res.status(400).json({
+                msg: 'Usuario no existe',
+            });
+        }
+        await user.update({
+            contrasena: hashedPassword,
+            estado_usuario: 1,
+            intentos_fallidos: 0
+        });
+        res.json({
+            msg: 'Tu contraseña ha sido cambiada con éxito',
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: 'Error al cambiar tu contraseña'});
+    }
 }

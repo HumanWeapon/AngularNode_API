@@ -8,17 +8,17 @@ const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
 exports.User = connection_1.default.define('usuario', {
     id_usuario: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.NUMBER,
         primaryKey: true,
         autoIncrement: true
     },
     creado_por: {
-        type: sequelize_1.DataTypes.DATE,
-        allowNull: true
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     },
     fecha_creacion: {
         type: sequelize_1.DataTypes.DATE,
-        allowNull: true
+        allowNull: false
     },
     modificado_por: {
         type: sequelize_1.DataTypes.STRING,
@@ -34,15 +34,15 @@ exports.User = connection_1.default.define('usuario', {
     },
     nombre_usuario: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     correo_electronico: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: true
     },
     estado_usuario: {
-        type: sequelize_1.DataTypes.BOOLEAN,
-        allowNull: true
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
     },
     contrasena: {
         type: sequelize_1.DataTypes.STRING,
@@ -50,14 +50,10 @@ exports.User = connection_1.default.define('usuario', {
     },
     id_rol: {
         type: sequelize_1.DataTypes.NUMBER,
-        allowNull: true
+        allowNull: false
     },
     fecha_ultima_conexion: {
         type: sequelize_1.DataTypes.DATE,
-        allowNull: true
-    },
-    primer_ingreso: {
-        type: sequelize_1.DataTypes.BOOLEAN,
         allowNull: true
     },
     fecha_vencimiento: {
@@ -66,7 +62,7 @@ exports.User = connection_1.default.define('usuario', {
     },
     intentos_fallidos: {
         type: sequelize_1.DataTypes.INTEGER,
-        allowNull: true
+        allowNull: false
     }
 }, {
     tableName: 'tbl_ms_usuario',

@@ -3,17 +3,17 @@ import dataBase from '../db/connection';
 
 export const User: any = dataBase.define('usuario', {
         id_usuario: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.NUMBER,
             primaryKey: true,
             autoIncrement: true
         },
         creado_por: {
-            type: DataTypes.DATE,
-            allowNull: true
+            type: DataTypes.STRING,
+            allowNull: false
         },
         fecha_creacion: {
             type: DataTypes.DATE,
-            allowNull: true
+            allowNull: false
         },
         modificado_por: {
             type: DataTypes.STRING,
@@ -29,15 +29,15 @@ export const User: any = dataBase.define('usuario', {
         },
         nombre_usuario: {
             type: DataTypes.STRING,
-            allowNull: true
+            allowNull: false
         },
         correo_electronico: {
             type: DataTypes.STRING,
             allowNull: true
         },
         estado_usuario: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
         contrasena: {
             type: DataTypes.STRING,
@@ -45,14 +45,10 @@ export const User: any = dataBase.define('usuario', {
         },
         id_rol: {
             type: DataTypes.NUMBER,
-            allowNull: true
+            allowNull: false
         },
         fecha_ultima_conexion: {
             type: DataTypes.DATE,
-            allowNull: true
-        },
-        primer_ingreso: {
-            type: DataTypes.BOOLEAN,
             allowNull: true
         },
         fecha_vencimiento: {
@@ -61,9 +57,8 @@ export const User: any = dataBase.define('usuario', {
         },
         intentos_fallidos: {
             type: DataTypes.INTEGER,
-            allowNull: true
+            allowNull: false
         }
-
     }, 
     {
     tableName: 'tbl_ms_usuario',

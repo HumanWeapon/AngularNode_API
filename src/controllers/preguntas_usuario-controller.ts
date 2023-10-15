@@ -145,7 +145,7 @@ export const validarRespuestas = async (req: Request, res: Response) => {
                 msg: 'Respuesta incorrecta',
             });
         }
-        res.json({respuestaValid})
+        res.json(respuestaValid)
     }catch(error){
         res.status(400).json({
             msg: 'Error',
@@ -155,9 +155,11 @@ export const validarRespuestas = async (req: Request, res: Response) => {
 }
 
 // Realiza una consulta INNER JOIN entre las tablas Preguntas_Usuario y Preguntas
-export const preguntasUsuarioPreguntas = async (req: Request, res: Response) => {
+export const preguntasRespuestas = async (req: Request, res: Response) => {
     try {
+        const { id_usuario } = req.body;
         const preguntasUsuario = await PreguntasUsuario.findAll({
+            where: {id_usuario: id_usuario},
             include: [
                 {
                     model: Preguntas,
@@ -172,3 +174,4 @@ export const preguntasUsuarioPreguntas = async (req: Request, res: Response) => 
         res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
     }
 }
+
