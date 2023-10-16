@@ -68,7 +68,6 @@ export const loginUser = async (req: Request, res: Response) => {
                 msg: 'Usuario Inactivo',
             });
         }
-
         // Genera el token
         const token = jwt.sign({
             usuario: usuario
@@ -222,6 +221,7 @@ export const activateUsuario = async (req: Request, res: Response) => {
 //Actualiza el usuario en la base de datos
 export const updateUsuario = async (req: Request, res: Response) => {
     const { 
+        id_usuario,
         usuario,
         modificado_por,
         fecha_modificacion,
@@ -233,15 +233,16 @@ export const updateUsuario = async (req: Request, res: Response) => {
      } = req.body;
 
     const user = await User.findOne({
-        where: {usuario: usuario}
+        where: {id_usuario: id_usuario}
     });
     if(!user){
         return res.status(404).json({
-            msg: "El usuario no existe: "+ usuario
+            msg: "El usuario con el ID: "+id_usuario+ " no existe"
         });
     }
 
     await user.update({
+        id_usuario: id_usuario,
         usuario: usuario,
         modificado_por: modificado_por,
         fecha_modificacion: fecha_modificacion,
