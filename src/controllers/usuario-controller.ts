@@ -229,7 +229,8 @@ export const updateUsuario = async (req: Request, res: Response) => {
         correo_electronico,
         estado_usuario,
         id_rol,
-        fecha_vencimiento
+        fecha_vencimiento,
+        fecha_ultima_conexion
      } = req.body;
 
     const user = await User.findOne({
@@ -250,7 +251,8 @@ export const updateUsuario = async (req: Request, res: Response) => {
         correo_electronico: correo_electronico,
         estado_usuario: estado_usuario,
         id_rol: id_rol,
-        fecha_vencimiento: fecha_vencimiento
+        fecha_vencimiento: fecha_vencimiento,
+        fecha_ultima_conexion: fecha_ultima_conexion
     });
     res.json({
         msg: 'Usuario: '+ usuario+  ' ha sido actualizado exitosamente',

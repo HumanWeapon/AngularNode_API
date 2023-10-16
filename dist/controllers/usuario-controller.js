@@ -206,7 +206,7 @@ const activateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.activateUsuario = activateUsuario;
 //Actualiza el usuario en la base de datos
 const updateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_usuario, usuario, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_vencimiento } = req.body;
+    const { id_usuario, usuario, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_vencimiento, fecha_ultima_conexion } = req.body;
     const user = yield usuario_models_1.User.findOne({
         where: { id_usuario: id_usuario }
     });
@@ -224,7 +224,8 @@ const updateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         correo_electronico: correo_electronico,
         estado_usuario: estado_usuario,
         id_rol: id_rol,
-        fecha_vencimiento: fecha_vencimiento
+        fecha_vencimiento: fecha_vencimiento,
+        fecha_ultima_conexion: fecha_ultima_conexion
     });
     res.json({
         msg: 'Usuario: ' + usuario + ' ha sido actualizado exitosamente',
