@@ -276,4 +276,6 @@ export const cambiarContrasena = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({ error: 'Error al cambiar tu contraseña'});
     }
+
+    
 }
