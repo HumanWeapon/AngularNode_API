@@ -48,8 +48,11 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             user.intentos_fallidos = 0;
             yield user.save();
         }
+        if (user.fecha_ultima_conexion == null) {
+            return res.json(user.fecha_ultima_conexion);
+        }
         // Validar estado del usuario
-        if (!user.estado_usuario) {
+        if (user.estado_usuario != 1) {
             return res.status(400).json({
                 msg: 'Usuario Inactivo',
             });
@@ -203,16 +206,17 @@ const activateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.activateUsuario = activateUsuario;
 //Actualiza el usuario en la base de datos
 const updateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { usuario, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_vencimiento } = req.body;
+    const { id_usuario, usuario, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_vencimiento, fecha_ultima_conexion } = req.body;
     const user = yield usuario_models_1.User.findOne({
-        where: { usuario: usuario }
+        where: { id_usuario: id_usuario }
     });
     if (!user) {
         return res.status(404).json({
-            msg: "El usuario no existe: " + usuario
+            msg: "El usuario con el ID: " + id_usuario + " no existe"
         });
     }
     yield user.update({
+        id_usuario: id_usuario,
         usuario: usuario,
         modificado_por: modificado_por,
         fecha_modificacion: fecha_modificacion,
@@ -220,7 +224,8 @@ const updateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         correo_electronico: correo_electronico,
         estado_usuario: estado_usuario,
         id_rol: id_rol,
-        fecha_vencimiento: fecha_vencimiento
+        fecha_vencimiento: fecha_vencimiento,
+        fecha_ultima_conexion: fecha_ultima_conexion
     });
     res.json({
         msg: 'Usuario: ' + usuario + ' ha sido actualizado exitosamente',
