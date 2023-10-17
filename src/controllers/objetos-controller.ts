@@ -11,7 +11,7 @@ export const getAllObjetos = async (req: Request, res: Response) => {
 
 }
 
-//Obtiene un objeto de la base de datos
+//Obtiene un objeto de la base de datos     
 export const getObjeto = async (req: Request, res: Response) => {
     const { objeto } = req.body;
 

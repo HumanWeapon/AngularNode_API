@@ -17,7 +17,7 @@ const getAllObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     res.json(_objetos);
 });
 exports.getAllObjetos = getAllObjetos;
-//Obtiene un objeto de la base de datos
+//Obtiene un objeto de la base de datos     
 const getObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { objeto } = req.body;
     const _objeto = yield objetos_models_1.Objetos.findOne({
