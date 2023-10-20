@@ -4,12 +4,12 @@ import { updatePreguntaUsuario, getAllPreguntasUsuario, getPreguntasusuario, pos
 
 const routerPreguntasUsuario = Router()
 
-routerPreguntasUsuario.get('/getAllPreguntasUsuario', getAllPreguntasUsuario);//Inicia sesión en la DB
-routerPreguntasUsuario.post('/getPreguntasusuario', getPreguntasusuario);//Inserta un usuario en la DB
-routerPreguntasUsuario.post('/postPreguntaUsuario', postPreguntaUsuario); // obtiene todos los usuarios
-routerPreguntasUsuario.put('/updatePreguntaUsuario', updatePreguntaUsuario); // Actualiza las preguntas por el usuario seleccionado
-routerPreguntasUsuario.post('/validarRespuestas', validarRespuestas);//Inserta un usuario en la DB
-routerPreguntasUsuario.post('/preguntasRespuestas', preguntasRespuestas);//
+routerPreguntasUsuario.get('/getAllPreguntasUsuario',validarToken, getAllPreguntasUsuario);//Inicia sesión en la DB
+routerPreguntasUsuario.post('/getPreguntasusuario',validarToken, getPreguntasusuario);//Inserta un usuario en la DB
+routerPreguntasUsuario.post('/postPreguntaUsuario',validarToken, postPreguntaUsuario); // obtiene todos los usuarios
+routerPreguntasUsuario.put('/updatePreguntaUsuario',validarToken, updatePreguntaUsuario); // Actualiza las preguntas por el usuario seleccionado
+routerPreguntasUsuario.post('/validarRespuestas',validarToken, validarRespuestas);//Inserta un usuario en la DB
+routerPreguntasUsuario.post('/preguntasRespuestas',validarToken, preguntasRespuestas);//
 
 
 export default routerPreguntasUsuario;
