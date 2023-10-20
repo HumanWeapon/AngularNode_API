@@ -4,10 +4,10 @@ import { deletePermiso, getAllPermisos, getPermiso, postPermiso, updatePermisos 
 
 const routerPermisos = Router()
 
-routerPermisos.get('/getAllPermisos', getAllPermisos);//Muestra todos los Permisos registrados en la base de datos
-routerPermisos.get('/getPermiso', getPermiso);//Muestra un Permiso seleccionado
-routerPermisos.post('/postPermiso', postPermiso); // Inserta Permisos en la base de datos
-routerPermisos.delete('/deletePermiso', deletePermiso); // Elimina Permiso en la base de datos
-routerPermisos.post('/updatePermisos', updatePermisos); // actualiza permiso en la base de datos
+routerPermisos.get('/getAllPermisos',validarToken, getAllPermisos);//Muestra todos los Permisos registrados en la base de datos
+routerPermisos.get('/getPermiso',validarToken, getPermiso);//Muestra un Permiso seleccionado
+routerPermisos.post('/postPermiso',validarToken, postPermiso); // Inserta Permisos en la base de datos
+routerPermisos.delete('/deletePermiso',validarToken, deletePermiso); // Elimina Permiso en la base de datos
+routerPermisos.post('/updatePermisos',validarToken, updatePermisos); // actualiza permiso en la base de datos
 
 export default routerPermisos;
