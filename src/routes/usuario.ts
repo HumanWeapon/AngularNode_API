@@ -14,4 +14,4 @@ routerUser.post('/activateUsuario',validarToken, activateUsuario);//Activa un us
 routerUser.post('/updateUsuario', updateUsuario);//Activa un usuario en la DB
 routerUser.put('/cambiarContrasena',validarToken, cambiarContrasena);//Activa un usuario en la DB
 
-export default routerUser;
+export default routerUser; 
