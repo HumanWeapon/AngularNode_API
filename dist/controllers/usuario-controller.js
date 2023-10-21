@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.deleteUsuario = exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
+exports.usuariosAllRoles = exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.deleteUsuario = exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const usuario_models_1 = require("../models/usuario-models");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const roles_models_1 = require("../models/roles-models");
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario, contrasena, id_usuario, creado_por, fecha_creacion, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_ultima_conexion, primer_ingreso, fecha_vencimiento, intentos_fallidos } = req.body;
     try {
@@ -259,3 +260,22 @@ const cambiarContrasena = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.cambiarContrasena = cambiarContrasena;
+// Realiza una consulta INNER JOIN entre las tablas Usuario y Roles
+const usuariosAllRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const usuario = yield usuario_models_1.User.findAll({
+            include: [
+                {
+                    model: roles_models_1.Roles,
+                    as: 'roles' // Usa el mismo alias que en la definición de la asociación
+                },
+            ],
+        });
+        res.json(usuario);
+    }
+    catch (error) {
+        console.error('Error al obtener preguntas de usuario:', error);
+        res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
+    }
+});
+exports.usuariosAllRoles = usuariosAllRoles;

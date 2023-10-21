@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../db/connection';
+import { Roles } from './roles-models';
 
 export const User: any = dataBase.define('usuario', {
         id_usuario: {
@@ -65,3 +66,7 @@ export const User: any = dataBase.define('usuario', {
     schema: 'mipyme',
     timestamps: false
 })
+User.belongsTo(Roles, {
+    foreignKey: 'id_rol', // Campo en User que hace referencia a Roles
+    as: 'roles' // Alias para la relación
+});

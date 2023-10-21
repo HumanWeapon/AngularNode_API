@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
+const roles_models_1 = require("./roles-models");
 exports.User = connection_1.default.define('usuario', {
     id_usuario: {
         type: sequelize_1.DataTypes.NUMBER,
@@ -68,4 +69,8 @@ exports.User = connection_1.default.define('usuario', {
     tableName: 'tbl_ms_usuario',
     schema: 'mipyme',
     timestamps: false
+});
+exports.User.belongsTo(roles_models_1.Roles, {
+    foreignKey: 'id_rol',
+    as: 'roles' // Alias para la relación
 });
