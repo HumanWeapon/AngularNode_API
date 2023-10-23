@@ -10,7 +10,8 @@ exports.Permisos = connection_1.default.define('permisos', {
     id_permisos: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        allowNull: false
     },
     id_rol: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -21,19 +22,19 @@ exports.Permisos = connection_1.default.define('permisos', {
         allowNull: false
     },
     permiso_insercion: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.BOOLEAN,
         allowNull: false
     },
     permiso_eliminacion: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.BOOLEAN,
         allowNull: false
     },
     permiso_actualizacion: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.BOOLEAN,
         allowNull: false
     },
     permiso_consultar: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.BOOLEAN,
         allowNull: false
     },
     creado_por: {
