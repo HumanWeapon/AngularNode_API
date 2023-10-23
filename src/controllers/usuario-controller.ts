@@ -2,6 +2,7 @@ import {Request, Response} from 'express';
 import bcrypt from 'bcrypt';
 import { User } from '../models/usuario-models';
 import jwt from 'jsonwebtoken';
+import { Roles } from '../models/roles-models';
 
 export const loginUser = async (req: Request, res: Response) => {
 
@@ -282,5 +283,23 @@ export const cambiarContrasena = async (req: Request, res: Response) => {
 
     } catch (error) {
         res.status(500).json({ error: 'Error al cambiar tu contraseña'});
+    }
+}
+// Realiza una consulta INNER JOIN entre las tablas Usuario y Roles
+export const usuariosAllRoles = async (req: Request, res: Response) => {
+    try {
+        const usuario = await User.findAll({
+            include: [
+                {
+                    model: Roles,
+                    as: 'roles' // Usa el mismo alias que en la definición de la asociación
+                },
+            ],
+        });
+        
+        res.json(usuario);
+    } catch (error) {
+        console.error('Error al obtener preguntas de usuario:', error);
+        res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
     }
 }
