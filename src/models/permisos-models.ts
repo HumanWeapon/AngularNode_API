@@ -5,7 +5,8 @@ export const Permisos: any = dataBase.define('permisos', {
     id_permisos: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        allowNull: false
     },
     id_rol: {
         type: DataTypes.INTEGER,
@@ -16,19 +17,19 @@ export const Permisos: any = dataBase.define('permisos', {
         allowNull: false
     },
     permiso_insercion: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: false
     },
     permiso_eliminacion: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: false
     },  
     permiso_actualizacion: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: false
     },  
     permiso_consultar: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: false
     },   
     creado_por: {
