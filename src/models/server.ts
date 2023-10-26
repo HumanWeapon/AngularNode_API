@@ -12,6 +12,7 @@ import routerParametros from '../routes/parametros';
 import routerRoles from '../routes/rol';
 import routerObjetos from '../routes/objetos';
 import routerPermisos from '../routes/permisos';
+import routerPaises from '../routes/negocio/paises';
 
 class Server{
     private app: Application;
@@ -38,7 +39,9 @@ class Server{
         this.app.use('/api/parametros',routerParametros);
         this.app.use('/api/roles',routerRoles);
         this.app.use('/api/objetos',routerObjetos);
-        this.app.use('/api/permisos', routerPermisos)
+        this.app.use('/api/permisos', routerPermisos);
+        this.app.use('/api/paises', routerPaises);
+
     }
     midlewares(){
         this.app.use(express.json());
