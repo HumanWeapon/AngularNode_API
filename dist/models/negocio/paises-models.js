@@ -3,38 +3,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Permisos = void 0;
+exports.Paises = void 0;
 const sequelize_1 = require("sequelize");
-const connection_1 = __importDefault(require("../db/connection"));
-exports.Permisos = connection_1.default.define('permisos', {
-    id_permisos: {
+const connection_1 = __importDefault(require("../../db/connection"));
+exports.Paises = connection_1.default.define('paises', {
+    id_pais: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+    },
+    pais: {
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
-    id_rol: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false
-    },
-    id_objeto: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false
-    },
-    permiso_insercion: {
-        type: sequelize_1.DataTypes.BOOLEAN,
-        allowNull: false
-    },
-    permiso_eliminacion: {
-        type: sequelize_1.DataTypes.BOOLEAN,
-        allowNull: false
-    },
-    permiso_actualizacion: {
-        type: sequelize_1.DataTypes.BOOLEAN,
-        allowNull: false
-    },
-    permiso_consultar: {
-        type: sequelize_1.DataTypes.BOOLEAN,
+    descripcion: {
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
     creado_por: {
@@ -52,9 +35,13 @@ exports.Permisos = connection_1.default.define('permisos', {
     fecha_modificacion: {
         type: sequelize_1.DataTypes.DATE,
         allowNull: false
+    },
+    estado: {
+        type: sequelize_1.DataTypes.NUMBER,
+        allowNull: false
     }
 }, {
-    tableName: 'tbl_ms_permisos',
+    tableName: 'tbl_me_paises',
     schema: 'mipyme',
     timestamps: false
 });

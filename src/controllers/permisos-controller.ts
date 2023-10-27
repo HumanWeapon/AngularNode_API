@@ -1,6 +1,8 @@
 import {Request, Response} from 'express';
 import { Permisos } from '../models/permisos-models';
-import jwt from 'jsonwebtoken';
+import { Roles } from '../models/roles-models';
+import { Objetos } from '../models/objetos-models';
+
 
 //Obtiene todos los permisos de la base de datos
 export const getAllPermisos = async (req: Request, res: Response) => {
@@ -27,7 +29,74 @@ export const getPermiso = async (req: Request, res: Response) => {
     }
 }
 
-//Inserta un permiso en la base de datos
+//Inserta un nuevo permiso 
+export const postPermiso = async (req: Request, res: Response) => {
+    const {
+        id_permisos,
+        id_rol,
+        id_objeto,
+        permiso_insercion,
+        permiso_eliminacion,
+        permiso_actualizacion,
+        permiso_consultar,
+        creado_por,
+        fecha_creacion,
+        modificado_por,
+        fecha_modificacion
+    } = req.body;
+
+    try {
+        // Verifica si el permiso ya existe
+        const existingPermiso = await Permisos.findOne({
+            where: {
+                id_permisos: id_permisos,
+        
+            }
+        });
+
+        if (existingPermiso) {
+            return res.status(400).json({
+                msg: 'El permiso ya está registrado en la base de datos.'
+            });
+        } else {
+            // Verifica si el rol y el objeto existen en las tablas relacionadas
+            const existingRol = await Roles.findByPk(id_rol);
+            const existingObjeto = await Objetos.findByPk(id_objeto);
+
+            if (!existingRol || !existingObjeto) {
+                return res.status(400).json({
+                    msg: 'El rol u objeto especificados no existen en la base de datos.'
+                });
+            }
+
+            // Crea el nuevo permiso
+            const newPermiso = await Permisos.create({                               
+                id_rol: id_rol,
+                id_objeto: id_objeto,
+                permiso_insercion: permiso_insercion,
+                permiso_eliminacion: permiso_eliminacion,
+                permiso_actualizacion: permiso_actualizacion,
+                permiso_consultar: permiso_consultar,
+                creado_por: creado_por,
+                fecha_creacion: fecha_creacion,
+                modificado_por: modificado_por,
+                fecha_modificacion: fecha_modificacion
+            });
+
+            return res.json({
+                msg: 'El permiso ha sido creado exitosamente.',
+                newPermiso
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Ha ocurrido un error interno, contacta al administrador.',
+            error
+        });
+    }
+};
+
+/*Inserta un permiso en la base de datos
 export const postPermiso = async (req: Request, res: Response) => {
 
     const { id_rol, id_objeto, permiso_insercion, permiso_eliminacion, permiso_actualizacion, permiso_consultar, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
@@ -64,13 +133,13 @@ export const postPermiso = async (req: Request, res: Response) => {
             msg: 'Contactate con el administrador',
             error
         }); 
-    }
+    }*/
     /*// Generamos token
     const token = jwt.sign({
         usuario: usuario
     }, process.env.SECRET_KEY || 'Lamers005*');
     res.json(token);*/
-}
+//}
 
 //Elimina un permiso de la base de datos
 export const deletePermiso = async (req: Request, res: Response) => {
