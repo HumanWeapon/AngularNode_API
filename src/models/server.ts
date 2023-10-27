@@ -13,7 +13,7 @@ import routerRoles from '../routes/rol';
 import routerObjetos from '../routes/objetos';
 import routerPermisos from '../routes/permisos';
 import routerPaises from '../routes/negocio/paises';
-import routestipoTelefono from '../routes/negocio/tipotelefono';
+import routertipoTelefono from '../routes/negocio/tipotelefono';
 
 class Server{
     private app: Application;
@@ -42,11 +42,13 @@ class Server{
         this.app.use('/api/objetos',routerObjetos);
         this.app.use('/api/permisos', routerPermisos);
         this.app.use('/api/paises', routerPaises);
-        this.app.use('/api/tipoTelefono', routestipoTelefono);
+        this.app.use('/api/tipoTelefono', routertipoTelefono);
 
 
     }
     midlewares(){
+
+        this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.json());
 
         //Cors
