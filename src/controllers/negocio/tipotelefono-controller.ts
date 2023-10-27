@@ -10,27 +10,20 @@ export const getAllTelefonos = async (req: Request, res: Response) => {
 
 // Obtiene un teléfono de la base de datos por su ID
 export const getTelefono = async (req: Request, res: Response) => {
-    const { id_tipo_telefono } = req.params; // Obtén el ID desde los parámetros de la URL
+    const { id_tipo_telefono } = req.body;
 
-    try {
-        const tipotelefono = await tipoTelefono.findOne({
-            where: { id_tipo_telefono: id_tipo_telefono }
-        });
-
-        if (tipotelefono) {
-            res.json(tipotelefono); // Devuelve el teléfono encontrado
-        } else {
-            res.status(404).json({
-                msg: 'No se encontró un teléfono con el ID ' + id_tipo_telefono,
-            });
-        }
-    } catch (error) {
-        console.error('Error al obtener el teléfono:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al obtener el teléfono',
-        });
+    const _telefono = await tipoTelefono.findOne({
+        where: {id_tipo_telefono: id_tipo_telefono}
+    });
+    if(_telefono){
+        res.json(_telefono)
     }
-};
+    else{
+        res.status(404).json({
+            msg: `el ID de la pregunta no existe: ${id_tipo_telefono}`
+        })
+    }
+}
 
 
 // Inserta un objeto en la base de datos
