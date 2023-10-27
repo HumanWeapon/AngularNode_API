@@ -58,6 +58,10 @@ export const User: any = dataBase.define('usuario', {
         intentos_fallidos: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        rol: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     }, 
     {

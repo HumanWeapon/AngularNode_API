@@ -129,7 +129,8 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 id_rol: id_rol,
                 fecha_ultima_conexion: null,
                 fecha_vencimiento: fecha_vencimiento,
-                intentos_fallidos: intentos_fallidos
+                intentos_fallidos: intentos_fallidos,
+                rol: rol
             });
             res.json({
                 msg: 'Usuario: ' + usuario + ' creado exitosamente',

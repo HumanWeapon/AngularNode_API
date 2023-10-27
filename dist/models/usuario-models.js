@@ -63,6 +63,10 @@ exports.User = connection_1.default.define('usuario', {
     intentos_fallidos: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
+    },
+    rol: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     }
 }, {
     tableName: 'tbl_ms_usuario',
