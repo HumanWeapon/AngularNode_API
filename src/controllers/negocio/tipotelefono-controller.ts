@@ -9,7 +9,7 @@ export const getAllTelefonos = async (req: Request, res: Response) => {
 }
 
 //Obtiene todos un telefono de la base de datos
-export const getOneTelefono = async (req: Request, res: Response) => {
+export const getTelefono = async (req: Request, res: Response) => {
     const { tipotelefono } = req.body;
     const tipotelefonos = await tipoTelefono.findOne({where: {tipotelefono: tipotelefono}});
     res.json(tipotelefonos)
