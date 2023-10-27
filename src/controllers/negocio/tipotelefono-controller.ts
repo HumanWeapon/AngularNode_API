@@ -35,43 +35,40 @@ export const getTelefono = async (req: Request, res: Response) => {
 
 // Inserta un objeto en la base de datos
 export const postTelefono = async (req: Request, res: Response) => {
-    const { tipo_telefono, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
-    try {
-        const existingTelefono = await tipoTelefono.findOne({ where: { tipo_telefono: tipo_telefono } });
+    const {tipo_telefono, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
-        if (existingTelefono) {
+    try{
+        const _telefono = await tipoTelefono.findOne({
+            where: {tipotelefono: tipo_telefono}
+        })
+    
+        if (_telefono){
             return res.status(400).json({
-                msg: 'El Teléfono ya está registrado en la base de datos: ' + tipo_telefono,
-            });
-        } else {
-            const newTelefono = await tipoTelefono.create({
+                msg: 'Objeto ya registrado en la base de datos: '+ tipo_telefono
+            })
+        }else{
+            await tipoTelefono.create({
                 tipo_telefono: tipo_telefono,
-                descripcion: descripcion,
+                descripcion: descripcion, 
                 creado_por: creado_por,
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
                 fecha_modificacion: fecha_modificacion,
-                estado: estado,
-            });
-
-            if (newTelefono) {
-                res.status(201).json({
-                    msg: 'El Teléfono: ' + tipo_telefono + ' ha sido creado exitosamente',
-                });
-            } else {
-                res.status(500).json({
-                    msg: 'No se pudo insertar el Teléfono en la base de datos',
-                });
-            }
+                estado: estado
+            })
+            res.json({
+                msg: 'El Objeto: '+ tipo_telefono+  ' ha sido creada exitosamente',
+            })
         }
-    } catch (error) {
-        console.error('Error al insertar el Teléfono:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al insertar el Teléfono en la base de datos',
-        });
     }
-};
+    catch (error){
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        }); 
+    }
+}
 
 
 
