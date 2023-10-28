@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
-import { tipoEmpresa,} from './tipo_empresa-models'
+import { tipoEmpresa} from './tipo_empresa-models'
 
 export const Pyme: any = dataBase.define('pyme', {
     id_pyme: {
@@ -10,8 +10,6 @@ export const Pyme: any = dataBase.define('pyme', {
       },
       id_tipo_empresa: {
         type: DataTypes.INTEGER,
-        primaryKey:false,
-        autoIncrement: true,
       },
     nombre_pyme: {
         type: DataTypes.STRING,
