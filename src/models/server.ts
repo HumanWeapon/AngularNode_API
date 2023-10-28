@@ -13,6 +13,11 @@ import routerRoles from '../routes/rol';
 import routerObjetos from '../routes/objetos';
 import routerPermisos from '../routes/permisos';
 import routerPaises from '../routes/negocio/paises';
+import routerCiudades from '../routes/negocio/ciudades';
+import routerTipoDireccion from '../routes/negocio/tipoDireccion';
+import routerTipoContacto from '../routes/negocio/tipoContacto';
+import routerContacto from '../routes/negocio/contacto';
+import routerContactoTelefono from '../routes/negocio/contactoTelefono';
 
 class Server{
     private app: Application;
@@ -41,6 +46,11 @@ class Server{
         this.app.use('/api/objetos',routerObjetos);
         this.app.use('/api/permisos', routerPermisos);
         this.app.use('/api/paises', routerPaises);
+        this.app.use('/api/ciudades', routerCiudades);   //FM
+        this.app.use('/api/tipoDireccion', routerTipoDireccion); //FM
+        this.app.use('/api/tipoContacto', routerTipoContacto); //FM
+        this.app.use('/api/contacto', routerContacto); //FM
+        this.app.use('/api/contactoTelefono', routerContactoTelefono); //FM
 
     }
     midlewares(){

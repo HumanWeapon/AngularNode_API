@@ -25,6 +25,11 @@ const rol_1 = __importDefault(require("../routes/rol"));
 const objetos_1 = __importDefault(require("../routes/objetos"));
 const permisos_1 = __importDefault(require("../routes/permisos"));
 const paises_1 = __importDefault(require("../routes/negocio/paises"));
+const ciudades_1 = __importDefault(require("../routes/negocio/ciudades"));
+const tipoDireccion_1 = __importDefault(require("../routes/negocio/tipoDireccion"));
+const tipoContacto_1 = __importDefault(require("../routes/negocio/tipoContacto"));
+const contacto_1 = __importDefault(require("../routes/negocio/contacto"));
+const contactoTelefono_1 = __importDefault(require("../routes/negocio/contactoTelefono"));
 class Server {
     constructor() {
         console.log('Estoy en el constructor');
@@ -49,6 +54,11 @@ class Server {
         this.app.use('/api/objetos', objetos_1.default);
         this.app.use('/api/permisos', permisos_1.default);
         this.app.use('/api/paises', paises_1.default);
+        this.app.use('/api/ciudades', ciudades_1.default); //FM
+        this.app.use('/api/tipoDireccion', tipoDireccion_1.default); //FM
+        this.app.use('/api/tipoContacto', tipoContacto_1.default); //FM
+        this.app.use('/api/contacto', contacto_1.default); //FM
+        this.app.use('/api/contactoTelefono', contactoTelefono_1.default); //FM
     }
     midlewares() {
         this.app.use(express_1.default.json());
