@@ -13,11 +13,16 @@ import routerRoles from '../routes/rol';
 import routerObjetos from '../routes/objetos';
 import routerPermisos from '../routes/permisos';
 import routerPaises from '../routes/negocio/paises';
+<<<<<<< HEAD
 import routerCiudades from '../routes/negocio/ciudades';
 import routerTipoDireccion from '../routes/negocio/tipoDireccion';
 import routerTipoContacto from '../routes/negocio/tipoContacto';
 import routerContacto from '../routes/negocio/contacto';
 import routerContactoTelefono from '../routes/negocio/contactoTelefono';
+=======
+import routertipoTelefono from '../routes/negocio/tipotelefono';
+import routerPyme from '../routes/negocio/pyme';
+>>>>>>> db56904b19ff934b333d743d07af12ae5e39d7b4
 
 class Server{
     private app: Application;
@@ -46,14 +51,21 @@ class Server{
         this.app.use('/api/objetos',routerObjetos);
         this.app.use('/api/permisos', routerPermisos);
         this.app.use('/api/paises', routerPaises);
+<<<<<<< HEAD
         this.app.use('/api/ciudades', routerCiudades);   //FM
         this.app.use('/api/tipoDireccion', routerTipoDireccion); //FM
         this.app.use('/api/tipoContacto', routerTipoContacto); //FM
         this.app.use('/api/contacto', routerContacto); //FM
         this.app.use('/api/contactoTelefono', routerContactoTelefono); //FM
+=======
+        this.app.use('/api/tipotelefono', routertipoTelefono);
+        this.app.use('/api/pyme', routerPyme);
+>>>>>>> db56904b19ff934b333d743d07af12ae5e39d7b4
 
     }
     midlewares(){
+
+        this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.json());
 
         //Cors
