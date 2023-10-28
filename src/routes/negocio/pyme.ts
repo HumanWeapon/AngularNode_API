@@ -9,5 +9,4 @@ routerPyme.get('/getAllPymes',validarToken , getAllPymes); // obtiene todos los 
 routerPyme.post('/getPyme', getPyme); // obtiene el usuario especificado
 
 
-
 export default routerPyme; 

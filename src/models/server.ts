@@ -46,7 +46,6 @@ class Server{
         this.app.use('/api/tipotelefono', routertipoTelefono);
         this.app.use('/api/pyme', routesPyme);
 
-
     }
     midlewares(){
 
