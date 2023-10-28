@@ -51,7 +51,7 @@ export const postTelefono = async (req: Request, res: Response) => {
                 estado: estado
             })
             res.json({
-                msg: 'El Objeto: '+ tipo_telefono+  ' ha sido creada exitosamente',
+                msg: 'El Telefono: '+ tipo_telefono+  ' ha sido creada exitosamente',
             })
         }
     }

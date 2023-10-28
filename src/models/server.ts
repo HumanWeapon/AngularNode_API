@@ -42,7 +42,7 @@ class Server{
         this.app.use('/api/objetos',routerObjetos);
         this.app.use('/api/permisos', routerPermisos);
         this.app.use('/api/paises', routerPaises);
-        this.app.use('/api/tipoTelefono', routertipoTelefono);
+        this.app.use('/api/tipotelefono', routertipoTelefono);
 
 
     }
