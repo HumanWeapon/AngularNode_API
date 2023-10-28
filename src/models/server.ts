@@ -14,7 +14,7 @@ import routerObjetos from '../routes/objetos';
 import routerPermisos from '../routes/permisos';
 import routerPaises from '../routes/negocio/paises';
 import routertipoTelefono from '../routes/negocio/tipotelefono';
-import routesPyme from '../routes/negocio/pyme';
+import routerPyme from '../routes/negocio/pyme';
 
 class Server{
     private app: Application;
@@ -44,7 +44,7 @@ class Server{
         this.app.use('/api/permisos', routerPermisos);
         this.app.use('/api/paises', routerPaises);
         this.app.use('/api/tipotelefono', routertipoTelefono);
-        this.app.use('/api/pyme', routesPyme);
+        this.app.use('/api/pyme', routerPyme);
 
     }
     midlewares(){

@@ -26,6 +26,7 @@ const objetos_1 = __importDefault(require("../routes/objetos"));
 const permisos_1 = __importDefault(require("../routes/permisos"));
 const paises_1 = __importDefault(require("../routes/negocio/paises"));
 const tipotelefono_1 = __importDefault(require("../routes/negocio/tipotelefono"));
+const pyme_1 = __importDefault(require("../routes/negocio/pyme"));
 class Server {
     constructor() {
         console.log('Estoy en el constructor');
@@ -51,8 +52,10 @@ class Server {
         this.app.use('/api/permisos', permisos_1.default);
         this.app.use('/api/paises', paises_1.default);
         this.app.use('/api/tipotelefono', tipotelefono_1.default);
+        this.app.use('/api/pyme', pyme_1.default);
     }
     midlewares() {
+        this.app.use(express_1.default.urlencoded({ extended: true }));
         this.app.use(express_1.default.json());
         //Cors
         this.app.use((0, cors_1.default)());
