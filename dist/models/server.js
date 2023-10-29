@@ -50,9 +50,10 @@ class Server {
         this.app.use('/api/objetos', objetos_1.default);
         this.app.use('/api/permisos', permisos_1.default);
         this.app.use('/api/paises', paises_1.default);
-        this.app.use('/api/tipotelefono', tipotelefono_1.default);
+        this.app.use('/api/tipoTelefono', tipotelefono_1.default);
     }
     midlewares() {
+        this.app.use(express_1.default.urlencoded({ extended: true }));
         this.app.use(express_1.default.json());
         //Cors
         this.app.use((0, cors_1.default)());
