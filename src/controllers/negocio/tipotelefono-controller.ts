@@ -33,14 +33,9 @@ export const postTelefono = async (req: Request, res: Response) => {
 
     try{
         const _telefono = await tipoTelefono.findOne({
-            where: {tipotelefono: tipo_telefono}
+            where: {tipo_telefono: tipo_telefono}
         })
     
-        if (_telefono){
-            return res.status(400).json({
-                msg: 'Objeto ya registrado en la base de datos: '+ tipo_telefono
-            })
-        }else{
             await tipoTelefono.create({
                 tipo_telefono: tipo_telefono,
                 descripcion: descripcion, 
@@ -53,7 +48,7 @@ export const postTelefono = async (req: Request, res: Response) => {
             res.json({
                 msg: 'El Telefono: '+ tipo_telefono+  ' ha sido creada exitosamente',
             })
-        }
+        
     }
     catch (error){
         res.status(400).json({

@@ -38,27 +38,20 @@ const postTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const { tipo_telefono, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _telefono = yield tipo_telefono_models_1.tipoTelefono.findOne({
-            where: { tipotelefono: tipo_telefono }
+            where: { tipo_telefono: tipo_telefono }
         });
-        if (_telefono) {
-            return res.status(400).json({
-                msg: 'Objeto ya registrado en la base de datos: ' + tipo_telefono
-            });
-        }
-        else {
-            yield tipo_telefono_models_1.tipoTelefono.create({
-                tipo_telefono: tipo_telefono,
-                descripcion: descripcion,
-                creado_por: creado_por,
-                fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
-                fecha_modificacion: fecha_modificacion,
-                estado: estado
-            });
-            res.json({
-                msg: 'El Telefono: ' + tipo_telefono + ' ha sido creada exitosamente',
-            });
-        }
+        yield tipo_telefono_models_1.tipoTelefono.create({
+            tipo_telefono: tipo_telefono,
+            descripcion: descripcion,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
+        });
+        res.json({
+            msg: 'El Telefono: ' + tipo_telefono + ' ha sido creada exitosamente',
+        });
     }
     catch (error) {
         res.status(400).json({
