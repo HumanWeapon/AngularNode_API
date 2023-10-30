@@ -98,18 +98,29 @@ export const deleteCategoria = async (req: Request, res: Response) => {
 
 //actualiza la categoria en la base de datos
 export const updateCategoria = async (req: Request, res: Response) => {
-    const { id_categoria, categoria, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { 
+        id_categoria,
+        categoria,
+        descripcion,
+        creado_por,
+        fecha_creacion,
+        modificado_por,
+        fecha_modificacion,
+        estado
+      
+     } = req.body;
 
-    const _categoria = await categoria.findOne({
+    const catego = await Categorias.findOne({
         where: {id_categoria: id_categoria}
+        
     });
-    if(!_categoria){
+    if(!catego){
         return res.status(404).json({
-            msg: 'Categoria con el ID: '+ id_categoria +' no existe en la base de datos'
+            msg: "La categoria con el ID: "+id_categoria+ " no existe"
         });
     }
 
-    await _categoria.update({
+    await catego.update({
         id_categoria: id_categoria,
         categoria: categoria,
         descripcion: descripcion, 
@@ -118,8 +129,9 @@ export const updateCategoria = async (req: Request, res: Response) => {
         modificado_por: modificado_por,
         fecha_modificacion: fecha_modificacion,
         estado: estado
+        
     });
     res.json({
-        msg: 'La categoria con el ID: '+ id_categoria+  ' ha sido actualizado exitosamente',
+        msg: 'Categoria: '+ catego+  ' ha sido actualizado exitosamente',
     });
 }

@@ -1,17 +1,21 @@
-//Elaborado Por Breydy Flores
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
 
-export const Categorias: any = dataBase.define('categoria', {
+export const Productos: any = dataBase.define('productos', {
+    id_producto: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     id_categoria: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
-      },
-    categoria: {
+    },
+    producto: {
         type: DataTypes.STRING,
         allowNull: false
     },
+
     descripcion: {
         type: DataTypes.STRING,
         allowNull: false
@@ -33,16 +37,12 @@ export const Categorias: any = dataBase.define('categoria', {
         allowNull: false
     },
     estado: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     }
     }, 
     {
-    tableName: 'tbl_me_categoria_productos',
+    tableName: 'tbl_me_productos',
     schema: 'mipyme',
     timestamps: false
-
 })
-
-
-

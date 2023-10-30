@@ -98,15 +98,15 @@ exports.deleteCategoria = deleteCategoria;
 //actualiza la categoria en la base de datos
 const updateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_categoria, categoria, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const _categoria = yield categoria.findOne({
+    const catego = yield categoria_models_1.Categorias.findOne({
         where: { id_categoria: id_categoria }
     });
-    if (!_categoria) {
+    if (!catego) {
         return res.status(404).json({
-            msg: 'Categoria con el ID: ' + id_categoria + ' no existe en la base de datos'
+            msg: "La categoria con el ID: " + id_categoria + " no existe"
         });
     }
-    yield _categoria.update({
+    yield catego.update({
         id_categoria: id_categoria,
         categoria: categoria,
         descripcion: descripcion,
@@ -117,7 +117,7 @@ const updateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function
         estado: estado
     });
     res.json({
-        msg: 'La categoria con el ID: ' + id_categoria + ' ha sido actualizado exitosamente',
+        msg: 'Categoria: ' + catego + ' ha sido actualizado exitosamente',
     });
 });
 exports.updateCategoria = updateCategoria;
