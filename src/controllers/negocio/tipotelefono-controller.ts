@@ -62,7 +62,7 @@ export const postTelefono = async (req: Request, res: Response) => {
 
 // Elimina un teléfono de la base de datos
 export const deleteTelefono = async (req: Request, res: Response) => {
-    const { id_tipo_telefono } = req.params; // Obtén el ID desde los parámetros de la URL
+    const { id_tipo_telefono } = req.body; // Obtén el ID desde los parámetros de la URL
 
     try {
         const _telefono = await tipoTelefono.findOne({

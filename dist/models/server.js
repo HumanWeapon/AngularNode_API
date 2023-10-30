@@ -56,6 +56,7 @@ class Server {
         this.app.use('/api/roles', rol_1.default);
         this.app.use('/api/objetos', objetos_1.default);
         this.app.use('/api/permisos', permisos_1.default);
+        this.app.use('/api/bitacora', routerBitacora);
         this.app.use('/api/paises', paises_1.default);
         this.app.use('/api/ciudades', ciudades_1.default); //FM
         this.app.use('/api/tipoDireccion', tipoDireccion_1.default); //FM

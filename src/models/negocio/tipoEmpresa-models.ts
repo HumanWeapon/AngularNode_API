@@ -1,14 +1,13 @@
-//Elaborado Por Breydy Flores
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
 
-export const Categorias: any = dataBase.define('categoria', {
-    id_categoria: {
+export const TipoEmpresa: any = dataBase.define('tipoEmpresa', {
+    id_tipo_empresa: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
-      },
-    categoria: {
+        autoIncrement: true
+    },
+    tipo_empresa: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -38,11 +37,7 @@ export const Categorias: any = dataBase.define('categoria', {
     }
     }, 
     {
-    tableName: 'tbl_me_categoria_productos',
+    tableName: 'tbl_me_tipo_empresa',
     schema: 'mipyme',
     timestamps: false
-
 })
-
-
-

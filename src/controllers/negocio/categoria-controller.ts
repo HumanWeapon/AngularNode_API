@@ -135,4 +135,3 @@ export const updateCategoria = async (req: Request, res: Response) => {
         msg: 'Categoria: '+ catego+  ' ha sido actualizado exitosamente',
     });
 }
-
