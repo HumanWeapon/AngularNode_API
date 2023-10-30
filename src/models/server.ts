@@ -23,6 +23,7 @@ import routerPyme from '../routes/negocio/pyme';
 import routerBitacora from '../routes/Bitacora';
 import routerTipoEmpresa from '../routes/negocio/tipoEmpresa';
 import routerCategoria from '../routes/negocio/categoria';
+import routerTipo_Requisito from '../routes/negocio/Tipo_Requisito';
 
 class Server{
     private app: Application;
@@ -61,6 +62,7 @@ class Server{
         this.app.use('/api/pyme', routerPyme);
         this.app.use('/api/tipoEmpresa',routerTipoEmpresa);
         this.app.use('/api/categoria', routerCategoria);
+        this.app.use('/api/Tipo_Requisito', routerTipo_Requisito);
 
     }
     midlewares(){
