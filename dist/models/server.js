@@ -33,6 +33,7 @@ const contactoTelefono_1 = __importDefault(require("../routes/negocio/contactoTe
 const tipotelefono_1 = __importDefault(require("../routes/negocio/tipotelefono"));
 const pyme_1 = __importDefault(require("../routes/negocio/pyme"));
 const Bitacora_1 = __importDefault(require("../routes/Bitacora"));
+const categoria_1 = __importDefault(require("../routes/negocio/categoria"));
 class Server {
     constructor() {
         console.log('Estoy en el constructor');
@@ -65,6 +66,7 @@ class Server {
         this.app.use('/api/contactoTelefono', contactoTelefono_1.default); //FM
         this.app.use('/api/tipotelefono', tipotelefono_1.default);
         this.app.use('/api/pyme', pyme_1.default);
+        this.app.use('/api/categoria', categoria_1.default);
     }
     midlewares() {
         this.app.use(express_1.default.urlencoded({ extended: true }));
