@@ -60,10 +60,10 @@ export const User: any = dataBase.define('usuario', {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        rol: {
+        /*rol: {
             type: DataTypes.STRING,
             allowNull: false
-        }
+        }*/
     }, 
     {
     tableName: 'tbl_ms_usuario',
