@@ -10,4 +10,4 @@ routerTipoEmpresa.post('/postTipoEmpresa',validarToken, postTipoEmpresa); // Ins
 routerTipoEmpresa.delete('/deleteTipoEmpresa',validarToken, deleteTipoEmpresa); //Elimina una dirección en la base de datos
 routerTipoEmpresa.post('/updateTipoEmpresa',validarToken, updateTipoEmpresa); // actualiza una dirección en la base de datos
 
-export default routerTipoEmpresa;
+export default routerTipoEmpresa; 
