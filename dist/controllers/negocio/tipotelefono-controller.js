@@ -63,7 +63,7 @@ const postTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.postTelefono = postTelefono;
 // Elimina un teléfono de la base de datos
 const deleteTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_tipo_telefono } = req.params; // Obtén el ID desde los parámetros de la URL
+    const { id_tipo_telefono } = req.body; // Obtén el ID desde los parámetros de la URL
     try {
         const _telefono = yield tipo_telefono_models_1.tipoTelefono.findOne({
             where: { id_tipo_telefono: id_tipo_telefono }
