@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePyme = exports.deletePyme = exports.postPyme = exports.getPyme = exports.getAllPymes = void 0;
+exports.activatePyme = exports.inactivatePyme = exports.updatePyme = exports.deletePyme = exports.postPyme = exports.getPyme = exports.getAllPymes = void 0;
 const pyme_models_1 = require("../../models/negocio/pyme-models");
 //Obtiene todas las Pymes
 const getAllPymes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -118,3 +118,41 @@ const updatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     });
 });
 exports.updatePyme = updatePyme;
+//Inactiva el usuario de la DBA
+const inactivatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { nombre_pyme } = req.body;
+    const pyme = yield pyme_models_1.Pyme.findOne({
+        where: { nombre_pyme: nombre_pyme }
+    });
+    if (!pyme) {
+        return res.status(404).json({
+            msg: "La Pyme no existe: " + nombre_pyme
+        });
+    }
+    yield pyme.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Pyme: ' + nombre_pyme + ' inactivado exitosamente',
+    });
+});
+exports.inactivatePyme = inactivatePyme;
+//Activa el usuario de la DBA
+const activatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { nombre_pyme } = req.body;
+    const pyme = yield pyme_models_1.Pyme.findOne({
+        where: { nombre_pyme: nombre_pyme }
+    });
+    if (!pyme) {
+        return res.status(404).json({
+            msg: "La Pyme no existe: " + nombre_pyme
+        });
+    }
+    yield pyme.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Pyme: ' + nombre_pyme + ' ha sido activado exitosamente',
+    });
+});
+exports.activatePyme = activatePyme;

@@ -20,9 +20,10 @@ import routerContacto from '../routes/negocio/contacto';
 import routerContactoTelefono from '../routes/negocio/contactoTelefono';
 import routertipoTelefono from '../routes/negocio/tipotelefono';
 import routerPyme from '../routes/negocio/pyme';
-import routerCategoria from '../routes/negocio/categoria';
 import routerBitacora from '../routes/Bitacora';
 import routerTipoEmpresa from '../routes/negocio/tipoEmpresa';
+import routerCategoria from '../routes/negocio/categoria';
+import routerTipo_Requisito from '../routes/negocio/Tipo_Requisito';
 import routerProductos from '../routes/negocio/productos';
 
 class Server{
@@ -63,8 +64,8 @@ class Server{
         this.app.use('/api/categoria',routerCategoria);//BF
         this.app.use('/api/tipoEmpresa',routerTipoEmpresa);
         this.app.use('/api/categoria', routerCategoria);
+        this.app.use('/api/Tipo_Requisito', routerTipo_Requisito);
         this.app.use('/api/productos', routerProductos);
-
     }
     midlewares(){
 
