@@ -20,14 +20,10 @@ import routerContacto from '../routes/negocio/contacto';
 import routerContactoTelefono from '../routes/negocio/contactoTelefono';
 import routertipoTelefono from '../routes/negocio/tipotelefono';
 import routerPyme from '../routes/negocio/pyme';
-<<<<<<< HEAD
-import routerCategoria from '../routes/negocio/categoria';
-=======
 import routerBitacora from '../routes/Bitacora';
 import routerTipoEmpresa from '../routes/negocio/tipoEmpresa';
 import routerCategoria from '../routes/negocio/categoria';
 import routerProductos from '../routes/negocio/productos';
->>>>>>> 3809dc7db43aa80e10d7016549b8315f50b2583e
 
 class Server{
     private app: Application;
@@ -64,13 +60,9 @@ class Server{
         this.app.use('/api/contactoTelefono', routerContactoTelefono); //FM
         this.app.use('/api/tipotelefono', routertipoTelefono);
         this.app.use('/api/pyme', routerPyme);
-<<<<<<< HEAD
-        this.app.use('/api/categoria',routerCategoria);//BF
-=======
         this.app.use('/api/tipoEmpresa',routerTipoEmpresa);
         this.app.use('/api/categoria', routerCategoria);
         this.app.use('/api/productos', routerProductos);
->>>>>>> 3809dc7db43aa80e10d7016549b8315f50b2583e
 
     }
     midlewares(){
