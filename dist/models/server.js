@@ -32,7 +32,6 @@ const contacto_1 = __importDefault(require("../routes/negocio/contacto"));
 const contactoTelefono_1 = __importDefault(require("../routes/negocio/contactoTelefono"));
 const tipotelefono_1 = __importDefault(require("../routes/negocio/tipotelefono"));
 const pyme_1 = __importDefault(require("../routes/negocio/pyme"));
-const tipoEmpresa_1 = __importDefault(require("../routes/negocio/tipoEmpresa"));
 const categoria_1 = __importDefault(require("../routes/negocio/categoria"));
 class Server {
     constructor() {
@@ -57,6 +56,7 @@ class Server {
         this.app.use('/api/roles', rol_1.default);
         this.app.use('/api/objetos', objetos_1.default);
         this.app.use('/api/permisos', permisos_1.default);
+        this.app.use('/api/bitacora', routerBitacora);
         this.app.use('/api/paises', paises_1.default);
         this.app.use('/api/ciudades', ciudades_1.default); //FM
         this.app.use('/api/tipoDireccion', tipoDireccion_1.default); //FM
@@ -65,8 +65,7 @@ class Server {
         this.app.use('/api/contactoTelefono', contactoTelefono_1.default); //FM
         this.app.use('/api/tipotelefono', tipotelefono_1.default);
         this.app.use('/api/pyme', pyme_1.default);
-        this.app.use('/api/tipoEmpresa', tipoEmpresa_1.default);
-        this.app.use('/api/categoria', categoria_1.default);
+        this.app.use('/api/categoria', categoria_1.default); //BF
     }
     midlewares() {
         this.app.use(express_1.default.urlencoded({ extended: true }));
