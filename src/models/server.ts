@@ -20,6 +20,7 @@ import routerContacto from '../routes/negocio/contacto';
 import routerContactoTelefono from '../routes/negocio/contactoTelefono';
 import routertipoTelefono from '../routes/negocio/tipotelefono';
 import routerPyme from '../routes/negocio/pyme';
+import routerTipoEmpresa from '../routes/negocio/tipoEmpresa';
 import routerCategoria from '../routes/negocio/categoria';
 
 class Server{
@@ -56,6 +57,7 @@ class Server{
         this.app.use('/api/contactoTelefono', routerContactoTelefono); //FM
         this.app.use('/api/tipotelefono', routertipoTelefono);
         this.app.use('/api/pyme', routerPyme);
+        this.app.use('/api/tipoEmpresa',routerTipoEmpresa);
         this.app.use('/api/categoria', routerCategoria);
 
     }
