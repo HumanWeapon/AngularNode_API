@@ -20,6 +20,7 @@ import routerContacto from '../routes/negocio/contacto';
 import routerContactoTelefono from '../routes/negocio/contactoTelefono';
 import routertipoTelefono from '../routes/negocio/tipotelefono';
 import routerPyme from '../routes/negocio/pyme';
+import routerBitacora from '../routes/Bitacora';
 
 class Server{
     private app: Application;
@@ -47,6 +48,7 @@ class Server{
         this.app.use('/api/roles',routerRoles);
         this.app.use('/api/objetos',routerObjetos);
         this.app.use('/api/permisos', routerPermisos);
+        this.app.use('/api/bitacora', routerBitacora);
         this.app.use('/api/paises', routerPaises);
         this.app.use('/api/ciudades', routerCiudades);   //FM
         this.app.use('/api/tipoDireccion', routerTipoDireccion); //FM
