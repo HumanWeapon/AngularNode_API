@@ -20,6 +20,7 @@ import routerContacto from '../routes/negocio/contacto';
 import routerContactoTelefono from '../routes/negocio/contactoTelefono';
 import routertipoTelefono from '../routes/negocio/tipotelefono';
 import routerPyme from '../routes/negocio/pyme';
+import routerCategoria from '../routes/negocio/categoria';
 
 class Server{
     private app: Application;
@@ -55,6 +56,7 @@ class Server{
         this.app.use('/api/contactoTelefono', routerContactoTelefono); //FM
         this.app.use('/api/tipotelefono', routertipoTelefono);
         this.app.use('/api/pyme', routerPyme);
+        this.app.use('/api/categoria', routerCategoria);
 
     }
     midlewares(){
