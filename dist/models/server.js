@@ -32,9 +32,10 @@ const contacto_1 = __importDefault(require("../routes/negocio/contacto"));
 const contactoTelefono_1 = __importDefault(require("../routes/negocio/contactoTelefono"));
 const tipotelefono_1 = __importDefault(require("../routes/negocio/tipotelefono"));
 const pyme_1 = __importDefault(require("../routes/negocio/pyme"));
-const categoria_1 = __importDefault(require("../routes/negocio/categoria"));
 const Bitacora_1 = __importDefault(require("../routes/Bitacora"));
 const tipoEmpresa_1 = __importDefault(require("../routes/negocio/tipoEmpresa"));
+const categoria_1 = __importDefault(require("../routes/negocio/categoria"));
+const Tipo_Requisito_1 = __importDefault(require("../routes/negocio/Tipo_Requisito"));
 const productos_1 = __importDefault(require("../routes/negocio/productos"));
 class Server {
     constructor() {
@@ -71,6 +72,7 @@ class Server {
         this.app.use('/api/categoria', categoria_1.default); //BF
         this.app.use('/api/tipoEmpresa', tipoEmpresa_1.default);
         this.app.use('/api/categoria', categoria_1.default);
+        this.app.use('/api/Tipo_Requisito', Tipo_Requisito_1.default);
         this.app.use('/api/productos', productos_1.default);
     }
     midlewares() {
