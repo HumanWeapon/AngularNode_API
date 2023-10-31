@@ -31,7 +31,7 @@ export const getProductos = async (req: Request, res: Response) => {
 // Inserta una categoria en la base de datos
 export const postProducto = async (req: Request, res: Response) => {
 
-    const {producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const {id_categoria, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
     try{
         const _producto= await Productos.findOne({
@@ -44,6 +44,7 @@ export const postProducto = async (req: Request, res: Response) => {
             })
         }else{
             await Productos.create({
+                id_categoria: id_categoria,
                 producto: producto,
                 descripcion: descripcion, 
                 creado_por: creado_por,
@@ -61,7 +62,6 @@ export const postProducto = async (req: Request, res: Response) => {
         res.status(400).json({
             msg: 'Contactate con el administrador',
             error
- 
         });   }
 }
 

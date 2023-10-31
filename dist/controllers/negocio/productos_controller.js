@@ -35,7 +35,7 @@ const getProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getProductos = getProductos;
 // Inserta una categoria en la base de datos
 const postProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_categoria, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _producto = yield productos_models_1.Productos.findOne({
             where: { producto: producto }
@@ -47,6 +47,7 @@ const postProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         else {
             yield productos_models_1.Productos.create({
+                id_categoria: id_categoria,
                 producto: producto,
                 descripcion: descripcion,
                 creado_por: creado_por,
