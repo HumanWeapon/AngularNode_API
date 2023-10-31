@@ -8,7 +8,7 @@ routerProductos.get('/getAllProductos',validarToken, getAllProductos);//consulta
 routerProductos.get('/getProductos',validarToken, getProductos);//consulta un producto en la base de datos
 routerProductos.post('/postProducto',validarToken, postProducto); // Inserta un producto en la base de datos
 routerProductos.delete('/deleteProducto',validarToken, deleteProducto); //Elimina un producto en la base de datos
-routerProductos.post('/updateProductos',validarToken, updateProducto); // actualiza un producto en la base de datos
+routerProductos.post('/updateProducto',validarToken, updateProducto); // actualiza un producto en la base de datos
 routerProductos.post('/inactivateProducto',validarToken, inactivateProducto);//Inactiva un producto en la DB
 routerProductos.post('/activateProducto',validarToken, activateProducto);//Activa un producto en la DB
 
