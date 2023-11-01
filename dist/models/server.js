@@ -35,6 +35,10 @@ const pyme_1 = __importDefault(require("../routes/negocio/pyme"));
 const Bitacora_1 = __importDefault(require("../routes/Bitacora"));
 const tipoEmpresa_1 = __importDefault(require("../routes/negocio/tipoEmpresa"));
 const categoria_1 = __importDefault(require("../routes/negocio/categoria"));
+<<<<<<< HEAD
+=======
+const Tipo_Requisito_1 = __importDefault(require("../routes/negocio/Tipo_Requisito"));
+>>>>>>> 78e8c0693e2b47c6d1844f6d8ac204eccc9c82c9
 const productos_1 = __importDefault(require("../routes/negocio/productos"));
 class Server {
     constructor() {
@@ -68,8 +72,15 @@ class Server {
         this.app.use('/api/contactoTelefono', contactoTelefono_1.default); //FM
         this.app.use('/api/tipotelefono', tipotelefono_1.default);
         this.app.use('/api/pyme', pyme_1.default);
+<<<<<<< HEAD
         this.app.use('/api/tipoEmpresa', tipoEmpresa_1.default);
         this.app.use('/api/categoria', categoria_1.default);
+=======
+        this.app.use('/api/categoria', categoria_1.default); //BF
+        this.app.use('/api/tipoEmpresa', tipoEmpresa_1.default);
+        this.app.use('/api/categoria', categoria_1.default);
+        this.app.use('/api/Tipo_Requisito', Tipo_Requisito_1.default);
+>>>>>>> 78e8c0693e2b47c6d1844f6d8ac204eccc9c82c9
         this.app.use('/api/productos', productos_1.default);
     }
     midlewares() {

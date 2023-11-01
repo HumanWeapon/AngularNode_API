@@ -11,5 +11,7 @@ routerProductos.get('/getAllProductos', validarToken_1.default, productos_contro
 routerProductos.get('/getProductos', validarToken_1.default, productos_controller_1.getProductos); //consulta un producto en la base de datos
 routerProductos.post('/postProducto', validarToken_1.default, productos_controller_1.postProducto); // Inserta un producto en la base de datos
 routerProductos.delete('/deleteProducto', validarToken_1.default, productos_controller_1.deleteProducto); //Elimina un producto en la base de datos
-routerProductos.post('/updatePreoductos', validarToken_1.default, productos_controller_1.updateProducto); // actualiza un producto en la base de datos
+routerProductos.post('/updateProducto', validarToken_1.default, productos_controller_1.updateProducto); // actualiza un producto en la base de datos
+routerProductos.post('/inactivateProducto', validarToken_1.default, productos_controller_1.inactivateProducto); //Inactiva un producto en la DB
+routerProductos.post('/activateProducto', validarToken_1.default, productos_controller_1.activateProducto); //Activa un producto en la DB
 exports.default = routerProductos;
