@@ -103,8 +103,8 @@ export const updateTipo_Requisito = async (req: Request, res: Response) => {
         });
     }
 
-    await _tiporeq.update({
-        id_tipo_requisito: id_tipo_requisito,
+    await _tiporeq.update({ 
+        id_tipo_requisito: id_tipo_requisito,       
         tipo_requisito: tipo_requisito,
         descripcion: descripcion,                
         modificado_por: modificado_por,
