@@ -61,18 +61,11 @@ class Server{
         this.app.use('/api/contactoTelefono', routerContactoTelefono); //FM
         this.app.use('/api/tipotelefono', routertipoTelefono);
         this.app.use('/api/pyme', routerPyme);
-<<<<<<< HEAD
-=======
         this.app.use('/api/categoria',routerCategoria);//BF
->>>>>>> 78e8c0693e2b47c6d1844f6d8ac204eccc9c82c9
         this.app.use('/api/tipoEmpresa',routerTipoEmpresa);
         this.app.use('/api/categoria', routerCategoria);
         this.app.use('/api/Tipo_Requisito', routerTipo_Requisito);
         this.app.use('/api/productos', routerProductos);
-<<<<<<< HEAD
-
-=======
->>>>>>> 78e8c0693e2b47c6d1844f6d8ac204eccc9c82c9
     }
     midlewares(){
 
