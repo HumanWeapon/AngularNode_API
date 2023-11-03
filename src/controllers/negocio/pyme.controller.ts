@@ -2,6 +2,8 @@ import {Request, Response} from 'express';
 import bcrypt from 'bcrypt';
 import { Pyme } from '../../models/negocio/pyme-models';
 import jwt from 'jsonwebtoken';
+import {TipoEmpresa} from '../../models/negocio/tipoEmpresa-models'
+import { tipoEmpresa } from '../../models/negocio/tipo_empresa-models';
 
 //Obtiene todas las Pymes
 export const getAllPymes = async (req: Request, res: Response) => {
@@ -42,9 +44,9 @@ export const postPyme = async (req: Request, res: Response) => {
                 categoria: categoria,
                 descripcion: descripcion, 
                 creado_por: creado_por,
-                fecha_creacion: fecha_creacion,
+                fecha_creacion: Date.now(),
                 modificado_por: modificado_por,
-                fecha_modificacion: fecha_modificacion,
+                fecha_modificacion: Date.now(),
                 estado: estado
             })
             res.json({
@@ -160,3 +162,21 @@ export const activatePyme = async (req: Request, res: Response) => {
         msg: 'Pyme: '+ nombre_pyme+  ' ha sido activado exitosamente',
     });
 }
+
+    export const pymesAllTipoEmpresa = async (req: Request, res: Response) => {
+        try {
+            const pyme = await Pyme.findAll({
+                include: [
+                    {
+                        model: tipoEmpresa,
+                        as: 'tipoEmpresa' // Usa el mismo alias que en la definición de la asociación
+                    },
+                ],
+            });
+            
+            res.json(pyme);
+        } catch (error) {
+            console.error('Error al obtener preguntas de usuario:', error);
+            res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
+        }
+    }

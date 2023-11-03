@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activatePyme = exports.inactivatePyme = exports.updatePyme = exports.deletePyme = exports.postPyme = exports.getPyme = exports.getAllPymes = void 0;
+exports.pymesAllTipoEmpresa = exports.activatePyme = exports.inactivatePyme = exports.updatePyme = exports.deletePyme = exports.postPyme = exports.getPyme = exports.getAllPymes = void 0;
 const pyme_models_1 = require("../../models/negocio/pyme-models");
+const tipo_empresa_models_1 = require("../../models/negocio/tipo_empresa-models");
 //Obtiene todas las Pymes
 const getAllPymes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const pyme = yield pyme_models_1.Pyme.findAll();
@@ -46,9 +47,9 @@ const postPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             categoria: categoria,
             descripcion: descripcion,
             creado_por: creado_por,
-            fecha_creacion: fecha_creacion,
+            fecha_creacion: Date.now(),
             modificado_por: modificado_por,
-            fecha_modificacion: fecha_modificacion,
+            fecha_modificacion: Date.now(),
             estado: estado
         });
         res.json({
@@ -156,3 +157,21 @@ const activatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     });
 });
 exports.activatePyme = activatePyme;
+const pymesAllTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const pyme = yield pyme_models_1.Pyme.findAll({
+            include: [
+                {
+                    model: tipo_empresa_models_1.tipoEmpresa,
+                    as: 'tipoEmpresa' // Usa el mismo alias que en la definición de la asociación
+                },
+            ],
+        });
+        res.json(pyme);
+    }
+    catch (error) {
+        console.error('Error al obtener preguntas de usuario:', error);
+        res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
+    }
+});
+exports.pymesAllTipoEmpresa = pymesAllTipoEmpresa;

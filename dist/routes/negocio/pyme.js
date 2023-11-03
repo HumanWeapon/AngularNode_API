@@ -14,4 +14,5 @@ routerPyme.post('/updatePyme', validarToken_1.default, pyme_controller_1.updateP
 routerPyme.post('/postPyme', validarToken_1.default, pyme_controller_1.postPyme); //Inserta un nuevo Pyme en la Base de Datos
 routerPyme.post('/inactivatePyme', validarToken_1.default, pyme_controller_1.inactivatePyme); //Inactiva una Pyme en la DB
 routerPyme.post('/activatePyme', validarToken_1.default, pyme_controller_1.activatePyme); //Activa una Pyme en la DB
+routerPyme.get('/pymesAllTipoEmpresa', validarToken_1.default, pyme_controller_1.pymesAllTipoEmpresa); //Activa un usuario en la DB
 exports.default = routerPyme;
