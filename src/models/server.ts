@@ -25,6 +25,8 @@ import routerTipoEmpresa from '../routes/negocio/tipoEmpresa';
 import routerCategoria from '../routes/negocio/categoria';
 import routerTipo_Requisito from '../routes/negocio/Tipo_Requisito';
 import routerProductos from '../routes/negocio/productos';
+import routerEmpresa from '../routes/negocio/empresas';
+import routerOpEmpresa from '../routes/negocio/operacionEmpresas';
 
 class Server{
     private app: Application;
@@ -63,9 +65,10 @@ class Server{
         this.app.use('/api/pyme', routerPyme);
         this.app.use('/api/categoria',routerCategoria);//BF
         this.app.use('/api/tipoEmpresa',routerTipoEmpresa);
-        this.app.use('/api/categoria', routerCategoria);
         this.app.use('/api/Tipo_Requisito', routerTipo_Requisito);
         this.app.use('/api/productos', routerProductos);
+        this.app.use('/api/empresa',routerEmpresa);
+        this.app.use('/api/opempresa',routerOpEmpresa);
     }
     midlewares(){
 
