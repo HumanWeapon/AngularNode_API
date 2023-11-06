@@ -52,6 +52,7 @@ const postPais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.json({
             msg: 'El Pais: ' + pais + ' ha sido creado exitosamente',
         });
+        //hola
     }
     catch (error) {
         res.status(400).json({
