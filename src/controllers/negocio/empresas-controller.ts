@@ -35,8 +35,12 @@ export const postEmpresa = async (req: Request, res: Response) => {
         const _empresa = await Empresas.findOne({
             where: {nombre_empresa: nombre_empresa}
         })
-    
-            await Empresas.create({
+        if (_empresa){
+            return res.status(400).json({
+                msg: 'Empresa ya registrada en la base de datos: '+ nombre_empresa
+            })
+        }else{
+            const empresa = await Empresas.create({
                 id_tipo_empresa:id_tipo_empresa,
                 nombre_empresa: nombre_empresa,
                 descripcion: descripcion, 
@@ -46,11 +50,10 @@ export const postEmpresa = async (req: Request, res: Response) => {
                 fecha_modificacion: Date.now(),
                 estado: estado
             })
-            res.json({
-                msg: 'La Empresa: '+ nombre_empresa+  ' ha sido creada exitosamente',
-            })
+            res.json(empresa)
         
     }
+}
     catch (error){
         res.status(400).json({
             msg: 'Contactate con el administrador',
@@ -97,24 +100,22 @@ export const updateEmpresa = async (req: Request, res: Response) => {
         return res.status(404).json({
             msg: 'Empresa con el ID: '+ id_empresa +' no existe en la base de datos'
         });
-    }
-
-    await _empresa.update({
-
-        id_empresa: id_empresa,
-        id_tipo_empresa:id_tipo_empresa,
-        nombre_empresa: nombre_empresa,
-        descripcion: descripcion, 
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion,
-        estado: estado
+    }else{
+        const empresa = await _empresa.update({
+         id_empresa: id_empresa,
+         id_tipo_empresa:id_tipo_empresa,
+         nombre_empresa: nombre_empresa,
+         descripcion: descripcion, 
+         creado_por: creado_por,
+         fecha_creacion: fecha_creacion,
+         modificado_por: modificado_por,
+         fecha_modificacion: fecha_modificacion,
+         estado: estado
         
     });
-    res.json({
-        msg: 'La Empresa con el ID: '+ id_empresa+  ' ha sido actualizado exitosamente',
-    });
+    res.json(empresa) 
+
+  }
 }
 
 //Inactiva el usuario de la DBA

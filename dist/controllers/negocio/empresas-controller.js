@@ -40,19 +40,24 @@ const postEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const _empresa = yield empresas_model_1.Empresas.findOne({
             where: { nombre_empresa: nombre_empresa }
         });
-        yield empresas_model_1.Empresas.create({
-            id_tipo_empresa: id_tipo_empresa,
-            nombre_empresa: nombre_empresa,
-            descripcion: descripcion,
-            creado_por: creado_por,
-            fecha_creacion: Date.now(),
-            modificado_por: modificado_por,
-            fecha_modificacion: Date.now(),
-            estado: estado
-        });
-        res.json({
-            msg: 'La Empresa: ' + nombre_empresa + ' ha sido creada exitosamente',
-        });
+        if (_empresa) {
+            return res.status(400).json({
+                msg: 'Empresa ya registrada en la base de datos: ' + nombre_empresa
+            });
+        }
+        else {
+            const empresa = yield empresas_model_1.Empresas.create({
+                id_tipo_empresa: id_tipo_empresa,
+                nombre_empresa: nombre_empresa,
+                descripcion: descripcion,
+                creado_por: creado_por,
+                fecha_creacion: Date.now(),
+                modificado_por: modificado_por,
+                fecha_modificacion: Date.now(),
+                estado: estado
+            });
+            res.json(empresa);
+        }
     }
     catch (error) {
         res.status(400).json({
@@ -100,20 +105,20 @@ const updateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             msg: 'Empresa con el ID: ' + id_empresa + ' no existe en la base de datos'
         });
     }
-    yield _empresa.update({
-        id_empresa: id_empresa,
-        id_tipo_empresa: id_tipo_empresa,
-        nombre_empresa: nombre_empresa,
-        descripcion: descripcion,
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion,
-        estado: estado
-    });
-    res.json({
-        msg: 'La Empresa con el ID: ' + id_empresa + ' ha sido actualizado exitosamente',
-    });
+    else {
+        const empresa = yield _empresa.update({
+            id_empresa: id_empresa,
+            id_tipo_empresa: id_tipo_empresa,
+            nombre_empresa: nombre_empresa,
+            descripcion: descripcion,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
+        });
+        res.json(empresa);
+    }
 });
 exports.updateEmpresa = updateEmpresa;
 //Inactiva el usuario de la DBA
