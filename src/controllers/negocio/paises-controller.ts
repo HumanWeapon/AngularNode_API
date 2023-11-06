@@ -156,9 +156,5 @@ export const activatePais = async (req: Request, res: Response) => {
     });
     res.json({
         msg: 'Pais: '+ pais+  ' ha sido activado exitosamente',
-    });
+    });
 }
-
-
-
-
