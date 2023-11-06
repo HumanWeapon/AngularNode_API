@@ -129,7 +129,7 @@ export const postUsuario = async (req: Request, res: Response) => {
                 msg: 'Usuario ya existe en la base de datos: '+ usuario
             })
         }else{
-            await User.create({
+            const newUser = await User.create({
                 creado_por: creado_por,
                 fecha_creacion: Date.now(),
                 modificado_por: modificado_por,
@@ -144,9 +144,7 @@ export const postUsuario = async (req: Request, res: Response) => {
                 fecha_vencimiento: fecha_vencimiento,
                 intentos_fallidos: intentos_fallidos
             })
-            res.json({
-                msg: 'Usuario: '+ usuario+  ' creado exitosamente',
-            })
+            return res.json(newUser); // Devolver el nuevo usuario creado como respuesta
         }
     }
     catch (error){
@@ -195,9 +193,7 @@ export const inactivateUsuario = async (req: Request, res: Response) => {
     await user.update({
         estado_usuario: 2
     });
-    res.json({
-        msg: 'Usuario: '+ usuario+  ' inactivado exitosamente',
-    });
+    res.json(user);
 }
 //Activa el usuario de la DBA
 export const activateUsuario = async (req: Request, res: Response) => {
@@ -215,9 +211,7 @@ export const activateUsuario = async (req: Request, res: Response) => {
     await user.update({
         estado_usuario: 1
     });
-    res.json({
-        msg: 'Usuario: '+ usuario+  ' ha sido activado exitosamente',
-    });
+    res.json(user);
 }
 //Actualiza el usuario en la base de datos
 export const updateUsuario = async (req: Request, res: Response) => {

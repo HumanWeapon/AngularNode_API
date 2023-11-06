@@ -5,9 +5,9 @@ import { updatePregunta, deletePregunta, postPregunta, getAllPreguntas, getPregu
 const routerPreguntas = Router()
 
 routerPreguntas.get('/getAllPreguntas', getAllPreguntas);//Inicia sesión en la DB
-routerPreguntas.get('/getPregunta',validarToken, getPregunta);//Inserta un usuario en la DB
-routerPreguntas.post('/postPregunta',validarToken, postPregunta); // obtiene todos los usuarios
-routerPreguntas.delete('/deletePregunta',validarToken, deletePregunta); // obtiene el usuario especificado
-routerPreguntas.post('/updatePregunta',validarToken, updatePregunta); // elimina el registro con el usuario especificado
+routerPreguntas.get('/getPregunta', getPregunta);//Inserta un usuario en la DB
+routerPreguntas.post('/postPregunta', postPregunta); // obtiene todos los usuarios
+routerPreguntas.delete('/deletePregunta', deletePregunta); // obtiene el usuario especificado
+routerPreguntas.post('/updatePregunta', updatePregunta); // elimina el registro con el usuario especificado
 
 export default routerPreguntas;

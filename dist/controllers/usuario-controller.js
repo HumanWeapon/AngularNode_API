@@ -117,7 +117,7 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             });
         }
         else {
-            yield usuario_models_1.User.create({
+            const newUser = yield usuario_models_1.User.create({
                 creado_por: creado_por,
                 fecha_creacion: Date.now(),
                 modificado_por: modificado_por,
@@ -132,9 +132,7 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 fecha_vencimiento: fecha_vencimiento,
                 intentos_fallidos: intentos_fallidos
             });
-            res.json({
-                msg: 'Usuario: ' + usuario + ' creado exitosamente',
-            });
+            return res.json(newUser); // Devolver el nuevo usuario creado como respuesta
         }
     }
     catch (error) {
@@ -181,9 +179,7 @@ const inactivateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, functi
     yield user.update({
         estado_usuario: 2
     });
-    res.json({
-        msg: 'Usuario: ' + usuario + ' inactivado exitosamente',
-    });
+    res.json(user);
 });
 exports.inactivateUsuario = inactivateUsuario;
 //Activa el usuario de la DBA
@@ -200,9 +196,7 @@ const activateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function
     yield user.update({
         estado_usuario: 1
     });
-    res.json({
-        msg: 'Usuario: ' + usuario + ' ha sido activado exitosamente',
-    });
+    res.json(user);
 });
 exports.activateUsuario = activateUsuario;
 //Actualiza el usuario en la base de datos
