@@ -35,7 +35,7 @@ export const postContacto = async (req: Request, res: Response) => {
 
     try{
         const _contacto = await Contacto.findOne({
-            where: {Contacto: Contacto}
+            where: {dni: dni}
         })
     
         if (_contacto){
@@ -43,7 +43,7 @@ export const postContacto = async (req: Request, res: Response) => {
                 msg: 'DNI ya registrada en la base de datos: '+ dni
             })
         }else{
-            await Contacto.create({
+            const contac = await Contacto.create({
                 dni: dni,
                 primer_nombre: primer_nombre,
                 segundo_nombre: segundo_nombre,
@@ -57,9 +57,7 @@ export const postContacto = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
-            res.json({
-                msg: 'El contacto: '+ dni +  ' ha sido creada exitosamente',
-            })
+            res.json(contac)
         }
     }
     catch (error){
@@ -86,9 +84,7 @@ export const deleteContacto = async (req: Request, res: Response) => {
 
         if (_contacto) {
             await _contacto.destroy();
-            res.json({
-                msg: 'El contacto con el ID: ' + id_contacto + ' ha sido eliminada exitosamente',
-            });
+            res.json(_contacto);
         } else {
             res.status(404).json({
                 msg: 'No se encontró el contacto con el ID ' + id_contacto,

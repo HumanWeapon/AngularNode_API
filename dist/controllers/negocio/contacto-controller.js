@@ -38,7 +38,7 @@ const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const { dni, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _contacto = yield contacto_models_1.Contacto.findOne({
-            where: { Contacto: contacto_models_1.Contacto }
+            where: { dni: dni }
         });
         if (_contacto) {
             return res.status(400).json({
@@ -46,7 +46,7 @@ const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             });
         }
         else {
-            yield contacto_models_1.Contacto.create({
+            const contac = yield contacto_models_1.Contacto.create({
                 dni: dni,
                 primer_nombre: primer_nombre,
                 segundo_nombre: segundo_nombre,
@@ -60,9 +60,7 @@ const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
-            res.json({
-                msg: 'El contacto: ' + dni + ' ha sido creada exitosamente',
-            });
+            res.json(contac);
         }
     }
     catch (error) {
@@ -87,9 +85,7 @@ const deleteContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
         if (_contacto) {
             yield _contacto.destroy();
-            res.json({
-                msg: 'El contacto con el ID: ' + id_contacto + ' ha sido eliminada exitosamente',
-            });
+            res.json(_contacto);
         }
         else {
             res.status(404).json({
