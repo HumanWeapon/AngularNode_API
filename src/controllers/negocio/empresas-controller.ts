@@ -9,6 +9,16 @@ export const getAllEmpresas = async (req: Request, res: Response) => {
     res.json(empresa)
 }
 
+//Obtiene todas las Empresas pyme o exportadoreas
+export const getEmpresasPymes = async (req: Request, res: Response) => {
+    const { id_tipo_empresa } = req.body;
+
+    const empresa = await Empresas.findAll({
+        where: {id_tipo_empresa: id_tipo_empresa}
+    });
+    res.json(empresa)
+}
+
 //Obtiene una Empresa por ID
 export const getEmpresa = async (req: Request, res: Response) => {
     const { id_empresa } = req.body;
@@ -45,9 +55,9 @@ export const postEmpresa = async (req: Request, res: Response) => {
                 nombre_empresa: nombre_empresa,
                 descripcion: descripcion, 
                 creado_por: creado_por,
-                fecha_creacion: Date.now(),
+                fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
-                fecha_modificacion: Date.now(),
+                fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
             res.json(empresa)

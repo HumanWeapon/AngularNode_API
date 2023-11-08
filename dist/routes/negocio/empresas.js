@@ -14,4 +14,5 @@ routerEmpresa.delete('/deleteEmpresa', validarToken_1.default, empresas_controll
 routerEmpresa.post('/updateEmpresa', validarToken_1.default, empresas_controller_1.updateEmpresa); //Actualiza la Pyme en la Base de Datos
 routerEmpresa.post('/inactivateEmpresa', validarToken_1.default, empresas_controller_1.inactivateEmpresa); //Inactiva una Pyme en la DB
 routerEmpresa.post('/activateEmpresa', validarToken_1.default, empresas_controller_1.activateEmpresa); //Activa una Pyme en la DB
+routerEmpresa.post('/getEmpresasPymes', validarToken_1.default, empresas_controller_1.getEmpresasPymes); //Activa una Pyme en la DB
 exports.default = routerEmpresa;

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateEmpresa = exports.inactivateEmpresa = exports.updateEmpresa = exports.deleteEmpresa = exports.postEmpresa = exports.getEmpresa = exports.getAllEmpresas = void 0;
+exports.activateEmpresa = exports.inactivateEmpresa = exports.updateEmpresa = exports.deleteEmpresa = exports.postEmpresa = exports.getEmpresa = exports.getEmpresasPymes = exports.getAllEmpresas = void 0;
 const empresas_model_1 = require("../../models/negocio/empresas-model");
 //Obtiene todas las Empresas
 const getAllEmpresas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -17,6 +17,15 @@ const getAllEmpresas = (req, res) => __awaiter(void 0, void 0, void 0, function*
     res.json(empresa);
 });
 exports.getAllEmpresas = getAllEmpresas;
+//Obtiene todas las Empresas pyme o exportadoreas
+const getEmpresasPymes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_tipo_empresa } = req.body;
+    const empresa = yield empresas_model_1.Empresas.findAll({
+        where: { id_tipo_empresa: id_tipo_empresa }
+    });
+    res.json(empresa);
+});
+exports.getEmpresasPymes = getEmpresasPymes;
 //Obtiene una Empresa por ID
 const getEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_empresa } = req.body;
@@ -51,9 +60,9 @@ const postEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 nombre_empresa: nombre_empresa,
                 descripcion: descripcion,
                 creado_por: creado_por,
-                fecha_creacion: Date.now(),
+                fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
-                fecha_modificacion: Date.now(),
+                fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
             res.json(empresa);

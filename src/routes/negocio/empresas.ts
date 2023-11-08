@@ -1,7 +1,6 @@
 import {Router} from 'express';
 import validarToken from '../validarToken';
-import { activateEmpresa, deleteEmpresa, getAllEmpresas, getEmpresa, inactivateEmpresa, postEmpresa, updateEmpresa } from '../../controllers/negocio/empresas-controller';
-import routerParametros from '../parametros';
+import { activateEmpresa, deleteEmpresa, getAllEmpresas, getEmpresa, getEmpresasPymes, inactivateEmpresa, postEmpresa, updateEmpresa } from '../../controllers/negocio/empresas-controller';
 
 
 const routerEmpresa = Router()
@@ -13,5 +12,6 @@ routerEmpresa.delete('/deleteEmpresa',validarToken,deleteEmpresa);//Elimina la E
 routerEmpresa.post('/updateEmpresa', validarToken,updateEmpresa);//Actualiza la Pyme en la Base de Datos
 routerEmpresa.post('/inactivateEmpresa',validarToken, inactivateEmpresa);//Inactiva una Pyme en la DB
 routerEmpresa.post('/activateEmpresa',validarToken, activateEmpresa);//Activa una Pyme en la DB
+routerEmpresa.post('/getEmpresasPymes',validarToken, getEmpresasPymes);//Activa una Pyme en la DB
 
 export default routerEmpresa;

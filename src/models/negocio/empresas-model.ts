@@ -7,11 +7,11 @@ export const Empresas: any = dataBase.define('empresas', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-      },
-      id_tipo_empresa: {
+    },
+    id_tipo_empresa: {
         type: DataTypes.INTEGER,
         allowNull: false
-      },
+    },
     nombre_empresa: {
         type: DataTypes.STRING,
         allowNull: false
