@@ -135,3 +135,45 @@ export const updateCategoria = async (req: Request, res: Response) => {
         msg: 'Categoria: '+ catego+  ' ha sido actualizado exitosamente',
     });
 }
+
+//Inactiva el usuario de la DBA
+export const inactivateCategoria = async (req: Request, res: Response) => {
+    const { categoria } = req.body;
+
+    const cate = await Categorias.findOne({
+        where: {categoria: categoria}
+    });
+    if(!cate){
+        return res.status(404).json({
+            msg: "La Categoria no existe: "+ categoria
+        });
+    }
+
+    await cate.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Categoria: '+ categoria+  ' inactivado exitosamente',
+    });
+}
+
+//Activa el usuario de la DBA
+export const activateCategoria = async (req: Request, res: Response) => {
+    const { categoria } = req.body;
+
+    const cate = await Categorias.findOne({
+        where: {categoria: categoria}
+    });
+    if(!cate){
+        return res.status(404).json({
+            msg: "La Categoria no existe: "+ categoria
+        });
+    }
+
+    await cate.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Categoria: '+ categoria+  ' ha sido activado exitosamente',
+    });
+}

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateTipoEmpresa = exports.deleteTipoEmpresa = exports.postTipoEmpresa = exports.getTipoEmpresa = exports.getAllTipoEmpresa = void 0;
+exports.activateTipoEmpresa = exports.inactivateTipoEmpresa = exports.updateTipoEmpresa = exports.deleteTipoEmpresa = exports.postTipoEmpresa = exports.getTipoEmpresa = exports.getAllTipoEmpresa = void 0;
 const tipoEmpresa_models_1 = require("../../models/negocio/tipoEmpresa-models");
 //Obtiene todos los registros de la base de datos
 const getAllTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -121,3 +121,41 @@ const updateTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, functi
     });
 });
 exports.updateTipoEmpresa = updateTipoEmpresa;
+//Inactiva el usuario de la DBA
+const inactivateTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tipo_empresa } = req.body;
+    const tipempresa = yield tipoEmpresa_models_1.TipoEmpresa.findOne({
+        where: { tipo_empresa: tipo_empresa }
+    });
+    if (!tipempresa) {
+        return res.status(404).json({
+            msg: "El tipo de Empresa no existe: " + tipo_empresa
+        });
+    }
+    yield tipempresa.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Tipo de Empresa: ' + tipo_empresa + ' inactivado exitosamente',
+    });
+});
+exports.inactivateTipoEmpresa = inactivateTipoEmpresa;
+//Activa el usuario de la DBA
+const activateTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tipo_empresa } = req.body;
+    const tipempresa = yield tipoEmpresa_models_1.TipoEmpresa.findOne({
+        where: { tipo_empresa: tipo_empresa }
+    });
+    if (!tipempresa) {
+        return res.status(404).json({
+            msg: "El tipo de Empresa no existe: " + tipo_empresa
+        });
+    }
+    yield tipempresa.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Tipo de Empresa: ' + tipo_empresa + ' ha sido activado exitosamente',
+    });
+});
+exports.activateTipoEmpresa = activateTipoEmpresa;

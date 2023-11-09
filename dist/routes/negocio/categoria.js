@@ -13,4 +13,6 @@ routerCategoria.get('/getCategoria', validarToken_1.default, categoria_controlle
 routerCategoria.post('/postCategoria', validarToken_1.default, categoria_controller_1.postCategoria); // Inserta una categoria en la base de datos
 routerCategoria.delete('/deleteCategoria', validarToken_1.default, categoria_controller_1.deleteCategoria); //Elimina una catoria en la base de datos
 routerCategoria.post('/updateCategoria', validarToken_1.default, categoria_controller_1.updateCategoria); // actualiza una categoria en la base de datos
+routerCategoria.post('/inactivateCategoria', validarToken_1.default, categoria_controller_1.inactivateCategoria); //Inactiva una Categoria en la DB
+routerCategoria.post('/activateCategoria', validarToken_1.default, categoria_controller_1.activateCategoria); //Activa una Categoria en la DB
 exports.default = routerCategoria;

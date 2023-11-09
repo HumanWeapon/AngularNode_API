@@ -115,3 +115,45 @@ export const updateTipo_Requisito = async (req: Request, res: Response) => {
         msg: 'El valor ha sido actualizado exitosamente',
     });
 }
+
+//Inactiva el usuario de la DBA
+export const inactivateRequisito = async (req: Request, res: Response) => {
+    const { tipo_requisito } = req.body;
+
+    const tiporeq = await Tipo_Requisito.findOne({
+        where: {tipo_requisito: tipo_requisito}
+    });
+    if(!tiporeq){
+        return res.status(404).json({
+            msg: "El Requisito no existe: "+ tipo_requisito
+        });
+    }
+
+    await tiporeq.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Requisito: '+ tipo_requisito+  ' inactivado exitosamente',
+    });
+}
+
+//Activa el usuario de la DBA
+export const activateRequisito = async (req: Request, res: Response) => {
+    const { tipo_requisito } = req.body;
+
+    const tiporeq = await Tipo_Requisito.findOne({
+        where: {tipo_requisito: tipo_requisito}
+    });
+    if(!tiporeq){
+        return res.status(404).json({
+            msg: "El Requisito no existe: "+ tipo_requisito
+        });
+    }
+
+    await tiporeq.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Requisito: '+ tipo_requisito+  ' ha sido activado exitosamente',
+    });
+}

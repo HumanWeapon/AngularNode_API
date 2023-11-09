@@ -13,4 +13,6 @@ routerTipo_Requisito.get('/getTipo_Requisito', validarToken_1.default, Tipo_requ
 routerTipo_Requisito.post('/postTipo_Requisito', validarToken_1.default, Tipo_requisito_controller_1.postTipo_Requisito); // Inserta Permisos en la base de datos
 routerTipo_Requisito.delete('/deleteTipo_Requisito', validarToken_1.default, Tipo_requisito_controller_1.deleteTipo_Requisito); // Elimina Permiso en la base de datos
 routerTipo_Requisito.post('/updateTipoRequisito', validarToken_1.default, Tipo_requisito_controller_1.updateTipo_Requisito); // actualiza permiso en la base de datos
+routerTipo_Requisito.post('/inactivateRequisito', validarToken_1.default, Tipo_requisito_controller_1.inactivateRequisito); //Inactiva una Pyme en la DB
+routerTipo_Requisito.post('/activateRequisito', validarToken_1.default, Tipo_requisito_controller_1.activateRequisito); //Activa una Pyme en la DB
 exports.default = routerTipo_Requisito;

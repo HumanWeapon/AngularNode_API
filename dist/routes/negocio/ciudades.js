@@ -12,6 +12,8 @@ routerCiudades.get('/getCiudad', validarToken_1.default, ciudades_controller_1.g
 routerCiudades.post('/postCiudad', validarToken_1.default, ciudades_controller_1.postCiudad); // Inserta una ciudad en la base de datos
 routerCiudades.delete('/deleteCiudad', validarToken_1.default, ciudades_controller_1.deleteCiudad); //Elimina una ciudad en la base de datos
 routerCiudades.post('/updateCiudad', validarToken_1.default, ciudades_controller_1.updateCiudad); // actualiza una ciudad en la base de datos
+routerCiudades.post('/inactivateCiudad', validarToken_1.default, ciudades_controller_1.inactivateCiudad); //Inactiva una Ciudad en la DB
+routerCiudades.post('/activateCiudad', validarToken_1.default, ciudades_controller_1.activateCiudad); //Activa una Ciudad en la DB
 exports.default = routerCiudades;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932

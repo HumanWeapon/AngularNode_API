@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateTipo_Requisito = exports.deleteTipo_Requisito = exports.postTipo_Requisito = exports.getTipo_Requisito = exports.getAllTipo_Requisito = void 0;
+exports.activateRequisito = exports.inactivateRequisito = exports.updateTipo_Requisito = exports.deleteTipo_Requisito = exports.postTipo_Requisito = exports.getTipo_Requisito = exports.getAllTipo_Requisito = void 0;
 const Tipo_requisito_models_1 = require("../../models/negocio/Tipo_requisito-models");
 //Obtiene todos los tipos de requisito de la base de datos
 const getAllTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -119,3 +119,41 @@ const updateTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, fun
     });
 });
 exports.updateTipo_Requisito = updateTipo_Requisito;
+//Inactiva el usuario de la DBA
+const inactivateRequisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tipo_requisito } = req.body;
+    const tiporeq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
+        where: { tipo_requisito: tipo_requisito }
+    });
+    if (!tiporeq) {
+        return res.status(404).json({
+            msg: "El Requisito no existe: " + tipo_requisito
+        });
+    }
+    yield tiporeq.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Requisito: ' + tipo_requisito + ' inactivado exitosamente',
+    });
+});
+exports.inactivateRequisito = inactivateRequisito;
+//Activa el usuario de la DBA
+const activateRequisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tipo_requisito } = req.body;
+    const tiporeq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
+        where: { tipo_requisito: tipo_requisito }
+    });
+    if (!tiporeq) {
+        return res.status(404).json({
+            msg: "El Requisito no existe: " + tipo_requisito
+        });
+    }
+    yield tiporeq.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Requisito: ' + tipo_requisito + ' ha sido activado exitosamente',
+    });
+});
+exports.activateRequisito = activateRequisito;

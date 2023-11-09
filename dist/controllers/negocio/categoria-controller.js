@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateCategoria = exports.deleteCategoria = exports.postCategoria = exports.getCategoria = exports.getAllCategorias = void 0;
+exports.activateCategoria = exports.inactivateCategoria = exports.updateCategoria = exports.deleteCategoria = exports.postCategoria = exports.getCategoria = exports.getAllCategorias = void 0;
 const categoria_models_1 = require("../../models/negocio/categoria-models");
 //Obtiene todos las categorias de productos de la base de datos
 const getAllCategorias = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -121,3 +121,41 @@ const updateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function
     });
 });
 exports.updateCategoria = updateCategoria;
+//Inactiva el usuario de la DBA
+const inactivateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { categoria } = req.body;
+    const cate = yield categoria_models_1.Categorias.findOne({
+        where: { categoria: categoria }
+    });
+    if (!cate) {
+        return res.status(404).json({
+            msg: "La Categoria no existe: " + categoria
+        });
+    }
+    yield cate.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Categoria: ' + categoria + ' inactivado exitosamente',
+    });
+});
+exports.inactivateCategoria = inactivateCategoria;
+//Activa el usuario de la DBA
+const activateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { categoria } = req.body;
+    const cate = yield categoria_models_1.Categorias.findOne({
+        where: { categoria: categoria }
+    });
+    if (!cate) {
+        return res.status(404).json({
+            msg: "La Categoria no existe: " + categoria
+        });
+    }
+    yield cate.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Categoria: ' + categoria + ' ha sido activado exitosamente',
+    });
+});
+exports.activateCategoria = activateCategoria;

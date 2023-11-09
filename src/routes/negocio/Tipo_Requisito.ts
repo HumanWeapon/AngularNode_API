@@ -1,7 +1,8 @@
 import {Router} from 'express';
 import validarToken from '../validarToken';
-import { deleteTipo_Requisito, getAllTipo_Requisito, postTipo_Requisito, updateTipo_Requisito } from '../../controllers/negocio/Tipo_requisito-controller';
+import { activateRequisito, deleteTipo_Requisito, getAllTipo_Requisito, inactivateRequisito, postTipo_Requisito, updateTipo_Requisito } from '../../controllers/negocio/Tipo_requisito-controller';
 import { getTipo_Requisito } from '../../controllers/negocio/Tipo_requisito-controller';
+import routertipoTelefono from './tipotelefono';
 
 
 const routerTipo_Requisito = Router()
@@ -11,5 +12,7 @@ routerTipo_Requisito.get('/getTipo_Requisito',validarToken, getTipo_Requisito);/
 routerTipo_Requisito.post('/postTipo_Requisito',validarToken, postTipo_Requisito); // Inserta Permisos en la base de datos
 routerTipo_Requisito.delete('/deleteTipo_Requisito',validarToken, deleteTipo_Requisito); // Elimina Permiso en la base de datos
 routerTipo_Requisito.post('/updateTipoRequisito',validarToken, updateTipo_Requisito); // actualiza permiso en la base de datos
+routerTipo_Requisito.post('/inactivateRequisito',validarToken, inactivateRequisito);//Inactiva una Pyme en la DB
+routerTipo_Requisito.post('/activateRequisito',validarToken, activateRequisito);//Activa una Pyme en la DB
 
 export default routerTipo_Requisito;

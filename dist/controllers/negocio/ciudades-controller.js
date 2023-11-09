@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateCiudad = exports.deleteCiudad = exports.postCiudad = exports.getCiudad = exports.getAllCiudades = void 0;
+exports.activateCiudad = exports.inactivateCiudad = exports.updateCiudad = exports.deleteCiudad = exports.postCiudad = exports.getCiudad = exports.getAllCiudades = void 0;
 const ciudades_models_1 = require("../../models/negocio/ciudades-models");
 //Obtiene todos las ciudades de la base de datos
 const getAllCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -126,6 +126,44 @@ const updateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     });
 });
 exports.updateCiudad = updateCiudad;
+//Inactiva el usuario de la DBA
+const inactivateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { ciudad } = req.body;
+    const ciu = yield ciudades_models_1.Ciudades.findOne({
+        where: { ciudad: ciudad }
+    });
+    if (!ciu) {
+        return res.status(404).json({
+            msg: "La Ciudad no existe: " + ciudad
+        });
+    }
+    yield ciu.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Ciudad: ' + ciudad + ' inactivado exitosamente',
+    });
+});
+exports.inactivateCiudad = inactivateCiudad;
+//Activa el usuario de la DBA
+const activateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { ciudad } = req.body;
+    const ciu = yield ciudades_models_1.Ciudades.findOne({
+        where: { ciudad: ciudad }
+    });
+    if (!ciu) {
+        return res.status(404).json({
+            msg: "La Ciudad no existe: " + ciudad
+        });
+    }
+    yield ciu.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Ciudad: ' + ciudad + ' ha sido activado exitosamente',
+    });
+});
+exports.activateCiudad = activateCiudad;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
  */ 

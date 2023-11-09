@@ -116,3 +116,46 @@ export const updateTipoEmpresa = async (req: Request, res: Response) => {
     });
 
 }
+
+//Inactiva el usuario de la DBA
+export const inactivateTipoEmpresa = async (req: Request, res: Response) => {
+    const { tipo_empresa } = req.body;
+
+    const tipempresa = await TipoEmpresa.findOne({
+        where: {tipo_empresa: tipo_empresa}
+    });
+    if(!tipempresa){
+        return res.status(404).json({
+            msg: "El tipo de Empresa no existe: "+ tipo_empresa
+        });
+    }
+
+    await tipempresa.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Tipo de Empresa: '+ tipo_empresa+  ' inactivado exitosamente',
+    });
+}
+
+//Activa el usuario de la DBA
+export const activateTipoEmpresa = async (req: Request, res: Response) => {
+    const { tipo_empresa } = req.body;
+
+    const tipempresa = await TipoEmpresa.findOne({
+        where: {tipo_empresa: tipo_empresa}
+    });
+    if(!tipempresa){
+        return res.status(404).json({
+            msg: "El tipo de Empresa no existe: "+ tipo_empresa
+        });
+    }
+
+    await tipempresa.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Tipo de Empresa: '+ tipo_empresa+  ' ha sido activado exitosamente',
+    });
+}
+

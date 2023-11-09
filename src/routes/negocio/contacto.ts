@@ -10,6 +10,7 @@ routerContacto.post('/postContacto',validarToken, postContacto); // Inserta una 
 routerContacto.delete('/deleteContacto',validarToken, deleteContacto); //Elimina una dirección en la base de datos
 routerContacto.post('/updateContacto',validarToken, updateContacto); // actualiza una dirección en la base de datos
 
+
 export default routerContacto;
 
 

@@ -12,4 +12,6 @@ routerTipoEmpresa.get('/getTipoEmpresa', validarToken_1.default, tipoEmpresa_con
 routerTipoEmpresa.post('/postTipoEmpresa', validarToken_1.default, tipoEmpresa_controller_1.postTipoEmpresa); // Inserta una dirección en la base de datos
 routerTipoEmpresa.delete('/deleteTipoEmpresa', validarToken_1.default, tipoEmpresa_controller_1.deleteTipoEmpresa); //Elimina una dirección en la base de datos
 routerTipoEmpresa.post('/updateTipoEmpresa', validarToken_1.default, tipoEmpresa_controller_1.updateTipoEmpresa); // actualiza una dirección en la base de datos
+routerTipoEmpresa.post('/inactivateTipoEmpresa', validarToken_1.default, tipoEmpresa_controller_1.inactivateTipoEmpresa); //Inactiva una Pyme en la DB
+routerTipoEmpresa.post('/activateTipoEmpresa', validarToken_1.default, tipoEmpresa_controller_1.activateTipoEmpresa); //Activa una Pyme en la DB
 exports.default = routerTipoEmpresa;

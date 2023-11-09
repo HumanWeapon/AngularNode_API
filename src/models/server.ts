@@ -65,7 +65,7 @@ class Server{
         this.app.use('/api/pyme', routerPyme);
         this.app.use('/api/categoria',routerCategoria);//BF
         this.app.use('/api/tipoEmpresa',routerTipoEmpresa);
-        this.app.use('/api/Tipo_Requisito', routerTipo_Requisito);
+        this.app.use('/api/tipo_requisito', routerTipo_Requisito);
         this.app.use('/api/productos', routerProductos);
         this.app.use('/api/empresa',routerEmpresa);
         this.app.use('/api/opempresa',routerOpEmpresa);

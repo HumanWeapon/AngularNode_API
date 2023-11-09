@@ -127,6 +127,50 @@ export const updateCiudad = async (req: Request, res: Response) => {
 }
 
 
+//Inactiva el usuario de la DBA
+export const inactivateCiudad = async (req: Request, res: Response) => {
+    const { ciudad } = req.body;
+
+    const ciu = await Ciudades.findOne({
+        where: {ciudad: ciudad}
+    });
+    if(!ciu){
+        return res.status(404).json({
+            msg: "La Ciudad no existe: "+ ciudad
+        });
+    }
+
+    await ciu.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Ciudad: '+ ciudad+  ' inactivado exitosamente',
+    });
+}
+
+//Activa el usuario de la DBA
+export const activateCiudad = async (req: Request, res: Response) => {
+    const { ciudad } = req.body;
+
+    const ciu = await Ciudades.findOne({
+        where: {ciudad: ciudad}
+    });
+    if(!ciu){
+        return res.status(404).json({
+            msg: "La Ciudad no existe: "+ ciudad
+        });
+    }
+
+    await ciu.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Ciudad: '+ ciudad+  ' ha sido activado exitosamente',
+    });
+}
+
+
+
 
 
 
