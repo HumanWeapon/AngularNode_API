@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateTipoContacto = exports.deleteTipoContacto = exports.postTipoContacto = exports.getTipoContacto = exports.getAllTipoContactos = void 0;
+exports.activateTipoContacto = exports.inactivateTipoContacto = exports.updateTipoContacto = exports.deleteTipoContacto = exports.postTipoContacto = exports.getTipoContacto = exports.getAllTipoContactos = void 0;
 const tipoContacto_models_1 = require("../../models/negocio/tipoContacto-models");
 //Obtiene todos los contacto de la base de datos
 const getAllTipoContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -126,6 +126,44 @@ const updateTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, funct
     });
 });
 exports.updateTipoContacto = updateTipoContacto;
+//Inactiva el usuario de la DBA
+const inactivateTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tipo_contacto } = req.body;
+    const _cont = yield tipoContacto_models_1.TipoContacto.findOne({
+        where: { tipo_contacto: tipo_contacto }
+    });
+    if (!_cont) {
+        return res.status(404).json({
+            msg: "El Tipo de Contacto no existe: " + tipo_contacto
+        });
+    }
+    yield _cont.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Tipo de Contacto: ' + tipo_contacto + ' inactivado exitosamente',
+    });
+});
+exports.inactivateTipoContacto = inactivateTipoContacto;
+//Activa el usuario de la DBA
+const activateTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tipo_contacto } = req.body;
+    const _cont = yield tipoContacto_models_1.TipoContacto.findOne({
+        where: { tipo_contacto: tipo_contacto }
+    });
+    if (!_cont) {
+        return res.status(404).json({
+            msg: "El tipo de Contacto no existe: " + tipo_contacto
+        });
+    }
+    yield _cont.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Tipo de Contacto: ' + tipo_contacto + ' ha sido activado exitosamente',
+    });
+});
+exports.activateTipoContacto = activateTipoContacto;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
  */ 

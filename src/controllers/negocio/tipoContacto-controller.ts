@@ -126,7 +126,47 @@ export const updateTipoContacto = async (req: Request, res: Response) => {
     });
 }
 
+//Inactiva el usuario de la DBA
+export const inactivateTipoContacto = async (req: Request, res: Response) => {
+    const { tipo_contacto } = req.body;
 
+    const _cont = await TipoContacto.findOne({
+        where: {tipo_contacto: tipo_contacto}
+    });
+    if(!_cont){
+        return res.status(404).json({
+            msg: "El Tipo de Contacto no existe: "+ tipo_contacto
+        });
+    }
+
+    await _cont.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Tipo de Contacto: '+ tipo_contacto+  ' inactivado exitosamente',
+    });
+}
+
+//Activa el usuario de la DBA
+export const activateTipoContacto = async (req: Request, res: Response) => {
+    const { tipo_contacto } = req.body;
+
+    const _cont = await TipoContacto.findOne({
+        where: {tipo_contacto: tipo_contacto}
+    });
+    if(!_cont){
+        return res.status(404).json({
+            msg: "El tipo de Contacto no existe: "+ tipo_contacto
+        });
+    }
+
+    await _cont.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Tipo de Contacto: '+ tipo_contacto+  ' ha sido activado exitosamente',
+    });
+}
 
 
 

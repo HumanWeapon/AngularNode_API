@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateTipoDireccion = exports.deleteTipoDireccion = exports.postTipoDireccion = exports.getTipoDireccion = exports.getAllTipoDirecciones = void 0;
+exports.activateTipoDireccion = exports.inactivateTipoDireccion = exports.updateTipoDireccion = exports.deleteTipoDireccion = exports.postTipoDireccion = exports.getTipoDireccion = exports.getAllTipoDirecciones = void 0;
 const tipoDireccion_models_1 = require("../../models/negocio/tipoDireccion-models");
 //Obtiene todos las direcciones de la base de datos
 const getAllTipoDirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -126,6 +126,44 @@ const updateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, func
     });
 });
 exports.updateTipoDireccion = updateTipoDireccion;
+//Inactiva el usuario de la DBA
+const inactivateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tipo_direccion } = req.body;
+    const _direc = yield tipoDireccion_models_1.TipoDireccion.findOne({
+        where: { tipo_direccion: tipo_direccion }
+    });
+    if (!_direc) {
+        return res.status(404).json({
+            msg: "El tipo de Direccion no existe: " + tipo_direccion
+        });
+    }
+    yield _direc.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'El Tipo de Direccion: ' + tipo_direccion + ' inactivado exitosamente',
+    });
+});
+exports.inactivateTipoDireccion = inactivateTipoDireccion;
+//Activa el usuario de la DBA
+const activateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tipo_direccion } = req.body;
+    const _direc = yield tipoDireccion_models_1.TipoDireccion.findOne({
+        where: { tipo_direccion: tipo_direccion }
+    });
+    if (!_direc) {
+        return res.status(404).json({
+            msg: "El tipo de Direccion no existe: " + tipo_direccion
+        });
+    }
+    yield _direc.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'El tipo de Direccion: ' + tipo_direccion + ' ha sido activado exitosamente',
+    });
+});
+exports.activateTipoDireccion = activateTipoDireccion;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
  */ 

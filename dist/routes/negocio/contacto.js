@@ -12,6 +12,8 @@ routerContacto.get('/getContacto', validarToken_1.default, contacto_controller_1
 routerContacto.post('/postContacto', validarToken_1.default, contacto_controller_1.postContacto); // Inserta una dirección en la base de datos
 routerContacto.delete('/deleteContacto', validarToken_1.default, contacto_controller_1.deleteContacto); //Elimina una dirección en la base de datos
 routerContacto.post('/updateContacto', validarToken_1.default, contacto_controller_1.updateContacto); // actualiza una dirección en la base de datos
+routerContacto.post('/inactivateContacto', validarToken_1.default, contacto_controller_1.inactivateContacto); //Inactiva una Pyme en la DB
+routerContacto.post('/activateContacto', validarToken_1.default, contacto_controller_1.activateContacto); //Activa una Pyme en la DB
 exports.default = routerContacto;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932

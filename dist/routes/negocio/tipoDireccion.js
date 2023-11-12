@@ -12,6 +12,8 @@ routerTipoDireccion.get('/getTipoDireccion', validarToken_1.default, tipoDirecci
 routerTipoDireccion.post('/postTipoDireccion', validarToken_1.default, tipoDireccion_controller_1.postTipoDireccion); // Inserta una dirección en la base de datos
 routerTipoDireccion.delete('/deleteTipoDireccion', validarToken_1.default, tipoDireccion_controller_1.deleteTipoDireccion); //Elimina una dirección en la base de datos
 routerTipoDireccion.post('/updateTipoDireccion', validarToken_1.default, tipoDireccion_controller_1.updateTipoDireccion); // actualiza una dirección en la base de datos
+routerTipoDireccion.post('/inactivateTipoDireccion', validarToken_1.default, tipoDireccion_controller_1.inactivateTipoDireccion); //Inactiva una Direccion en la DB
+routerTipoDireccion.post('/activateTipoDireccion', validarToken_1.default, tipoDireccion_controller_1.activateTipoDireccion); //Activa una Direccion en la DB
 exports.default = routerTipoDireccion;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932

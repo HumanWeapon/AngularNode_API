@@ -126,6 +126,47 @@ export const updateTipoDireccion = async (req: Request, res: Response) => {
     });
 }
 
+//Inactiva el usuario de la DBA
+export const inactivateTipoDireccion = async (req: Request, res: Response) => {
+    const { tipo_direccion } = req.body;
+
+    const _direc = await TipoDireccion.findOne({
+        where: {tipo_direccion: tipo_direccion}
+    });
+    if(!_direc){
+        return res.status(404).json({
+            msg: "El tipo de Direccion no existe: "+ tipo_direccion
+        });
+    }
+
+    await _direc.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'El Tipo de Direccion: '+tipo_direccion+  ' inactivado exitosamente',
+    });
+}
+
+//Activa el usuario de la DBA
+export const activateTipoDireccion = async (req: Request, res: Response) => {
+    const { tipo_direccion } = req.body;
+
+    const _direc = await TipoDireccion.findOne({
+        where: {tipo_direccion: tipo_direccion}
+    });
+    if(!_direc){
+        return res.status(404).json({
+            msg: "El tipo de Direccion no existe: "+ tipo_direccion
+        });
+    }
+
+    await _direc.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'El tipo de Direccion: '+ tipo_direccion+  ' ha sido activado exitosamente',
+    });
+}
 
 
 

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateContacto = exports.deleteContacto = exports.postContacto = exports.getContacto = exports.getAllContactos = void 0;
+exports.activateContacto = exports.inactivateContacto = exports.updateContacto = exports.deleteContacto = exports.postContacto = exports.getContacto = exports.getAllContactos = void 0;
 const contacto_models_1 = require("../../models/negocio/contacto-models");
 //Obtiene todos las ciudades de la base de datos
 const getAllContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -133,6 +133,44 @@ const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
     });
 });
 exports.updateContacto = updateContacto;
+//Inactiva el usuario de la DBA
+const inactivateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { primer_nombre } = req.body;
+    const _contacto = yield contacto_models_1.Contacto.findOne({
+        where: { primer_nombre: primer_nombre }
+    });
+    if (!_contacto) {
+        return res.status(404).json({
+            msg: "El Contacto no existe: " + primer_nombre
+        });
+    }
+    yield _contacto.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Contacto: ' + primer_nombre + ' inactivado exitosamente',
+    });
+});
+exports.inactivateContacto = inactivateContacto;
+//Activa el usuario de la DBA
+const activateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { primer_nombre } = req.body;
+    const _contacto = yield contacto_models_1.Contacto.findOne({
+        where: { primer_nombre: primer_nombre }
+    });
+    if (!_contacto) {
+        return res.status(404).json({
+            msg: "El Contacto no existe: " + primer_nombre
+        });
+    }
+    yield _contacto.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Contacto: ' + primer_nombre + ' ha sido activado exitosamente',
+    });
+});
+exports.activateContacto = activateContacto;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
  */ 

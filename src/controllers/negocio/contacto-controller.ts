@@ -133,7 +133,47 @@ export const updateContacto = async (req: Request, res: Response) => {
     });
 }
 
+//Inactiva el usuario de la DBA
+export const inactivateContacto = async (req: Request, res: Response) => {
+    const { primer_nombre } = req.body;
 
+    const _contacto = await Contacto.findOne({
+        where: {primer_nombre: primer_nombre}
+    });
+    if(!_contacto){
+        return res.status(404).json({
+            msg: "El Contacto no existe: "+ primer_nombre
+        });
+    }
+
+    await _contacto.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Contacto: '+ primer_nombre+  ' inactivado exitosamente',
+    });
+}
+
+//Activa el usuario de la DBA
+export const activateContacto = async (req: Request, res: Response) => {
+    const { primer_nombre } = req.body;
+
+    const _contacto = await Contacto.findOne({
+        where: {primer_nombre: primer_nombre}
+    });
+    if(!_contacto){
+        return res.status(404).json({
+            msg: "El Contacto no existe: "+ primer_nombre
+        });
+    }
+
+    await _contacto.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Contacto: '+ primer_nombre+  ' ha sido activado exitosamente',
+    });
+}
 
 
 
