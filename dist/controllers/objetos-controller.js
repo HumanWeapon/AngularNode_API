@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateObjetos = exports.deleteObjeto = exports.postObjeto = exports.getObjeto = exports.getAllObjetos = void 0;
+exports.activateObjeto = exports.inactivateObjecto = exports.updateObjetos = exports.deleteObjeto = exports.postObjeto = exports.getObjeto = exports.getAllObjetos = void 0;
 const objetos_models_1 = require("../models/objetos-models");
 //Obtiene todos los objetos de la base de datos
 const getAllObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -126,3 +126,41 @@ const updateObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     });
 });
 exports.updateObjetos = updateObjetos;
+//Inactiva el usuario de la DBA
+const inactivateObjecto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { objeto } = req.body;
+    const _objeto = yield objetos_models_1.Objetos.findOne({
+        where: { objeto: objeto }
+    });
+    if (!_objeto) {
+        return res.status(404).json({
+            msg: "El Objeto no existe: " + objeto
+        });
+    }
+    yield _objeto.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Objeto: ' + objeto + ' inactivado exitosamente',
+    });
+});
+exports.inactivateObjecto = inactivateObjecto;
+//Activa el usuario de la DBA
+const activateObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { objeto } = req.body;
+    const _objeto = yield objetos_models_1.Objetos.findOne({
+        where: { objeto: objeto }
+    });
+    if (!_objeto) {
+        return res.status(404).json({
+            msg: "El Objeto no existe: " + objeto
+        });
+    }
+    yield _objeto.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Objeto: ' + objeto + ' ha sido activado exitosamente',
+    });
+});
+exports.activateObjeto = activateObjeto;

@@ -125,3 +125,45 @@ export const updateObjetos = async (req: Request, res: Response) => {
         msg: 'El Objeto con el ID: '+ id_objeto+  ' ha sido actualizado exitosamente',
     });
 }
+
+//Inactiva el usuario de la DBA
+export const inactivateObjecto = async (req: Request, res: Response) => {
+    const { objeto } = req.body;
+
+    const _objeto = await Objetos.findOne({
+        where: {objeto: objeto}
+    });
+    if(!_objeto){
+        return res.status(404).json({
+            msg: "El Objeto no existe: "+ objeto
+        });
+    }
+
+    await _objeto.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Objeto: '+ objeto+  ' inactivado exitosamente',
+    });
+}
+
+//Activa el usuario de la DBA
+export const activateObjeto = async (req: Request, res: Response) => {
+    const { objeto } = req.body;
+
+    const _objeto = await Objetos.findOne({
+        where: {objeto: objeto}
+    });
+    if(!_objeto){
+        return res.status(404).json({
+            msg: "El Objeto no existe: "+ objeto
+        });
+    }
+
+    await _objeto.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Objeto: '+ objeto+  ' ha sido activado exitosamente',
+    });
+}

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
+exports.activatePermiso = exports.inactivatePermiso = exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
 const permisos_models_1 = require("../models/permisos-models");
 const roles_models_1 = require("../models/roles-models");
 const objetos_models_1 = require("../models/objetos-models");
@@ -184,3 +184,41 @@ const updatePermisos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     });
 });
 exports.updatePermisos = updatePermisos;
+//Inactiva el usuario de la DBA
+const inactivatePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_permisos } = req.body;
+    const _permiso = yield permisos_models_1.Permisos.findOne({
+        where: { id_permisos: id_permisos }
+    });
+    if (!_permiso) {
+        return res.status(404).json({
+            msg: "El Permiso no existe: " + id_permisos
+        });
+    }
+    yield _permiso.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Permiso: ' + id_permisos + ' inactivado exitosamente',
+    });
+});
+exports.inactivatePermiso = inactivatePermiso;
+//Activa el usuario de la DBA
+const activatePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_permisos } = req.body;
+    const _permiso = yield permisos_models_1.Permisos.findOne({
+        where: { id_permisos: id_permisos }
+    });
+    if (!_permiso) {
+        return res.status(404).json({
+            msg: "El Permiso no existe: " + id_permisos
+        });
+    }
+    yield _permiso.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Permiso: ' + id_permisos + ' ha sido activado exitosamente',
+    });
+});
+exports.activatePermiso = activatePermiso;

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateRoles = exports.deleteRol = exports.postRol = exports.getRol = exports.getAllRoles = void 0;
+exports.activateRol = exports.inactivateRol = exports.updateRoles = exports.deleteRol = exports.postRol = exports.getRol = exports.getAllRoles = void 0;
 const roles_models_1 = require("../models/roles-models");
 //Obtiene todos los roles de la base de datos
 const getAllRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -122,3 +122,41 @@ const updateRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     });
 });
 exports.updateRoles = updateRoles;
+//Inactiva el usuario de la DBA
+const inactivateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { rol } = req.body;
+    const _rol = yield roles_models_1.Roles.findOne({
+        where: { rol: rol }
+    });
+    if (!_rol) {
+        return res.status(404).json({
+            msg: "El Rol no existe: " + rol
+        });
+    }
+    yield _rol.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Rol: ' + rol + ' inactivado exitosamente',
+    });
+});
+exports.inactivateRol = inactivateRol;
+//Activa el usuario de la DBA
+const activateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { rol } = req.body;
+    const _rol = yield roles_models_1.Roles.findOne({
+        where: { rol: rol }
+    });
+    if (!_rol) {
+        return res.status(404).json({
+            msg: "El Rol no existe: " + rol
+        });
+    }
+    yield _rol.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Rol: ' + rol + ' ha sido activado exitosamente',
+    });
+});
+exports.activateRol = activateRol;

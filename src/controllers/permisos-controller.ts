@@ -197,3 +197,45 @@ export const updatePermisos = async (req: Request, res: Response) => {
         msg: 'El permiso ha sido actualizado exitosamente',
     });
 }
+
+//Inactiva el usuario de la DBA
+export const inactivatePermiso = async (req: Request, res: Response) => {
+    const { id_permisos } = req.body;
+
+    const _permiso = await Permisos.findOne({
+        where: {id_permisos: id_permisos}
+    });
+    if(!_permiso){
+        return res.status(404).json({
+            msg: "El Permiso no existe: "+ id_permisos
+        });
+    }
+
+    await _permiso.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Permiso: '+ id_permisos+  ' inactivado exitosamente',
+    });
+}
+
+//Activa el usuario de la DBA
+export const activatePermiso = async (req: Request, res: Response) => {
+    const { id_permisos } = req.body;
+
+    const _permiso= await Permisos.findOne({
+        where: {id_permisos:id_permisos}
+    });
+    if(!_permiso){
+        return res.status(404).json({
+            msg: "El Permiso no existe: "+ id_permisos
+        });
+    }
+
+    await _permiso.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Permiso: '+ id_permisos+  ' ha sido activado exitosamente',
+    });
+}

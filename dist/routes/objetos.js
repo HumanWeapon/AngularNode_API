@@ -12,4 +12,6 @@ routerObjetos.get('/getObjeto', validarToken_1.default, objetos_controller_1.get
 routerObjetos.post('/postObjeto', validarToken_1.default, objetos_controller_1.postObjeto); // Inserta un objeto en la base de datos
 routerObjetos.delete('/deleteObjeto', validarToken_1.default, objetos_controller_1.deleteObjeto); //Elimina un objeto en la base de datos
 routerObjetos.post('/updateObjetos', validarToken_1.default, objetos_controller_1.updateObjetos); // actualiza un objeto en la base de datos
+routerObjetos.post('/inactivateObjeto', validarToken_1.default, objetos_controller_1.inactivateObjecto); //Inactiva una Pyme en la DB
+routerObjetos.post('/activateObjeto', validarToken_1.default, objetos_controller_1.activateObjeto); //Activa una Pyme en la DB
 exports.default = routerObjetos;

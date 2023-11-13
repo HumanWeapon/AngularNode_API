@@ -121,3 +121,45 @@ export const updateRoles = async (req: Request, res: Response) => {
         msg: 'El Rol con el ID: '+ id_rol+  ' ha sido actualizado exitosamente',
     });
 }
+
+//Inactiva el usuario de la DBA
+export const inactivateRol = async (req: Request, res: Response) => {
+    const { rol } = req.body;
+
+    const _rol = await Roles.findOne({
+        where: {rol: rol}
+    });
+    if(!_rol){
+        return res.status(404).json({
+            msg: "El Rol no existe: "+ rol
+        });
+    }
+
+    await _rol.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Rol: '+ rol+  ' inactivado exitosamente',
+    });
+}
+
+//Activa el usuario de la DBA
+export const activateRol = async (req: Request, res: Response) => {
+    const { rol } = req.body;
+
+    const _rol = await Roles.findOne({
+        where: {rol: rol}
+    });
+    if(!_rol){
+        return res.status(404).json({
+            msg: "El Rol no existe: "+ rol
+        });
+    }
+
+    await _rol.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Rol: '+ rol+  ' ha sido activado exitosamente',
+    });
+}

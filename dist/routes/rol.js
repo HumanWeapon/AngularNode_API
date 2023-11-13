@@ -12,4 +12,6 @@ routerRoles.get('/getRol', validarToken_1.default, roles_controller_1.getRol); /
 routerRoles.post('/postRol', validarToken_1.default, roles_controller_1.postRol); // Inserta Roles en la base de datos
 routerRoles.delete('/deleteRol', validarToken_1.default, roles_controller_1.deleteRol); // Elimina Rol en la base de datos
 routerRoles.post('/updateRoles', validarToken_1.default, roles_controller_1.updateRoles); // actualiza rol en la base de datos
+routerRoles.post('/inactivateRol', validarToken_1.default, roles_controller_1.inactivateRol); //Inactiva una Pyme en la DB
+routerRoles.post('/activateRol', validarToken_1.default, roles_controller_1.activateRol); //Activa una Pyme en la DB
 exports.default = routerRoles;

@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validarToken from './validarToken';
-import { deletePermiso, getAllPermisos, getPermiso, postPermiso, updatePermisos } from '../controllers/permisos-controller';
+import { activatePermiso, deletePermiso, getAllPermisos, getPermiso, inactivatePermiso, postPermiso, updatePermisos } from '../controllers/permisos-controller';
 
 const routerPermisos = Router()
 
@@ -9,5 +9,7 @@ routerPermisos.get('/getPermiso',validarToken, getPermiso);//Muestra un Permiso 
 routerPermisos.post('/postPermiso',validarToken, postPermiso); // Inserta Permisos en la base de datos
 routerPermisos.delete('/deletePermiso',validarToken, deletePermiso); // Elimina Permiso en la base de datos
 routerPermisos.post('/updatePermisos',validarToken, updatePermisos); // actualiza permiso en la base de datos
+routerPermisos.post('/inactivatePermiso',validarToken, inactivatePermiso);//Inactiva una Pyme en la DB
+routerPermisos.post('/activatePermiso',validarToken, activatePermiso);//Activa una Pyme en la DB
 
 export default routerPermisos;
