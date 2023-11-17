@@ -39,6 +39,7 @@ const Tipo_Requisito_1 = __importDefault(require("../routes/negocio/Tipo_Requisi
 const productos_1 = __importDefault(require("../routes/negocio/productos"));
 const empresas_1 = __importDefault(require("../routes/negocio/empresas"));
 const operacionEmpresas_1 = __importDefault(require("../routes/negocio/operacionEmpresas"));
+const direccionContacto_1 = __importDefault(require("../routes/negocio/direccionContacto"));
 class Server {
     constructor() {
         console.log('Estoy en el constructor');
@@ -77,6 +78,7 @@ class Server {
         this.app.use('/api/productos', productos_1.default);
         this.app.use('/api/empresa', empresas_1.default);
         this.app.use('/api/opempresa', operacionEmpresas_1.default);
+        this.app.use('/api/direcontactos', direccionContacto_1.default);
     }
     midlewares() {
         this.app.use(express_1.default.urlencoded({ extended: true }));
