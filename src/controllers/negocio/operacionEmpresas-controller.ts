@@ -7,7 +7,13 @@ import { Empresas } from '../../models/negocio/empresas-model';
 // Obtiene todas las Empresas
 export const getAllOpEmpresas = async (req: Request, res: Response) => {
     try {
-        const opempresas = await operacionEmpresas.findAll();
+        const opempresas = await operacionEmpresas.findAll({
+            include: [
+                { model: Empresas, as: 'empresa' },
+                { model: Paises, as: 'paises' },
+                { model: Contacto, as: 'contacto' },
+            ],
+        });
         res.json(opempresas);
     } catch (error) {
         console.error('Error al obtener todas las Operaciones de Empresas:', error);

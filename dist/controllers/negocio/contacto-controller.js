@@ -19,16 +19,16 @@ const getAllContactos = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.getAllContactos = getAllContactos;
 //Obtiene un contacto de la base de datos     
 const getContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { contacto } = req.body;
-    const _contacto = yield contacto_models_1.Contacto.findOne({
-        where: { contacto: contacto }
+    const { dni } = req.body;
+    const _contacto = yield contacto_models_1.Contacto.findAll({
+        where: { dni: dni }
     });
     if (_contacto) {
-        res.json({ _contacto });
+        res.json(_contacto);
     }
     else {
         res.status(404).json({
-            msg: `El contacto no existe: ${contacto}`
+            msg: `El contacto con el RTN:${dni} no existe`
         });
     }
 });

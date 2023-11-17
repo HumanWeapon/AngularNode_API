@@ -8,7 +8,7 @@ const validarToken_1 = __importDefault(require(".././validarToken"));
 const contacto_controller_1 = require("../../controllers/negocio/contacto-controller");
 const routerContacto = (0, express_1.Router)();
 routerContacto.get('/getAllContactos', validarToken_1.default, contacto_controller_1.getAllContactos); //consulta todas las direcciónes en la base de datos
-routerContacto.get('/getContacto', validarToken_1.default, contacto_controller_1.getContacto); //consulta una dirección en la base de datos
+routerContacto.post('/getContacto', validarToken_1.default, contacto_controller_1.getContacto); //consulta una dirección en la base de datos
 routerContacto.post('/postContacto', validarToken_1.default, contacto_controller_1.postContacto); // Inserta una dirección en la base de datos
 routerContacto.delete('/deleteContacto', validarToken_1.default, contacto_controller_1.deleteContacto); //Elimina una dirección en la base de datos
 routerContacto.post('/updateContacto', validarToken_1.default, contacto_controller_1.updateContacto); // actualiza una dirección en la base de datos

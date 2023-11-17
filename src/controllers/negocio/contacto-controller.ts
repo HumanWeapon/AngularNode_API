@@ -13,21 +13,21 @@ export const getAllContactos = async (req: Request, res: Response) => {
 
 //Obtiene un contacto de la base de datos     
 export const getContacto = async (req: Request, res: Response) => {
-    const { contacto } = req.body;
+    const { dni } = req.body;
 
-    const _contacto = await Contacto.findOne({
-        where: {contacto: contacto}
+    const _contacto = await Contacto.findAll({
+        where: {dni: dni}
     });
     if(_contacto){
-        res.json({_contacto})
+        res.json(_contacto)
     }
     else{
         res.status(404).json({
-            msg: `El contacto no existe: ${contacto}`
+        
+            msg: `El contacto con el RTN:${dni} no existe`
         })
     }
 }
-
 //Inserta un contacto en la base de datos
 export const postContacto = async (req: Request, res: Response) => {
 

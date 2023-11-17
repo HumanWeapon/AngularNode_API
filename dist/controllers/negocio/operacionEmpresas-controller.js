@@ -17,7 +17,13 @@ const empresas_model_1 = require("../../models/negocio/empresas-model");
 // Obtiene todas las Empresas
 const getAllOpEmpresas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const opempresas = yield operacionEmpresas_models_1.operacionEmpresas.findAll();
+        const opempresas = yield operacionEmpresas_models_1.operacionEmpresas.findAll({
+            include: [
+                { model: empresas_model_1.Empresas, as: 'empresa' },
+                { model: paises_models_1.Paises, as: 'paises' },
+                { model: contacto_models_1.Contacto, as: 'contacto' },
+            ],
+        });
         res.json(opempresas);
     }
     catch (error) {
