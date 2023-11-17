@@ -46,7 +46,7 @@ const postCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
         }
         else {
-            yield categoria_models_1.Categorias.create({
+            const categorias = yield categoria_models_1.Categorias.create({
                 categoria: categoria,
                 descripcion: descripcion,
                 creado_por: creado_por,
@@ -55,9 +55,7 @@ const postCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
-            res.json({
-                msg: 'La categoria: ' + categoria + ' ha sido creada exitosamente',
-            });
+            res.json(categorias);
         }
     }
     catch (error) {
@@ -77,9 +75,7 @@ const deleteCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
         if (_categoria) {
             yield _categoria.destroy();
-            res.json({
-                msg: 'La categoria con el ID: ' + id_categoria + ' ha sido eliminada exitosamente',
-            });
+            res.json(_categoria);
         }
         else {
             res.status(404).json({
@@ -106,7 +102,7 @@ const updateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function
             msg: "La categoria con el ID: " + id_categoria + " no existe"
         });
     }
-    yield catego.update({
+    const _categoria = yield catego.update({
         id_categoria: id_categoria,
         categoria: categoria,
         descripcion: descripcion,
@@ -116,46 +112,40 @@ const updateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function
         fecha_modificacion: fecha_modificacion,
         estado: estado
     });
-    res.json({
-        msg: 'Categoria: ' + catego + ' ha sido actualizado exitosamente',
-    });
+    res.json(_categoria);
 });
 exports.updateCategoria = updateCategoria;
 //Inactiva el usuario de la DBA
 const inactivateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { categoria } = req.body;
+    const { id_categoria } = req.body;
     const cate = yield categoria_models_1.Categorias.findOne({
-        where: { categoria: categoria }
+        where: { id_categoria: id_categoria }
     });
     if (!cate) {
         return res.status(404).json({
-            msg: "La Categoria no existe: " + categoria
+            msg: "La Categoria no existe: " + id_categoria
         });
     }
-    yield cate.update({
+    const _categoria = yield cate.update({
         estado: 2
     });
-    res.json({
-        msg: 'Categoria: ' + categoria + ' inactivado exitosamente',
-    });
+    res.json(_categoria);
 });
 exports.inactivateCategoria = inactivateCategoria;
 //Activa el usuario de la DBA
 const activateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { categoria } = req.body;
+    const { id_categoria } = req.body;
     const cate = yield categoria_models_1.Categorias.findOne({
-        where: { categoria: categoria }
+        where: { id_categoria: id_categoria }
     });
     if (!cate) {
         return res.status(404).json({
-            msg: "La Categoria no existe: " + categoria
+            msg: "La Categoria no existe: " + id_categoria
         });
     }
-    yield cate.update({
+    const _categoria = yield cate.update({
         estado: 1
     });
-    res.json({
-        msg: 'Categoria: ' + categoria + ' ha sido activado exitosamente',
-    });
+    res.json(_categoria);
 });
 exports.activateCategoria = activateCategoria;

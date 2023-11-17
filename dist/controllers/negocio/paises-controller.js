@@ -40,7 +40,7 @@ const postPais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const _pais = yield paises_models_1.Paises.findOne({
             where: { pais: pais }
         });
-        yield paises_models_1.Paises.create({
+        const paises = yield paises_models_1.Paises.create({
             pais: pais,
             descripcion: descripcion,
             creado_por: creado_por,
@@ -49,9 +49,7 @@ const postPais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             fecha_modificacion: Date.now(),
             estado: estado
         });
-        res.json({
-            msg: 'El Pais: ' + pais + ' ha sido creado exitosamente',
-        });
+        res.json(paises);
         //hola
     }
     catch (error) {

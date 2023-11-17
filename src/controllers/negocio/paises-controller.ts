@@ -38,7 +38,7 @@ export const postPais = async (req: Request, res: Response) => {
             where: {pais: pais}
         })
     
-            await Paises.create({
+            const paises = await Paises.create({
                 pais: pais,
                 descripcion: descripcion, 
                 creado_por: creado_por,
@@ -47,9 +47,7 @@ export const postPais = async (req: Request, res: Response) => {
                 fecha_modificacion: Date.now(),
                 estado: estado
             })
-            res.json({
-                msg: 'El Pais: '+ pais+  ' ha sido creado exitosamente',
-            })
+            res.json(paises)
         //hola
     }
     catch (error){
