@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.pymesAllTipoEmpresa = exports.activatePyme = exports.inactivatePyme = exports.updatePyme = exports.deletePyme = exports.postPyme = exports.getPyme = exports.getAllPymes = void 0;
 const pyme_models_1 = require("../../models/negocio/pyme-models");
-const tipo_empresa_models_1 = require("../../models/negocio/tipo_empresa-models");
+const tipoEmpresa_models_1 = require("../../models/negocio/tipoEmpresa-models");
 //Obtiene todas las Pymes
 const getAllPymes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const pyme = yield pyme_models_1.Pyme.findAll();
@@ -162,7 +162,7 @@ const pymesAllTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, func
         const pyme = yield pyme_models_1.Pyme.findAll({
             include: [
                 {
-                    model: tipo_empresa_models_1.tipoEmpresa,
+                    model: tipoEmpresa_models_1.tipoEmpresa,
                     as: 'tipoEmpresa' // Usa el mismo alias que en la definición de la asociación
                 },
             ],

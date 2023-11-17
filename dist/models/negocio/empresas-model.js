@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Empresas = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../../db/connection"));
-const tipo_empresa_models_1 = require("./tipo_empresa-models");
+const tipoEmpresa_models_1 = require("./tipoEmpresa-models");
 exports.Empresas = connection_1.default.define('empresas', {
     id_empresa: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -50,7 +50,7 @@ exports.Empresas = connection_1.default.define('empresas', {
     schema: 'mipyme',
     timestamps: false
 });
-exports.Empresas.belongsTo(tipo_empresa_models_1.tipoEmpresa, {
+exports.Empresas.belongsTo(tipoEmpresa_models_1.tipoEmpresa, {
     foreignKey: 'id_tipo_empresa',
     as: 'tipoEmpresa' // Alias para la relación
 });

@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
-import { tipoEmpresa } from './tipo_empresa-models'
+import { tipoEmpresa } from './tipoEmpresa-models';
 
 export const Empresas: any = dataBase.define('empresas', {
     id_empresa: {

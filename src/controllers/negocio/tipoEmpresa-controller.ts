@@ -1,19 +1,19 @@
 import {Request, Response} from 'express';
-import { TipoEmpresa } from '../../models/negocio/tipoEmpresa-models';
+import { tipoEmpresa } from '../../models/negocio/tipoEmpresa-models';
 import jwt from 'jsonwebtoken';
 
 
 //Obtiene todos los registros de la base de datos
 export const getAllTipoEmpresa = async (req: Request, res: Response) => {
 
-    const _emp = await TipoEmpresa.findAll();
+    const _emp = await tipoEmpresa.findAll();
     res.json(_emp )
 }
 //Obtiene un registro de la base de datos     
 export const getTipoEmpresa = async (req: Request, res: Response) => {
     const { tipo_empresa } = req.body;
 
-    const _emp  = await TipoEmpresa.findOne({
+    const _emp  = await tipoEmpresa.findOne({
         where: {tipo_empresa: tipo_empresa}
     });
     if(_emp ){
@@ -32,7 +32,7 @@ export const postTipoEmpresa = async (req: Request, res: Response) => {
     const { tipo_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
     try{
-        const _emp  = await TipoEmpresa.findOne({
+        const _emp  = await tipoEmpresa.findOne({
             where: { tipo_empresa: tipo_empresa }
         });
         if (_emp ) {
@@ -41,7 +41,7 @@ export const postTipoEmpresa = async (req: Request, res: Response) => {
             });
         }
         else {
-            await TipoEmpresa.create({
+            await tipoEmpresa.create({
                 tipo_empresa: tipo_empresa,
                 descripcion: descripcion,
                 creado_por: creado_por,
@@ -67,7 +67,7 @@ export const deleteTipoEmpresa = async (req: Request, res: Response) => {
     const { id_tipo_empresa } = req.body;
 
     try {
-        const _emp = await TipoEmpresa.findOne({
+        const _emp = await tipoEmpresa.findOne({
             where: { id_tipo_empresa: id_tipo_empresa }
         });
         if (_emp) {
@@ -93,7 +93,7 @@ export const deleteTipoEmpresa = async (req: Request, res: Response) => {
 export const updateTipoEmpresa = async (req: Request, res: Response) => {
     const { id_tipo_empresa, tipo_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
 
-    const _emp = await TipoEmpresa.findOne({
+    const _emp = await tipoEmpresa.findOne({
         where: { id_tipo_empresa: id_tipo_empresa }
     });
     if (!_emp) {
@@ -121,7 +121,7 @@ export const updateTipoEmpresa = async (req: Request, res: Response) => {
 export const inactivateTipoEmpresa = async (req: Request, res: Response) => {
     const { tipo_empresa } = req.body;
 
-    const tipempresa = await TipoEmpresa.findOne({
+    const tipempresa = await tipoEmpresa.findOne({
         where: {tipo_empresa: tipo_empresa}
     });
     if(!tipempresa){
@@ -142,7 +142,7 @@ export const inactivateTipoEmpresa = async (req: Request, res: Response) => {
 export const activateTipoEmpresa = async (req: Request, res: Response) => {
     const { tipo_empresa } = req.body;
 
-    const tipempresa = await TipoEmpresa.findOne({
+    const tipempresa = await tipoEmpresa.findOne({
         where: {tipo_empresa: tipo_empresa}
     });
     if(!tipempresa){

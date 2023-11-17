@@ -1,24 +1,25 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
-import { tipoEmpresa } from './tipo_empresa-models'
 import { Paises } from './paises-models';
 import { Contacto } from './contacto-models';
+import { Empresas } from './empresas-model';
 
 export const operacionEmpresas: any = dataBase.define('operacionempresas', {
     id_operacion_empresas: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-      },
-      id_empresa: {
+    },
+    id_empresa: {
         type: DataTypes.INTEGER,
-      },
-      id_tipo_empresa: {
+    },
+    id_pais: {
         type: DataTypes.INTEGER,
-      },
-      id_contacto: {
+        allowNull: false
+    },
+    id_contacto: {
         type: DataTypes.INTEGER,
-      },
+    },
     rtn: {
         type: DataTypes.STRING,
         allowNull: false
@@ -49,11 +50,7 @@ export const operacionEmpresas: any = dataBase.define('operacionempresas', {
     estado: {
         type: DataTypes.NUMBER,
         allowNull: false
-    },
-    id_pais: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      }
+    }
     }, 
     {
     tableName: 'tbl_me_operacion_empresas',
@@ -61,9 +58,9 @@ export const operacionEmpresas: any = dataBase.define('operacionempresas', {
     timestamps: false
 });
 
-operacionEmpresas.belongsTo(tipoEmpresa, {
-    foreignKey: 'id_tipo_empresa',
-    as: 'tipoEmpresa' // Alias para la relación
+operacionEmpresas.belongsTo(Empresas, {
+    foreignKey: 'id_empresa',
+    as: 'empresa' // Alias para la relación
 });
 
 operacionEmpresas.belongsTo(Paises, {

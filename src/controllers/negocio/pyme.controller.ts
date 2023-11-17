@@ -2,8 +2,7 @@ import {Request, Response} from 'express';
 import bcrypt from 'bcrypt';
 import { Pyme } from '../../models/negocio/pyme-models';
 import jwt from 'jsonwebtoken';
-import {TipoEmpresa} from '../../models/negocio/tipoEmpresa-models'
-import { tipoEmpresa } from '../../models/negocio/tipo_empresa-models';
+import { tipoEmpresa } from '../../models/negocio/tipoEmpresa-models';
 
 //Obtiene todas las Pymes
 export const getAllPymes = async (req: Request, res: Response) => {

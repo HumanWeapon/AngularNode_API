@@ -13,14 +13,14 @@ exports.activateTipoEmpresa = exports.inactivateTipoEmpresa = exports.updateTipo
 const tipoEmpresa_models_1 = require("../../models/negocio/tipoEmpresa-models");
 //Obtiene todos los registros de la base de datos
 const getAllTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const _emp = yield tipoEmpresa_models_1.TipoEmpresa.findAll();
+    const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findAll();
     res.json(_emp);
 });
 exports.getAllTipoEmpresa = getAllTipoEmpresa;
 //Obtiene un registro de la base de datos     
 const getTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_empresa } = req.body;
-    const _emp = yield tipoEmpresa_models_1.TipoEmpresa.findOne({
+    const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
         where: { tipo_empresa: tipo_empresa }
     });
     if (_emp) {
@@ -37,7 +37,7 @@ exports.getTipoEmpresa = getTipoEmpresa;
 const postTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
-        const _emp = yield tipoEmpresa_models_1.TipoEmpresa.findOne({
+        const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
             where: { tipo_empresa: tipo_empresa }
         });
         if (_emp) {
@@ -46,7 +46,7 @@ const postTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function
             });
         }
         else {
-            yield tipoEmpresa_models_1.TipoEmpresa.create({
+            yield tipoEmpresa_models_1.tipoEmpresa.create({
                 tipo_empresa: tipo_empresa,
                 descripcion: descripcion,
                 creado_por: creado_por,
@@ -72,7 +72,7 @@ exports.postTipoEmpresa = postTipoEmpresa;
 const deleteTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_tipo_empresa } = req.body;
     try {
-        const _emp = yield tipoEmpresa_models_1.TipoEmpresa.findOne({
+        const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
             where: { id_tipo_empresa: id_tipo_empresa }
         });
         if (_emp) {
@@ -98,7 +98,7 @@ exports.deleteTipoEmpresa = deleteTipoEmpresa;
 //actualiza el registro en la base de datos
 const updateTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_tipo_empresa, tipo_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const _emp = yield tipoEmpresa_models_1.TipoEmpresa.findOne({
+    const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
         where: { id_tipo_empresa: id_tipo_empresa }
     });
     if (!_emp) {
@@ -124,7 +124,7 @@ exports.updateTipoEmpresa = updateTipoEmpresa;
 //Inactiva el usuario de la DBA
 const inactivateTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_empresa } = req.body;
-    const tipempresa = yield tipoEmpresa_models_1.TipoEmpresa.findOne({
+    const tipempresa = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
         where: { tipo_empresa: tipo_empresa }
     });
     if (!tipempresa) {
@@ -143,7 +143,7 @@ exports.inactivateTipoEmpresa = inactivateTipoEmpresa;
 //Activa el usuario de la DBA
 const activateTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_empresa } = req.body;
-    const tipempresa = yield tipoEmpresa_models_1.TipoEmpresa.findOne({
+    const tipempresa = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
         where: { tipo_empresa: tipo_empresa }
     });
     if (!tipempresa) {
