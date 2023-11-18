@@ -59,10 +59,6 @@ export const loginUser = async (req: Request, res: Response) => {
             await user.save();
         }
 
-        if(user.fecha_ultima_conexion == null){
-            return res.json(user.fecha_ultima_conexion);
-        }
-
         // Validar estado del usuario
         if (user.estado_usuario != 1) {
             return res.status(400).json({
@@ -70,11 +66,14 @@ export const loginUser = async (req: Request, res: Response) => {
             });
         }
         // Genera el token
+        if(user.fecha_ultima_conexion == null){
+            return res.json(null);
+        }
         const token = jwt.sign({
             usuario: usuario
         }, process.env.SECRET_KEY || 'Lamers005*');
-            
         res.json(token);
+
     } catch (error) {
         console.error('Error en loginUser:', error);
         if (error instanceof Error) {

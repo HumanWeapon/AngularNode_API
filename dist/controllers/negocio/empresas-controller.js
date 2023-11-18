@@ -130,41 +130,37 @@ const updateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.updateEmpresa = updateEmpresa;
-//Inactiva el usuario de la DBA
+//Inactiva la empresa
 const inactivateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nombre_empresa } = req.body;
+    const { id_empresa } = req.body;
     const empresa = yield empresas_model_1.Empresas.findOne({
-        where: { nombre_empresa: nombre_empresa }
+        where: { id_empresa: id_empresa }
     });
     if (!empresa) {
         return res.status(404).json({
-            msg: "La Empresa no existe: " + nombre_empresa
+            msg: "La Empresa no existe"
         });
     }
     yield empresa.update({
         estado: 2
     });
-    res.json({
-        msg: 'Empresa: ' + nombre_empresa + ' inactivado exitosamente',
-    });
+    res.json('Empresa inactivada');
 });
 exports.inactivateEmpresa = inactivateEmpresa;
-//Activa el usuario de la DBA
+//Activa la empresa
 const activateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nombre_empresa } = req.body;
+    const { id_empresa } = req.body;
     const empresa = yield empresas_model_1.Empresas.findOne({
-        where: { nombre_empresa: nombre_empresa }
+        where: { id_empresa: id_empresa }
     });
     if (!empresa) {
         return res.status(404).json({
-            msg: "La Empresa no existe: " + nombre_empresa
+            msg: "La Empresa no existe"
         });
     }
     yield empresa.update({
         estado: 1
     });
-    res.json({
-        msg: 'Empresa: ' + nombre_empresa + ' ha sido activado exitosamente',
-    });
+    res.json('Empresa activada');
 });
 exports.activateEmpresa = activateEmpresa;

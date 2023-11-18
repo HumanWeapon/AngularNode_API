@@ -7,11 +7,11 @@ const routerUser = Router()
 routerUser.post('/login', loginUser);//Inicia sesión en la DB
 routerUser.post('/postUsuario',validarToken, postUsuario);//Inserta un usuario en la DB
 routerUser.get('/getAllUsuarios',validarToken , getAllUsuarios); // obtiene todos los usuarios
-routerUser.post('/getUsuario',validarToken, getUsuario); // obtiene el usuario especificado
+routerUser.post('/getUsuario', getUsuario); // obtiene el usuario especificado
 routerUser.delete('/deleteUsuario',validarToken, deleteUsuario); // elimina el registro con el usuario especificado
 routerUser.post('/inactivateUsuario',validarToken, inactivateUsuario);//Inactiva un usuario en la DB
 routerUser.post('/activateUsuario',validarToken, activateUsuario);//Activa un usuario en la DB
-routerUser.post('/updateUsuario',validarToken, updateUsuario);//Activa un usuario en la DB
+routerUser.post('/updateUsuario', updateUsuario);//Activa un usuario en la DB
 routerUser.put('/cambiarContrasena',validarToken, cambiarContrasena);//Activa un usuario en la DB
 routerUser.get('/usuariosAllRoles',validarToken, usuariosAllRoles);//Activa un usuario en la DB
 

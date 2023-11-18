@@ -49,9 +49,6 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             user.intentos_fallidos = 0;
             yield user.save();
         }
-        if (user.fecha_ultima_conexion == null) {
-            return res.json(user.fecha_ultima_conexion);
-        }
         // Validar estado del usuario
         if (user.estado_usuario != 1) {
             return res.status(400).json({
@@ -59,6 +56,9 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         // Genera el token
+        if (user.fecha_ultima_conexion == null) {
+            return res.json(null);
+        }
         const token = jsonwebtoken_1.default.sign({
             usuario: usuario
         }, process.env.SECRET_KEY || 'Lamers005*');
