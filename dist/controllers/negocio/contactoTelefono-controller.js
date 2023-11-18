@@ -19,16 +19,16 @@ const getAllContactosTelefono = (req, res) => __awaiter(void 0, void 0, void 0, 
 exports.getAllContactosTelefono = getAllContactosTelefono;
 //Obtiene un contacto de la base de datos     
 const getContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { telefono } = req.body;
-    const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findOne({
-        where: { telefono: telefono }
+    const { id_contacto } = req.body;
+    const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findAll({
+        where: { id_contacto: id_contacto }
     });
     if (_contactoT) {
-        res.json({ _contactoT });
+        res.json(_contactoT);
     }
     else {
         res.status(404).json({
-            msg: `El telefono no existe: ${telefono}`
+            msg: `No existen datos: ${id_contacto}`
         });
     }
 });

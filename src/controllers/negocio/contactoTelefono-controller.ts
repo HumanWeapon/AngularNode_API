@@ -13,17 +13,17 @@ export const getAllContactosTelefono = async (req: Request, res: Response) => {
 
 //Obtiene un contacto de la base de datos     
 export const getContactoTelefono = async (req: Request, res: Response) => {
-    const { telefono } = req.body;
+    const { id_contacto } = req.body;
 
-    const _contactoT = await ContactoTelefono.findOne({
-        where: {telefono: telefono}
+    const _contactoT = await ContactoTelefono.findAll({
+        where: {id_contacto: id_contacto}
     });
     if(_contactoT){
-        res.json({_contactoT})
+        res.json(_contactoT)
     }
     else{
         res.status(404).json({
-            msg: `El telefono no existe: ${telefono}`
+            msg: `No existen datos: ${id_contacto}`
         })
     }
 }

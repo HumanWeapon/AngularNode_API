@@ -9,17 +9,17 @@ export const getAllDirecContactos = async (req: Request, res: Response) => {
 
 //Obtiene una Empresa por ID
 export const getDirecContactos = async (req: Request, res: Response) => {
-    const { id_direccion } = req.body;
+    const { id_contacto } = req.body;
 
-    const _direcontactos = await DireccionesContactos.findOne({
-        where: {id_direccion: id_direccion}
+    const _direcontactos = await DireccionesContactos.findAll({
+        where: {id_contacto: id_contacto}
     });
     if(_direcontactos){
         res.json(_direcontactos)
     }
     else{
         res.status(404).json({
-            msg: `el ID de la Direccion Contacto no existe: ${id_direccion}`
+            msg: `el ID de la Direccion Contacto no existe: ${id_contacto}`
         })
     }
 }

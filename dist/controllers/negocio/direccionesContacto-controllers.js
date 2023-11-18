@@ -19,16 +19,16 @@ const getAllDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.getAllDirecContactos = getAllDirecContactos;
 //Obtiene una Empresa por ID
 const getDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_direccion } = req.body;
-    const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findOne({
-        where: { id_direccion: id_direccion }
+    const { id_contacto } = req.body;
+    const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findAll({
+        where: { id_contacto: id_contacto }
     });
     if (_direcontactos) {
         res.json(_direcontactos);
     }
     else {
         res.status(404).json({
-            msg: `el ID de la Direccion Contacto no existe: ${id_direccion}`
+            msg: `el ID de la Direccion Contacto no existe: ${id_contacto}`
         });
     }
 });
