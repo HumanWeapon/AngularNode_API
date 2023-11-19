@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
+import { Categorias} from './categoria-models';
 
 export const Productos: any = dataBase.define('productos', {
     id_producto: {
@@ -45,4 +46,9 @@ export const Productos: any = dataBase.define('productos', {
     tableName: 'tbl_me_productos',
     schema: 'mipyme',
     timestamps: false
-})
+});
+
+Productos.belongsTo(Categorias, {
+    foreignKey: 'id_categoria',
+    as: 'categoria' // Alias para la relación
+});

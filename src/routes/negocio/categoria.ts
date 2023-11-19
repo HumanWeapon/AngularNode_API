@@ -1,7 +1,7 @@
 // Elaborado Por Breydy Flores
 import {Router} from 'express';
 import validarToken from '.././validarToken';
-import { activateCategoria, deleteCategoria, getAllCategorias, getCategoria, inactivateCategoria, postCategoria, updateCategoria } from '../../controllers/negocio/categoria-controller';
+import { activateCategoria, deleteCategoria, getAllCategorias, getAllProductosByCategoria, getCategoria, inactivateCategoria, postCategoria, updateCategoria } from '../../controllers/negocio/categoria-controller';
 
 const routerCategoria = Router()
 
@@ -12,6 +12,8 @@ routerCategoria.delete('/deleteCategoria',validarToken, deleteCategoria); //Elim
 routerCategoria.post('/updateCategoria',validarToken, updateCategoria); // actualiza una categoria en la base de datos
 routerCategoria.post('/inactivateCategoria',validarToken, inactivateCategoria);//Inactiva una Categoria en la DB
 routerCategoria.post('/activateCategoria',validarToken, activateCategoria);//Activa una Categoria en la DB
+
+routerCategoria.post('/getAllProductosByCategoria', validarToken, getAllProductosByCategoria); // Obtiene la Empresa especificada
 
 export default routerCategoria;
 

@@ -15,4 +15,5 @@ routerCategoria.delete('/deleteCategoria', validarToken_1.default, categoria_con
 routerCategoria.post('/updateCategoria', validarToken_1.default, categoria_controller_1.updateCategoria); // actualiza una categoria en la base de datos
 routerCategoria.post('/inactivateCategoria', validarToken_1.default, categoria_controller_1.inactivateCategoria); //Inactiva una Categoria en la DB
 routerCategoria.post('/activateCategoria', validarToken_1.default, categoria_controller_1.activateCategoria); //Activa una Categoria en la DB
+routerCategoria.post('/getAllProductosByCategoria', validarToken_1.default, categoria_controller_1.getAllProductosByCategoria); // Obtiene la Empresa especificada
 exports.default = routerCategoria;

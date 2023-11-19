@@ -2,6 +2,7 @@
 import {Request, Response} from 'express';
 import { Categorias } from '../../models/negocio/categoria-models';
 import jwt from 'jsonwebtoken';
+import { Productos } from '../../models/negocio/productos-models';
 
 //Obtiene todos las categorias de productos de la base de datos
 export const getAllCategorias = async (req: Request, res: Response) => {
@@ -167,3 +168,31 @@ export const activateCategoria = async (req: Request, res: Response) => {
     });
     res.json(_categoria);
 }
+
+// Obtiene una Empresa por ID con información adicional de las tablas relacionadas
+export const getAllProductosByCategoria = async (req: Request, res: Response) => {
+    try {
+        const { id_categoria } = req.body;
+
+        // Realiza la consulta con la información adicional de las tablas relacionadas
+        const _procate = await Categorias.findOne({
+            where: { id_categoria: id_categoria },
+            include: [
+                { model: Productos, as: 'producto' },
+            ],
+        });
+
+        if (_procate) {
+            res.json(_procate);
+        } else {
+            res.status(404).json({
+                msg: `El ID de la Operacion Empresa no existe: ${id_categoria}`,
+            });
+        }
+    } catch (error) {
+        console.error('Error al obtener la Operacion Empresa por ID:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+        });
+    }
+};

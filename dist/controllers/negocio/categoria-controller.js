@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateCategoria = exports.inactivateCategoria = exports.updateCategoria = exports.deleteCategoria = exports.postCategoria = exports.getCategoria = exports.getAllCategorias = void 0;
+exports.getAllProductosByCategoria = exports.activateCategoria = exports.inactivateCategoria = exports.updateCategoria = exports.deleteCategoria = exports.postCategoria = exports.getCategoria = exports.getAllCategorias = void 0;
 const categoria_models_1 = require("../../models/negocio/categoria-models");
+const productos_models_1 = require("../../models/negocio/productos-models");
 //Obtiene todos las categorias de productos de la base de datos
 const getAllCategorias = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const categoria = yield categoria_models_1.Categorias.findAll();
@@ -149,3 +150,31 @@ const activateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, functi
     res.json(_categoria);
 });
 exports.activateCategoria = activateCategoria;
+// Obtiene una Empresa por ID con información adicional de las tablas relacionadas
+const getAllProductosByCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id_categoria } = req.body;
+        // Realiza la consulta con la información adicional de las tablas relacionadas
+        const _procate = yield categoria_models_1.Categorias.findOne({
+            where: { id_categoria: id_categoria },
+            include: [
+                { model: productos_models_1.Productos, as: 'producto' },
+            ],
+        });
+        if (_procate) {
+            res.json(_procate);
+        }
+        else {
+            res.status(404).json({
+                msg: `El ID de la Operacion Empresa no existe: ${id_categoria}`,
+            });
+        }
+    }
+    catch (error) {
+        console.error('Error al obtener la Operacion Empresa por ID:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+        });
+    }
+});
+exports.getAllProductosByCategoria = getAllProductosByCategoria;
