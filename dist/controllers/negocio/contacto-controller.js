@@ -35,33 +35,24 @@ const getContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getContacto = getContacto;
 //Inserta un contacto en la base de datos
 const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { dni, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { dni, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
-        const _contacto = yield contacto_models_1.Contacto.findOne({
-            where: { dni: dni }
+        const contac = yield contacto_models_1.Contacto.create({
+            dni: dni,
+            id_tipo_contacto: id_tipo_contacto,
+            primer_nombre: primer_nombre,
+            segundo_nombre: segundo_nombre,
+            primer_apellido: primer_apellido,
+            segundo_apellido: segundo_apellido,
+            correo: correo,
+            descripcion: descripcion,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
         });
-        if (_contacto) {
-            return res.status(400).json({
-                msg: 'DNI ya registrada en la base de datos: ' + dni
-            });
-        }
-        else {
-            const contac = yield contacto_models_1.Contacto.create({
-                dni: dni,
-                primer_nombre: primer_nombre,
-                segundo_nombre: segundo_nombre,
-                primer_apellido: primer_apellido,
-                segundo_apellido: segundo_apellido,
-                correo: correo,
-                descripcion: descripcion,
-                creado_por: creado_por,
-                fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
-                fecha_modificacion: fecha_modificacion,
-                estado: estado
-            });
-            res.json(contac);
-        }
+        res.json(contac);
     }
     catch (error) {
         res.status(400).json({
@@ -113,7 +104,6 @@ const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     }
     yield _contacto.update({
-        id_contacto: id_contacto,
         id_tipo_contacto: id_tipo_contacto,
         dni: dni,
         primer_nombre: primer_nombre,

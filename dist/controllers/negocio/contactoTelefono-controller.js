@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
+exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
 const contactoTelefono_models_1 = require("../../models/negocio/contactoTelefono-models");
 //Obtiene todos los contactos de la base de datos
 const getAllContactosTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -131,6 +131,44 @@ const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
     });
 });
 exports.updateContactoTelefono = updateContactoTelefono;
+//Inactiva el usuario de la DBA
+const inactivateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { telefono } = req.body;
+    const _contacto = yield contactoTelefono_models_1.ContactoTelefono.findOne({
+        where: { telefono: telefono }
+    });
+    if (!_contacto) {
+        return res.status(404).json({
+            msg: "El Telefono no existe: " + telefono
+        });
+    }
+    yield _contacto.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Telefono: ' + telefono + ' inactivado exitosamente',
+    });
+});
+exports.inactivateContactoTelefono = inactivateContactoTelefono;
+//Activa el usuario de la DBA
+const activateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { telefono } = req.body;
+    const _contacto = yield contactoTelefono_models_1.ContactoTelefono.findOne({
+        where: { telefono: telefono }
+    });
+    if (!_contacto) {
+        return res.status(404).json({
+            msg: "El Telefono no existe: " + telefono
+        });
+    }
+    yield _contacto.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Telefono: ' + telefono + ' ha sido activado exitosamente',
+    });
+});
+exports.activateContactoTelefono = activateContactoTelefono;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
  */ 

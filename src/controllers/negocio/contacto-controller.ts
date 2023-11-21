@@ -31,34 +31,25 @@ export const getContacto = async (req: Request, res: Response) => {
 //Inserta un contacto en la base de datos
 export const postContacto = async (req: Request, res: Response) => {
 
-    const { dni, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { dni, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
     try{
-        const _contacto = await Contacto.findOne({
-            where: {dni: dni}
+        const contac = await Contacto.create({
+            dni: dni,
+            id_tipo_contacto: id_tipo_contacto,
+            primer_nombre: primer_nombre,
+            segundo_nombre: segundo_nombre,
+            primer_apellido: primer_apellido,
+            segundo_apellido: segundo_apellido,
+            correo: correo,
+            descripcion: descripcion, 
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
         })
-    
-        if (_contacto){
-            return res.status(400).json({
-                msg: 'DNI ya registrada en la base de datos: '+ dni
-            })
-        }else{
-            const contac = await Contacto.create({
-                dni: dni,
-                primer_nombre: primer_nombre,
-                segundo_nombre: segundo_nombre,
-                primer_apellido: primer_apellido,
-                segundo_apellido: segundo_apellido,
-                correo: correo,
-                descripcion: descripcion, 
-                creado_por: creado_por,
-                fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
-                fecha_modificacion: fecha_modificacion,
-                estado: estado
-            })
-            res.json(contac)
-        }
+        res.json(contac)
     }
     catch (error){
         res.status(400).json({
@@ -113,7 +104,6 @@ export const updateContacto = async (req: Request, res: Response) => {
     }
 
     await _contacto.update({
-        id_contacto: id_contacto,
         id_tipo_contacto: id_tipo_contacto,
         dni: dni,
         primer_nombre: primer_nombre,
