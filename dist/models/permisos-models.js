@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Permisos = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
+const roles_models_1 = require("./roles-models");
+const objetos_models_1 = require("./objetos-models");
 exports.Permisos = connection_1.default.define('permisos', {
     id_permisos: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -57,4 +59,12 @@ exports.Permisos = connection_1.default.define('permisos', {
     tableName: 'tbl_ms_permisos',
     schema: 'mipyme',
     timestamps: false
+});
+exports.Permisos.belongsTo(roles_models_1.Roles, {
+    foreignKey: 'id_rol',
+    as: 'roles' // Alias para la relación
+});
+exports.Permisos.belongsTo(objetos_models_1.Objetos, {
+    foreignKey: 'id_objeto',
+    as: 'objetos' // Alias para la relación
 });

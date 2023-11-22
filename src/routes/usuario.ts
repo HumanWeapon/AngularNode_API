@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {updateUsuario, activateUsuario, inactivateUsuario, deleteUsuario, postUsuario, getAllUsuarios, getUsuario, loginUser, cambiarContrasena, usuariosAllRoles } from '../controllers/usuario-controller';
+import {updateUsuario, activateUsuario, inactivateUsuario, deleteUsuario, postUsuario, getAllUsuarios, getUsuario, loginUser, cambiarContrasena, usuariosAllRoles, usuariosAllParametros } from '../controllers/usuario-controller';
 import validarToken from './validarToken';
 
 const routerUser = Router()
@@ -14,5 +14,6 @@ routerUser.post('/activateUsuario',validarToken, activateUsuario);//Activa un us
 routerUser.post('/updateUsuario', updateUsuario);//Activa un usuario en la DB
 routerUser.put('/cambiarContrasena',validarToken, cambiarContrasena);//Activa un usuario en la DB
 routerUser.get('/usuariosAllRoles',validarToken, usuariosAllRoles);//Activa un usuario en la DB
+routerUser.post('/usuariosAllParametros',validarToken, usuariosAllParametros);//Activa un usuario en la DB
 
 export default routerUser;

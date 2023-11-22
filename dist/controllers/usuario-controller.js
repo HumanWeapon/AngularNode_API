@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.usuariosAllRoles = exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.deleteUsuario = exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
+exports.usuariosAllParametros = exports.usuariosAllRoles = exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.deleteUsuario = exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const usuario_models_1 = require("../models/usuario-models");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const roles_models_1 = require("../models/roles-models");
+const permisos_models_1 = require("../models/permisos-models");
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario, contrasena, id_usuario, creado_por, fecha_creacion, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_ultima_conexion, primer_ingreso, fecha_vencimiento, intentos_fallidos } = req.body;
     try {
@@ -49,6 +50,9 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             user.intentos_fallidos = 0;
             yield user.save();
         }
+        if (user.fecha_ultima_conexion == null) {
+            return res.json(user.fecha_ultima_conexion);
+        }
         // Validar estado del usuario
         if (user.estado_usuario != 1) {
             return res.status(400).json({
@@ -56,9 +60,6 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         // Genera el token
-        if (user.fecha_ultima_conexion == null) {
-            return res.json(null);
-        }
         const token = jsonwebtoken_1.default.sign({
             usuario: usuario
         }, process.env.SECRET_KEY || 'Lamers005*');
@@ -273,3 +274,37 @@ const usuariosAllRoles = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.usuariosAllRoles = usuariosAllRoles;
+// Realiza una consulta INNER JOIN entre las tablas Usuario, Roles y Objetos
+const usuariosAllParametros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { usuario } = req.body;
+    try {
+        const Users = yield usuario_models_1.User.findOne({
+            where: { usuario: usuario },
+            include: [
+                {
+                    model: roles_models_1.Roles,
+                    as: 'roles',
+                    include: [
+                        {
+                            model: permisos_models_1.Permisos,
+                            as: 'permisos',
+                            include: [
+                                {
+                                    where: { usuario: usuario },
+                                    model: permisos_models_1.Permisos,
+                                    as: 'permisos',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        });
+        res.json(Users);
+    }
+    catch (error) {
+        console.error('Error al obtener parámetros de usuario:', error);
+        res.status(500).json({ error: 'Error al obtener parámetros de usuario de usuario' });
+    }
+});
+exports.usuariosAllParametros = usuariosAllParametros;

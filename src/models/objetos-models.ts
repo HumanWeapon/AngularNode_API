@@ -40,4 +40,4 @@ export const Objetos: any = dataBase.define('objetos', {
     tableName: 'tbl_ms_objetos',
     schema: 'mipyme',
     timestamps: false
-})
+});

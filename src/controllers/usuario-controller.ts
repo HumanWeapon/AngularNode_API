@@ -1,11 +1,12 @@
-import {Request, Response} from 'express';
+import {Request, Response, request} from 'express';
 import bcrypt from 'bcrypt';
 import { User } from '../models/usuario-models';
 import jwt from 'jsonwebtoken';
 import { Roles } from '../models/roles-models';
+import { Objetos } from '../models/objetos-models';
+import { Permisos } from '../models/permisos-models';
 
 export const loginUser = async (req: Request, res: Response) => {
-
     const {
         usuario,
         contrasena,
@@ -59,6 +60,10 @@ export const loginUser = async (req: Request, res: Response) => {
             await user.save();
         }
 
+        if(user.fecha_ultima_conexion == null){
+            return res.json(user.fecha_ultima_conexion);
+        }
+
         // Validar estado del usuario
         if (user.estado_usuario != 1) {
             return res.status(400).json({
@@ -66,14 +71,11 @@ export const loginUser = async (req: Request, res: Response) => {
             });
         }
         // Genera el token
-        if(user.fecha_ultima_conexion == null){
-            return res.json(null);
-        }
         const token = jwt.sign({
             usuario: usuario
         }, process.env.SECRET_KEY || 'Lamers005*');
+            
         res.json(token);
-
     } catch (error) {
         console.error('Error en loginUser:', error);
         if (error instanceof Error) {
@@ -296,3 +298,36 @@ export const usuariosAllRoles = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
     }
 }
+// Realiza una consulta INNER JOIN entre las tablas Usuario, Roles y Objetos
+export const usuariosAllParametros = async (req: Request, res: Response) => {
+    const { usuario } = req.body;
+    try {
+      const Users = await User.findOne({
+        where: { usuario: usuario },
+        include: [
+          {
+            model: Roles,
+            as: 'roles',
+            include: [
+              {
+                model: Permisos,
+                as: 'permisos',
+                include: [
+                    {
+                      where: { usuario: usuario },
+                      model: Permisos ,
+                      as: 'permisos',
+                    },
+                  ],
+              },
+            ],
+          },
+        ],
+      });
+  
+      res.json(Users);
+    } catch (error) {
+      console.error('Error al obtener parámetros de usuario:', error);
+      res.status(500).json({ error: 'Error al obtener parámetros de usuario de usuario' });
+    }
+  };

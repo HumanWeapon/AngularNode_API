@@ -1,5 +1,7 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../db/connection';
+import { Roles } from './roles-models';
+import { Objetos } from './objetos-models';
 
 export const Permisos: any = dataBase.define('permisos', {
     id_permisos: {
@@ -53,4 +55,12 @@ export const Permisos: any = dataBase.define('permisos', {
     tableName: 'tbl_ms_permisos',
     schema: 'mipyme',
     timestamps: false
-})
+});
+Permisos.belongsTo(Roles, {
+    foreignKey: 'id_rol', // Campo en User que hace referencia a Roles
+    as: 'roles' // Alias para la relación
+});
+Permisos.belongsTo(Objetos, {
+    foreignKey: 'id_objeto', // Campo en User que hace referencia a Roles
+    as: 'objetos' // Alias para la relación
+});
