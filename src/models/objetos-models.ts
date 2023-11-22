@@ -34,6 +34,10 @@ export const Objetos: any = dataBase.define('objetos', {
     fecha_modificacion: {
         type: DataTypes.DATE,
         allowNull: false
+    },
+    estado_objeto: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
     }, 
     {

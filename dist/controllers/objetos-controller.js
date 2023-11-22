@@ -35,7 +35,7 @@ const getObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getObjeto = getObjeto;
 //Inserta un objeto en la base de datos
 const postObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { objeto, descripcion, tipo_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
+    const { objeto, descripcion, tipo_objeto, estado_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
     try {
         const _objeto = yield objetos_models_1.Objetos.findOne({
             where: { objeto: objeto }
@@ -53,11 +53,10 @@ const postObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 creado_por: creado_por,
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
-                fecha_modificacion: fecha_modificacion
+                fecha_modificacion: fecha_modificacion,
+                estado_objeto: estado_objeto
             });
-            res.json({
-                msg: 'El Objeto: ' + objeto + ' ha sido creada exitosamente',
-            });
+            res.json('El Objeto: ' + objeto + ' ha sido creada exitosamente');
         }
     }
     catch (error) {
@@ -66,11 +65,6 @@ const postObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             error
         });
     }
-    /*// Generamos token
-    const token = jwt.sign({
-        usuario: usuario
-    }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);*/
 });
 exports.postObjeto = postObjeto;
 //Elimina un objeto de la base de datos
@@ -121,12 +115,10 @@ const updateObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         modificado_por: modificado_por,
         fecha_modificacion: fecha_modificacion
     });
-    res.json({
-        msg: 'El Objeto con el ID: ' + id_objeto + ' ha sido actualizado exitosamente',
-    });
+    res.json('El Objeto con el ID: ' + id_objeto + ' ha sido actualizado exitosamente');
 });
 exports.updateObjetos = updateObjetos;
-//Inactiva el usuario de la DBA
+//Inactiva el OBJ de la DBA
 const inactivateObjecto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { objeto } = req.body;
     const _objeto = yield objetos_models_1.Objetos.findOne({
@@ -138,11 +130,9 @@ const inactivateObjecto = (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
     }
     yield _objeto.update({
-        estado: 2
+        estado_objeto: 2
     });
-    res.json({
-        msg: 'Objeto: ' + objeto + ' inactivado exitosamente',
-    });
+    res.json('Objeto: ' + objeto + ' inactivado exitosamente');
 });
 exports.inactivateObjecto = inactivateObjecto;
 //Activa el usuario de la DBA
@@ -157,7 +147,7 @@ const activateObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     }
     yield _objeto.update({
-        estado: 1
+        estado_objeto: 1
     });
     res.json({
         msg: 'Objeto: ' + objeto + ' ha sido activado exitosamente',
