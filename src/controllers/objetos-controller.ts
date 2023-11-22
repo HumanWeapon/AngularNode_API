@@ -31,7 +31,7 @@ export const getObjeto = async (req: Request, res: Response) => {
 //Inserta un objeto en la base de datos
 export const postObjeto = async (req: Request, res: Response) => {
 
-    const { objeto, descripcion, tipo_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
+    const { objeto, descripcion, tipo_objeto, estado_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
 
     try{
         const _objeto = await Objetos.findOne({
@@ -50,11 +50,10 @@ export const postObjeto = async (req: Request, res: Response) => {
                 creado_por: creado_por,
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
-                fecha_modificacion: fecha_modificacion
+                fecha_modificacion: fecha_modificacion,
+                estado_objeto: estado_objeto
             })
-            res.json({
-                msg: 'El Objeto: '+ objeto+  ' ha sido creada exitosamente',
-            })
+            res.json('El Objeto: '+ objeto+  ' ha sido creada exitosamente')
         }
     }
     catch (error){
@@ -63,11 +62,6 @@ export const postObjeto = async (req: Request, res: Response) => {
             error
         }); 
     }
-    /*// Generamos token
-    const token = jwt.sign({
-        usuario: usuario
-    }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);*/
 }
 
 //Elimina un objeto de la base de datos
@@ -121,12 +115,10 @@ export const updateObjetos = async (req: Request, res: Response) => {
         modificado_por: modificado_por,
         fecha_modificacion: fecha_modificacion
     });
-    res.json({
-        msg: 'El Objeto con el ID: '+ id_objeto+  ' ha sido actualizado exitosamente',
-    });
+    res.json('El Objeto con el ID: '+ id_objeto+  ' ha sido actualizado exitosamente');
 }
 
-//Inactiva el usuario de la DBA
+//Inactiva el OBJ de la DBA
 export const inactivateObjecto = async (req: Request, res: Response) => {
     const { objeto } = req.body;
 
@@ -140,11 +132,9 @@ export const inactivateObjecto = async (req: Request, res: Response) => {
     }
 
     await _objeto.update({
-        estado: 2
+        estado_objeto: 2
     });
-    res.json({
-        msg: 'Objeto: '+ objeto+  ' inactivado exitosamente',
-    });
+    res.json('Objeto: '+ objeto+  ' inactivado exitosamente');
 }
 
 //Activa el usuario de la DBA
@@ -161,7 +151,7 @@ export const activateObjeto = async (req: Request, res: Response) => {
     }
 
     await _objeto.update({
-        estado: 1
+        estado_objeto: 1
     });
     res.json({
         msg: 'Objeto: '+ objeto+  ' ha sido activado exitosamente',

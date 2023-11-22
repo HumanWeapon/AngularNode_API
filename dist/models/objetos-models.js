@@ -39,6 +39,10 @@ exports.Objetos = connection_1.default.define('objetos', {
     fecha_modificacion: {
         type: sequelize_1.DataTypes.DATE,
         allowNull: false
+    },
+    estado_objeto: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'tbl_ms_objetos',
