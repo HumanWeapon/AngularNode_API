@@ -1,6 +1,8 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
 import { Categorias} from './categoria-models';
+import { Paises } from './paises-models';
+import { Contacto } from './contacto-models';
 
 export const Productos: any = dataBase.define('productos', {
     id_producto: {
@@ -9,6 +11,14 @@ export const Productos: any = dataBase.define('productos', {
         autoIncrement: true
     },
     id_categoria: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+    },
+    id_pais: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+    },
+    id_contacto: {
         type: DataTypes.INTEGER,
         primaryKey: true,
     },
@@ -51,4 +61,13 @@ export const Productos: any = dataBase.define('productos', {
 Productos.belongsTo(Categorias, {
     foreignKey: 'id_categoria',
     as: 'categoria' // Alias para la relación
+});
+Productos.belongsTo(Paises, {
+    foreignKey: 'id_pais',
+    as: 'paises' // Alias para la relación
+});
+
+Productos.belongsTo(Contacto, {
+    foreignKey: 'id_contacto',
+    as: 'contacto' // Alias para la relación
 });

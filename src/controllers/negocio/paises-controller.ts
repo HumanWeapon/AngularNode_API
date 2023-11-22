@@ -15,7 +15,7 @@ export const getAllPaises = async (req: Request, res: Response) => {
 export const getPais = async (req: Request, res: Response) => {
     const { id_pais } = req.body;
 
-    const _pais = await Paises.findOne({
+    const _pais = await Paises.findAll({
         where: {id_pais: id_pais}
     });
     if(_pais){

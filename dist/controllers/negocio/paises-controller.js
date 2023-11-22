@@ -20,7 +20,7 @@ exports.getAllPaises = getAllPaises;
 //Obtiene un Pais por ID
 const getPais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_pais } = req.body;
-    const _pais = yield paises_models_1.Paises.findOne({
+    const _pais = yield paises_models_1.Paises.findAll({
         where: { id_pais: id_pais }
     });
     if (_pais) {

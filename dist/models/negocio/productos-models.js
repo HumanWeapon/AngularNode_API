@@ -7,6 +7,8 @@ exports.Productos = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../../db/connection"));
 const categoria_models_1 = require("./categoria-models");
+const paises_models_1 = require("./paises-models");
+const contacto_models_1 = require("./contacto-models");
 exports.Productos = connection_1.default.define('productos', {
     id_producto: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -14,6 +16,14 @@ exports.Productos = connection_1.default.define('productos', {
         autoIncrement: true
     },
     id_categoria: {
+        type: sequelize_1.DataTypes.INTEGER,
+        primaryKey: true,
+    },
+    id_pais: {
+        type: sequelize_1.DataTypes.INTEGER,
+        primaryKey: true,
+    },
+    id_contacto: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
     },
@@ -53,4 +63,12 @@ exports.Productos = connection_1.default.define('productos', {
 exports.Productos.belongsTo(categoria_models_1.Categorias, {
     foreignKey: 'id_categoria',
     as: 'categoria' // Alias para la relación
+});
+exports.Productos.belongsTo(paises_models_1.Paises, {
+    foreignKey: 'id_pais',
+    as: 'paises' // Alias para la relación
+});
+exports.Productos.belongsTo(contacto_models_1.Contacto, {
+    foreignKey: 'id_contacto',
+    as: 'contacto' // Alias para la relación
 });

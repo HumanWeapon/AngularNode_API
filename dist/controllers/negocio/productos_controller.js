@@ -9,8 +9,56 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateProducto = exports.inactivateProducto = exports.updateProducto = exports.deleteProducto = exports.postProducto = exports.getProductos = exports.getAllProductos = void 0;
+exports.activateProducto = exports.inactivateProducto = exports.updateProducto = exports.deleteProducto = exports.postProducto = exports.getProductos = exports.getAllProductos = exports.getOpProductos = exports.getAllOpProductos = void 0;
 const productos_models_1 = require("../../models/negocio/productos-models");
+const paises_models_1 = require("../../models/negocio/paises-models");
+const contacto_models_1 = require("../../models/negocio/contacto-models");
+const getAllOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const opproductos = yield productos_models_1.Productos.findAll({
+            include: [
+                { model: paises_models_1.Paises, as: 'paises' },
+                { model: contacto_models_1.Contacto, as: 'contacto' },
+            ],
+        });
+        res.json(opproductos);
+    }
+    catch (error) {
+        console.error('Error al obtener todas las Operaciones de Empresas:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+        });
+    }
+});
+exports.getAllOpProductos = getAllOpProductos;
+const getOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id_producto } = req.body;
+        // Realiza la consulta con la información adicional de las tablas relacionadas
+        const _opproducto = yield productos_models_1.Productos.findOne({
+            where: { id_producto: id_producto },
+            include: [
+                { model: paises_models_1.Paises, as: 'paises' },
+                { model: contacto_models_1.Contacto, as: 'contacto' },
+            ],
+        });
+        if (_opproducto) {
+            res.json(_opproducto);
+        }
+        else {
+            res.status(404).json({
+                msg: `El ID de la Operacion Empresa no existe: ${id_producto}`,
+            });
+        }
+    }
+    catch (error) {
+        console.error('Error al obtener la Operacion Empresa por ID:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+        });
+    }
+});
+exports.getOpProductos = getOpProductos;
 //Obtiene todos las categorias de productos de la base de datos
 const getAllProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const producto = yield productos_models_1.Productos.findAll();
@@ -35,7 +83,7 @@ const getProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getProductos = getProductos;
 // Inserta una categoria en la base de datos
 const postProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_categoria, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_categoria, id_contacto, id_pais, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _producto = yield productos_models_1.Productos.findOne({
             where: { producto: producto }
@@ -48,6 +96,8 @@ const postProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         else {
             yield productos_models_1.Productos.create({
                 id_categoria: id_categoria,
+                id_contacto: id_contacto,
+                id_pais: id_pais,
                 producto: producto,
                 descripcion: descripcion,
                 creado_por: creado_por,
@@ -98,7 +148,7 @@ const deleteProducto = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.deleteProducto = deleteProducto;
 //actualiza la categoria en la base de datos
 const updateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_producto, id_categoria, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_producto, id_categoria, id_contacto, id_pais, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     const produc = yield productos_models_1.Productos.findOne({
         where: { id_producto: id_producto }
     });
@@ -109,6 +159,9 @@ const updateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     yield produc.update({
         id_producto: id_producto,
+        id_categoria: id_categoria,
+        id_contacto: id_contacto,
+        id_pais: id_pais,
         producto: producto,
         descripcion: descripcion,
         creado_por: creado_por,
