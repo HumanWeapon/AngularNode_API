@@ -239,3 +239,27 @@ export const activatePermiso = async (req: Request, res: Response) => {
         msg: 'Permiso: '+ id_permisos+  ' ha sido activado exitosamente',
     });
 }
+
+//Activa el usuario de la DBA
+export const permisosRolesObjetos = async (req: Request, res: Response) => {
+    const { id_rol } = req.body;
+    try {
+        const _permiso= await Permisos.findAll({
+            where: {id_rol: id_rol},
+            include: [
+                {
+                    model: Roles,
+                    as: 'roles',
+                },                {
+                    model: Objetos,
+                    as: 'objetos'
+                }
+            ]
+        });
+    
+        res.json(_permiso);
+    } catch (error) {
+        console.error('Error al obtener parámetros de permisos:', error);
+        res.status(500).json({ error: 'Error al obtener parámetros de permisos' });
+    }
+}

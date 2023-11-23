@@ -90,16 +90,24 @@ const getAllUsuarios = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getAllUsuarios = getAllUsuarios;
 //Obtiene un usuario especifico de la base de datos
 const getUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { usuario } = req.body;
-    const user = yield usuario_models_1.User.findOne({
-        where: { usuario: usuario }
-    });
-    if (user) {
-        res.json(user);
+    try {
+        const { usuario } = req.body;
+        const user = yield usuario_models_1.User.findOne({
+            where: { usuario: usuario }
+        });
+        if (user) {
+            res.json(user);
+        }
+        else {
+            res.status(404).json({
+                msg: `No existe el usuario: ${usuario}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `No existe el usuario: ${usuario}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

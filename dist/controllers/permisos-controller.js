@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activatePermiso = exports.inactivatePermiso = exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
+exports.permisosRolesObjetos = exports.activatePermiso = exports.inactivatePermiso = exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
 const permisos_models_1 = require("../models/permisos-models");
 const roles_models_1 = require("../models/roles-models");
 const objetos_models_1 = require("../models/objetos-models");
@@ -222,3 +222,27 @@ const activatePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function
     });
 });
 exports.activatePermiso = activatePermiso;
+//Activa el usuario de la DBA
+const permisosRolesObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_rol } = req.body;
+    try {
+        const _permiso = yield permisos_models_1.Permisos.findAll({
+            where: { id_rol: id_rol },
+            include: [
+                {
+                    model: roles_models_1.Roles,
+                    as: 'roles',
+                }, {
+                    model: objetos_models_1.Objetos,
+                    as: 'objetos'
+                }
+            ]
+        });
+        res.json(_permiso);
+    }
+    catch (error) {
+        console.error('Error al obtener parámetros de permisos:', error);
+        res.status(500).json({ error: 'Error al obtener parámetros de permisos' });
+    }
+});
+exports.permisosRolesObjetos = permisosRolesObjetos;

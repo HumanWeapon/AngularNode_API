@@ -99,18 +99,26 @@ export const getAllUsuarios = async (req: Request, res: Response) => {
 }
 //Obtiene un usuario especifico de la base de datos
 export const getUsuario = async (req: Request, res: Response) => {
-    const { usuario } = req.body;
-    const user = await User.findOne({
-        where: {usuario: usuario}
-    });
-    if(user){
-        res.json(user)
+    try {
+        const { usuario } = req.body;
+        const user = await User.findOne({
+            where: {usuario: usuario}
+        });
+        if(user){
+            res.json(user)
+        }
+        else{
+            res.status(404).json({
+                msg: `No existe el usuario: ${usuario}`
+            })
+        }
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        }); 
     }
-    else{
-        res.status(404).json({
-            msg: `No existe el usuario: ${usuario}`
-        })
-    }
+
 }
 //Inserta un usuario en la base de datos
 export const postUsuario = async (req: Request, res: Response) => {
