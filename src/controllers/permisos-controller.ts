@@ -242,17 +242,15 @@ export const activatePermiso = async (req: Request, res: Response) => {
 
 //Activa el usuario de la DBA
 export const permisosRolesObjetos = async (req: Request, res: Response) => {
-    const { id_rol } = req.body;
+    const { id_rol, estado } = req.body;
     try {
         const _permiso= await Permisos.findAll({
             where: {id_rol: id_rol},
-            include: [
+            include: [              
                 {
-                    model: Roles,
-                    as: 'roles',
-                },                {
                     model: Objetos,
-                    as: 'objetos'
+                    as: 'objetos',
+                    where: {estado_objeto: 1}
                 }
             ]
         });

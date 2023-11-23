@@ -24,6 +24,10 @@ exports.Objetos = connection_1.default.define('objetos', {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
+    url: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
     creado_por: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
