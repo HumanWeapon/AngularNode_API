@@ -12,6 +12,13 @@ exports.Paises = connection_1.default.define('paises', {
         primaryKey: true,
         autoIncrement: true,
     },
+    id_contacto: {
+        type: sequelize_1.DataTypes.INTEGER,
+        references: {
+            model: 'Contacto',
+            key: 'id' // Nombre del campo al que hace referencia en el modelo 'Contacto'
+        }
+    },
     pais: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false

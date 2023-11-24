@@ -7,6 +7,13 @@ export const Paises: any = dataBase.define('paises', {
         primaryKey: true,
         autoIncrement: true,
       },
+      id_contacto: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'Contacto', // Nombre del modelo al que hace referencia
+          key: 'id' // Nombre del campo al que hace referencia en el modelo 'Contacto'
+        }
+      },
     pais: {
         type: DataTypes.STRING,
         allowNull: false
