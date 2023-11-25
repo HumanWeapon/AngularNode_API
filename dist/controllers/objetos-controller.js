@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateObjeto = exports.inactivateObjecto = exports.updateObjetos = exports.deleteObjeto = exports.postObjeto = exports.getObjeto = exports.getAllObjetos = void 0;
+exports.getAllObjetosMenu = exports.activateObjeto = exports.inactivateObjecto = exports.updateObjetos = exports.deleteObjeto = exports.postObjeto = exports.getObjeto = exports.getAllObjetos = void 0;
 const objetos_models_1 = require("../models/objetos-models");
 //Obtiene todos los objetos de la base de datos
 const getAllObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -154,3 +154,27 @@ const activateObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function*
     });
 });
 exports.activateObjeto = activateObjeto;
+//Obtiene un objeto de la base de datos     
+const getAllObjetosMenu = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tipo_objeto, estado_objeto } = req.body;
+    try {
+        const _objeto = yield objetos_models_1.Objetos.findAll({
+            where: { tipo_objeto: tipo_objeto, estado_objeto: estado_objeto }
+        });
+        if (_objeto) {
+            res.json(_objeto);
+        }
+        else {
+            res.status(404).json({
+                msg: `el  objeto no existe: ${_objeto}`
+            });
+        }
+    }
+    catch (error) {
+        console.error(error);
+        res.status(400).json({
+            msg: 'Contacte al administrador'
+        });
+    }
+});
+exports.getAllObjetosMenu = getAllObjetosMenu;

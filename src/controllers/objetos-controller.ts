@@ -157,3 +157,27 @@ export const activateObjeto = async (req: Request, res: Response) => {
         msg: 'Objeto: '+ objeto+  ' ha sido activado exitosamente',
     });
 }
+//Obtiene un objeto de la base de datos     
+export const getAllObjetosMenu = async (req: Request, res: Response) => {
+    const { tipo_objeto, estado_objeto } = req.body;
+
+    try {
+        const _objeto = await Objetos.findAll({
+            where: {tipo_objeto: tipo_objeto, estado_objeto: estado_objeto}
+        });
+        if(_objeto){
+            res.json(_objeto)
+        }
+        else{
+            res.status(404).json({
+                msg: `el  objeto no existe: ${_objeto}`
+            })
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({
+            msg: 'Contacte al administrador'
+        });
+    }
+
+}

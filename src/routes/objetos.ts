@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validarToken from './validarToken';
-import { activateObjeto, deleteObjeto, getAllObjetos, getObjeto, inactivateObjecto, postObjeto, updateObjetos } from '../controllers/objetos-controller';
+import { activateObjeto, deleteObjeto, getAllObjetos, getAllObjetosMenu, getObjeto, inactivateObjecto, postObjeto, updateObjetos } from '../controllers/objetos-controller';
 
 const routerObjetos = Router()
 
@@ -11,5 +11,8 @@ routerObjetos.delete('/deleteObjeto',validarToken, deleteObjeto); //Elimina un o
 routerObjetos.post('/updateObjetos',validarToken, updateObjetos); // actualiza un objeto en la base de datos
 routerObjetos.post('/inactivateObjeto',validarToken, inactivateObjecto);//Inactiva una Pyme en la DB
 routerObjetos.post('/activateObjeto',validarToken, activateObjeto);//Activa una Pyme en la DB
+routerObjetos.post('/getAllObjetosMenu',validarToken, getAllObjetosMenu);//Activa una Pyme en la DB
+
+
 
 export default routerObjetos;
