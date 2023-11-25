@@ -224,7 +224,7 @@ const activatePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.activatePermiso = activatePermiso;
 //Activa el usuario de la DBA
 const permisosRolesObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_rol, estado } = req.body;
+    const { id_rol, tipo_objeto } = req.body;
     try {
         const _permiso = yield permisos_models_1.Permisos.findAll({
             where: { id_rol: id_rol },
@@ -232,7 +232,7 @@ const permisosRolesObjetos = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 {
                     model: objetos_models_1.Objetos,
                     as: 'objetos',
-                    where: { estado_objeto: 1 }
+                    where: { estado_objeto: 1, tipo_objeto: 'MENU_SIDEBAR' }
                 }
             ]
         });
