@@ -23,6 +23,10 @@ export const Objetos: any = dataBase.define('objetos', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    icono: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     creado_por: {
         type: DataTypes.STRING,
         allowNull: false
