@@ -11,47 +11,71 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activateEmpresa = exports.inactivateEmpresa = exports.updateEmpresa = exports.deleteEmpresa = exports.postEmpresa = exports.getEmpresa = exports.getEmpresasPymes = exports.getAllEmpresas = void 0;
 const empresas_model_1 = require("../../models/negocio/empresas-model");
-//Obtiene todas las Empresas
+// Obtiene todas las Empresas
 const getAllEmpresas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const empresa = yield empresas_model_1.Empresas.findAll();
-    res.json(empresa);
+    try {
+        const empresa = yield empresas_model_1.Empresas.findAll();
+        res.json(empresa);
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
+        });
+    }
 });
 exports.getAllEmpresas = getAllEmpresas;
-//Obtiene todas las Empresas pyme o exportadoreas
+// Obtiene todas las Empresas pyme o exportadoras
 const getEmpresasPymes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_tipo_empresa } = req.body;
-    const empresa = yield empresas_model_1.Empresas.findAll({
-        where: { id_tipo_empresa: id_tipo_empresa }
-    });
-    res.json(empresa);
+    try {
+        const { id_tipo_empresa } = req.body;
+        const empresa = yield empresas_model_1.Empresas.findAll({
+            where: { id_tipo_empresa: id_tipo_empresa },
+        });
+        res.json(empresa);
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
+        });
+    }
 });
 exports.getEmpresasPymes = getEmpresasPymes;
-//Obtiene una Empresa por ID
+// Obtiene una Empresa por ID
 const getEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_empresa } = req.body;
-    const _empresa = yield empresas_model_1.Empresas.findOne({
-        where: { id_empresa: id_empresa }
-    });
-    if (_empresa) {
-        res.json(_empresa);
+    try {
+        const { id_empresa } = req.body;
+        const _empresa = yield empresas_model_1.Empresas.findOne({
+            where: { id_empresa: id_empresa },
+        });
+        if (_empresa) {
+            res.json(_empresa);
+        }
+        else {
+            res.status(404).json({
+                msg: `el ID de la Empresa no existe: ${id_empresa}`,
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el ID de la Empresa no existe: ${id_empresa}`
+    catch (error) {
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
         });
     }
 });
 exports.getEmpresa = getEmpresa;
 // Inserta una nueva Empresa en la base de datos
 const postEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_tipo_empresa, nombre_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
+        const { id_tipo_empresa, nombre_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
         const _empresa = yield empresas_model_1.Empresas.findOne({
-            where: { nombre_empresa: nombre_empresa }
+            where: { nombre_empresa: nombre_empresa },
         });
         if (_empresa) {
             return res.status(400).json({
-                msg: 'Empresa ya registrada en la base de datos: ' + nombre_empresa
+                msg: 'Empresa ya registrada en la base de datos: ' + nombre_empresa,
             });
         }
         else {
@@ -63,7 +87,7 @@ const postEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
                 fecha_modificacion: fecha_modificacion,
-                estado: estado
+                estado: estado,
             });
             res.json(empresa);
         }
@@ -71,17 +95,17 @@ const postEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     catch (error) {
         res.status(400).json({
             msg: 'Contactate con el administrador',
-            error
+            error,
         });
     }
 });
 exports.postEmpresa = postEmpresa;
-// Elimina la Pyme de la base de datos
+// Elimina la Empresa de la base de datos
 const deleteEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_empresa } = req.body; // Obtén el ID desde los parámetros de la URL
     try {
+        const { id_empresa } = req.body;
         const _empresa = yield empresas_model_1.Empresas.findOne({
-            where: { id_empresa: id_empresa }
+            where: { id_empresa: id_empresa },
         });
         if (_empresa) {
             yield _empresa.destroy();
@@ -103,18 +127,18 @@ const deleteEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.deleteEmpresa = deleteEmpresa;
-//actualiza el Telefono en la base de datos
+// Actualiza la Empresa en la base de datos
 const updateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_empresa, id_tipo_empresa, nombre_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const _empresa = yield empresas_model_1.Empresas.findOne({
-        where: { id_empresa: id_empresa }
-    });
-    if (!_empresa) {
-        return res.status(404).json({
-            msg: 'Empresa con el ID: ' + id_empresa + ' no existe en la base de datos'
+    try {
+        const { id_empresa, id_tipo_empresa, nombre_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+        const _empresa = yield empresas_model_1.Empresas.findOne({
+            where: { id_empresa: id_empresa },
         });
-    }
-    else {
+        if (!_empresa) {
+            return res.status(404).json({
+                msg: 'Empresa con el ID: ' + id_empresa + ' no existe en la base de datos',
+            });
+        }
         const empresa = yield _empresa.update({
             id_empresa: id_empresa,
             id_tipo_empresa: id_tipo_empresa,
@@ -124,43 +148,65 @@ const updateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             fecha_creacion: fecha_creacion,
             modificado_por: modificado_por,
             fecha_modificacion: fecha_modificacion,
-            estado: estado
+            estado: estado,
         });
         res.json(empresa);
     }
+    catch (error) {
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
+        });
+    }
 });
 exports.updateEmpresa = updateEmpresa;
-//Inactiva la empresa
+// Inactiva la empresa
 const inactivateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_empresa } = req.body;
-    const empresa = yield empresas_model_1.Empresas.findOne({
-        where: { id_empresa: id_empresa }
-    });
-    if (!empresa) {
-        return res.status(404).json({
-            msg: "La Empresa no existe"
+    try {
+        const { id_empresa } = req.body;
+        const empresa = yield empresas_model_1.Empresas.findOne({
+            where: { id_empresa: id_empresa },
+        });
+        if (!empresa) {
+            return res.status(404).json({
+                msg: 'La Empresa no existe',
+            });
+        }
+        yield empresa.update({
+            estado: 2,
+        });
+        res.json('Empresa inactivada');
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
         });
     }
-    yield empresa.update({
-        estado: 2
-    });
-    res.json('Empresa inactivada');
 });
 exports.inactivateEmpresa = inactivateEmpresa;
-//Activa la empresa
+// Activa la empresa
 const activateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_empresa } = req.body;
-    const empresa = yield empresas_model_1.Empresas.findOne({
-        where: { id_empresa: id_empresa }
-    });
-    if (!empresa) {
-        return res.status(404).json({
-            msg: "La Empresa no existe"
+    try {
+        const { id_empresa } = req.body;
+        const empresa = yield empresas_model_1.Empresas.findOne({
+            where: { id_empresa: id_empresa },
+        });
+        if (!empresa) {
+            return res.status(404).json({
+                msg: 'La Empresa no existe',
+            });
+        }
+        yield empresa.update({
+            estado: 1,
+        });
+        res.json('Empresa activada');
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
         });
     }
-    yield empresa.update({
-        estado: 1
-    });
-    res.json('Empresa activada');
 });
 exports.activateEmpresa = activateEmpresa;

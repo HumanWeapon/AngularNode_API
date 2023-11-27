@@ -30,6 +30,7 @@ const getAllOpEmpresas = (req, res) => __awaiter(void 0, void 0, void 0, functio
         console.error('Error al obtener todas las Operaciones de Empresas:', error);
         res.status(500).json({
             msg: 'Error interno del servidor',
+            error,
         });
     }
 });
@@ -60,6 +61,7 @@ const getOpEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         console.error('Error al obtener la Operacion Empresa por ID:', error);
         res.status(500).json({
             msg: 'Error interno del servidor',
+            error,
         });
     }
 });

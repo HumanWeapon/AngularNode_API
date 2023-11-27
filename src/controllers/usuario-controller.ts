@@ -1,4 +1,4 @@
-import {Request, Response, request} from 'express';
+import { Request, Response, request } from 'express';
 import bcrypt from 'bcrypt';
 import { User } from '../models/usuario-models';
 import jwt from 'jsonwebtoken';
@@ -7,25 +7,25 @@ import { Objetos } from '../models/objetos-models';
 import { Permisos } from '../models/permisos-models';
 
 export const loginUser = async (req: Request, res: Response) => {
-    const {
-        usuario,
-        contrasena,
-        id_usuario,
-        creado_por,
-        fecha_creacion,
-        modificado_por,
-        fecha_modificacion,
-        nombre_usuario,
-        correo_electronico,
-        estado_usuario,
-        id_rol,
-        fecha_ultima_conexion,
-        primer_ingreso,
-        fecha_vencimiento,
-        intentos_fallidos
-    } = req.body
-    
     try {
+        const {
+            usuario,
+            contrasena,
+            id_usuario,
+            creado_por,
+            fecha_creacion,
+            modificado_por,
+            fecha_modificacion,
+            nombre_usuario,
+            correo_electronico,
+            estado_usuario,
+            id_rol,
+            fecha_ultima_conexion,
+            primer_ingreso,
+            fecha_vencimiento,
+            intentos_fallidos
+        } = req.body;
+
         // Busca el usuario en la base de datos
         const user: any = await User.findOne({
             where: { usuario: usuario }
@@ -54,13 +54,13 @@ export const loginUser = async (req: Request, res: Response) => {
             return res.status(400).json({
                 msg: 'Usuario/contraseña inválidos.',
             });
-        }else{
+        } else {
             // Si el inicio de sesión es exitoso, restablece los intentos fallidos
             user.intentos_fallidos = 0;
             await user.save();
         }
 
-        if(user.fecha_ultima_conexion == null){
+        if (user.fecha_ultima_conexion == null) {
             return res.json(user.fecha_ultima_conexion);
         }
 
@@ -74,7 +74,7 @@ export const loginUser = async (req: Request, res: Response) => {
         const token = jwt.sign({
             usuario: usuario
         }, process.env.SECRET_KEY || 'Lamers005*');
-            
+
         res.json(token);
     } catch (error) {
         console.error('Error en loginUser:', error);
@@ -90,54 +90,62 @@ export const loginUser = async (req: Request, res: Response) => {
             });
         }
     }
-    
 }
-//Obtiene todos los usuarios de la base de datos
+
+// Obtiene todos los usuarios de la base de datos
 export const getAllUsuarios = async (req: Request, res: Response) => {
-    const usuarios = await User.findAll();
-    res.json(usuarios)
+    try {
+        const usuarios = await User.findAll();
+        res.json(usuarios);
+    } catch (error) {
+        console.error('Error al obtener todos los usuarios de la base de datos:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
+        });
+    }
 }
-//Obtiene un usuario especifico de la base de datos
+
+// Obtiene un usuario especifico de la base de datos
 export const getUsuario = async (req: Request, res: Response) => {
     try {
         const { usuario } = req.body;
         const user = await User.findOne({
-            where: {usuario: usuario}
+            where: { usuario: usuario }
         });
-        if(user){
-            res.json(user)
-        }
-        else{
+        if (user) {
+            res.json(user);
+        } else {
             res.status(404).json({
                 msg: `No existe el usuario: ${usuario}`
-            })
+            });
         }
     } catch (error) {
         res.status(400).json({
             msg: 'Contactate con el administrador',
             error
-        }); 
+        });
     }
-
 }
-//Inserta un usuario en la base de datos
+
+// Inserta un usuario en la base de datos
 export const postUsuario = async (req: Request, res: Response) => {
+    try {
+        const {
+            creado_por, fecha_creacion, modificado_por, fecha_modificacion, usuario, nombre_usuario, correo_electronico,
+            contrasena, id_rol, fecha_ultima_conexion, fecha_vencimiento, intentos_fallidos, estado_usuario
+        } = req.body;
+        const hashedPassword = await bcrypt.hash(contrasena, 10);
 
-    const { 
-        creado_por, fecha_creacion, modificado_por, fecha_modificacion, usuario, nombre_usuario, correo_electronico, 
-        contrasena, id_rol, fecha_ultima_conexion, fecha_vencimiento, intentos_fallidos, estado_usuario  } = req.body;
-    const hashedPassword = await bcrypt.hash(contrasena, 10);
-
-    try{
         const user = await User.findOne({
-            where: {usuario: usuario}
-        })
-    
-        if (user){
+            where: { usuario: usuario }
+        });
+
+        if (user) {
             return res.status(400).json({
-                msg: 'Usuario ya existe en la base de datos: '+ usuario
-            })
-        }else{
+                msg: 'Usuario ya existe en la base de datos: ' + usuario
+            });
+        } else {
             const newUser = await User.create({
                 creado_por: creado_por,
                 fecha_creacion: Date.now(),
@@ -152,125 +160,157 @@ export const postUsuario = async (req: Request, res: Response) => {
                 fecha_ultima_conexion: null,
                 fecha_vencimiento: fecha_vencimiento,
                 intentos_fallidos: intentos_fallidos
-            })
+            });
             return res.json(newUser); // Devolver el nuevo usuario creado como respuesta
         }
     }
-    catch (error){
+    catch (error) {
         res.status(400).json({
             msg: 'Contactate con el administrador',
             error
-        }); 
+        });
     }
-    /*// Generamos token
-    const token = jwt.sign({
-        usuario: usuario
-    }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);*/
 }
-//Destruye el usuario de la DBA
+
+// Destruye el usuario de la DBA
 export const deleteUsuario = async (req: Request, res: Response) => {
-    const { usuario } = req.body;
+    try {
+        const { usuario } = req.body;
 
-    const user = await User.findOne({
-        where: {usuario: usuario}
-    });
-    if(!user){
-        return res.status(404).json({
-            msg: "El usuario no existe: "+ usuario
+        const user = await User.findOne({
+            where: { usuario: usuario }
+        });
+        if (!user) {
+            return res.status(404).json({
+                msg: "El usuario no existe: " + usuario
+            });
+        }
+
+        await user.destroy();
+        res.json({
+            msg: 'Usuario: ' + usuario + ' eliminado exitosamente',
+        });
+    } catch (error) {
+        console.error('Error al eliminar el usuario:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al eliminar el usuario',
+            error,
         });
     }
-
-    await user.destroy();
-    res.json({
-        msg: 'Usuario: '+ usuario+  ' eliminado exitosamente',
-    });
 }
-//Inactiva el usuario de la DBA
+
+// Inactiva el usuario de la DBA
 export const inactivateUsuario = async (req: Request, res: Response) => {
-    const { usuario } = req.body;
+    try {
+        const { usuario } = req.body;
 
-    const user = await User.findOne({
-        where: {usuario: usuario}
-    });
-    if(!user){
-        return res.status(404).json({
-            msg: "El usuario no existe: "+ usuario
+        const user = await User.findOne({
+            where: { usuario: usuario }
+        });
+        if (!user) {
+            return res.status(404).json({
+                msg: "El usuario no existe: " + usuario
+            });
+        }
+
+        await user.update({
+            estado_usuario: 2
+        });
+        res.json(user);
+    } catch (error) {
+        console.error('Error al inactivar un usuario:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar el usuario',
+            error,
         });
     }
-
-    await user.update({
-        estado_usuario: 2
-    });
-    res.json(user);
 }
-//Activa el usuario de la DBA
+
+// Activa el usuario de la DBA
 export const activateUsuario = async (req: Request, res: Response) => {
-    const { usuario } = req.body;
+    try {
+        const { usuario } = req.body;
 
-    const user = await User.findOne({
-        where: {usuario: usuario}
-    });
-    if(!user){
-        return res.status(404).json({
-            msg: "El usuario no existe: "+ usuario
+        const user = await User.findOne({
+            where: { usuario: usuario }
+        });
+        if (!user) {
+            return res.status(404).json({
+                msg: "El usuario no existe: " + usuario
+            });
+        }
+
+        await user.update({
+            estado_usuario: 1
+        });
+        res.json(user);
+    } catch (error) {
+        console.error('Error al activar un usuario:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar el usuario',
+            error,
         });
     }
-
-    await user.update({
-        estado_usuario: 1
-    });
-    res.json(user);
 }
-//Actualiza el usuario en la base de datos
+
+// Actualiza el usuario en la base de datos
 export const updateUsuario = async (req: Request, res: Response) => {
-    const { 
-        id_usuario,
-        usuario,
-        modificado_por,
-        fecha_modificacion,
-        nombre_usuario,
-        correo_electronico,
-        estado_usuario,
-        id_rol,
-        fecha_vencimiento,
-        fecha_ultima_conexion
-     } = req.body;
+    try {
+        const {
+            id_usuario,
+            usuario,
+            modificado_por,
+            fecha_modificacion,
+            nombre_usuario,
+            correo_electronico,
+            estado_usuario,
+            id_rol,
+            fecha_vencimiento,
+            fecha_ultima_conexion
+        } = req.body;
 
-    const user = await User.findOne({
-        where: {id_usuario: id_usuario}
-    });
-    if(!user){
-        return res.status(404).json({
-            msg: "El usuario con el ID: "+id_usuario+ " no existe"
+        const user = await User.findOne({
+            where: { id_usuario: id_usuario }
+        });
+        if (!user) {
+            return res.status(404).json({
+                msg: "El usuario con el ID: " + id_usuario + " no existe"
+            });
+        }
+
+        await user.update({
+            id_usuario: id_usuario,
+            usuario: usuario,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            nombre_usuario: nombre_usuario,
+            correo_electronico: correo_electronico,
+            estado_usuario: estado_usuario,
+            id_rol: id_rol,
+            fecha_vencimiento: fecha_vencimiento,
+            fecha_ultima_conexion: fecha_ultima_conexion
+        });
+        res.json({
+            msg: 'Usuario: ' + usuario + ' ha sido actualizado exitosamente',
+        });
+    } catch (error) {
+        console.error('Error al actualizar un usuario:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar el usuario',
+            error,
         });
     }
-
-    await user.update({
-        id_usuario: id_usuario,
-        usuario: usuario,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion,
-        nombre_usuario: nombre_usuario,
-        correo_electronico: correo_electronico,
-        estado_usuario: estado_usuario,
-        id_rol: id_rol,
-        fecha_vencimiento: fecha_vencimiento,
-        fecha_ultima_conexion: fecha_ultima_conexion
-    });
-    res.json({
-        msg: 'Usuario: '+ usuario+  ' ha sido actualizado exitosamente',
-    });
 }
-//Desbloquea la contraseña
+
+// Desbloquea la contraseña
 export const cambiarContrasena = async (req: Request, res: Response) => {
     try {
         const { usuario, contrasena } = req.body;
         const hashedPassword = await bcrypt.hash(contrasena, 10);
         const user = await User.findOne({
-            where: {usuario: usuario}
+            where: { usuario: usuario }
         });
-        if(!user){
+        if (!user) {
             return res.status(400).json({
                 msg: 'Usuario no existe',
             });
@@ -285,9 +325,11 @@ export const cambiarContrasena = async (req: Request, res: Response) => {
         });
 
     } catch (error) {
-        res.status(500).json({ error: 'Error al cambiar tu contraseña'});
+        console.error('Error al cambiar la contraseña:', error);
+        res.status(500).json({ error: 'Error al cambiar tu contraseña' });
     }
 }
+
 // Realiza una consulta INNER JOIN entre las tablas Usuario y Roles
 export const usuariosAllRoles = async (req: Request, res: Response) => {
     try {
@@ -299,13 +341,14 @@ export const usuariosAllRoles = async (req: Request, res: Response) => {
                 },
             ],
         });
-        
+
         res.json(usuario);
     } catch (error) {
         console.error('Error al obtener preguntas de usuario:', error);
         res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
     }
 }
+
 // Realiza una consulta INNER JOIN entre las tablas Usuario, Roles y Objetos
 export const usuariosAllParametros = async (req: Request, res: Response) => {
     const { usuario } = req.body;
