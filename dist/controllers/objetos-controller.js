@@ -11,32 +11,50 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllObjetosMenu = exports.activateObjeto = exports.inactivateObjecto = exports.updateObjetos = exports.deleteObjeto = exports.postObjeto = exports.getObjeto = exports.getAllObjetos = void 0;
 const objetos_models_1 = require("../models/objetos-models");
-//Obtiene todos los objetos de la base de datos
+// Obtiene todos los objetos de la base de datos
 const getAllObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const _objetos = yield objetos_models_1.Objetos.findAll();
-    res.json(_objetos);
+    try {
+        const _objetos = yield objetos_models_1.Objetos.findAll();
+        res.json(_objetos);
+    }
+    catch (error) {
+        console.error('Error al obtener todos los objetos de la base de datos:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
+        });
+    }
 });
 exports.getAllObjetos = getAllObjetos;
-//Obtiene un objeto de la base de datos     
+// Obtiene un objeto de la base de datos
 const getObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { objeto } = req.body;
-    const _objeto = yield objetos_models_1.Objetos.findOne({
-        where: { objeto: objeto }
-    });
-    if (_objeto) {
-        res.json({ _objeto });
+    try {
+        const { objeto } = req.body;
+        const _objeto = yield objetos_models_1.Objetos.findOne({
+            where: { objeto: objeto }
+        });
+        if (_objeto) {
+            res.json({ _objeto });
+        }
+        else {
+            res.status(404).json({
+                msg: `El objeto no existe: ${objeto}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el  objeto no existe: ${objeto}`
+    catch (error) {
+        console.error('Error al obtener un objeto de la base de datos:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
         });
     }
 });
 exports.getObjeto = getObjeto;
-//Inserta un objeto en la base de datos
+// Inserta un objeto en la base de datos
 const postObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { objeto, descripcion, tipo_objeto, estado_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
     try {
+        const { objeto, descripcion, tipo_objeto, estado_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
         const _objeto = yield objetos_models_1.Objetos.findOne({
             where: { objeto: objeto }
         });
@@ -56,21 +74,22 @@ const postObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 fecha_modificacion: fecha_modificacion,
                 estado_objeto: estado_objeto
             });
-            res.json('El Objeto: ' + objeto + ' ha sido creada exitosamente');
+            res.json(`El Objeto: ${objeto} ha sido creada exitosamente`);
         }
     }
     catch (error) {
-        res.status(400).json({
-            msg: 'Contactate con el administrador',
-            error
+        console.error('Error al insertar un objeto en la base de datos:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
         });
     }
 });
 exports.postObjeto = postObjeto;
-//Elimina un objeto de la base de datos
+// Elimina un objeto de la base de datos
 const deleteObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_objeto } = req.body;
     try {
+        const { id_objeto } = req.body;
         const _objeto = yield objetos_models_1.Objetos.findOne({
             where: { id_objeto: id_objeto }
         });
@@ -87,93 +106,122 @@ const deleteObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
     }
     catch (error) {
-        console.error('Error al eliminar el parámetro:', error);
+        console.error('Error al eliminar un objeto de la base de datos:', error);
         res.status(500).json({
-            msg: 'Hubo un error al eliminar el parámetro',
+            msg: 'Error interno del servidor',
+            error,
         });
     }
 });
 exports.deleteObjeto = deleteObjeto;
-//actualiza el rol en la base de datos
+// Actualiza el objeto en la base de datos
 const updateObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_objeto, objeto, descripcion, tipo_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
-    const _objeto = yield objetos_models_1.Objetos.findOne({
-        where: { id_objeto: id_objeto }
-    });
-    if (!_objeto) {
-        return res.status(404).json({
-            msg: 'Objeto con el ID: ' + id_objeto + ' no existe en la base de datos'
+    try {
+        const { id_objeto, objeto, descripcion, tipo_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
+        const _objeto = yield objetos_models_1.Objetos.findOne({
+            where: { id_objeto: id_objeto }
+        });
+        if (!_objeto) {
+            return res.status(404).json({
+                msg: 'El objeto con el ID: ' + id_objeto + ' no existe en la base de datos'
+            });
+        }
+        yield _objeto.update({
+            id_objeto: id_objeto,
+            objeto: objeto,
+            descripcion: descripcion,
+            tipo_objeto: tipo_objeto,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion
+        });
+        res.json(`El Objeto con el ID: ${id_objeto} ha sido actualizado exitosamente`);
+    }
+    catch (error) {
+        console.error('Error al actualizar un objeto en la base de datos:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
         });
     }
-    yield _objeto.update({
-        id_objeto: id_objeto,
-        objeto: objeto,
-        descripcion: descripcion,
-        tipo_objeto: tipo_objeto,
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion
-    });
-    res.json('El Objeto con el ID: ' + id_objeto + ' ha sido actualizado exitosamente');
 });
 exports.updateObjetos = updateObjetos;
-//Inactiva el OBJ de la DBA
+// Inactiva el objeto en la DBA
 const inactivateObjecto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { objeto } = req.body;
-    const _objeto = yield objetos_models_1.Objetos.findOne({
-        where: { objeto: objeto }
-    });
-    if (!_objeto) {
-        return res.status(404).json({
-            msg: "El Objeto no existe: " + objeto
+    try {
+        const { objeto } = req.body;
+        const _objeto = yield objetos_models_1.Objetos.findOne({
+            where: { objeto: objeto }
+        });
+        if (!_objeto) {
+            return res.status(404).json({
+                msg: `El Objeto no existe: ${objeto}`
+            });
+        }
+        yield _objeto.update({
+            estado_objeto: 2
+        });
+        res.json(`Objeto: ${objeto} inactivado exitosamente`);
+    }
+    catch (error) {
+        console.error('Error al inactivar un objeto en la base de datos:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
         });
     }
-    yield _objeto.update({
-        estado_objeto: 2
-    });
-    res.json('Objeto: ' + objeto + ' inactivado exitosamente');
 });
 exports.inactivateObjecto = inactivateObjecto;
-//Activa el usuario de la DBA
+// Activa el objeto en la DBA
 const activateObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { objeto } = req.body;
-    const _objeto = yield objetos_models_1.Objetos.findOne({
-        where: { objeto: objeto }
-    });
-    if (!_objeto) {
-        return res.status(404).json({
-            msg: "El Objeto no existe: " + objeto
+    try {
+        const { objeto } = req.body;
+        const _objeto = yield objetos_models_1.Objetos.findOne({
+            where: { objeto: objeto }
+        });
+        if (!_objeto) {
+            return res.status(404).json({
+                msg: `El Objeto no existe: ${objeto}`
+            });
+        }
+        yield _objeto.update({
+            estado_objeto: 1
+        });
+        res.json({
+            msg: `Objeto: ${objeto} ha sido activado exitosamente`,
         });
     }
-    yield _objeto.update({
-        estado_objeto: 1
-    });
-    res.json({
-        msg: 'Objeto: ' + objeto + ' ha sido activado exitosamente',
-    });
+    catch (error) {
+        console.error('Error al activar un objeto en la base de datos:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
+        });
+    }
 });
 exports.activateObjeto = activateObjeto;
-//Obtiene un objeto de la base de datos     
+// Obtiene todos los objetos de la base de datos filtrados por tipo y estado
 const getAllObjetosMenu = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { tipo_objeto, estado_objeto } = req.body;
     try {
-        const _objeto = yield objetos_models_1.Objetos.findAll({
+        const { tipo_objeto, estado_objeto } = req.body;
+        const _objetos = yield objetos_models_1.Objetos.findAll({
             where: { tipo_objeto: tipo_objeto, estado_objeto: estado_objeto }
         });
-        if (_objeto) {
-            res.json(_objeto);
+        if (_objetos) {
+            res.json(_objetos);
         }
         else {
             res.status(404).json({
-                msg: `el  objeto no existe: ${_objeto}`
+                msg: `No se encontraron objetos para el tipo ${tipo_objeto} y estado ${estado_objeto}`
             });
         }
     }
     catch (error) {
-        console.error(error);
-        res.status(400).json({
-            msg: 'Contacte al administrador'
+        console.error('Error al obtener objetos filtrados por tipo y estado:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
         });
     }
 });

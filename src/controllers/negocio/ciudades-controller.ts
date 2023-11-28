@@ -1,82 +1,82 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import { Ciudades } from '../../models/negocio/ciudades-models';
 import jwt from 'jsonwebtoken';
 
-
-//Obtiene todos las ciudades de la base de datos
+// Obtiene todos las ciudades de la base de datos
 export const getAllCiudades = async (req: Request, res: Response) => {
+    try {
+        const _ciudades = await Ciudades.findAll();
+        res.json(_ciudades);
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
+        });
+    }
+};
 
-    const _ciudades = await Ciudades.findAll();
-    res.json(_ciudades)
-
-}
-
-//Obtiene una ciudad de la base de datos     
+// Obtiene una ciudad de la base de datos
 export const getCiudad = async (req: Request, res: Response) => {
-    const { ciudad } = req.body;
-
-    const _ciudad = await Ciudades.findOne({
-        where: {ciudad: ciudad}
-    });
-    if(_ciudad){
-        res.json({_ciudad})
-    }
-    else{
-        res.status(404).json({
-            msg: `La ciudad no existe: ${ciudad}`
-        })
-    }
-}
-
-//Inserta una ciudad en la base de datos
-export const postCiudad = async (req: Request, res: Response) => {
-
-    const { ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-
-    try{
+    try {
+        const { ciudad } = req.body;
         const _ciudad = await Ciudades.findOne({
-            where: {ciudad: ciudad}
-        })
-    
-        if (_ciudad){
+            where: { ciudad: ciudad },
+        });
+        if (_ciudad) {
+            res.json({ _ciudad });
+        } else {
+            res.status(404).json({
+                msg: `La ciudad no existe: ${ciudad}`,
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
+        });
+    }
+};
+
+// Inserta una ciudad en la base de datos
+export const postCiudad = async (req: Request, res: Response) => {
+    try {
+        const { ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+        const _ciudad = await Ciudades.findOne({
+            where: { ciudad: ciudad },
+        });
+
+        if (_ciudad) {
             return res.status(400).json({
-                msg: 'Ciudad ya registrada en la base de datos: '+ ciudad
-            })
-        }else{
+                msg: 'Ciudad ya registrada en la base de datos: ' + ciudad,
+            });
+        } else {
             await Ciudades.create({
                 ciudad: ciudad,
-                descripcion: descripcion, 
+                descripcion: descripcion,
                 creado_por: creado_por,
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
                 fecha_modificacion: fecha_modificacion,
-                estado: estado
-            })
+                estado: estado,
+            });
             res.json({
-                msg: 'La ciudad: '+ ciudad+  ' ha sido creada exitosamente',
-            })
+                msg: 'La ciudad: ' + ciudad + ' ha sido creada exitosamente',
+            });
         }
-    }
-    catch (error){
+    } catch (error) {
         res.status(400).json({
             msg: 'Contactate con el administrador',
-            error
-        }); 
+            error,
+        });
     }
-    /*// Generamos token
-    const token = jwt.sign({
-        usuario: usuario
-    }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);*/
-}
+};
 
-//Elimina una ciudad de la base de datos
+// Elimina una ciudad de la base de datos
 export const deleteCiudad = async (req: Request, res: Response) => {
-    const { id_ciudad } = req.body;
-
     try {
+        const { id_ciudad } = req.body;
         const _ciudad = await Ciudades.findOne({
-            where: { id_ciudad: id_ciudad }
+            where: { id_ciudad: id_ciudad },
         });
 
         if (_ciudad) {
@@ -97,77 +97,97 @@ export const deleteCiudad = async (req: Request, res: Response) => {
     }
 };
 
-
-//actualiza la ciudad en la base de datos
+// Actualiza la ciudad en la base de datos
 export const updateCiudad = async (req: Request, res: Response) => {
-    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
+    try {
+        const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+        const _ciudad = await Ciudades.findOne({
+            where: { id_ciudad: id_ciudad },
+        });
 
-    const _ciudad = await Ciudades.findOne({
-        where: {id_ciudad: id_ciudad}
-    });
-    if(!_ciudad){
-        return res.status(404).json({
-            msg: 'Ciudad con el ID: '+ id_ciudad +' no existe en la base de datos'
+        if (!_ciudad) {
+            return res.status(404).json({
+                msg: 'Ciudad con el ID: ' + id_ciudad + ' no existe en la base de datos',
+            });
+        }
+
+        await _ciudad.update({
+            id_ciudad: id_ciudad,
+            ciudad: ciudad,
+            descripcion: descripcion,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado,
+        });
+        res.json({
+            msg: 'La cuidad con el ID: ' + id_ciudad + ' ha sido actualizado exitosamente',
+        });
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
         });
     }
+};
 
-    await _ciudad.update({
-        id_ciudad: id_ciudad,
-        ciudad: ciudad,
-        descripcion: descripcion, 
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion,
-        estado: estado
-    });
-    res.json({
-        msg: 'La cuidad con el ID: '+ id_ciudad+  ' ha sido actualizado exitosamente',
-    });
-}
-
-
-//Inactiva el usuario de la DBA
+// Inactiva la ciudad de la DBA
 export const inactivateCiudad = async (req: Request, res: Response) => {
-    const { ciudad } = req.body;
+    try {
+        const { ciudad } = req.body;
+        const ciu = await Ciudades.findOne({
+            where: { ciudad: ciudad },
+        });
 
-    const ciu = await Ciudades.findOne({
-        where: {ciudad: ciudad}
-    });
-    if(!ciu){
-        return res.status(404).json({
-            msg: "La Ciudad no existe: "+ ciudad
+        if (!ciu) {
+            return res.status(404).json({
+                msg: 'La Ciudad no existe: ' + ciudad,
+            });
+        }
+
+        await ciu.update({
+            estado: 2,
+        });
+        res.json({
+            msg: 'Ciudad: ' + ciudad + ' inactivado exitosamente',
+        });
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
         });
     }
+};
 
-    await ciu.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'Ciudad: '+ ciudad+  ' inactivado exitosamente',
-    });
-}
-
-//Activa el usuario de la DBA
+// Activa la ciudad de la DBA
 export const activateCiudad = async (req: Request, res: Response) => {
-    const { ciudad } = req.body;
+    try {
+        const { ciudad } = req.body;
+        const ciu = await Ciudades.findOne({
+            where: { ciudad: ciudad },
+        });
 
-    const ciu = await Ciudades.findOne({
-        where: {ciudad: ciudad}
-    });
-    if(!ciu){
-        return res.status(404).json({
-            msg: "La Ciudad no existe: "+ ciudad
+        if (!ciu) {
+            return res.status(404).json({
+                msg: 'La Ciudad no existe: ' + ciudad,
+            });
+        }
+
+        await ciu.update({
+            estado: 1,
+        });
+        res.json({
+            msg: 'Ciudad: ' + ciudad + ' ha sido activado exitosamente',
+        });
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
         });
     }
+};
 
-    await ciu.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'Ciudad: '+ ciudad+  ' ha sido activado exitosamente',
-    });
-}
 
 
 

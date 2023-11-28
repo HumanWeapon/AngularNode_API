@@ -27,6 +27,7 @@ const getAllOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, functi
         console.error('Error al obtener todas las Operaciones de Empresas:', error);
         res.status(500).json({
             msg: 'Error interno del servidor',
+            error,
         });
     }
 });
@@ -55,36 +56,55 @@ const getOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, function*
         console.error('Error al obtener la Operacion Empresa por ID:', error);
         res.status(500).json({
             msg: 'Error interno del servidor',
+            error,
         });
     }
 });
 exports.getOpProductos = getOpProductos;
 //Obtiene todos las categorias de productos de la base de datos
 const getAllProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const producto = yield productos_models_1.Productos.findAll();
-    res.json(producto);
+    try {
+        const producto = yield productos_models_1.Productos.findAll();
+        res.json(producto);
+    }
+    catch (error) {
+        console.error('Error al obtener todos los Productos:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
+        });
+    }
 });
 exports.getAllProductos = getAllProductos;
 // Obtiene una categoria de la base de datos por su ID
 const getProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { producto } = req.body;
-    const _producto = yield productos_models_1.Productos.findOne({
-        where: { producto: producto }
-    });
-    if (_producto) {
-        res.json(_producto);
+    try {
+        const { producto } = req.body;
+        const _producto = yield productos_models_1.Productos.findOne({
+            where: { producto: producto }
+        });
+        if (_producto) {
+            res.json(_producto);
+        }
+        else {
+            res.status(404).json({
+                msg: `El producto no existe: ${producto}`,
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el producto no existe: ${producto}`
+    catch (error) {
+        console.error('Error al obtener el Producto por ID:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+            error,
         });
     }
 });
 exports.getProductos = getProductos;
 // Inserta una categoria en la base de datos
 const postProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_categoria, id_contacto, id_pais, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
+        const { id_categoria, id_contacto, id_pais, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
         const _producto = yield productos_models_1.Productos.findOne({
             where: { producto: producto }
         });
@@ -114,15 +134,15 @@ const postProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     catch (error) {
         res.status(400).json({
             msg: 'Contactate con el administrador',
-            error
+            error,
         });
     }
 });
 exports.postProducto = postProducto;
 // Elimina una categoria de la base de datos
 const deleteProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_producto } = req.params; // Obtén el ID desde los parámetros de la URL
     try {
+        const { id_producto } = req.params; // Obtén el ID desde los parámetros de la URL
         const _producto = yield productos_models_1.Productos.findOne({
             where: { id_producto: id_producto }
         });
@@ -142,74 +162,101 @@ const deleteProducto = (req, res) => __awaiter(void 0, void 0, void 0, function*
         console.error('Error al eliminar el producto:', error);
         res.status(500).json({
             msg: 'Hubo un error al eliminar el producto',
+            error,
         });
     }
 });
 exports.deleteProducto = deleteProducto;
 //actualiza la categoria en la base de datos
 const updateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_producto, id_categoria, id_contacto, id_pais, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const produc = yield productos_models_1.Productos.findOne({
-        where: { id_producto: id_producto }
-    });
-    if (!produc) {
-        return res.status(404).json({
-            msg: "El producto con el ID: " + id_producto + " no existe"
+    try {
+        const { id_producto, id_categoria, id_contacto, id_pais, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+        const produc = yield productos_models_1.Productos.findOne({
+            where: { id_producto: id_producto }
+        });
+        if (!produc) {
+            return res.status(404).json({
+                msg: "El producto con el ID: " + id_producto + " no existe"
+            });
+        }
+        yield produc.update({
+            id_producto: id_producto,
+            id_categoria: id_categoria,
+            id_contacto: id_contacto,
+            id_pais: id_pais,
+            producto: producto,
+            descripcion: descripcion,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
+        });
+        res.json({
+            msg: 'Producto: ' + produc + ' ha sido actualizado exitosamente',
         });
     }
-    yield produc.update({
-        id_producto: id_producto,
-        id_categoria: id_categoria,
-        id_contacto: id_contacto,
-        id_pais: id_pais,
-        producto: producto,
-        descripcion: descripcion,
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion,
-        estado: estado
-    });
-    res.json({
-        msg: 'Producto: ' + produc + ' ha sido actualizado exitosamente',
-    });
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error,
+        });
+    }
 });
 exports.updateProducto = updateProducto;
 //Inactiva el usuario de la DBA
 const inactivateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { producto } = req.body;
-    const productos = yield productos_models_1.Productos.findOne({
-        where: { producto: producto }
-    });
-    if (!productos) {
-        return res.status(404).json({
-            msg: "El Producto no existe: " + producto
+    try {
+        const { producto } = req.body;
+        const productos = yield productos_models_1.Productos.findOne({
+            where: { producto: producto }
+        });
+        if (!productos) {
+            return res.status(404).json({
+                msg: "El Producto no existe: " + producto
+            });
+        }
+        yield productos.update({
+            estado: 2
+        });
+        res.json({
+            msg: 'Producto: ' + producto + ' inactivado exitosamente',
         });
     }
-    yield productos.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'Producto: ' + producto + ' inactivado exitosamente',
-    });
+    catch (error) {
+        console.error('Error al inactivar el Producto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar el Producto',
+            error,
+        });
+    }
 });
 exports.inactivateProducto = inactivateProducto;
 //Activa el usuario de la DBA
 const activateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { producto } = req.body;
-    const productos = yield productos_models_1.Productos.findOne({
-        where: { producto: producto }
-    });
-    if (!productos) {
-        return res.status(404).json({
-            msg: "El producto no existe: " + producto
+    try {
+        const { producto } = req.body;
+        const productos = yield productos_models_1.Productos.findOne({
+            where: { producto: producto }
+        });
+        if (!productos) {
+            return res.status(404).json({
+                msg: "El producto no existe: " + producto
+            });
+        }
+        yield productos.update({
+            estado: 1
+        });
+        res.json({
+            msg: 'Producto: ' + producto + ' ha sido activado exitosamente',
         });
     }
-    yield productos.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'Producto: ' + producto + ' ha sido activado exitosamente',
-    });
+    catch (error) {
+        console.error('Error al activar el Producto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar el Producto',
+            error,
+        });
+    }
 });
 exports.activateProducto = activateProducto;
