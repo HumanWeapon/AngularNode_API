@@ -35,7 +35,7 @@ const getRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getRol = getRol;
 //Inserta un rol en la base de datos
 const postRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { rol, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
+    const { rol, descripcion, estado_rol, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
     try {
         const _Rol = yield roles_models_1.Roles.findOne({
             where: { rol: rol }
@@ -49,6 +49,7 @@ const postRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             yield roles_models_1.Roles.create({
                 rol: rol,
                 descripcion: descripcion,
+                estado_rol: estado_rol,
                 creado_por: creado_por,
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
@@ -101,7 +102,7 @@ const deleteRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.deleteRol = deleteRol;
 //actualiza el rol en la base de datos
 const updateRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_rol, rol, descripcion, modificado_por, fecha_modificacion } = req.body;
+    const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion } = req.body;
     const _rol = yield roles_models_1.Roles.findOne({
         where: { id_rol: id_rol }
     });
@@ -114,6 +115,7 @@ const updateRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         id_rol: id_rol,
         rol: rol,
         descripcion: descripcion,
+        estado_rol: estado_rol,
         modificado_por: modificado_por,
         fecha_modificacion: fecha_modificacion
     });

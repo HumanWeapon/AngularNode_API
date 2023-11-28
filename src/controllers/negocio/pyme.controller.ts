@@ -120,16 +120,16 @@ export const updatePyme = async (req: Request, res: Response) => {
     });
 }
 
-//Inactiva el usuario de la DBA
+//Inactiva el la pyme de la DBA
 export const inactivatePyme = async (req: Request, res: Response) => {
-    const { nombre_pyme } = req.body;
+    const { pyme } = req.body;
 
-    const pyme = await Pyme.findOne({
-        where: {nombre_pyme: nombre_pyme}
+    const _pymes = await Pyme.findOne({
+        where: {pyme: pyme}
     });
-    if(!pyme){
+    if(!_pymes){
         return res.status(404).json({
-            msg: "La Pyme no existe: "+ nombre_pyme
+            msg: "La Pyme no existe: "+ pyme
         });
     }
 
@@ -137,20 +137,19 @@ export const inactivatePyme = async (req: Request, res: Response) => {
         estado: 2
     });
     res.json({
-        msg: 'Pyme: '+ nombre_pyme+  ' inactivado exitosamente',
+        msg: 'Pyme: '+ pyme+  ' inactivado exitosamente',
     });
 }
-
-//Activa el usuario de la DBA
+//Activa la pyme de la DBA
 export const activatePyme = async (req: Request, res: Response) => {
-    const { nombre_pyme } = req.body;
+    const {pyme } = req.body;
 
-    const pyme = await Pyme.findOne({
-        where: {nombre_pyme: nombre_pyme}
+    const _pyme = await Pyme.findOne({
+        where: {pyme: pyme}
     });
-    if(!pyme){
+    if(!_pyme){
         return res.status(404).json({
-            msg: "La Pyme no existe: "+ nombre_pyme
+            msg: "La Pyme no existe: "+ pyme
         });
     }
 
@@ -158,7 +157,7 @@ export const activatePyme = async (req: Request, res: Response) => {
         estado: 1
     });
     res.json({
-        msg: 'Pyme: '+ nombre_pyme+  ' ha sido activado exitosamente',
+        msg: 'Pyme: '+ pyme+  ' ha sido activado exitosamente',
     });
 }
 

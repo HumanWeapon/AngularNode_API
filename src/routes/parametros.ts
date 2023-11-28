@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validarToken from './validarToken';
-import { updateParametro, deleteParametro, postParametro, getAllParametros, getParametro } from '../controllers/parametros-controller';
+import { updateParametro, deleteParametro, postParametro, getAllParametros, getParametro, inactivateParametro, activateParametro } from '../controllers/parametros-controller';
 
 const routerParametros = Router()
 
@@ -9,5 +9,6 @@ routerParametros.get('/getParametro',validarToken, getParametro);//Consulta un p
 routerParametros.post('/postParametro',validarToken, postParametro); // inserta un parametro en la base de datos
 routerParametros.delete('/deleteParametro',validarToken, deleteParametro); // elimina un parametro en la base de datos
 routerParametros.post('/updateParametro',validarToken, updateParametro); // actualiza un parametro en la base de datos
-
+routerParametros.post('/inactivateParametro',validarToken, inactivateParametro);
+routerParametros.post('/activateParametro',validarToken, activateParametro);
 export default routerParametros;

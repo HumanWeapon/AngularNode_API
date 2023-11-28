@@ -26,6 +26,10 @@ export const Preguntas: any = dataBase.define('preguntas', {
     fecha_modificacion: {
         type: DataTypes.DATE,
         allowNull: false
+    },
+    estado_pregunta: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
     }, 
     {

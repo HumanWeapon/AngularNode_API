@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateParametro = exports.deleteParametro = exports.postParametro = exports.getParametro = exports.getAllParametros = void 0;
+exports.activateParametro = exports.inactivateParametro = exports.updateParametro = exports.deleteParametro = exports.postParametro = exports.getParametro = exports.getAllParametros = void 0;
 const parametros_models_1 = require("../models/parametros-models");
 //Obtiene todos los parametros de la base de datos
 const getAllParametros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -35,7 +35,7 @@ const getParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getParametro = getParametro;
 //Inserta un parametro en la base de datos
 const postParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { parametro, valor, fecha_creacion, fecha_modificacion, creado_por, modificado_por } = req.body;
+    const { parametro, valor, estado_parametro, fecha_creacion, fecha_modificacion, creado_por, modificado_por } = req.body;
     try {
         const _parametro = yield parametros_models_1.Parametros.findOne({
             where: { parametro: parametro }
@@ -49,6 +49,7 @@ const postParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             yield parametros_models_1.Parametros.create({
                 parametro: parametro,
                 valor: valor,
+                estado_parametro: estado_parametro,
                 fecha_creacion: fecha_creacion,
                 fecha_modificacion: fecha_modificacion,
                 creado_por: creado_por,
@@ -101,7 +102,7 @@ const deleteParametro = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.deleteParametro = deleteParametro;
 //actualiza la pregunta de la base de datos
 const updateParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_parametro, parametro, valor, fecha_modificacion, modificado_por } = req.body;
+    const { id_parametro, parametro, valor, estado_parametro, fecha_modificacion, modificado_por } = req.body;
     const _parametro = yield parametros_models_1.Parametros.findOne({
         where: { id_parametro: id_parametro }
     });
@@ -114,6 +115,7 @@ const updateParametro = (req, res) => __awaiter(void 0, void 0, void 0, function
         id_parametro: id_parametro,
         parametro: parametro,
         valor: valor,
+        estado_parametro: estado_parametro,
         fecha_modificacion: fecha_modificacion,
         modificado_por: modificado_por
     });
@@ -122,3 +124,41 @@ const updateParametro = (req, res) => __awaiter(void 0, void 0, void 0, function
     });
 });
 exports.updateParametro = updateParametro;
+//Inactiva el parametro de la DBA
+const inactivateParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { parametro } = req.body;
+    const _parametro = yield parametros_models_1.Parametros.findOne({
+        where: { parametro: parametro }
+    });
+    if (!_parametro) {
+        return res.status(404).json({
+            msg: "El Parametro no existe: " + parametro
+        });
+    }
+    yield _parametro.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Parametro: ' + parametro + ' inactivado exitosamente',
+    });
+});
+exports.inactivateParametro = inactivateParametro;
+//Activa el parametro de la DBA
+const activateParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { parametro } = req.body;
+    const _parametro = yield parametros_models_1.Parametros.findOne({
+        where: { parametro: parametro }
+    });
+    if (!_parametro) {
+        return res.status(404).json({
+            msg: "El Parametro no existe: " + parametro
+        });
+    }
+    yield _parametro.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Rol: ' + parametro + ' ha sido activado exitosamente',
+    });
+});
+exports.activateParametro = activateParametro;

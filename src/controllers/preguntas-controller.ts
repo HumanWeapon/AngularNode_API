@@ -31,7 +31,7 @@ export const getPregunta = async (req: Request, res: Response) => {
 //Inserta una pregunta en la base de datos
 export const postPregunta = async (req: Request, res: Response) => {
 
-    const { pregunta, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
+    const { pregunta, estado_pregunta, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
 
     try{
         const _Pregunta = await Preguntas.findOne({
@@ -45,6 +45,7 @@ export const postPregunta = async (req: Request, res: Response) => {
         }else{
             await Preguntas.create({
                 pregunta: pregunta,
+                estado_pregunta: estado_pregunta,
                 creado_por: creado_por,
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
@@ -89,7 +90,7 @@ export const deletePregunta = async (req: Request, res: Response) => {
 
 //actualiza la pregunta de la base de datos
 export const updatePregunta = async (req: Request, res: Response) => {
-    const { id_pregunta, pregunta, modificado_por, fecha_modificacion  } = req.body;
+    const { id_pregunta, pregunta, estado_pregunta, modificado_por, fecha_modificacion  } = req.body;
 
     const _pregunta = await Preguntas.findOne({
         where: {id_pregunta: id_pregunta}
@@ -103,10 +104,53 @@ export const updatePregunta = async (req: Request, res: Response) => {
     await _pregunta.update({
         id_pregunta: id_pregunta,
         pregunta: pregunta,
+        estado_pregunta: estado_pregunta,
         modificado_por: modificado_por,
         fecha_modificacion: fecha_modificacion
     });
     res.json({
         msg: 'La pregunta con el ID: '+ id_pregunta+  ' ha sido actualizada exitosamente',
+    });
+}
+
+//Inactiva la pregunta de la DBA
+export const inactivatePregunta = async (req: Request, res: Response) => {
+    const { pregunta } = req.body;
+
+    const _pregunta = await Preguntas.findOne({
+        where: {pregunta: pregunta}
+    });
+    if(!_pregunta){
+        return res.status(404).json({
+            msg: "La pregunta no existe: "+ pregunta
+        });
+    }
+
+    await _pregunta.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Pregunta: '+ pregunta+  ' inactivado exitosamente',
+    });
+}
+
+//Activa la pregunta de la DBA
+export const activatePregunta = async (req: Request, res: Response) => {
+    const { pregunta } = req.body;
+
+    const _pregunta = await Preguntas.findOne({
+        where: {pregunta: pregunta}
+    });
+    if(!_pregunta){
+        return res.status(404).json({
+            msg: "La Pregunta no existe: "+ pregunta
+        });
+    }
+
+    await _pregunta.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Pregunta: '+ pregunta+  ' ha sido activado exitosamente',
     });
 }

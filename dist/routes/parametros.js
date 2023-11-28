@@ -12,4 +12,6 @@ routerParametros.get('/getParametro', validarToken_1.default, parametros_control
 routerParametros.post('/postParametro', validarToken_1.default, parametros_controller_1.postParametro); // inserta un parametro en la base de datos
 routerParametros.delete('/deleteParametro', validarToken_1.default, parametros_controller_1.deleteParametro); // elimina un parametro en la base de datos
 routerParametros.post('/updateParametro', validarToken_1.default, parametros_controller_1.updateParametro); // actualiza un parametro en la base de datos
+routerParametros.post('/inactivateParametro', validarToken_1.default, parametros_controller_1.inactivateParametro);
+routerParametros.post('/activateParametro', validarToken_1.default, parametros_controller_1.activateParametro);
 exports.default = routerParametros;

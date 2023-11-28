@@ -31,7 +31,7 @@ export const getParametro = async (req: Request, res: Response) => {
 //Inserta un parametro en la base de datos
 export const postParametro = async (req: Request, res: Response) => {
 
-    const { parametro, valor, fecha_creacion, fecha_modificacion, creado_por, modificado_por  } = req.body;
+    const { parametro, valor, estado_parametro, fecha_creacion, fecha_modificacion, creado_por, modificado_por  } = req.body;
 
     try{
         const _parametro = await Parametros.findOne({
@@ -46,6 +46,7 @@ export const postParametro = async (req: Request, res: Response) => {
             await Parametros.create({
                 parametro: parametro,
                 valor: valor,
+                estado_parametro: estado_parametro,
                 fecha_creacion: fecha_creacion,                
                 fecha_modificacion: fecha_modificacion,
                 creado_por: creado_por,
@@ -100,7 +101,7 @@ export const deleteParametro = async (req: Request, res: Response) => {
 
 //actualiza la pregunta de la base de datos
 export const updateParametro = async (req: Request, res: Response) => {
-    const { id_parametro, parametro, valor, fecha_modificacion, modificado_por  } = req.body;
+    const { id_parametro, parametro, valor, estado_parametro, fecha_modificacion, modificado_por  } = req.body;
 
     const _parametro = await Parametros.findOne({
         where: {id_parametro: id_parametro}
@@ -115,10 +116,54 @@ export const updateParametro = async (req: Request, res: Response) => {
         id_parametro: id_parametro,
         parametro: parametro,
         valor: valor,
+        estado_parametro: estado_parametro,
         fecha_modificacion: fecha_modificacion,
         modificado_por: modificado_por        
     });
     res.json({
         msg: 'El parametro con el ID: '+ id_parametro+  ' ha sido actualizada exitosamente',
+    });
+}
+
+
+//Inactiva el parametro de la DBA
+    export const inactivateParametro = async (req: Request, res: Response) => {
+    const { parametro } = req.body;
+
+    const _parametro = await Parametros.findOne({
+        where: {parametro: parametro}
+    });
+    if(!_parametro){
+        return res.status(404).json({
+            msg: "El Parametro no existe: "+ parametro
+        });
+    }
+
+    await _parametro.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Parametro: '+ parametro+  ' inactivado exitosamente',
+    });
+}
+
+//Activa el parametro de la DBA
+export const activateParametro = async (req: Request, res: Response) => {
+    const { parametro } = req.body;
+
+    const _parametro = await Parametros.findOne({
+        where: {parametro: parametro}
+    });
+    if(!_parametro){
+        return res.status(404).json({
+            msg: "El Parametro no existe: "+ parametro
+        });
+    }
+
+    await _parametro.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Rol: '+ parametro+  ' ha sido activado exitosamente',
     });
 }

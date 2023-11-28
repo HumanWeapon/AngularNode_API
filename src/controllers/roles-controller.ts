@@ -31,7 +31,7 @@ export const getRol = async (req: Request, res: Response) => {
 //Inserta un rol en la base de datos
 export const postRol = async (req: Request, res: Response) => {
 
-    const { rol, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
+    const { rol, descripcion, estado_rol, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
 
     try{
         const _Rol = await Roles.findOne({
@@ -46,10 +46,12 @@ export const postRol = async (req: Request, res: Response) => {
             await Roles.create({
                 rol: rol,
                 descripcion: descripcion, 
+                estado_rol: estado_rol,
                 creado_por: creado_por,
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
                 fecha_modificacion: fecha_modificacion
+                
             })
             res.json({
                 msg: 'El Rol: '+ rol+  ' ha sido creada exitosamente',
@@ -99,7 +101,7 @@ export const deleteRol = async (req: Request, res: Response) => {
 
 //actualiza el rol en la base de datos
 export const updateRoles = async (req: Request, res: Response) => {
-    const { id_rol, rol, descripcion, modificado_por, fecha_modificacion  } = req.body;
+    const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion  } = req.body;
 
     const _rol = await Roles.findOne({
         where: {id_rol: id_rol}
@@ -114,8 +116,10 @@ export const updateRoles = async (req: Request, res: Response) => {
         id_rol: id_rol,
         rol: rol,
         descripcion: descripcion,
+        estado_rol: estado_rol,
         modificado_por: modificado_por,
         fecha_modificacion: fecha_modificacion
+       
     });
     res.json({
         msg: 'El Rol con el ID: '+ id_rol+  ' ha sido actualizado exitosamente',

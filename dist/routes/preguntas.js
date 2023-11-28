@@ -8,4 +8,6 @@ routerPreguntas.get('/getPregunta', preguntas_controller_1.getPregunta); //Inser
 routerPreguntas.post('/postPregunta', preguntas_controller_1.postPregunta); // obtiene todos los usuarios
 routerPreguntas.delete('/deletePregunta', preguntas_controller_1.deletePregunta); // obtiene el usuario especificado
 routerPreguntas.post('/updatePregunta', preguntas_controller_1.updatePregunta); // elimina el registro con el usuario especificado
+routerPreguntas.post('/activatePregunta', preguntas_controller_1.activatePregunta); // elimina el registro con el usuario especificado
+routerPreguntas.post('/inactivatePregunta', preguntas_controller_1.inactivatePregunta); // elimina el registro con el usuario especificado
 exports.default = routerPreguntas;

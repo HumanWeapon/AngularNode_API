@@ -119,41 +119,41 @@ const updatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     });
 });
 exports.updatePyme = updatePyme;
-//Inactiva el usuario de la DBA
+//Inactiva el la pyme de la DBA
 const inactivatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nombre_pyme } = req.body;
-    const pyme = yield pyme_models_1.Pyme.findOne({
-        where: { nombre_pyme: nombre_pyme }
+    const { pyme } = req.body;
+    const _pymes = yield pyme_models_1.Pyme.findOne({
+        where: { pyme: pyme }
     });
-    if (!pyme) {
+    if (!_pymes) {
         return res.status(404).json({
-            msg: "La Pyme no existe: " + nombre_pyme
+            msg: "La Pyme no existe: " + pyme
         });
     }
     yield pyme.update({
         estado: 2
     });
     res.json({
-        msg: 'Pyme: ' + nombre_pyme + ' inactivado exitosamente',
+        msg: 'Pyme: ' + pyme + ' inactivado exitosamente',
     });
 });
 exports.inactivatePyme = inactivatePyme;
-//Activa el usuario de la DBA
+//Activa la pyme de la DBA
 const activatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nombre_pyme } = req.body;
-    const pyme = yield pyme_models_1.Pyme.findOne({
-        where: { nombre_pyme: nombre_pyme }
+    const { pyme } = req.body;
+    const _pyme = yield pyme_models_1.Pyme.findOne({
+        where: { pyme: pyme }
     });
-    if (!pyme) {
+    if (!_pyme) {
         return res.status(404).json({
-            msg: "La Pyme no existe: " + nombre_pyme
+            msg: "La Pyme no existe: " + pyme
         });
     }
     yield pyme.update({
         estado: 1
     });
     res.json({
-        msg: 'Pyme: ' + nombre_pyme + ' ha sido activado exitosamente',
+        msg: 'Pyme: ' + pyme + ' ha sido activado exitosamente',
     });
 });
 exports.activatePyme = activatePyme;
