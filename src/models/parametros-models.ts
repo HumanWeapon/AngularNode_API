@@ -30,7 +30,11 @@ export const Parametros: any = dataBase.define('roles', {
     modificado_por: {
         type: DataTypes.STRING,
         allowNull: false
-    }    
+    },
+    estado_parametro: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    }   
     }, 
     {
     tableName: 'tbl_ms_parametros',

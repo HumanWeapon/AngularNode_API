@@ -13,4 +13,6 @@ routerPreguntasUsuario.post('/postPreguntaUsuario', validarToken_1.default, preg
 routerPreguntasUsuario.put('/updatePreguntaUsuario', validarToken_1.default, preguntas_usuario_controller_1.updatePreguntaUsuario); // Actualiza las preguntas por el usuario seleccionado
 routerPreguntasUsuario.post('/validarRespuestas', validarToken_1.default, preguntas_usuario_controller_1.validarRespuestas); //Inserta un usuario en la DB
 routerPreguntasUsuario.post('/preguntasRespuestas', validarToken_1.default, preguntas_usuario_controller_1.preguntasRespuestas); //
+routerPreguntasUsuario.post('/activatePreguntaUsuario', preguntas_usuario_controller_1.activatePreguntaUsuario); // elimina el registro con el usuario especificado
+routerPreguntasUsuario.post('/inactivatePreguntaUsuario', preguntas_usuario_controller_1.inactivatePreguntaUsuario); // elimina el registro con el usuario especificado
 exports.default = routerPreguntasUsuario;

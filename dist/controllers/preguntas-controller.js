@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePregunta = exports.deletePregunta = exports.postPregunta = exports.getPregunta = exports.getAllPreguntas = void 0;
+exports.activatePregunta = exports.inactivatePregunta = exports.updatePregunta = exports.deletePregunta = exports.postPregunta = exports.getPregunta = exports.getAllPreguntas = void 0;
 const preguntas_model_1 = require("../models/preguntas-model");
 // Obtiene todas las preguntas de la base de datos
 const getAllPreguntas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -53,6 +53,10 @@ const getPregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getPregunta = getPregunta;
 // Inserta una pregunta en la base de datos
 const postPregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+<<<<<<< HEAD
+    const { pregunta, estado_pregunta, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
+=======
+>>>>>>> 1fe3a974d7a1e20dd4e417e08d774c89ca7880ec
     try {
         const { pregunta, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
         const _Pregunta = yield preguntas_model_1.Preguntas.findOne({
@@ -66,6 +70,7 @@ const postPregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         else {
             yield preguntas_model_1.Preguntas.create({
                 pregunta: pregunta,
+                estado_pregunta: estado_pregunta,
                 creado_por: creado_por,
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
@@ -113,6 +118,27 @@ const deletePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.deletePregunta = deletePregunta;
 // Actualiza la pregunta de la base de datos
 const updatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+<<<<<<< HEAD
+    const { id_pregunta, pregunta, estado_pregunta, modificado_por, fecha_modificacion } = req.body;
+    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+        where: { id_pregunta: id_pregunta }
+    });
+    if (!_pregunta) {
+        return res.status(404).json({
+            msg: 'Pregunta con el ID: ' + id_pregunta + ' no existe en la base de datos'
+        });
+    }
+    yield _pregunta.update({
+        id_pregunta: id_pregunta,
+        pregunta: pregunta,
+        estado_pregunta: estado_pregunta,
+        modificado_por: modificado_por,
+        fecha_modificacion: fecha_modificacion
+    });
+    res.json({
+        msg: 'La pregunta con el ID: ' + id_pregunta + ' ha sido actualizada exitosamente',
+    });
+=======
     try {
         const { id_pregunta, pregunta, modificado_por, fecha_modificacion } = req.body;
         const _pregunta = yield preguntas_model_1.Preguntas.findOne({
@@ -140,5 +166,44 @@ const updatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function*
             error,
         });
     }
+>>>>>>> 1fe3a974d7a1e20dd4e417e08d774c89ca7880ec
 });
 exports.updatePregunta = updatePregunta;
+//Inactiva la pregunta de la DBA
+const inactivatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { pregunta } = req.body;
+    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+        where: { pregunta: pregunta }
+    });
+    if (!_pregunta) {
+        return res.status(404).json({
+            msg: "La pregunta no existe: " + pregunta
+        });
+    }
+    yield _pregunta.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Pregunta: ' + pregunta + ' inactivado exitosamente',
+    });
+});
+exports.inactivatePregunta = inactivatePregunta;
+//Activa la pregunta de la DBA
+const activatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { pregunta } = req.body;
+    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+        where: { pregunta: pregunta }
+    });
+    if (!_pregunta) {
+        return res.status(404).json({
+            msg: "La Pregunta no existe: " + pregunta
+        });
+    }
+    yield _pregunta.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Pregunta: ' + pregunta + ' ha sido activado exitosamente',
+    });
+});
+exports.activatePregunta = activatePregunta;

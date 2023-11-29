@@ -145,8 +145,26 @@ export const updatePyme = async (req: Request, res: Response) => {
     }
 }
 
-//Inactiva el usuario de la DBA
+//Inactiva el la pyme de la DBA
 export const inactivatePyme = async (req: Request, res: Response) => {
+
+    const { pyme } = req.body;
+
+    const _pymes = await Pyme.findOne({
+        where: {pyme: pyme}
+    });
+    if(!_pymes){
+        return res.status(404).json({
+            msg: "La Pyme no existe: "+ pyme
+        });
+    }
+
+    await pyme.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Pyme: '+ pyme+  ' inactivado exitosamente',
+    });
     try {
         const { nombre_pyme } = req.body;
 
@@ -172,10 +190,27 @@ export const inactivatePyme = async (req: Request, res: Response) => {
             error,
         });
     }
-}
 
-//Activa el usuario de la DBA
+}
+//Activa la pyme de la DBA
 export const activatePyme = async (req: Request, res: Response) => {
+    const {pyme } = req.body;
+
+    const _pyme = await Pyme.findOne({
+        where: {pyme: pyme}
+    });
+    if(!_pyme){
+        return res.status(404).json({
+            msg: "La Pyme no existe: "+ pyme
+        });
+    }
+
+    await pyme.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Pyme: '+ pyme+  ' ha sido activado exitosamente',
+    });
     try {
         const { nombre_pyme } = req.body;
 
@@ -201,6 +236,7 @@ export const activatePyme = async (req: Request, res: Response) => {
             error,
         });
     }
+
 }
 
 export const pymesAllTipoEmpresa = async (req: Request, res: Response) => {
@@ -220,4 +256,3 @@ export const pymesAllTipoEmpresa = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
     }
 }
-

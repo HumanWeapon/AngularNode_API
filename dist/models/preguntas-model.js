@@ -31,6 +31,10 @@ exports.Preguntas = connection_1.default.define('preguntas', {
     fecha_modificacion: {
         type: sequelize_1.DataTypes.DATE,
         allowNull: false
+    },
+    estado_pregunta: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'tbl_ms_preguntas',

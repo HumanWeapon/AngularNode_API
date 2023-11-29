@@ -205,3 +205,45 @@ export const preguntasRespuestas = async (req: Request, res: Response) => {
     }
 }
 
+//Inactiva la pregunta de la DBA
+export const inactivatePreguntaUsuario = async (req: Request, res: Response) => {
+    const { pregunta } = req.body;
+
+    const _pregunta = await Preguntas.findOne({
+        where: {pregunta: pregunta}
+    });
+    if(!_pregunta){
+        return res.status(404).json({
+            msg: "La pregunta no existe: "+ pregunta
+        });
+    }
+
+    await _pregunta.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Pregunta: '+ pregunta+  ' inactivado exitosamente',
+    });
+}
+
+//Activa la pregunta de la DBA
+export const activatePreguntaUsuario = async (req: Request, res: Response) => {
+    const { pregunta } = req.body;
+
+    const _pregunta = await Preguntas.findOne({
+        where: {pregunta: pregunta}
+    });
+    if(!_pregunta){
+        return res.status(404).json({
+            msg: "La Pregunta no existe: "+ pregunta
+        });
+    }
+
+    await _pregunta.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Pregunta: '+ pregunta+  ' ha sido activado exitosamente',
+    });
+}
+

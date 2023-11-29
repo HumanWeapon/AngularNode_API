@@ -53,6 +53,10 @@ const getRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getRol = getRol;
 // Inserta un rol en la base de datos
 const postRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+<<<<<<< HEAD
+    const { rol, descripcion, estado_rol, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
+=======
+>>>>>>> 1fe3a974d7a1e20dd4e417e08d774c89ca7880ec
     try {
         const { rol, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
         const _Rol = yield roles_models_1.Roles.findOne({
@@ -67,6 +71,7 @@ const postRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             yield roles_models_1.Roles.create({
                 rol: rol,
                 descripcion: descripcion,
+                estado_rol: estado_rol,
                 creado_por: creado_por,
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
@@ -114,6 +119,28 @@ const deleteRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.deleteRol = deleteRol;
 // Actualiza el rol en la base de datos
 const updateRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+<<<<<<< HEAD
+    const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion } = req.body;
+    const _rol = yield roles_models_1.Roles.findOne({
+        where: { id_rol: id_rol }
+    });
+    if (!_rol) {
+        return res.status(404).json({
+            msg: 'Rol con el ID: ' + id_rol + ' no existe en la base de datos'
+        });
+    }
+    yield _rol.update({
+        id_rol: id_rol,
+        rol: rol,
+        descripcion: descripcion,
+        estado_rol: estado_rol,
+        modificado_por: modificado_por,
+        fecha_modificacion: fecha_modificacion
+    });
+    res.json({
+        msg: 'El Rol con el ID: ' + id_rol + ' ha sido actualizado exitosamente',
+    });
+=======
     try {
         const { id_rol, rol, descripcion, modificado_por, fecha_modificacion } = req.body;
         const _rol = yield roles_models_1.Roles.findOne({
@@ -142,6 +169,7 @@ const updateRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             error,
         });
     }
+>>>>>>> 1fe3a974d7a1e20dd4e417e08d774c89ca7880ec
 });
 exports.updateRoles = updateRoles;
 // Inactiva el usuario de la DBA

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.preguntasRespuestas = exports.validarRespuestas = exports.updatePreguntaUsuario = exports.postPreguntaUsuario = exports.getPreguntasusuario = exports.getAllPreguntasUsuario = void 0;
+exports.activatePreguntaUsuario = exports.inactivatePreguntaUsuario = exports.preguntasRespuestas = exports.validarRespuestas = exports.updatePreguntaUsuario = exports.postPreguntaUsuario = exports.getPreguntasusuario = exports.getAllPreguntasUsuario = void 0;
 const express_1 = __importDefault(require("express"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const preguntas_usuario_model_1 = require("../models/preguntas_usuario-model");
@@ -196,3 +196,41 @@ const preguntasRespuestas = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.preguntasRespuestas = preguntasRespuestas;
+//Inactiva la pregunta de la DBA
+const inactivatePreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { pregunta } = req.body;
+    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+        where: { pregunta: pregunta }
+    });
+    if (!_pregunta) {
+        return res.status(404).json({
+            msg: "La pregunta no existe: " + pregunta
+        });
+    }
+    yield _pregunta.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Pregunta: ' + pregunta + ' inactivado exitosamente',
+    });
+});
+exports.inactivatePreguntaUsuario = inactivatePreguntaUsuario;
+//Activa la pregunta de la DBA
+const activatePreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { pregunta } = req.body;
+    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+        where: { pregunta: pregunta }
+    });
+    if (!_pregunta) {
+        return res.status(404).json({
+            msg: "La Pregunta no existe: " + pregunta
+        });
+    }
+    yield _pregunta.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Pregunta: ' + pregunta + ' ha sido activado exitosamente',
+    });
+});
+exports.activatePreguntaUsuario = activatePreguntaUsuario;

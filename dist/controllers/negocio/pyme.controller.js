@@ -153,8 +153,25 @@ const updatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.updatePyme = updatePyme;
-//Inactiva el usuario de la DBA
+//Inactiva el la pyme de la DBA
 const inactivatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+<<<<<<< HEAD
+    const { pyme } = req.body;
+    const _pymes = yield pyme_models_1.Pyme.findOne({
+        where: { pyme: pyme }
+    });
+    if (!_pymes) {
+        return res.status(404).json({
+            msg: "La Pyme no existe: " + pyme
+        });
+    }
+    yield pyme.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Pyme: ' + pyme + ' inactivado exitosamente',
+    });
+=======
     try {
         const { nombre_pyme } = req.body;
         const pyme = yield pyme_models_1.Pyme.findOne({
@@ -179,10 +196,28 @@ const inactivatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function*
             error,
         });
     }
+>>>>>>> 1fe3a974d7a1e20dd4e417e08d774c89ca7880ec
 });
 exports.inactivatePyme = inactivatePyme;
-//Activa el usuario de la DBA
+//Activa la pyme de la DBA
 const activatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+<<<<<<< HEAD
+    const { pyme } = req.body;
+    const _pyme = yield pyme_models_1.Pyme.findOne({
+        where: { pyme: pyme }
+    });
+    if (!_pyme) {
+        return res.status(404).json({
+            msg: "La Pyme no existe: " + pyme
+        });
+    }
+    yield pyme.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Pyme: ' + pyme + ' ha sido activado exitosamente',
+    });
+=======
     try {
         const { nombre_pyme } = req.body;
         const pyme = yield pyme_models_1.Pyme.findOne({
@@ -207,6 +242,7 @@ const activatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             error,
         });
     }
+>>>>>>> 1fe3a974d7a1e20dd4e417e08d774c89ca7880ec
 });
 exports.activatePyme = activatePyme;
 const pymesAllTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

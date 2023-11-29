@@ -35,6 +35,10 @@ exports.Roles = connection_1.default.define('roles', {
     fecha_modificacion: {
         type: sequelize_1.DataTypes.DATE,
         allowNull: false
+    },
+    estado_rol: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'tbl_ms_roles',

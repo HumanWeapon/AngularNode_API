@@ -35,6 +35,10 @@ exports.Parametros = connection_1.default.define('roles', {
     modificado_por: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
+    },
+    estado_parametro: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'tbl_ms_parametros',

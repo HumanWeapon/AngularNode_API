@@ -30,6 +30,10 @@ export const Roles: any = dataBase.define('roles', {
     fecha_modificacion: {
         type: DataTypes.DATE,
         allowNull: false
+    },
+    estado_rol: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
     }, 
     {
