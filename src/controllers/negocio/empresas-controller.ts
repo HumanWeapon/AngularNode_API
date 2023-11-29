@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { Empresas } from '../../models/negocio/empresas-model';
 import jwt from 'jsonwebtoken';
 
+
 // Obtiene todas las Empresas
 export const getAllEmpresas = async (req: Request, res: Response) => {
     try {
@@ -35,15 +36,15 @@ export const getEmpresasPymes = async (req: Request, res: Response) => {
 // Obtiene una Empresa por ID
 export const getEmpresa = async (req: Request, res: Response) => {
     try {
-        const { id_empresa } = req.body;
+        const { nombre_empresa } = req.body;
         const _empresa = await Empresas.findOne({
-            where: { id_empresa: id_empresa },
+            where: { nombre_empresa: nombre_empresa },
         });
         if (_empresa) {
             res.json(_empresa);
         } else {
             res.status(404).json({
-                msg: `el ID de la Empresa no existe: ${id_empresa}`,
+                msg: `el ID de la Empresa no existe: ${nombre_empresa}`,
             });
         }
     } catch (error) {
@@ -198,6 +199,44 @@ export const activateEmpresa = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const loginPyme = async (req: Request, res: Response) => {
+    try {
+        const { nombre_empresa, rtn } = req.body;
+
+        // Busca la empresa en la base de datos
+        const empresa: any = await Empresas.findOne({
+            where: { nombre_empresa: nombre_empresa, rtn: rtn }
+        });
+
+        if (!empresa) {
+            return res.status(400).json({
+                msg: 'Empresa/RTN inválidos.'
+            });
+        }
+
+        // Genera el token
+        const token = jwt.sign({
+            nombre_empresa: nombre_empresa
+        }, process.env.SECRET_KEY || 'Lamers005*');
+
+        res.json(token);
+    } catch (error) {
+        console.error('Error en loginUser:', error);
+        if (error instanceof Error) {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: error.message
+            });
+        } else {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: 'Error desconocido' // Otra manejo de errores si no es una instancia de Error
+            });
+        }
+    }
+};
+
 
 
 

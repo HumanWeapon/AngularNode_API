@@ -21,6 +21,10 @@ exports.Empresas = connection_1.default.define('empresas', {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
+    rtn: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
     descripcion: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
