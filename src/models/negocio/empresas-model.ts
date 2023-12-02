@@ -16,10 +16,6 @@ export const Empresas: any = dataBase.define('empresas', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    rtn: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     descripcion: {
         type: DataTypes.STRING,
         allowNull: false

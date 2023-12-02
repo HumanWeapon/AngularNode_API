@@ -7,7 +7,6 @@ const express_1 = require("express");
 const validarToken_1 = __importDefault(require("../validarToken"));
 const empresas_controller_1 = require("../../controllers/negocio/empresas-controller");
 const routerEmpresa = (0, express_1.Router)();
-routerEmpresa.post('/loginPyme', empresas_controller_1.loginPyme); //Inicia sesión en la DB
 routerEmpresa.get('/getAllEmpresas', validarToken_1.default, empresas_controller_1.getAllEmpresas); // Obtiene todas las Empresas
 routerEmpresa.post('/getEmpresa', empresas_controller_1.getEmpresa); // Obtiene la Empresa especificada
 routerEmpresa.post('/postEmpresa', validarToken_1.default, empresas_controller_1.postEmpresa); //Inserta una nueva Empresa en la Base de Datos

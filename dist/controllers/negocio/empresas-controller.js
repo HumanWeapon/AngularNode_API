@@ -8,13 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginPyme = exports.activateEmpresa = exports.inactivateEmpresa = exports.updateEmpresa = exports.deleteEmpresa = exports.postEmpresa = exports.getEmpresa = exports.getEmpresasPymes = exports.getAllEmpresas = void 0;
+exports.activateEmpresa = exports.inactivateEmpresa = exports.updateEmpresa = exports.deleteEmpresa = exports.postEmpresa = exports.getEmpresa = exports.getEmpresasPymes = exports.getAllEmpresas = void 0;
 const empresas_model_1 = require("../../models/negocio/empresas-model");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 // Obtiene todas las Empresas
 const getAllEmpresas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -49,16 +45,16 @@ exports.getEmpresasPymes = getEmpresasPymes;
 // Obtiene una Empresa por ID
 const getEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nombre_empresa } = req.body;
+        const { id_empresa } = req.body;
         const _empresa = yield empresas_model_1.Empresas.findOne({
-            where: { nombre_empresa: nombre_empresa },
+            where: { id_empresa: id_empresa },
         });
         if (_empresa) {
             res.json(_empresa);
         }
         else {
             res.status(404).json({
-                msg: `el ID de la Empresa no existe: ${nombre_empresa}`,
+                msg: `el ID de la Empresa no existe: ${id_empresa}`,
             });
         }
     }
@@ -214,38 +210,3 @@ const activateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.activateEmpresa = activateEmpresa;
-const loginPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { nombre_empresa, rtn } = req.body;
-        // Busca la empresa en la base de datos
-        const empresa = yield empresas_model_1.Empresas.findOne({
-            where: { nombre_empresa: nombre_empresa, rtn: rtn }
-        });
-        if (!empresa) {
-            return res.status(400).json({
-                msg: 'Empresa/RTN inválidos.'
-            });
-        }
-        // Genera el token
-        const token = jsonwebtoken_1.default.sign({
-            nombre_empresa: nombre_empresa
-        }, process.env.SECRET_KEY || 'Lamers005*');
-        res.json(token);
-    }
-    catch (error) {
-        console.error('Error en loginUser:', error);
-        if (error instanceof Error) {
-            res.status(500).json({
-                msg: 'Error en el servidor',
-                error: error.message
-            });
-        }
-        else {
-            res.status(500).json({
-                msg: 'Error en el servidor',
-                error: 'Error desconocido' // Otra manejo de errores si no es una instancia de Error
-            });
-        }
-    }
-});
-exports.loginPyme = loginPyme;
