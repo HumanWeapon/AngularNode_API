@@ -13,54 +13,36 @@ exports.activateRequisito = exports.inactivateRequisito = exports.updateTipo_Req
 const Tipo_requisito_models_1 = require("../../models/negocio/Tipo_requisito-models");
 //Obtiene todos los tipos de requisito de la base de datos
 const getAllTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const t_requisito = yield Tipo_requisito_models_1.Tipo_Requisito.findAll();
-        res.json(t_requisito);
-    }
-    catch (error) {
-        console.error('Error al obtener todos los tipos de requisito:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    const t_requisito = yield Tipo_requisito_models_1.Tipo_Requisito.findAll();
+    res.json(t_requisito);
 });
 exports.getAllTipo_Requisito = getAllTipo_Requisito;
 //Obtiene un tipo de requisito de la base de datos
 const getTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { tipo_requisito } = req.body;
-        const _tiporeq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
-            where: { tipo_requisito: tipo_requisito }
-        });
-        if (_tiporeq) {
-            res.json({ _tiporeq });
-        }
-        else {
-            res.status(404).json({
-                msg: `El Id del tipo de permiso no existe: ${tipo_requisito}`
-            });
-        }
+    const { tipo_requisito } = req.body;
+    const _tiporeq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
+        where: { tipo_requisito: tipo_requisito }
+    });
+    if (_tiporeq) {
+        res.json({ _tiporeq });
     }
-    catch (error) {
-        console.error('Error al obtener el tipo de requisito:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
+    else {
+        res.status(404).json({
+            msg: `el Id del tipo de permiso no existe: ${tipo_requisito}`
         });
     }
 });
 exports.getTipo_Requisito = getTipo_Requisito;
 //Inserta un tipo_requisito en la base de datos
 const postTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tipo_requisito, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
-        const { tipo_requisito, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
         const _tipreq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
             where: { tipo_requisito: tipo_requisito }
         });
         if (_tipreq) {
             return res.status(400).json({
-                msg: 'Tipo de requisito ya registrado en la base de datos'
+                msg: 'Tipo de requisito ya registrado en la base de datos: '
             });
         }
         else {
@@ -81,15 +63,15 @@ const postTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, funct
     catch (error) {
         res.status(400).json({
             msg: 'Contactate con el administrador',
-            error,
+            error
         });
     }
 });
 exports.postTipo_Requisito = postTipo_Requisito;
 //Elimina un tipo_requisito de la base de datos
 const deleteTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_tipo_requisito } = req.body;
     try {
-        const { id_tipo_requisito } = req.body;
         const _tipreq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
             where: { id_tipo_requisito: id_tipo_requisito }
         });
@@ -101,7 +83,7 @@ const deleteTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, fun
         }
         else {
             res.status(404).json({
-                msg: 'No se encontró ningún registro con esa numeración',
+                msg: 'No se encontró ningun registro con esa numeracion',
             });
         }
     }
@@ -109,96 +91,69 @@ const deleteTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, fun
         console.error('Error al eliminar el registro:', error);
         res.status(500).json({
             msg: 'Hubo un error al eliminar el registro',
-            error,
         });
     }
 });
 exports.deleteTipo_Requisito = deleteTipo_Requisito;
 //actualiza el tipo requisito en la base de datos
 const updateTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id_tipo_requisito, tipo_requisito, descripcion, modificado_por, fecha_modificacion, estado } = req.body;
-        const _tiporeq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
-            where: { id_tipo_requisito: id_tipo_requisito }
-        });
-        if (!_tiporeq) {
-            return res.status(404).json({
-                msg: 'El valor seleccionado no existe en la base de datos'
-            });
-        }
-        yield _tiporeq.update({
-            id_tipo_requisito: id_tipo_requisito,
-            tipo_requisito: tipo_requisito,
-            descripcion: descripcion,
-            modificado_por: modificado_por,
-            fecha_modificacion: fecha_modificacion,
-            estado: estado
-        });
-        res.json({
-            msg: 'El valor ha sido actualizado exitosamente',
+    const { id_tipo_requisito, tipo_requisito, descripcion, modificado_por, fecha_modificacion, estado } = req.body;
+    const _tiporeq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
+        where: { id_tipo_requisito: id_tipo_requisito }
+    });
+    if (!_tiporeq) {
+        return res.status(404).json({
+            msg: 'El valor seleccionado no existe en la base de datos'
         });
     }
-    catch (error) {
-        res.status(400).json({
-            msg: 'Contactate con el administrador',
-            error,
-        });
-    }
+    yield _tiporeq.update({
+        id_tipo_requisito: id_tipo_requisito,
+        tipo_requisito: tipo_requisito,
+        descripcion: descripcion,
+        modificado_por: modificado_por,
+        fecha_modificacion: fecha_modificacion,
+        estado
+    });
+    res.json({
+        msg: 'El valor ha sido actualizado exitosamente',
+    });
 });
 exports.updateTipo_Requisito = updateTipo_Requisito;
 //Inactiva el usuario de la DBA
 const inactivateRequisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { tipo_requisito } = req.body;
-        const tiporeq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
-            where: { tipo_requisito: tipo_requisito }
-        });
-        if (!tiporeq) {
-            return res.status(404).json({
-                msg: "El Requisito no existe: " + tipo_requisito
-            });
-        }
-        yield tiporeq.update({
-            estado: 2
-        });
-        res.json({
-            msg: 'Requisito: ' + tipo_requisito + ' inactivado exitosamente',
+    const { tipo_requisito } = req.body;
+    const tiporeq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
+        where: { tipo_requisito: tipo_requisito }
+    });
+    if (!tiporeq) {
+        return res.status(404).json({
+            msg: "El Requisito no existe: " + tipo_requisito
         });
     }
-    catch (error) {
-        console.error('Error al inactivar el tipo de requisito:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al inactivar el tipo de requisito',
-            error,
-        });
-    }
+    yield tiporeq.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Requisito: ' + tipo_requisito + ' inactivado exitosamente',
+    });
 });
 exports.inactivateRequisito = inactivateRequisito;
 //Activa el usuario de la DBA
 const activateRequisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { tipo_requisito } = req.body;
-        const tiporeq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
-            where: { tipo_requisito: tipo_requisito }
-        });
-        if (!tiporeq) {
-            return res.status(404).json({
-                msg: "El Requisito no existe: " + tipo_requisito
-            });
-        }
-        yield tiporeq.update({
-            estado: 1
-        });
-        res.json({
-            msg: 'Requisito: ' + tipo_requisito + ' ha sido activado exitosamente',
+    const { tipo_requisito } = req.body;
+    const tiporeq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
+        where: { tipo_requisito: tipo_requisito }
+    });
+    if (!tiporeq) {
+        return res.status(404).json({
+            msg: "El Requisito no existe: " + tipo_requisito
         });
     }
-    catch (error) {
-        console.error('Error al activar el tipo de requisito:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al activar el tipo de requisito',
-            error,
-        });
-    }
+    yield tiporeq.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Requisito: ' + tipo_requisito + ' ha sido activado exitosamente',
+    });
 });
 exports.activateRequisito = activateRequisito;

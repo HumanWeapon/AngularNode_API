@@ -1,81 +1,73 @@
-import { Request, Response } from 'express';
+import {Request, Response} from 'express';
 import { DireccionesContactos } from '../../models/negocio/direccionesContacto-model';
 
-// Obtiene todas las Direcciones de Contactos
+//Obtiene todas las Empresas
 export const getAllDirecContactos = async (req: Request, res: Response) => {
-    try {
-        const _direcontactos = await DireccionesContactos.findAll();
-        res.json(_direcontactos);
-    } catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
-};
+    const _direcontactos = await DireccionesContactos.findAll();
+    res.json(_direcontactos)
+}
 
-// Obtiene una Dirección de Contacto por ID
+//Obtiene una Empresa por ID
 export const getDirecContactos = async (req: Request, res: Response) => {
-    try {
-        const { id_contacto } = req.body;
-        const _direcontactos = await DireccionesContactos.findAll({
-            where: { id_contacto: id_contacto },
-        });
-        if (_direcontactos) {
-            res.json(_direcontactos);
-        } else {
-            res.status(404).json({
-                msg: `el ID de la Direccion Contacto no existe: ${id_contacto}`,
-            });
-        }
-    } catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
+    const { id_contacto } = req.body;
+
+    const _direcontactos = await DireccionesContactos.findAll({
+        where: {id_contacto: id_contacto}
+    });
+    if(_direcontactos){
+        res.json(_direcontactos)
     }
-};
+    else{
+        res.status(404).json({
+            msg: `el ID de la Direccion Contacto no existe: ${id_contacto}`
+        })
+    }
+}
 
-// Inserta una nueva Dirección de Contacto en la base de datos
+// Inserta una nueva Empresa en la base de datos
 export const postDirecContactos = async (req: Request, res: Response) => {
-    try {
-        const { id_contacto, id_tipo_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-        const _direcontactos = await DireccionesContactos.findOne({
-            where: { direccion: direccion },
-        });
 
-        if (_direcontactos) {
+    const { id_contacto, id_tipo_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado} = req.body;
+
+    try{
+        const _direcontactos = await DireccionesContactos.findOne({
+            where: {direccion: direccion}
+        })
+        if (_direcontactos){
             return res.status(400).json({
-                msg: 'Direccion Contacto ya registrada en la base de datos: ' + direccion,
-            });
-        } else {
+                msg: 'Direccion Contacto ya registrada en la base de datos: '+ direccion
+            })
+        }else{
             const _direcontactos = await DireccionesContactos.create({
                 id_contacto: id_contacto,
                 id_tipo_direccion: id_tipo_direccion,
                 direccion: direccion,
-                descripcion: descripcion,
+                descripcion: descripcion, 
                 creado_por: creado_por,
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
                 fecha_modificacion: fecha_modificacion,
-                estado: estado,
-            });
-            res.json(_direcontactos);
-        }
-    } catch (error) {
+                estado: estado
+            })
+            res.json(_direcontactos)
+        
+    }
+}
+    catch (error){
         res.status(400).json({
             msg: 'Contactate con el administrador',
-            error,
-        });
+            error
+        }); 
     }
-};
+}
 
-// Elimina la Dirección de Contacto de la base de datos
+// Elimina la Pyme de la base de datos
 export const deleteDirecContactos = async (req: Request, res: Response) => {
+    const { id_direccion } = req.body; // Obtén el ID desde los parámetros de la URL
+
     try {
-        const { id_direccion } = req.body;
         const _direcontactos = await DireccionesContactos.findOne({
-            where: { id_direccion: id_direccion },
+            where: { id_direccion: id_direccion}
         });
 
         if (_direcontactos) {
@@ -96,95 +88,76 @@ export const deleteDirecContactos = async (req: Request, res: Response) => {
     }
 };
 
-// Actualiza la Dirección de Contacto en la base de datos
+//actualiza el Telefono en la base de datos
 export const updateDirecContactos = async (req: Request, res: Response) => {
-    try {
-        const { id_direccion, id_contacto, id_tipo_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-        const _direcontactos = await DireccionesContactos.findOne({
-            where: { id_direccion: id_direccion },
+    const { id_direccion, id_contacto, id_tipo_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado} = req.body;
+
+    const _direcontactos = await DireccionesContactos.findOne({
+        where: {id_direccion: id_direccion}
+    });
+    if(!_direcontactos){
+        return res.status(404).json({
+            msg: 'Direccion Contacto con el ID: '+ id_direccion +' no existe en la base de datos'
         });
-
-        if (!_direcontactos) {
-            return res.status(404).json({
-                msg: 'Direccion Contacto con el ID: ' + id_direccion + ' no existe en la base de datos',
-            });
-        }
-
+    }else{
         const direcontactos = await _direcontactos.update({
-            id_direccion: id_direccion,
-            id_contacto: id_contacto,
-            id_tipo_direccion: id_tipo_direccion,
-            direccion: direccion,
-            descripcion: descripcion,
-            creado_por: creado_por,
-            fecha_creacion: fecha_creacion,
-            modificado_por: modificado_por,
-            fecha_modificacion: fecha_modificacion,
-            estado: estado,
-        });
-        res.json(direcontactos);
-    } catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
-};
+         id_direccion: id_direccion,
+         id_contacto:id_contacto,
+         id_tipo_direccion: id_tipo_direccion,
+         direccion: direccion,
+         descripcion: descripcion, 
+         creado_por: creado_por,
+         fecha_creacion: fecha_creacion,
+         modificado_por: modificado_por,
+         fecha_modificacion: fecha_modificacion,
+         estado: estado
+        
+    });
+    res.json(direcontactos) 
 
-// Inactiva la Dirección de Contacto de la DBA
+  }
+}
+
+//Inactiva el usuario de la DBA
 export const inactivateDirecContactos = async (req: Request, res: Response) => {
-    try {
-        const { direccion } = req.body;
-        const _direcontactos = await DireccionesContactos.findOne({
-            where: { direccion: direccion },
-        });
+    const { direccion } = req.body;
 
-        if (!_direcontactos) {
-            return res.status(404).json({
-                msg: 'La Direccion Contacto no existe: ' + direccion,
-            });
-        }
-
-        await _direcontactos.update({
-            estado: 2,
-        });
-        res.json({
-            msg: 'Direccion Contacto: ' + direccion + ' inactivado exitosamente',
-        });
-    } catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
+    const _direcontactos = await DireccionesContactos.findOne({
+        where: {direccion: direccion}
+    });
+    if(!_direcontactos){
+        return res.status(404).json({
+            msg: "La Direccion Contacto no existe: "+ direccion
         });
     }
-};
 
-// Activa la Dirección de Contacto de la DBA
+    await _direcontactos.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Direccion Contacto: '+ direccion+  ' inactivado exitosamente',
+    });
+}
+
+//Activa el usuario de la DBA
 export const activateDirecContactos = async (req: Request, res: Response) => {
-    try {
-        const { direccion } = req.body;
-        const _direcontactos = await DireccionesContactos.findOne({
-            where: { direccion: direccion },
-        });
+    const { direccion } = req.body;
 
-        if (!_direcontactos) {
-            return res.status(404).json({
-                msg: 'La Direccion Contacto no existe: ' + direccion,
-            });
-        }
-
-        await _direcontactos.update({
-            estado: 1,
-        });
-        res.json({
-            msg: 'Direccion Contacto: ' + direccion + ' ha sido activado exitosamente',
-        });
-    } catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
+    const _direcontactos = await DireccionesContactos.findOne({
+        where: {direccion: direccion}
+    });
+    if(!_direcontactos){
+        return res.status(404).json({
+            msg: "La Direccion Contacto no existe: "+ direccion
         });
     }
-};
+
+    await _direcontactos.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Direccion Contacto: '+ direccion+  ' ha sido activado exitosamente',
+    });
+}
 
 

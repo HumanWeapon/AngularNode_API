@@ -11,54 +11,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activatePregunta = exports.inactivatePregunta = exports.updatePregunta = exports.deletePregunta = exports.postPregunta = exports.getPregunta = exports.getAllPreguntas = void 0;
 const preguntas_model_1 = require("../models/preguntas-model");
-// Obtiene todas las preguntas de la base de datos
+//Obtiene todas las preguntas de la base de datos
 const getAllPreguntas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const _pregunta = yield preguntas_model_1.Preguntas.findAll();
-        res.json(_pregunta);
-    }
-    catch (error) {
-        console.error('Error al obtener todas las preguntas de la base de datos:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    const _pregunta = yield preguntas_model_1.Preguntas.findAll();
+    res.json(_pregunta);
 });
 exports.getAllPreguntas = getAllPreguntas;
-// Obtiene una pregunta de la base de datos
+//Obtiene una pregunta de la base de datos
 const getPregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id_pregunta } = req.body;
-        const _pregunta = yield preguntas_model_1.Preguntas.findOne({
-            where: { id_pregunta: id_pregunta }
-        });
-        if (_pregunta) {
-            res.json(_pregunta);
-        }
-        else {
-            res.status(404).json({
-                msg: `El ID de la pregunta no existe: ${id_pregunta}`
-            });
-        }
+    const { id_pregunta } = req.body;
+    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+        where: { id_pregunta: id_pregunta }
+    });
+    if (_pregunta) {
+        res.json(_pregunta);
     }
-    catch (error) {
-        console.error('Error al obtener una pregunta de la base de datos:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
+    else {
+        res.status(404).json({
+            msg: `el ID de la pregunta no existe: ${id_pregunta}`
         });
     }
 });
 exports.getPregunta = getPregunta;
-// Inserta una pregunta en la base de datos
+//Inserta una pregunta en la base de datos
 const postPregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-<<<<<<< HEAD
     const { pregunta, estado_pregunta, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
-=======
->>>>>>> 1fe3a974d7a1e20dd4e417e08d774c89ca7880ec
     try {
-        const { pregunta, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
         const _Pregunta = yield preguntas_model_1.Preguntas.findOne({
             where: { pregunta: pregunta }
         });
@@ -82,43 +60,37 @@ const postPregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
     }
     catch (error) {
-        console.error('Error al insertar una pregunta en la base de datos:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
+    /*// Generamos token
+    const token = jwt.sign({
+        usuario: usuario
+    }, process.env.SECRET_KEY || 'Lamers005*');
+    res.json(token);*/
 });
 exports.postPregunta = postPregunta;
-// Elimina la pregunta de la base de datos
+//Elimina la pregunta de la base de datos
 const deletePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id_pregunta } = req.body;
-        const _pregunta = yield preguntas_model_1.Preguntas.findOne({
-            where: { id_pregunta: id_pregunta }
-        });
-        if (!_pregunta) {
-            return res.status(404).json({
-                msg: 'Pregunta con el ID: ' + id_pregunta + ' no existe en la base de datos'
-            });
-        }
-        yield _pregunta.destroy();
-        res.json({
-            msg: 'La pregunta con el ID: ' + id_pregunta + ' ha sido eliminada exitosamente',
+    const { id_pregunta } = req.body;
+    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+        where: { id_pregunta: id_pregunta }
+    });
+    if (_pregunta) {
+        return res.status(404).json({
+            msg: 'Pregunta ya registrada en la base de datos: ' + id_pregunta
         });
     }
-    catch (error) {
-        console.error('Error al eliminar una pregunta de la base de datos:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    yield _pregunta.destroy();
+    res.json({
+        msg: 'La pregunta con el ID: ' + id_pregunta + ' ha eliminada exitosamente',
+    });
 });
 exports.deletePregunta = deletePregunta;
-// Actualiza la pregunta de la base de datos
+//actualiza la pregunta de la base de datos
 const updatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-<<<<<<< HEAD
     const { id_pregunta, pregunta, estado_pregunta, modificado_por, fecha_modificacion } = req.body;
     const _pregunta = yield preguntas_model_1.Preguntas.findOne({
         where: { id_pregunta: id_pregunta }
@@ -138,35 +110,6 @@ const updatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function*
     res.json({
         msg: 'La pregunta con el ID: ' + id_pregunta + ' ha sido actualizada exitosamente',
     });
-=======
-    try {
-        const { id_pregunta, pregunta, modificado_por, fecha_modificacion } = req.body;
-        const _pregunta = yield preguntas_model_1.Preguntas.findOne({
-            where: { id_pregunta: id_pregunta }
-        });
-        if (!_pregunta) {
-            return res.status(404).json({
-                msg: 'Pregunta con el ID: ' + id_pregunta + ' no existe en la base de datos'
-            });
-        }
-        yield _pregunta.update({
-            id_pregunta: id_pregunta,
-            pregunta: pregunta,
-            modificado_por: modificado_por,
-            fecha_modificacion: fecha_modificacion
-        });
-        res.json({
-            msg: 'La pregunta con el ID: ' + id_pregunta + ' ha sido actualizada exitosamente',
-        });
-    }
-    catch (error) {
-        console.error('Error al actualizar una pregunta de la base de datos:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
->>>>>>> 1fe3a974d7a1e20dd4e417e08d774c89ca7880ec
 });
 exports.updatePregunta = updatePregunta;
 //Inactiva la pregunta de la DBA

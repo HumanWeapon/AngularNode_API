@@ -18,25 +18,16 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const preguntas_usuario_model_1 = require("../models/preguntas_usuario-model");
 const preguntas_model_1 = require("../models/preguntas-model");
 const app = (0, express_1.default)();
-// Obtiene todas las preguntas de los usuarios en la base de datos
+//Obtiene todas las preguntas de los usuarios en la base de datos
 const getAllPreguntasUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const _pregunta = yield preguntas_usuario_model_1.PreguntasUsuario.findAll();
-        res.json({ _pregunta });
-    }
-    catch (error) {
-        console.error('Error al obtener todas las preguntas de usuario de la base de datos:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    const _pregunta = yield preguntas_usuario_model_1.PreguntasUsuario.findAll();
+    res.json({ _pregunta });
 });
 exports.getAllPreguntasUsuario = getAllPreguntasUsuario;
-// Obtiene todas las preguntas de un usuario
+//Obtiene todas las preguntas de un usuario
 const getPreguntasusuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_usuario } = req.body;
     try {
-        const { id_usuario } = req.body;
         const _pregunta = yield preguntas_usuario_model_1.PreguntasUsuario.findAll({
             where: { id_usuario: id_usuario }
         });
@@ -50,19 +41,15 @@ const getPreguntasusuario = (req, res) => __awaiter(void 0, void 0, void 0, func
         }
     }
     catch (error) {
-        console.error('Error al obtener preguntas de usuario:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
+        console.log(error);
     }
 });
 exports.getPreguntasusuario = getPreguntasusuario;
-// Inserta una respuesta en la base de datos
+//Inserta una respuesta en la base de datos
 const postPreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_pregunta, id_usuario, respuesta, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
+    const hashedresponse = yield bcrypt_1.default.hash(respuesta, 10);
     try {
-        const { id_pregunta, id_usuario, respuesta, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
-        const hashedresponse = yield bcrypt_1.default.hash(respuesta, 10);
         const _pregunta = yield preguntas_usuario_model_1.PreguntasUsuario.findAndCountAll({
             where: { id_usuario: id_usuario }
         });
@@ -97,19 +84,18 @@ const postPreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, func
         }
     }
     catch (error) {
-        console.error('Error al insertar una respuesta en la base de datos:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });
 exports.postPreguntaUsuario = postPreguntaUsuario;
-// Actualiza una pregunta en la base de datos
+//Actualiza una pregunta en la base de datos
 const updatePreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_pregunta, id_usuario, respuesta, modificado_por, fecha_modificacion } = req.body;
+    const hashedresponse = yield bcrypt_1.default.hash(respuesta, 10);
     try {
-        const { id_pregunta, id_usuario, respuesta, modificado_por, fecha_modificacion } = req.body;
-        const hashedresponse = yield bcrypt_1.default.hash(respuesta, 10);
         const _respuesta = yield preguntas_usuario_model_1.PreguntasUsuario.findOne({
             where: { id_usuario: id_usuario, id_pregunta: id_pregunta }
         });
@@ -132,28 +118,26 @@ const updatePreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, fu
         }
     }
     catch (error) {
-        console.error('Error al actualizar una pregunta en la base de datos:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });
 exports.updatePreguntaUsuario = updatePreguntaUsuario;
-// Valida respuestas
 const validarRespuestas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_preguntas_usuario, respuesta } = req.body;
+    //Validar si el usuario existe en la base de datos
+    const preguntaUsuario = yield preguntas_usuario_model_1.PreguntasUsuario.findOne({
+        where: { id_preguntas_usuario: id_preguntas_usuario }
+    });
     try {
-        const { id_preguntas_usuario, respuesta } = req.body;
-        // Validar si el usuario existe en la base de datos
-        const preguntaUsuario = yield preguntas_usuario_model_1.PreguntasUsuario.findOne({
-            where: { id_preguntas_usuario: id_preguntas_usuario }
-        });
         if (!preguntaUsuario) {
             return res.status(400).json({
                 msg: 'No existen preguntas para el usuario'
             });
         }
-        // Validamos Preguntas
+        //Validamos Preguntas
         // Compara la pregunta proporcionada con la almacenada en la base de datos
         const respuestaValid = yield bcrypt_1.default.compare(respuesta, preguntaUsuario.respuesta);
         if (!respuestaValid) {
@@ -164,10 +148,9 @@ const validarRespuestas = (req, res) => __awaiter(void 0, void 0, void 0, functi
         res.json(respuestaValid);
     }
     catch (error) {
-        console.error('Error al validar respuestas:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
+        res.status(400).json({
+            msg: 'Error',
+            error
         });
     }
 });
@@ -188,11 +171,8 @@ const preguntasRespuestas = (req, res) => __awaiter(void 0, void 0, void 0, func
         res.json(preguntasUsuario);
     }
     catch (error) {
-        console.error('Error al obtener preguntas y respuestas del usuario:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
+        console.error('Error al obtener preguntas de usuario:', error);
+        res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
     }
 });
 exports.preguntasRespuestas = preguntasRespuestas;

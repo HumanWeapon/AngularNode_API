@@ -1,168 +1,142 @@
-import express, { Request, Response } from 'express';
+import express, {Request, Response} from 'express';
 import bcrypt from 'bcrypt';
 import { PreguntasUsuario } from "../models/preguntas_usuario-model";
 import { Preguntas } from "../models/preguntas-model";
 
 const app = express();
 
-// Obtiene todas las preguntas de los usuarios en la base de datos
+//Obtiene todas las preguntas de los usuarios en la base de datos
 export const getAllPreguntasUsuario = async (req: Request, res: Response) => {
-    try {
-        const _pregunta = await PreguntasUsuario.findAll();
-        res.json({ _pregunta });
-    } catch (error) {
-        console.error('Error al obtener todas las preguntas de usuario de la base de datos:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    const _pregunta = await PreguntasUsuario.findAll();
+    res.json({_pregunta})
 }
 
-// Obtiene todas las preguntas de un usuario
+//Obtiene todas las preguntas de un usuario
 export const getPreguntasusuario = async (req: Request, res: Response) => {
+    const { id_usuario } = req.body;
     try {
-        const { id_usuario } = req.body;
         const _pregunta = await PreguntasUsuario.findAll({
-            where: { id_usuario: id_usuario }
-        });
+            where: {id_usuario: id_usuario}
+        })
 
-        if (_pregunta) {
-            res.json(_pregunta);
-        } else {
+        if(_pregunta){
+            res.json(_pregunta)
+        }
+        else{
             res.status(404).json({
                 msg: `No existen preguntas para este usuario`
-            });
+            })
         }
     } catch (error) {
-        console.error('Error al obtener preguntas de usuario:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
+        console.log(error)
     }
 }
 
-// Inserta una respuesta en la base de datos
+//Inserta una respuesta en la base de datos
 export const postPreguntaUsuario = async (req: Request, res: Response) => {
-    try {
-        const {
-            id_pregunta,
-            id_usuario,
-            respuesta,
-            creado_por,
-            fecha_creacion,
-            modificado_por,
-            fecha_modificacion
-        } = req.body;
 
-        const hashedresponse = await bcrypt.hash(respuesta, 10);
+    const { id_pregunta, id_usuario, respuesta, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
+    const hashedresponse = await bcrypt.hash(respuesta, 10);
 
+    try{
         const _pregunta = await PreguntasUsuario.findAndCountAll({
-            where: { id_usuario: id_usuario }
-        });
-
-        if (_pregunta.count >= 3) {
+            where: {id_usuario: id_usuario}
+        })
+    
+        if (_pregunta.count >= 3){
             return res.status(400).json({
-                msg: 'Has alcanzado el límite de preguntas para el usuario con el ID: ' + id_usuario
-            });
-        } else {
+                msg: 'Has alcanzado el límite de preguntas para el usuario con el ID: '+ id_usuario
+            })
+        }
+        else{
             const _respuesta = await PreguntasUsuario.findOne({
-                where: { id_usuario: id_usuario, id_pregunta: id_pregunta }
+                where: {id_usuario: id_usuario, id_pregunta: id_pregunta}
             });
 
-            if (_respuesta) {
+            if(_respuesta){
                 return res.status(400).json({
-                    msg: 'Ya has registrado esta pregunta previamente con el ID: ' + id_pregunta
-                });
-            } else {
+                    msg: 'Ya has registrado esta pregunta previamente con el ID: '+ id_pregunta
+                })
+            }else{
                 await PreguntasUsuario.create({
                     id_pregunta: id_pregunta,
                     id_usuario: id_usuario,
                     respuesta: hashedresponse,
                     creado_por: creado_por,
                     fecha_creacion: fecha_creacion,
-                    modificado_por: modificado_por,
+                    modificado_por: modificado_por, 
                     fecha_modificacion: fecha_modificacion
-                });
-
+                })
                 res.json({
-                    msg: 'La respuesta para la pregunta con ID: ' + id_pregunta + ' ha sido registrada exitosamente',
-                });
+                    msg: 'La respuesta para la pregunta con ID: '+ id_pregunta+ ' ha sido registrada exitosamente',
+                })
             }
+
         }
-    } catch (error) {
-        console.error('Error al insertar una respuesta en la base de datos:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
+    }
+    catch (error){
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        }); 
     }
 }
 
-// Actualiza una pregunta en la base de datos
+//Actualiza una pregunta en la base de datos
 export const updatePreguntaUsuario = async (req: Request, res: Response) => {
-    try {
-        const {
-            id_pregunta,
-            id_usuario,
-            respuesta,
-            modificado_por,
-            fecha_modificacion
-        } = req.body;
 
-        const hashedresponse = await bcrypt.hash(respuesta, 10);
+    const { id_pregunta, id_usuario, respuesta, modificado_por, fecha_modificacion  } = req.body;
 
+    const hashedresponse = await bcrypt.hash(respuesta, 10);
+
+    try{
         const _respuesta = await PreguntasUsuario.findOne({
-            where: { id_usuario: id_usuario, id_pregunta: id_pregunta }
+            where: {id_usuario: id_usuario, id_pregunta: id_pregunta}
         });
 
-        if (_respuesta) {
+        if(_respuesta){
+
             await _respuesta.update({
                 id_pregunta: id_pregunta,
                 id_usuario: id_usuario,
                 respuesta: hashedresponse,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por, 
                 fecha_modificacion: fecha_modificacion
-            });
-
+            })
             res.json({
-                msg: 'La respuesta para la pregunta con ID: ' + id_pregunta + ' ha sido actualizada exitosamente',
-            });
-        } else {
+                msg: 'La respuesta para la pregunta con ID: '+ id_pregunta+ ' ha sido actualizada exitosamente',
+            })
+        }else{
             return res.status(400).json({
-                msg: 'El usuario no tiene registrada la pregunta con el ID: ' + id_pregunta
-            });
+                msg: 'El usuario no tiene registrada la pregunta con el ID: '+ id_pregunta
+            })
         }
-    } catch (error) {
-        console.error('Error al actualizar una pregunta en la base de datos:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
+
+    }
+    catch (error){
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        }); 
     }
 }
-
-// Valida respuestas
 export const validarRespuestas = async (req: Request, res: Response) => {
-    try {
-        const {
-            id_preguntas_usuario,
-            respuesta
-        } = req.body;
+    const { 
+        id_preguntas_usuario,
+        respuesta } = req.body;
+    //Validar si el usuario existe en la base de datos
+    const preguntaUsuario: any = await PreguntasUsuario.findOne({
+        where: {id_preguntas_usuario: id_preguntas_usuario}
+    })
 
-        // Validar si el usuario existe en la base de datos
-        const preguntaUsuario: any = await PreguntasUsuario.findOne({
-            where: { id_preguntas_usuario: id_preguntas_usuario }
-        });
-
-        if (!preguntaUsuario) {
+    try{
+        if(!preguntaUsuario){
             return res.status(400).json({
                 msg: 'No existen preguntas para el usuario'
-            });
+            })
         }
 
-        // Validamos Preguntas
+        //Validamos Preguntas
         // Compara la pregunta proporcionada con la almacenada en la base de datos
         const respuestaValid = await bcrypt.compare(respuesta, preguntaUsuario.respuesta);
 
@@ -171,13 +145,12 @@ export const validarRespuestas = async (req: Request, res: Response) => {
                 msg: 'Respuesta incorrecta',
             });
         }
-        res.json(respuestaValid);
-    } catch (error) {
-        console.error('Error al validar respuestas:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
+        res.json(respuestaValid)
+    }catch(error){
+        res.status(400).json({
+            msg: 'Error',
+            error
+        }); 
     }
 }
 
@@ -186,7 +159,7 @@ export const preguntasRespuestas = async (req: Request, res: Response) => {
     try {
         const { id_usuario } = req.body;
         const preguntasUsuario = await PreguntasUsuario.findAll({
-            where: { id_usuario: id_usuario },
+            where: {id_usuario: id_usuario},
             include: [
                 {
                     model: Preguntas,
@@ -197,11 +170,8 @@ export const preguntasRespuestas = async (req: Request, res: Response) => {
 
         res.json(preguntasUsuario);
     } catch (error) {
-        console.error('Error al obtener preguntas y respuestas del usuario:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
+        console.error('Error al obtener preguntas de usuario:', error);
+        res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
     }
 }
 

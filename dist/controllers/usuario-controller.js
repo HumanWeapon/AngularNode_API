@@ -19,8 +19,8 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const roles_models_1 = require("../models/roles-models");
 const permisos_models_1 = require("../models/permisos-models");
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { usuario, contrasena, id_usuario, creado_por, fecha_creacion, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_ultima_conexion, primer_ingreso, fecha_vencimiento, intentos_fallidos } = req.body;
     try {
-        const { usuario, contrasena, id_usuario, creado_por, fecha_creacion, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_ultima_conexion, primer_ingreso, fecha_vencimiento, intentos_fallidos } = req.body;
         // Busca el usuario en la base de datos
         const user = yield usuario_models_1.User.findOne({
             where: { usuario: usuario }
@@ -82,22 +82,13 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.loginUser = loginUser;
-// Obtiene todos los usuarios de la base de datos
+//Obtiene todos los usuarios de la base de datos
 const getAllUsuarios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const usuarios = yield usuario_models_1.User.findAll();
-        res.json(usuarios);
-    }
-    catch (error) {
-        console.error('Error al obtener todos los usuarios de la base de datos:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    const usuarios = yield usuario_models_1.User.findAll();
+    res.json(usuarios);
 });
 exports.getAllUsuarios = getAllUsuarios;
-// Obtiene un usuario especifico de la base de datos
+//Obtiene un usuario especifico de la base de datos
 const getUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { usuario } = req.body;
@@ -121,11 +112,11 @@ const getUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getUsuario = getUsuario;
-// Inserta un usuario en la base de datos
+//Inserta un usuario en la base de datos
 const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { creado_por, fecha_creacion, modificado_por, fecha_modificacion, usuario, nombre_usuario, correo_electronico, contrasena, id_rol, fecha_ultima_conexion, fecha_vencimiento, intentos_fallidos, estado_usuario } = req.body;
+    const hashedPassword = yield bcrypt_1.default.hash(contrasena, 10);
     try {
-        const { creado_por, fecha_creacion, modificado_por, fecha_modificacion, usuario, nombre_usuario, correo_electronico, contrasena, id_rol, fecha_ultima_conexion, fecha_vencimiento, intentos_fallidos, estado_usuario } = req.body;
-        const hashedPassword = yield bcrypt_1.default.hash(contrasena, 10);
         const user = yield usuario_models_1.User.findOne({
             where: { usuario: usuario }
         });
@@ -159,124 +150,93 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             error
         });
     }
+    /*// Generamos token
+    const token = jwt.sign({
+        usuario: usuario
+    }, process.env.SECRET_KEY || 'Lamers005*');
+    res.json(token);*/
 });
 exports.postUsuario = postUsuario;
-// Destruye el usuario de la DBA
+//Destruye el usuario de la DBA
 const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { usuario } = req.body;
-        const user = yield usuario_models_1.User.findOne({
-            where: { usuario: usuario }
-        });
-        if (!user) {
-            return res.status(404).json({
-                msg: "El usuario no existe: " + usuario
-            });
-        }
-        yield user.destroy();
-        res.json({
-            msg: 'Usuario: ' + usuario + ' eliminado exitosamente',
+    const { usuario } = req.body;
+    const user = yield usuario_models_1.User.findOne({
+        where: { usuario: usuario }
+    });
+    if (!user) {
+        return res.status(404).json({
+            msg: "El usuario no existe: " + usuario
         });
     }
-    catch (error) {
-        console.error('Error al eliminar el usuario:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al eliminar el usuario',
-            error,
-        });
-    }
+    yield user.destroy();
+    res.json({
+        msg: 'Usuario: ' + usuario + ' eliminado exitosamente',
+    });
 });
 exports.deleteUsuario = deleteUsuario;
-// Inactiva el usuario de la DBA
+//Inactiva el usuario de la DBA
 const inactivateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { usuario } = req.body;
-        const user = yield usuario_models_1.User.findOne({
-            where: { usuario: usuario }
-        });
-        if (!user) {
-            return res.status(404).json({
-                msg: "El usuario no existe: " + usuario
-            });
-        }
-        yield user.update({
-            estado_usuario: 2
-        });
-        res.json(user);
-    }
-    catch (error) {
-        console.error('Error al inactivar un usuario:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al inactivar el usuario',
-            error,
+    const { usuario } = req.body;
+    const user = yield usuario_models_1.User.findOne({
+        where: { usuario: usuario }
+    });
+    if (!user) {
+        return res.status(404).json({
+            msg: "El usuario no existe: " + usuario
         });
     }
+    yield user.update({
+        estado_usuario: 2
+    });
+    res.json(user);
 });
 exports.inactivateUsuario = inactivateUsuario;
-// Activa el usuario de la DBA
+//Activa el usuario de la DBA
 const activateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { usuario } = req.body;
-        const user = yield usuario_models_1.User.findOne({
-            where: { usuario: usuario }
-        });
-        if (!user) {
-            return res.status(404).json({
-                msg: "El usuario no existe: " + usuario
-            });
-        }
-        yield user.update({
-            estado_usuario: 1
-        });
-        res.json(user);
-    }
-    catch (error) {
-        console.error('Error al activar un usuario:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al activar el usuario',
-            error,
+    const { usuario } = req.body;
+    const user = yield usuario_models_1.User.findOne({
+        where: { usuario: usuario }
+    });
+    if (!user) {
+        return res.status(404).json({
+            msg: "El usuario no existe: " + usuario
         });
     }
+    yield user.update({
+        estado_usuario: 1
+    });
+    res.json(user);
 });
 exports.activateUsuario = activateUsuario;
-// Actualiza el usuario en la base de datos
+//Actualiza el usuario en la base de datos
 const updateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id_usuario, usuario, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_vencimiento, fecha_ultima_conexion } = req.body;
-        const user = yield usuario_models_1.User.findOne({
-            where: { id_usuario: id_usuario }
-        });
-        if (!user) {
-            return res.status(404).json({
-                msg: "El usuario con el ID: " + id_usuario + " no existe"
-            });
-        }
-        yield user.update({
-            id_usuario: id_usuario,
-            usuario: usuario,
-            modificado_por: modificado_por,
-            fecha_modificacion: fecha_modificacion,
-            nombre_usuario: nombre_usuario,
-            correo_electronico: correo_electronico,
-            estado_usuario: estado_usuario,
-            id_rol: id_rol,
-            fecha_vencimiento: fecha_vencimiento,
-            fecha_ultima_conexion: fecha_ultima_conexion
-        });
-        res.json({
-            msg: 'Usuario: ' + usuario + ' ha sido actualizado exitosamente',
+    const { id_usuario, usuario, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_vencimiento, fecha_ultima_conexion } = req.body;
+    const user = yield usuario_models_1.User.findOne({
+        where: { id_usuario: id_usuario }
+    });
+    if (!user) {
+        return res.status(404).json({
+            msg: "El usuario con el ID: " + id_usuario + " no existe"
         });
     }
-    catch (error) {
-        console.error('Error al actualizar un usuario:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al actualizar el usuario',
-            error,
-        });
-    }
+    yield user.update({
+        id_usuario: id_usuario,
+        usuario: usuario,
+        modificado_por: modificado_por,
+        fecha_modificacion: fecha_modificacion,
+        nombre_usuario: nombre_usuario,
+        correo_electronico: correo_electronico,
+        estado_usuario: estado_usuario,
+        id_rol: id_rol,
+        fecha_vencimiento: fecha_vencimiento,
+        fecha_ultima_conexion: fecha_ultima_conexion
+    });
+    res.json({
+        msg: 'Usuario: ' + usuario + ' ha sido actualizado exitosamente',
+    });
 });
 exports.updateUsuario = updateUsuario;
-// Desbloquea la contraseña
+//Desbloquea la contraseña
 const cambiarContrasena = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { usuario, contrasena } = req.body;
@@ -299,7 +259,6 @@ const cambiarContrasena = (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
     }
     catch (error) {
-        console.error('Error al cambiar la contraseña:', error);
         res.status(500).json({ error: 'Error al cambiar tu contraseña' });
     }
 });

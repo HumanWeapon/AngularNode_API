@@ -11,54 +11,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activateCiudad = exports.inactivateCiudad = exports.updateCiudad = exports.deleteCiudad = exports.postCiudad = exports.getCiudad = exports.getAllCiudades = void 0;
 const ciudades_models_1 = require("../../models/negocio/ciudades-models");
-// Obtiene todos las ciudades de la base de datos
+//Obtiene todos las ciudades de la base de datos
 const getAllCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const _ciudades = yield ciudades_models_1.Ciudades.findAll();
-        res.json(_ciudades);
-    }
-    catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    const _ciudades = yield ciudades_models_1.Ciudades.findAll();
+    res.json(_ciudades);
 });
 exports.getAllCiudades = getAllCiudades;
-// Obtiene una ciudad de la base de datos
+//Obtiene una ciudad de la base de datos     
 const getCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { ciudad } = req.body;
-        const _ciudad = yield ciudades_models_1.Ciudades.findOne({
-            where: { ciudad: ciudad },
-        });
-        if (_ciudad) {
-            res.json({ _ciudad });
-        }
-        else {
-            res.status(404).json({
-                msg: `La ciudad no existe: ${ciudad}`,
-            });
-        }
+    const { ciudad } = req.body;
+    const _ciudad = yield ciudades_models_1.Ciudades.findOne({
+        where: { ciudad: ciudad }
+    });
+    if (_ciudad) {
+        res.json({ _ciudad });
     }
-    catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
+    else {
+        res.status(404).json({
+            msg: `La ciudad no existe: ${ciudad}`
         });
     }
 });
 exports.getCiudad = getCiudad;
-// Inserta una ciudad en la base de datos
+//Inserta una ciudad en la base de datos
 const postCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
-        const { ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
         const _ciudad = yield ciudades_models_1.Ciudades.findOne({
-            where: { ciudad: ciudad },
+            where: { ciudad: ciudad }
         });
         if (_ciudad) {
             return res.status(400).json({
-                msg: 'Ciudad ya registrada en la base de datos: ' + ciudad,
+                msg: 'Ciudad ya registrada en la base de datos: ' + ciudad
             });
         }
         else {
@@ -69,7 +53,7 @@ const postCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por,
                 fecha_modificacion: fecha_modificacion,
-                estado: estado,
+                estado: estado
             });
             res.json({
                 msg: 'La ciudad: ' + ciudad + ' ha sido creada exitosamente',
@@ -79,17 +63,22 @@ const postCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     catch (error) {
         res.status(400).json({
             msg: 'Contactate con el administrador',
-            error,
+            error
         });
     }
+    /*// Generamos token
+    const token = jwt.sign({
+        usuario: usuario
+    }, process.env.SECRET_KEY || 'Lamers005*');
+    res.json(token);*/
 });
 exports.postCiudad = postCiudad;
-// Elimina una ciudad de la base de datos
+//Elimina una ciudad de la base de datos
 const deleteCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_ciudad } = req.body;
     try {
-        const { id_ciudad } = req.body;
         const _ciudad = yield ciudades_models_1.Ciudades.findOne({
-            where: { id_ciudad: id_ciudad },
+            where: { id_ciudad: id_ciudad }
         });
         if (_ciudad) {
             yield _ciudad.destroy();
@@ -111,92 +100,68 @@ const deleteCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.deleteCiudad = deleteCiudad;
-// Actualiza la ciudad en la base de datos
+//actualiza la ciudad en la base de datos
 const updateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-        const _ciudad = yield ciudades_models_1.Ciudades.findOne({
-            where: { id_ciudad: id_ciudad },
-        });
-        if (!_ciudad) {
-            return res.status(404).json({
-                msg: 'Ciudad con el ID: ' + id_ciudad + ' no existe en la base de datos',
-            });
-        }
-        yield _ciudad.update({
-            id_ciudad: id_ciudad,
-            ciudad: ciudad,
-            descripcion: descripcion,
-            creado_por: creado_por,
-            fecha_creacion: fecha_creacion,
-            modificado_por: modificado_por,
-            fecha_modificacion: fecha_modificacion,
-            estado: estado,
-        });
-        res.json({
-            msg: 'La cuidad con el ID: ' + id_ciudad + ' ha sido actualizado exitosamente',
+    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const _ciudad = yield ciudades_models_1.Ciudades.findOne({
+        where: { id_ciudad: id_ciudad }
+    });
+    if (!_ciudad) {
+        return res.status(404).json({
+            msg: 'Ciudad con el ID: ' + id_ciudad + ' no existe en la base de datos'
         });
     }
-    catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    yield _ciudad.update({
+        id_ciudad: id_ciudad,
+        ciudad: ciudad,
+        descripcion: descripcion,
+        creado_por: creado_por,
+        fecha_creacion: fecha_creacion,
+        modificado_por: modificado_por,
+        fecha_modificacion: fecha_modificacion,
+        estado: estado
+    });
+    res.json({
+        msg: 'La cuidad con el ID: ' + id_ciudad + ' ha sido actualizado exitosamente',
+    });
 });
 exports.updateCiudad = updateCiudad;
-// Inactiva la ciudad de la DBA
+//Inactiva el usuario de la DBA
 const inactivateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { ciudad } = req.body;
-        const ciu = yield ciudades_models_1.Ciudades.findOne({
-            where: { ciudad: ciudad },
-        });
-        if (!ciu) {
-            return res.status(404).json({
-                msg: 'La Ciudad no existe: ' + ciudad,
-            });
-        }
-        yield ciu.update({
-            estado: 2,
-        });
-        res.json({
-            msg: 'Ciudad: ' + ciudad + ' inactivado exitosamente',
+    const { ciudad } = req.body;
+    const ciu = yield ciudades_models_1.Ciudades.findOne({
+        where: { ciudad: ciudad }
+    });
+    if (!ciu) {
+        return res.status(404).json({
+            msg: "La Ciudad no existe: " + ciudad
         });
     }
-    catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    yield ciu.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Ciudad: ' + ciudad + ' inactivado exitosamente',
+    });
 });
 exports.inactivateCiudad = inactivateCiudad;
-// Activa la ciudad de la DBA
+//Activa el usuario de la DBA
 const activateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { ciudad } = req.body;
-        const ciu = yield ciudades_models_1.Ciudades.findOne({
-            where: { ciudad: ciudad },
-        });
-        if (!ciu) {
-            return res.status(404).json({
-                msg: 'La Ciudad no existe: ' + ciudad,
-            });
-        }
-        yield ciu.update({
-            estado: 1,
-        });
-        res.json({
-            msg: 'Ciudad: ' + ciudad + ' ha sido activado exitosamente',
+    const { ciudad } = req.body;
+    const ciu = yield ciudades_models_1.Ciudades.findOne({
+        where: { ciudad: ciudad }
+    });
+    if (!ciu) {
+        return res.status(404).json({
+            msg: "La Ciudad no existe: " + ciudad
         });
     }
-    catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    yield ciu.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Ciudad: ' + ciudad + ' ha sido activado exitosamente',
+    });
 });
 exports.activateCiudad = activateCiudad;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ

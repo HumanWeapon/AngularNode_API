@@ -11,24 +11,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteBitacora = exports.PostBitacora = exports.getAllBitacora = void 0;
 const bitacora_model_1 = require("../models/bitacora-model");
-// Obtiene todos los objetos de la base de datos
+//Obtiene todos los objetos de la base de datos
 const getAllBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const bitacora = yield bitacora_model_1.Bitacora.findAll();
-        res.json(bitacora);
-    }
-    catch (error) {
-        console.error('Error al obtener todos los registros de la bitácora:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    const bitacora = yield bitacora_model_1.Bitacora.findAll();
+    res.json(bitacora);
 });
 exports.getAllBitacora = getAllBitacora;
 const PostBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { fecha, id_usuario, id_objeto, accion, descripcion } = req.body;
     try {
-        const { fecha, id_usuario, id_objeto, accion, descripcion } = req.body;
         yield bitacora_model_1.Bitacora.create({
             fecha: fecha,
             id_usuario: id_usuario,
@@ -41,10 +32,9 @@ const PostBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
-        console.error('Error al registrar un evento en la bitácora:', error);
         res.status(400).json({
             msg: 'Contactate con el administrador',
-            error,
+            error
         });
     }
 });
@@ -62,10 +52,9 @@ const DeleteBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     }
     catch (error) {
-        console.error('Error al limpiar la bitácora:', error);
         res.status(400).json({
             msg: 'Contacta al administrador',
-            error,
+            error
         });
     }
 });

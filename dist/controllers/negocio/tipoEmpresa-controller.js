@@ -11,50 +11,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activateTipoEmpresa = exports.inactivateTipoEmpresa = exports.updateTipoEmpresa = exports.deleteTipoEmpresa = exports.postTipoEmpresa = exports.getTipoEmpresa = exports.getAllTipoEmpresa = void 0;
 const tipoEmpresa_models_1 = require("../../models/negocio/tipoEmpresa-models");
-// Obtiene todos los registros de la base de datos
+//Obtiene todos los registros de la base de datos
 const getAllTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findAll();
-        res.json(_emp);
-    }
-    catch (error) {
-        console.error('Error al obtener todos los tipos de empresa:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findAll();
+    res.json(_emp);
 });
 exports.getAllTipoEmpresa = getAllTipoEmpresa;
-// Obtiene un registro de la base de datos
+//Obtiene un registro de la base de datos     
 const getTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { tipo_empresa } = req.body;
-        const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
-            where: { tipo_empresa: tipo_empresa }
-        });
-        if (_emp) {
-            res.json({ _emp });
-        }
-        else {
-            res.status(404).json({
-                msg: `El Tipo de empresa buscado no existe en la BD: ${tipo_empresa}`
-            });
-        }
+    const { tipo_empresa } = req.body;
+    const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
+        where: { tipo_empresa: tipo_empresa }
+    });
+    if (_emp) {
+        res.json({ _emp });
     }
-    catch (error) {
-        console.error('Error al obtener el tipo de empresa:', error);
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
+    else {
+        res.status(404).json({
+            msg: `El Tipo de empresa buscado no existe en la BD: ${tipo_empresa}`
         });
     }
 });
 exports.getTipoEmpresa = getTipoEmpresa;
-// Inserta un registro en la base de datos
+//Inserta un registro en la base de datos
 const postTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tipo_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
-        const { tipo_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
         const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
             where: { tipo_empresa: tipo_empresa }
         });
@@ -81,15 +63,15 @@ const postTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function
     catch (error) {
         res.status(400).json({
             msg: 'Contactate con el administrador',
-            error,
+            error
         });
     }
 });
 exports.postTipoEmpresa = postTipoEmpresa;
-// Elimina un registro de la base de datos
+//Elimina un registro de la base de datos
 const deleteTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_tipo_empresa } = req.body;
     try {
-        const { id_tipo_empresa } = req.body;
         const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
             where: { id_tipo_empresa: id_tipo_empresa }
         });
@@ -109,98 +91,71 @@ const deleteTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, functi
         console.error('Error al eliminar el registro:', error);
         res.status(500).json({
             msg: 'Hubo un error al eliminar el registro',
-            error,
         });
     }
 });
 exports.deleteTipoEmpresa = deleteTipoEmpresa;
-// Actualiza el registro en la base de datos
+//actualiza el registro en la base de datos
 const updateTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id_tipo_empresa, tipo_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-        const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
-            where: { id_tipo_empresa: id_tipo_empresa }
-        });
-        if (!_emp) {
-            return res.status(404).json({
-                msg: 'el Tipo de empresa con el ID: ' + id_tipo_empresa + ' no existe en la base de datos'
-            });
-        }
-        yield _emp.update({
-            id_tipo_empresa: id_tipo_empresa,
-            tipo_empresa: tipo_empresa,
-            descripcion: descripcion,
-            creado_por: creado_por,
-            fecha_creacion: fecha_creacion,
-            modificado_por: modificado_por,
-            fecha_modificacion: fecha_modificacion,
-            estado: estado
-        });
-        res.json({
-            msg: 'El Tipo de empresa con el ID: ' + id_tipo_empresa + ' ha sido actualizado exitosamente',
+    const { id_tipo_empresa, tipo_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
+        where: { id_tipo_empresa: id_tipo_empresa }
+    });
+    if (!_emp) {
+        return res.status(404).json({
+            msg: 'el Tipo de empresa con el ID: ' + id_tipo_empresa + ' no existe en la base de datos'
         });
     }
-    catch (error) {
-        res.status(400).json({
-            msg: 'Contactate con el administrador',
-            error,
-        });
-    }
+    yield _emp.update({
+        id_tipo_empresa: id_tipo_empresa,
+        tipo_empresa: tipo_empresa,
+        descripcion: descripcion,
+        creado_por: creado_por,
+        fecha_creacion: fecha_creacion,
+        modificado_por: modificado_por,
+        fecha_modificacion: fecha_modificacion,
+        estado: estado
+    });
+    res.json({
+        msg: 'El Tipo de empresa con el ID: ' + id_tipo_empresa + ' ha sido actualizado exitosamente',
+    });
 });
 exports.updateTipoEmpresa = updateTipoEmpresa;
-// Inactiva el usuario de la DBA
+//Inactiva el usuario de la DBA
 const inactivateTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { tipo_empresa } = req.body;
-        const tipempresa = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
-            where: { tipo_empresa: tipo_empresa }
-        });
-        if (!tipempresa) {
-            return res.status(404).json({
-                msg: "El tipo de Empresa no existe: " + tipo_empresa
-            });
-        }
-        yield tipempresa.update({
-            estado: 2
-        });
-        res.json({
-            msg: 'Tipo de Empresa: ' + tipo_empresa + ' inactivado exitosamente',
+    const { tipo_empresa } = req.body;
+    const tipempresa = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
+        where: { tipo_empresa: tipo_empresa }
+    });
+    if (!tipempresa) {
+        return res.status(404).json({
+            msg: "El tipo de Empresa no existe: " + tipo_empresa
         });
     }
-    catch (error) {
-        console.error('Error al inactivar el tipo de empresa:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al inactivar el tipo de empresa',
-            error,
-        });
-    }
+    yield tipempresa.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Tipo de Empresa: ' + tipo_empresa + ' inactivado exitosamente',
+    });
 });
 exports.inactivateTipoEmpresa = inactivateTipoEmpresa;
-// Activa el usuario de la DBA
+//Activa el usuario de la DBA
 const activateTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { tipo_empresa } = req.body;
-        const tipempresa = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
-            where: { tipo_empresa: tipo_empresa }
-        });
-        if (!tipempresa) {
-            return res.status(404).json({
-                msg: "El tipo de Empresa no existe: " + tipo_empresa
-            });
-        }
-        yield tipempresa.update({
-            estado: 1
-        });
-        res.json({
-            msg: 'Tipo de Empresa: ' + tipo_empresa + ' ha sido activado exitosamente',
+    const { tipo_empresa } = req.body;
+    const tipempresa = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
+        where: { tipo_empresa: tipo_empresa }
+    });
+    if (!tipempresa) {
+        return res.status(404).json({
+            msg: "El tipo de Empresa no existe: " + tipo_empresa
         });
     }
-    catch (error) {
-        console.error('Error al activar el tipo de empresa:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al activar el tipo de empresa',
-            error,
-        });
-    }
+    yield tipempresa.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Tipo de Empresa: ' + tipo_empresa + ' ha sido activado exitosamente',
+    });
 });
 exports.activateTipoEmpresa = activateTipoEmpresa;

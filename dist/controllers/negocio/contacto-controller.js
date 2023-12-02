@@ -11,48 +11,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activateContacto = exports.inactivateContacto = exports.updateContacto = exports.deleteContacto = exports.postContacto = exports.getContacto = exports.getAllContactos = void 0;
 const contacto_models_1 = require("../../models/negocio/contacto-models");
-// Obtiene todos los contactos de la base de datos
+//Obtiene todos las ciudades de la base de datos
 const getAllContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const _contacto = yield contacto_models_1.Contacto.findAll();
-        res.json(_contacto);
-    }
-    catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    const _contacto = yield contacto_models_1.Contacto.findAll();
+    res.json(_contacto);
 });
 exports.getAllContactos = getAllContactos;
-// Obtiene un contacto de la base de datos
+//Obtiene un contacto de la base de datos     
 const getContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { dni } = req.body;
-        const _contacto = yield contacto_models_1.Contacto.findAll({
-            where: { dni: dni },
-        });
-        if (_contacto) {
-            res.json(_contacto);
-        }
-        else {
-            res.status(404).json({
-                msg: `El contacto con el DNI:${dni} no existe`,
-            });
-        }
+    const { dni } = req.body;
+    const _contacto = yield contacto_models_1.Contacto.findAll({
+        where: { dni: dni }
+    });
+    if (_contacto) {
+        res.json(_contacto);
     }
-    catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
+    else {
+        res.status(404).json({
+            msg: `El contacto con el RTN:${dni} no existe`
         });
     }
 });
 exports.getContacto = getContacto;
-// Inserta un contacto en la base de datos
+//Inserta un contacto en la base de datos
 const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { dni, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
-        const { dni, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
         const contac = yield contacto_models_1.Contacto.create({
             dni: dni,
             id_tipo_contacto: id_tipo_contacto,
@@ -66,24 +50,29 @@ const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             fecha_creacion: fecha_creacion,
             modificado_por: modificado_por,
             fecha_modificacion: fecha_modificacion,
-            estado: estado,
+            estado: estado
         });
         res.json(contac);
     }
     catch (error) {
         res.status(400).json({
             msg: 'Contactate con el administrador',
-            error,
+            error
         });
     }
+    /*// Generamos token
+    const token = jwt.sign({
+        usuario: usuario
+    }, process.env.SECRET_KEY || 'Lamers005*');
+    res.json(token);*/
 });
 exports.postContacto = postContacto;
-// Elimina un contacto de la base de datos
+//Elimina una ciudad de la base de datos
 const deleteContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_contacto } = req.body;
     try {
-        const { id_contacto } = req.body;
         const _contacto = yield contacto_models_1.Contacto.findOne({
-            where: { id_contacto: id_contacto },
+            where: { id_contacto: id_contacto }
         });
         if (_contacto) {
             yield _contacto.destroy();
@@ -98,102 +87,78 @@ const deleteContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
     catch (error) {
         console.error('Error al eliminar el Ciudad:', error);
         res.status(500).json({
-            msg: 'Hubo un error al eliminar el Ciudad',
+            msg: 'Hubo un error al eliminar la Ciudad',
         });
     }
 });
 exports.deleteContacto = deleteContacto;
-// Actualiza el contacto en la base de datos
+//actualiza el contacto en la base de datos
 const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id_contacto, id_tipo_contacto, dni, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-        const _contacto = yield contacto_models_1.Contacto.findOne({
-            where: { id_contacto: id_contacto },
-        });
-        if (!_contacto) {
-            return res.status(404).json({
-                msg: 'Contacto con el ID: ' + id_contacto + ' no existe en la base de datos',
-            });
-        }
-        yield _contacto.update({
-            id_tipo_contacto: id_tipo_contacto,
-            dni: dni,
-            primer_nombre: primer_nombre,
-            segundo_nombre: segundo_nombre,
-            primer_apellido: primer_apellido,
-            segundo_apellido: segundo_apellido,
-            correo: correo,
-            descripcion: descripcion,
-            creado_por: creado_por,
-            fecha_creacion: fecha_creacion,
-            modificado_por: modificado_por,
-            fecha_modificacion: fecha_modificacion,
-            estado: estado,
-        });
-        res.json({
-            msg: 'El contacto con el ID: ' + id_contacto + ' ha sido actualizado exitosamente',
+    const { id_contacto, id_tipo_contacto, dni, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const _contacto = yield contacto_models_1.Contacto.findOne({
+        where: { id_contacto: id_contacto }
+    });
+    if (!_contacto) {
+        return res.status(404).json({
+            msg: 'Contacto con el ID: ' + id_contacto + ' no existe en la base de datos'
         });
     }
-    catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    yield _contacto.update({
+        id_tipo_contacto: id_tipo_contacto,
+        dni: dni,
+        primer_nombre: primer_nombre,
+        segundo_nombre: segundo_nombre,
+        primer_apellido: primer_apellido,
+        segundo_apellido: segundo_apellido,
+        correo: correo,
+        descripcion: descripcion,
+        creado_por: creado_por,
+        fecha_creacion: fecha_creacion,
+        modificado_por: modificado_por,
+        fecha_modificacion: fecha_modificacion,
+        estado: estado
+    });
+    res.json({
+        msg: 'El contacto con el ID: ' + id_contacto + ' ha sido actualizado exitosamente',
+    });
 });
 exports.updateContacto = updateContacto;
-// Inactiva el contacto de la DBA
+//Inactiva el usuario de la DBA
 const inactivateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { primer_nombre } = req.body;
-        const _contacto = yield contacto_models_1.Contacto.findOne({
-            where: { primer_nombre: primer_nombre },
-        });
-        if (!_contacto) {
-            return res.status(404).json({
-                msg: 'El Contacto no existe: ' + primer_nombre,
-            });
-        }
-        yield _contacto.update({
-            estado: 2,
-        });
-        res.json({
-            msg: 'Contacto: ' + primer_nombre + ' inactivado exitosamente',
+    const { primer_nombre } = req.body;
+    const _contacto = yield contacto_models_1.Contacto.findOne({
+        where: { primer_nombre: primer_nombre }
+    });
+    if (!_contacto) {
+        return res.status(404).json({
+            msg: "El Contacto no existe: " + primer_nombre
         });
     }
-    catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    yield _contacto.update({
+        estado: 2
+    });
+    res.json({
+        msg: 'Contacto: ' + primer_nombre + ' inactivado exitosamente',
+    });
 });
 exports.inactivateContacto = inactivateContacto;
-// Activa el contacto de la DBA
+//Activa el usuario de la DBA
 const activateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { primer_nombre } = req.body;
-        const _contacto = yield contacto_models_1.Contacto.findOne({
-            where: { primer_nombre: primer_nombre },
-        });
-        if (!_contacto) {
-            return res.status(404).json({
-                msg: 'El Contacto no existe: ' + primer_nombre,
-            });
-        }
-        yield _contacto.update({
-            estado: 1,
-        });
-        res.json({
-            msg: 'Contacto: ' + primer_nombre + ' ha sido activado exitosamente',
+    const { primer_nombre } = req.body;
+    const _contacto = yield contacto_models_1.Contacto.findOne({
+        where: { primer_nombre: primer_nombre }
+    });
+    if (!_contacto) {
+        return res.status(404).json({
+            msg: "El Contacto no existe: " + primer_nombre
         });
     }
-    catch (error) {
-        res.status(500).json({
-            msg: 'Error interno del servidor',
-            error,
-        });
-    }
+    yield _contacto.update({
+        estado: 1
+    });
+    res.json({
+        msg: 'Contacto: ' + primer_nombre + ' ha sido activado exitosamente',
+    });
 });
 exports.activateContacto = activateContacto;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ

@@ -19,7 +19,6 @@ export const getAllOpEmpresas = async (req: Request, res: Response) => {
         console.error('Error al obtener todas las Operaciones de Empresas:', error);
         res.status(500).json({
             msg: 'Error interno del servidor',
-            error,
         });
     }
 };
@@ -50,7 +49,6 @@ export const getOpEmpresa = async (req: Request, res: Response) => {
         console.error('Error al obtener la Operacion Empresa por ID:', error);
         res.status(500).json({
             msg: 'Error interno del servidor',
-            error,
         });
     }
 };
