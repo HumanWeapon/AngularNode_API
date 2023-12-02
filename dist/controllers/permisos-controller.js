@@ -15,8 +15,16 @@ const roles_models_1 = require("../models/roles-models");
 const objetos_models_1 = require("../models/objetos-models");
 //Obtiene todos los permisos de la base de datos
 const getAllPermisos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const _permisos = yield permisos_models_1.Permisos.findAll();
-    res.json(_permisos);
+    try {
+        const _permisos = yield permisos_models_1.Permisos.findAll();
+        res.json(_permisos);
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: 'Ha ocurrido un error interno, contacta al administrador.',
+            error
+        });
+    }
 });
 exports.getAllPermisos = getAllPermisos;
 //Obtiene un permiso de la base de datos
@@ -86,50 +94,6 @@ const postPermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.postPermiso = postPermiso;
-/*Inserta un permiso en la base de datos
-export const postPermiso = async (req: Request, res: Response) => {
-
-    const { id_rol, id_objeto, permiso_insercion, permiso_eliminacion, permiso_actualizacion, permiso_consultar, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
-
-    try{
-        const _permiso = await Permisos.findOne({
-            where: {id_rol: id_rol}
-        })
-    
-        if (_permiso){
-            return res.status(400).json({
-                msg: 'Permiso ya registrado en la base de datos: '
-            })
-        }else{
-            await Permisos.create({
-                id_rol: id_rol,
-                id_objeto: id_objeto,
-                permiso_insercion: permiso_insercion,
-                permiso_eliminacion: permiso_eliminacion,
-                permiso_actualizacion: permiso_actualizacion,
-                permiso_consultar: permiso_consultar,
-                creado_por: creado_por,
-                fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
-                fecha_modificacion: fecha_modificacion
-            })
-            res.json({
-                msg: 'El permiso ha sido creada exitosamente',
-            })
-        }
-    }
-    catch (error){
-        res.status(400).json({
-            msg: 'Contactate con el administrador',
-            error
-        });
-    }*/
-/*// Generamos token
-const token = jwt.sign({
-    usuario: usuario
-}, process.env.SECRET_KEY || 'Lamers005*');
-res.json(token);*/
-//}
 //Elimina un permiso de la base de datos
 const deletePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_permisos } = req.body;
@@ -150,76 +114,100 @@ const deletePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
     }
     catch (error) {
-        console.error('Error al eliminar el permiso:', error);
         res.status(500).json({
-            msg: 'Hubo un error al eliminar el permiso',
+            msg: 'Ha ocurrido un error interno, contacta al administrador.',
+            error
         });
     }
 });
 exports.deletePermiso = deletePermiso;
 //actualiza el permiso en la base de datos
 const updatePermisos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_permisos, id_rol, id_objeto, permiso_insercion, permiso_eliminacion, permiso_actualizacion, permiso_consultar, modificado_por, fecha_modificacion } = req.body;
-    const _permiso = yield permisos_models_1.Permisos.findOne({
-        where: { id_permisos: id_permisos }
-    });
-    if (!_permiso) {
-        return res.status(404).json({
-            msg: 'El permiso seleccionado no existe en la base de datos'
+    try {
+        const { id_permisos, id_rol, id_objeto, permiso_insercion, permiso_eliminacion, permiso_actualizacion, permiso_consultar, modificado_por, fecha_modificacion } = req.body;
+        const _permiso = yield permisos_models_1.Permisos.findOne({
+            where: { id_permisos: id_permisos }
+        });
+        if (!_permiso) {
+            return res.status(404).json({
+                msg: 'El permiso seleccionado no existe en la base de datos'
+            });
+        }
+        yield _permiso.update({
+            id_permisos: id_permisos,
+            id_rol: id_rol,
+            id_objeto: id_objeto,
+            permiso_insercion: permiso_insercion,
+            permiso_eliminacion: permiso_eliminacion,
+            permiso_actualizacion: permiso_actualizacion,
+            permiso_consultar: permiso_consultar,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion
+        });
+        res.json({
+            msg: 'El permiso ha sido actualizado exitosamente',
         });
     }
-    yield _permiso.update({
-        id_permisos: id_permisos,
-        id_rol: id_rol,
-        id_objeto: id_objeto,
-        permiso_insercion: permiso_insercion,
-        permiso_eliminacion: permiso_eliminacion,
-        permiso_actualizacion: permiso_actualizacion,
-        permiso_consultar: permiso_consultar,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion
-    });
-    res.json({
-        msg: 'El permiso ha sido actualizado exitosamente',
-    });
+    catch (error) {
+        res.status(500).json({
+            msg: 'Ha ocurrido un error interno, contacta al administrador.',
+            error
+        });
+    }
 });
 exports.updatePermisos = updatePermisos;
 //Inactiva el usuario de la DBA
 const inactivatePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_permisos } = req.body;
-    const _permiso = yield permisos_models_1.Permisos.findOne({
-        where: { id_permisos: id_permisos }
-    });
-    if (!_permiso) {
-        return res.status(404).json({
-            msg: "El Permiso no existe: " + id_permisos
+    try {
+        const { id_permisos } = req.body;
+        const _permiso = yield permisos_models_1.Permisos.findOne({
+            where: { id_permisos: id_permisos }
+        });
+        if (!_permiso) {
+            return res.status(404).json({
+                msg: "El Permiso no existe: " + id_permisos
+            });
+        }
+        yield _permiso.update({
+            estado: 2
+        });
+        res.json({
+            msg: 'Permiso: ' + id_permisos + ' inactivado exitosamente',
         });
     }
-    yield _permiso.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'Permiso: ' + id_permisos + ' inactivado exitosamente',
-    });
+    catch (error) {
+        res.status(500).json({
+            msg: 'Ha ocurrido un error interno, contacta al administrador.',
+            error
+        });
+    }
 });
 exports.inactivatePermiso = inactivatePermiso;
 //Activa el usuario de la DBA
 const activatePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_permisos } = req.body;
-    const _permiso = yield permisos_models_1.Permisos.findOne({
-        where: { id_permisos: id_permisos }
-    });
-    if (!_permiso) {
-        return res.status(404).json({
-            msg: "El Permiso no existe: " + id_permisos
+    try {
+        const { id_permisos } = req.body;
+        const _permiso = yield permisos_models_1.Permisos.findOne({
+            where: { id_permisos: id_permisos }
+        });
+        if (!_permiso) {
+            return res.status(404).json({
+                msg: "El Permiso no existe: " + id_permisos
+            });
+        }
+        yield _permiso.update({
+            estado: 1
+        });
+        res.json({
+            msg: 'Permiso: ' + id_permisos + ' ha sido activado exitosamente',
         });
     }
-    yield _permiso.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'Permiso: ' + id_permisos + ' ha sido activado exitosamente',
-    });
+    catch (error) {
+        res.status(500).json({
+            msg: 'Ha ocurrido un error interno, contacta al administrador.',
+            error
+        });
+    }
 });
 exports.activatePermiso = activatePermiso;
 //Activa el usuario de la DBA
