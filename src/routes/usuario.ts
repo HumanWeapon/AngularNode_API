@@ -12,7 +12,7 @@ routerUser.delete('/deleteUsuario',validarToken, deleteUsuario); // elimina el r
 routerUser.post('/inactivateUsuario',validarToken, inactivateUsuario);//Inactiva un usuario en la DB
 routerUser.post('/activateUsuario',validarToken, activateUsuario);//Activa un usuario en la DB
 routerUser.post('/updateUsuario', updateUsuario);//Activa un usuario en la DB
-routerUser.put('/cambiarContrasena',validarToken, cambiarContrasena);//Activa un usuario en la DB
+routerUser.put('/cambiarContrasena', cambiarContrasena);//Activa un usuario en la DB
 routerUser.get('/usuariosAllRoles',validarToken, usuariosAllRoles);//Activa un usuario en la DB
 routerUser.post('/usuariosAllParametros',validarToken, usuariosAllParametros);//Activa un usuario en la DB
 

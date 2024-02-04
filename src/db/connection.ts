@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
-
-const dataBase = new Sequelize('postgresql://postgres:DWrLaS9kGMhf8KEyQhkU@containers-us-west-35.railway.app:6413/railway') // Example for postgres
+const dataBase = new Sequelize('postgresql://postgres:1Fd145Gdd24g1daGfccFdeaCFEdbFDDc@viaduct.proxy.rlwy.net:47331/railway')
+//const dataBase = new Sequelize('postgresql://postgres:DWrLaS9kGMhf8KEyQhkU@containers-us-west-35.railway.app:6413/railway') // Conexión vieja
 
 /*try {
     dataBase.authenticate();
