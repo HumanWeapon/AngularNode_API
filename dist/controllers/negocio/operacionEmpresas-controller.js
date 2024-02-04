@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOpEmpresa = exports.getAllOpEmpresas = void 0;
+exports.postOpEmpresa = exports.getOpEmpresa = exports.getAllOpEmpresas = void 0;
 const operacionEmpresas_models_1 = require("../../models/negocio/operacionEmpresas-models");
 const paises_models_1 = require("../../models/negocio/paises-models");
 const contacto_models_1 = require("../../models/negocio/contacto-models");
@@ -64,3 +64,36 @@ const getOpEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getOpEmpresa = getOpEmpresa;
+const postOpEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_tipo_empresa, nombre_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    try {
+        const _opempresa = yield operacionEmpresas_models_1.operacionEmpresas.findOne({
+            where: { nombre_empresa: nombre_empresa }
+        });
+        if (_opempresa) {
+            return res.status(400).json({
+                msg: 'Empresa ya registrada en la base de datos: ' + nombre_empresa
+            });
+        }
+        else {
+            const _opempresa = yield operacionEmpresas_models_1.operacionEmpresas.create({
+                id_tipo_empresa: id_tipo_empresa,
+                nombre_empresa: nombre_empresa,
+                descripcion: descripcion,
+                creado_por: creado_por,
+                fecha_creacion: fecha_creacion,
+                modificado_por: modificado_por,
+                fecha_modificacion: fecha_modificacion,
+                estado: estado
+            });
+            res.json(_opempresa);
+        }
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
+});
+exports.postOpEmpresa = postOpEmpresa;

@@ -20,6 +20,10 @@ exports.Pyme = connection_1.default.define('pyme', {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
+    rtn: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
     categoria: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false

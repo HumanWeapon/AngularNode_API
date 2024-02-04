@@ -52,3 +52,38 @@ export const getOpEmpresa = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const postOpEmpresa = async (req: Request, res: Response) => {
+
+    const { id_tipo_empresa, nombre_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado} = req.body;
+
+    try{
+        const _opempresa = await operacionEmpresas.findOne({
+            where: {nombre_empresa: nombre_empresa}
+        })
+        if (_opempresa){
+            return res.status(400).json({
+                msg: 'Empresa ya registrada en la base de datos: '+ nombre_empresa
+            })
+        }else{
+            const _opempresa = await operacionEmpresas.create({
+                id_tipo_empresa:id_tipo_empresa,
+                nombre_empresa: nombre_empresa,
+                descripcion: descripcion, 
+                creado_por: creado_por,
+                fecha_creacion: fecha_creacion,
+                modificado_por: modificado_por,
+                fecha_modificacion: fecha_modificacion,
+                estado: estado
+            })
+            res.json(_opempresa)
+        
+    }
+}
+    catch (error){
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        }); 
+    }
+};

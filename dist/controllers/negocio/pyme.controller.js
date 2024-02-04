@@ -8,10 +8,80 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.pymesAllTipoEmpresa = exports.activatePyme = exports.inactivatePyme = exports.updatePyme = exports.deletePyme = exports.postPyme = exports.getPyme = exports.getAllPymes = void 0;
+exports.pymesAllTipoEmpresa = exports.activatePyme = exports.inactivatePyme = exports.updatePyme = exports.deletePyme = exports.postPyme = exports.getPyme = exports.getAllPymes = exports.loginPyme = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const pyme_models_1 = require("../../models/negocio/pyme-models");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const tipoEmpresa_models_1 = require("../../models/negocio/tipoEmpresa-models");
+const loginPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { nombre_pyme, rtn } = req.body;
+    try {
+        // Busca el usuario en la base de datos
+        const pyme = yield pyme_models_1.Pyme.findOne({
+            where: { nombre_pyme: nombre_pyme }
+        });
+        if (!pyme) {
+            return res.status(400).json({
+                msg: 'Pyme/RTN inválidos.'
+            });
+        }
+        // Compara la contraseña proporcionada con la contraseña almacenada en forma de hash
+        const passwordValid = yield bcrypt_1.default.compare(rtn, pyme.passwordHash);
+        if (!passwordValid) {
+            // Si la contraseña es incorrecta, aumenta el contador de intentos fallidos
+            pyme.intentos_fallidos = (pyme.intentos_fallidos || 0) + 1;
+            yield pyme.save();
+            if (pyme.intentos_fallidos >= 3) {
+                // Si el usuario ha alcanzado 3 intentos fallidos, bloquea el usuario
+                pyme.estado = 3;
+                yield pyme.save();
+            }
+            return res.status(400).json({
+                msg: 'Pyme/RTN inválidos.',
+                requestData: req.body // Agregar más información si es necesario
+            });
+        }
+        else {
+            // Si el inicio de sesión es exitoso, restablece los intentos fallidos
+            pyme.intentos_fallidos = 0;
+            yield pyme.save();
+        }
+        if (pyme.fecha_ultima_conexion == null) {
+            return res.json(pyme.fecha_ultima_conexion);
+        }
+        // Validar estado del usuario
+        if (pyme.estado != 1) {
+            return res.status(400).json({
+                msg: 'Pyme Inactiva',
+            });
+        }
+        // Genera el token
+        const token = jsonwebtoken_1.default.sign({
+            pyme: pyme
+        }, process.env.SECRET_KEY || 'Lamers005*');
+        res.json(token);
+    }
+    catch (error) {
+        console.error('Error en loginPyme:', error);
+        if (error instanceof Error) {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: error.message
+            });
+        }
+        else {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: 'Error desconocido' // Otra manejo de errores si no es una instancia de Error
+            });
+        }
+    }
+});
+exports.loginPyme = loginPyme;
 //Obtiene todas las Pymes
 const getAllPymes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const pyme = yield pyme_models_1.Pyme.findAll();
@@ -121,39 +191,39 @@ const updatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.updatePyme = updatePyme;
 //Inactiva el la pyme de la DBA
 const inactivatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { pyme } = req.body;
+    const { nombre_pyme } = req.body;
     const _pymes = yield pyme_models_1.Pyme.findOne({
-        where: { pyme: pyme }
+        where: { nombre_pyme: nombre_pyme }
     });
     if (!_pymes) {
         return res.status(404).json({
-            msg: "La Pyme no existe: " + pyme
+            msg: "La Pyme no existe: " + nombre_pyme
         });
     }
-    yield pyme.update({
+    yield _pymes.update({
         estado: 2
     });
     res.json({
-        msg: 'Pyme: ' + pyme + ' inactivado exitosamente',
+        msg: 'Pyme: ' + nombre_pyme + ' inactivado exitosamente',
     });
 });
 exports.inactivatePyme = inactivatePyme;
 //Activa la pyme de la DBA
 const activatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { pyme } = req.body;
+    const { nombre_pyme } = req.body;
     const _pyme = yield pyme_models_1.Pyme.findOne({
-        where: { pyme: pyme }
+        where: { nombre_pyme: nombre_pyme }
     });
     if (!_pyme) {
         return res.status(404).json({
-            msg: "La Pyme no existe: " + pyme
+            msg: "La Pyme no existe: " + nombre_pyme
         });
     }
-    yield pyme.update({
+    yield _pyme.update({
         estado: 1
     });
     res.json({
-        msg: 'Pyme: ' + pyme + ' ha sido activado exitosamente',
+        msg: 'Pyme: ' + nombre_pyme + ' ha sido activado exitosamente',
     });
 });
 exports.activatePyme = activatePyme;

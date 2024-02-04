@@ -4,6 +4,79 @@ import { Pyme } from '../../models/negocio/pyme-models';
 import jwt from 'jsonwebtoken';
 import { tipoEmpresa } from '../../models/negocio/tipoEmpresa-models';
 
+export const loginPyme = async (req: Request, res: Response) => {
+    const { nombre_pyme, rtn } = req.body;
+
+    try {
+        // Busca el usuario en la base de datos
+        const pyme: any = await Pyme.findOne({
+            where: { nombre_pyme: nombre_pyme }
+        });
+
+        if (!pyme) {
+            return res.status(400).json({
+                msg: 'Pyme/RTN inválidos.'
+            });
+        }
+
+        // Compara la contraseña proporcionada con la contraseña almacenada en forma de hash
+        const passwordValid = await bcrypt.compare(rtn, pyme.passwordHash);
+
+        if (!passwordValid) {
+            // Si la contraseña es incorrecta, aumenta el contador de intentos fallidos
+            pyme.intentos_fallidos = (pyme.intentos_fallidos || 0) + 1;
+            await pyme.save();
+
+            if (pyme.intentos_fallidos >= 3) {
+                // Si el usuario ha alcanzado 3 intentos fallidos, bloquea el usuario
+                pyme.estado = 3;
+                await pyme.save();
+            }
+
+            return res.status(400).json({
+                msg: 'Pyme/RTN inválidos.',
+                requestData: req.body  // Agregar más información si es necesario
+              });
+              
+        }else{
+            // Si el inicio de sesión es exitoso, restablece los intentos fallidos
+            pyme.intentos_fallidos = 0;
+            await pyme.save();
+        }
+
+        if(pyme.fecha_ultima_conexion == null){
+            return res.json(pyme.fecha_ultima_conexion);
+        }
+
+        // Validar estado del usuario
+        if (pyme.estado != 1) {
+            return res.status(400).json({
+                msg: 'Pyme Inactiva',
+            });
+        }
+        // Genera el token
+        const token = jwt.sign({
+            pyme: pyme
+        }, process.env.SECRET_KEY || 'Lamers005*');
+            
+        res.json(token);
+    } catch (error) {
+        console.error('Error en loginPyme:', error);
+        if (error instanceof Error) {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: error.message
+            });
+        } else {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: 'Error desconocido' // Otra manejo de errores si no es una instancia de Error
+            });
+        }
+    }
+    
+}
+
 //Obtiene todas las Pymes
 export const getAllPymes = async (req: Request, res: Response) => {
     const pyme = await Pyme.findAll();
@@ -122,42 +195,43 @@ export const updatePyme = async (req: Request, res: Response) => {
 
 //Inactiva el la pyme de la DBA
 export const inactivatePyme = async (req: Request, res: Response) => {
-    const { pyme } = req.body;
+    const { nombre_pyme } = req.body;
 
     const _pymes = await Pyme.findOne({
-        where: {pyme: pyme}
+        where: {nombre_pyme: nombre_pyme}
     });
     if(!_pymes){
         return res.status(404).json({
-            msg: "La Pyme no existe: "+ pyme
+            msg: "La Pyme no existe: "+ nombre_pyme
         });
     }
 
-    await pyme.update({
+    await _pymes.update({
         estado: 2
     });
     res.json({
-        msg: 'Pyme: '+ pyme+  ' inactivado exitosamente',
+        msg: 'Pyme: '+ nombre_pyme+  ' inactivado exitosamente',
     });
 }
+
 //Activa la pyme de la DBA
 export const activatePyme = async (req: Request, res: Response) => {
-    const {pyme } = req.body;
+    const { nombre_pyme } = req.body;
 
     const _pyme = await Pyme.findOne({
-        where: {pyme: pyme}
+        where: {nombre_pyme: nombre_pyme}
     });
     if(!_pyme){
         return res.status(404).json({
-            msg: "La Pyme no existe: "+ pyme
+            msg: "La Pyme no existe: "+ nombre_pyme
         });
     }
 
-    await pyme.update({
+    await _pyme.update({
         estado: 1
     });
     res.json({
-        msg: 'Pyme: '+ pyme+  ' ha sido activado exitosamente',
+        msg: 'Pyme: '+ nombre_pyme +  ' ha sido activado exitosamente',
     });
 }
 

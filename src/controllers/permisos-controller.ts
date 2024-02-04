@@ -227,15 +227,16 @@ export const activatePermiso = async (req: Request, res: Response) => {
 
 //Activa el usuario de la DBA
 export const permisosRolesObjetos = async (req: Request, res: Response) => {
-    const { id_rol, tipo_objeto} = req.body;
+    const { id_rol, tipo_objeto } = req.body; // Suponiendo que aquí recibes el id_rol del usuario logeado
+
     try {
-        const _permiso= await Permisos.findAll({
-            where: {id_rol: id_rol},
+        const _permiso = await Permisos.findAll({
+            where: { id_rol: id_rol }, // Filtrar por el id_rol del usuario logeado
             include: [              
                 {
                     model: Objetos,
                     as: 'objetos',
-                    where: {estado_objeto: 1, tipo_objeto: 'MENU_SIDEBAR'}
+                    where: { estado_objeto: 1, tipo_objeto: 'MENU_SIDEBAR' }
                 }
             ]
         });

@@ -1,10 +1,11 @@
 import {Router} from 'express';
-import { activatePyme, deletePyme, getAllPymes, getPyme, inactivatePyme, postPyme, pymesAllTipoEmpresa, updatePyme } from '../../controllers/negocio/pyme.controller';
+import { activatePyme, deletePyme, getAllPymes, getPyme, inactivatePyme, loginPyme, postPyme, pymesAllTipoEmpresa, updatePyme } from '../../controllers/negocio/pyme.controller';
 import validarToken from '../validarToken';
 
 
 const routerPyme = Router()
 
+routerPyme.post('/login', loginPyme);//Inicia sesión en la DB
 routerPyme.get('/getAllPymes',validarToken , getAllPymes); // obtiene todas las Pymes
 routerPyme.post('/getPyme', getPyme); // obtiene la Pyme especificada
 routerPyme.delete('/deletePyme',validarToken,deletePyme);//Elimina la Pyme de la Base de Datos

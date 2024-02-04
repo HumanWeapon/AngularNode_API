@@ -15,6 +15,10 @@ export const Pyme: any = dataBase.define('pyme', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    rtn: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     categoria: {
         type: DataTypes.STRING,
         allowNull: false
