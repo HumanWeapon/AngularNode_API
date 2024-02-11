@@ -2,7 +2,7 @@ import {Request, Response} from 'express';
 import { Permisos } from '../models/permisos-models';
 import { Roles } from '../models/roles-models';
 import { Objetos } from '../models/objetos-models';
-
+import { Op } from 'sequelize';
 
 //Obtiene todos los permisos de la base de datos
 export const getAllPermisos = async (req: Request, res: Response) => {
@@ -226,6 +226,8 @@ export const activatePermiso = async (req: Request, res: Response) => {
 }
 
 //Activa el usuario de la DBA
+import { Op } from 'sequelize';
+
 export const permisosRolesObjetos = async (req: Request, res: Response) => {
     const { id_rol, tipo_objeto } = req.body; // Suponiendo que aquí recibes el id_rol del usuario logeado
 
@@ -240,6 +242,14 @@ export const permisosRolesObjetos = async (req: Request, res: Response) => {
                 }
             ]
         });
+
+        // Ordena los resultados según el orden deseado
+        const ordenDeseado: string[] = ['BUSCAR PRODUCTOS', 'DASHBOARD', 'EMPRESAS', 'PYMES', 'SEGURIDAD', 'MANTENIMEINTO'];
+        _permiso.sort((a: string, b: string) => {
+            const indexA = ordenDeseado.indexOf(a);
+            const indexB = ordenDeseado.indexOf(b);
+            return indexA - indexB;
+        });
     
         res.json(_permiso);
     } catch (error) {
@@ -247,3 +257,5 @@ export const permisosRolesObjetos = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Error al obtener parámetros de permisos' });
     }
 }
+
+
