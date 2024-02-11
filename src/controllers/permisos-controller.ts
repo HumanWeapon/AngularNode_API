@@ -4,6 +4,7 @@ import { Roles } from '../models/roles-models';
 import { Objetos } from '../models/objetos-models';
 import { Sequelize } from 'sequelize';
 
+
 //Obtiene todos los permisos de la base de datos
 export const getAllPermisos = async (req: Request, res: Response) => {
     try {
@@ -243,13 +244,13 @@ export const permisosRolesObjetos = async (req: Request, res: Response) => {
                 [{ model: Objetos, as: 'objetos' },
                     Sequelize.literal(
                         "CASE " +
-                        "WHEN id_objeto = 29 THEN 1 " +
-                        "WHEN id_objeto = 7 THEN 2 " +
-                        "WHEN id_objeto = 26 THEN 3 " +
-                        "WHEN id_objeto = 9 THEN 4 " +
-                        "WHEN id_objeto = 22 THEN 5 " +
-                        "WHEN id_objeto = 23 THEN 6 " +
-                        "WHEN id_objeto = 25 THEN 7 " +
+                            "WHEN id_objeto = 29 THEN 1 " +
+                            "WHEN id_objeto = 7 THEN 2 " +
+                            "WHEN id_objeto = 26 THEN 3 " +
+                            "WHEN id_objeto = 9 THEN 4 " +
+                            "WHEN id_objeto = 22 THEN 5 " +
+                            "WHEN id_objeto = 23 THEN 6 " +
+                            "WHEN id_objeto = 25 THEN 7 " +
                         "ELSE 8 END"
                     )
                 ],
