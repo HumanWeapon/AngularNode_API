@@ -243,13 +243,13 @@ export const permisosRolesObjetos = async (req: Request, res: Response) => {
             order: [
                 [
                     Sequelize.literal(`CASE 
-                        WHEN "id_objeto" = 29 THEN 1 
-                        WHEN "id_objeto" = 7 THEN 2 
-                        WHEN "id_objeto" = 26 THEN 3 
-                        WHEN "id_objeto" = 9 THEN 4 
-                        WHEN "id_objeto" = 22 THEN 5 
-                        WHEN "id_objeto" = 23 THEN 6 
-                        WHEN "id_objeto" = 25 THEN 7 
+                        WHEN "objetos"."id_objeto" = 29 THEN 1 
+                        WHEN "objetos"."id_objeto" = 7 THEN 2 
+                        WHEN "objetos"."id_objeto" = 26 THEN 3 
+                        WHEN "objetos"."id_objeto" = 9 THEN 4 
+                        WHEN "objetos"."id_objeto" = 22 THEN 5 
+                        WHEN "objetos"."id_objeto" = 23 THEN 6 
+                        WHEN "objetos"."id_objeto" = 25 THEN 7 
                         ELSE 8 
                         END`)
                 ]
