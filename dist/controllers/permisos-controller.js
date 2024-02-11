@@ -224,6 +224,13 @@ const permisosRolesObjetos = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 }
             ]
         });
+        // Ordena los resultados según el orden deseado
+        const ordenDeseado = ['BUSCAR PRODUCTOS', 'DASHBOARD', 'EMPRESAS', 'PYMES', 'SEGURIDAD', 'MANTENIMEINTO'];
+        _permiso.sort((a, b) => {
+            const indexA = ordenDeseado.indexOf(a);
+            const indexB = ordenDeseado.indexOf(b);
+            return indexA - indexB;
+        });
         res.json(_permiso);
     }
     catch (error) {

@@ -2,7 +2,6 @@ import {Request, Response} from 'express';
 import { Permisos } from '../models/permisos-models';
 import { Roles } from '../models/roles-models';
 import { Objetos } from '../models/objetos-models';
-import { Op } from 'sequelize';
 
 //Obtiene todos los permisos de la base de datos
 export const getAllPermisos = async (req: Request, res: Response) => {
@@ -226,8 +225,6 @@ export const activatePermiso = async (req: Request, res: Response) => {
 }
 
 //Activa el usuario de la DBA
-import { Op } from 'sequelize';
-
 export const permisosRolesObjetos = async (req: Request, res: Response) => {
     const { id_rol, tipo_objeto } = req.body; // Suponiendo que aquí recibes el id_rol del usuario logeado
 
