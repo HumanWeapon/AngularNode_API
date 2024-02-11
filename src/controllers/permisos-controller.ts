@@ -2,6 +2,7 @@ import {Request, Response} from 'express';
 import { Permisos } from '../models/permisos-models';
 import { Roles } from '../models/roles-models';
 import { Objetos } from '../models/objetos-models';
+import { Sequelize } from 'sequelize';
 
 //Obtiene todos los permisos de la base de datos
 export const getAllPermisos = async (req: Request, res: Response) => {
@@ -237,15 +238,22 @@ export const permisosRolesObjetos = async (req: Request, res: Response) => {
                     as: 'objetos',
                     where: { estado_objeto: 1, tipo_objeto: 'MENU_SIDEBAR' }
                 }
-            ]
-        });
-
-        // Ordena los resultados según el orden deseado
-        const ordenDeseado: string[] = ['BUSCAR PRODUCTOS', 'DASHBOARD', 'EMPRESAS', 'PYMES', 'SEGURIDAD', 'MANTENIMEINTO'];
-        _permiso.sort((a: string, b: string) => {
-            const indexA = ordenDeseado.indexOf(a);
-            const indexB = ordenDeseado.indexOf(b);
-            return indexA - indexB;
+            ],
+            order: [
+                [{ model: Objetos, as: 'objetos' },
+                    Sequelize.literal(
+                        "CASE " +
+                        "WHEN id_objeto = 29 THEN 1 " +
+                        "WHEN id_objeto = 7 THEN 2 " +
+                        "WHEN id_objeto = 26 THEN 3 " +
+                        "WHEN id_objeto = 9 THEN 4 " +
+                        "WHEN id_objeto = 22 THEN 5 " +
+                        "WHEN id_objeto = 23 THEN 6 " +
+                        "WHEN id_objeto = 25 THEN 7 " +
+                        "ELSE 8 END"
+                    )
+                ],
+            ],
         });
     
         res.json(_permiso);
@@ -254,5 +262,3 @@ export const permisosRolesObjetos = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Error al obtener parámetros de permisos' });
     }
 }
-
-

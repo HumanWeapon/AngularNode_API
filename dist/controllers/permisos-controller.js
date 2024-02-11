@@ -13,6 +13,7 @@ exports.permisosRolesObjetos = exports.activatePermiso = exports.inactivatePermi
 const permisos_models_1 = require("../models/permisos-models");
 const roles_models_1 = require("../models/roles-models");
 const objetos_models_1 = require("../models/objetos-models");
+const sequelize_1 = require("sequelize");
 //Obtiene todos los permisos de la base de datos
 const getAllPermisos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -222,14 +223,20 @@ const permisosRolesObjetos = (req, res) => __awaiter(void 0, void 0, void 0, fun
                     as: 'objetos',
                     where: { estado_objeto: 1, tipo_objeto: 'MENU_SIDEBAR' }
                 }
-            ]
-        });
-        // Ordena los resultados según el orden deseado
-        const ordenDeseado = ['BUSCAR PRODUCTOS', 'DASHBOARD', 'EMPRESAS', 'PYMES', 'SEGURIDAD', 'MANTENIMEINTO'];
-        _permiso.sort((a, b) => {
-            const indexA = ordenDeseado.indexOf(a);
-            const indexB = ordenDeseado.indexOf(b);
-            return indexA - indexB;
+            ],
+            order: [
+                [{ model: objetos_models_1.Objetos, as: 'objetos' },
+                    sequelize_1.Sequelize.literal("CASE " +
+                        "WHEN id_objeto = 29 THEN 1 " +
+                        "WHEN id_objeto = 7 THEN 2 " +
+                        "WHEN id_objeto = 26 THEN 3 " +
+                        "WHEN id_objeto = 9 THEN 4 " +
+                        "WHEN id_objeto = 22 THEN 5 " +
+                        "WHEN id_objeto = 23 THEN 6 " +
+                        "WHEN id_objeto = 25 THEN 7 " +
+                        "ELSE 8 END")
+                ],
+            ],
         });
         res.json(_permiso);
     }
