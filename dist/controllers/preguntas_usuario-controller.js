@@ -127,30 +127,33 @@ const updatePreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, fu
 exports.updatePreguntaUsuario = updatePreguntaUsuario;
 const validarRespuestas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_preguntas_usuario, respuesta } = req.body;
-    //Validar si el usuario existe en la base de datos
-    const preguntaUsuario = yield preguntas_usuario_model_1.PreguntasUsuario.findOne({
-        where: { id_preguntas_usuario: id_preguntas_usuario }
-    });
     try {
+        // Validar si el usuario existe en la base de datos
+        const preguntaUsuario = yield preguntas_usuario_model_1.PreguntasUsuario.findOne({
+            where: { id_preguntas_usuario: id_preguntas_usuario }
+        });
         if (!preguntaUsuario) {
             return res.status(400).json({
                 msg: 'No existen preguntas para el usuario'
             });
         }
-        //Validamos Preguntas
-        // Compara la pregunta proporcionada con la almacenada en la base de datos
+        // Validamos la respuesta proporcionada con la almacenada en la base de datos
         const respuestaValid = yield bcrypt_1.default.compare(respuesta, preguntaUsuario.respuesta);
         if (!respuestaValid) {
             return res.status(400).json({
                 msg: 'Respuesta incorrecta',
             });
         }
-        res.json(respuestaValid);
+        // Si la respuesta es correcta, puedes devolver un mensaje indicándolo
+        return res.json({
+            msg: 'Respuesta correcta'
+        });
     }
     catch (error) {
+        console.error('Error al validar respuestas:', error);
         res.status(400).json({
-            msg: 'Error',
-            error
+            msg: 'Error al validar respuestas',
+            error: error.message
         });
     }
 });

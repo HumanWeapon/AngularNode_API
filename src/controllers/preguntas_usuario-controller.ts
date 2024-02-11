@@ -120,24 +120,23 @@ export const updatePreguntaUsuario = async (req: Request, res: Response) => {
         }); 
     }
 }
-export const validarRespuestas = async (req: Request, res: Response) => {
-    const { 
-        id_preguntas_usuario,
-        respuesta } = req.body;
-    //Validar si el usuario existe en la base de datos
-    const preguntaUsuario: any = await PreguntasUsuario.findOne({
-        where: {id_preguntas_usuario: id_preguntas_usuario}
-    })
 
-    try{
-        if(!preguntaUsuario){
+export const validarRespuestas = async (req: Request, res: Response) => {
+    const { id_preguntas_usuario, respuesta } = req.body;
+    
+    try {
+        // Validar si el usuario existe en la base de datos
+        const preguntaUsuario: any = await PreguntasUsuario.findOne({
+            where: { id_preguntas_usuario: id_preguntas_usuario }
+        });
+
+        if (!preguntaUsuario) {
             return res.status(400).json({
                 msg: 'No existen preguntas para el usuario'
-            })
+            });
         }
 
-        //Validamos Preguntas
-        // Compara la pregunta proporcionada con la almacenada en la base de datos
+        // Validamos la respuesta proporcionada con la almacenada en la base de datos
         const respuestaValid = await bcrypt.compare(respuesta, preguntaUsuario.respuesta);
 
         if (!respuestaValid) {
@@ -145,14 +144,21 @@ export const validarRespuestas = async (req: Request, res: Response) => {
                 msg: 'Respuesta incorrecta',
             });
         }
-        res.json(respuestaValid)
-    }catch(error){
+
+        // Si la respuesta es correcta, puedes devolver un mensaje indicándolo
+        return res.json({
+            msg: 'Respuesta correcta'
+        });
+    } catch (error:any) {
+        console.error('Error al validar respuestas:', error);
         res.status(400).json({
-            msg: 'Error',
-            error
-        }); 
+            msg: 'Error al validar respuestas',
+            error: error.message
+        });
     }
-}
+};
+
+
 
 // Realiza una consulta INNER JOIN entre las tablas Preguntas_Usuario y Preguntas
 export const preguntasRespuestas = async (req: Request, res: Response) => {
