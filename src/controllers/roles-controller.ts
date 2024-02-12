@@ -137,7 +137,7 @@ export const updateRoles = async (req: Request, res: Response) => {
 //Inactiva el Rol de la DBA
 export const inactivateRol = async (req: Request, res: Response) => {
     try {
-        const { rol, modificado_por } = req.body;
+        const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion  } = req.body;
 
         const _rol = await Roles.findOne({
             where: {rol: rol}
@@ -167,7 +167,7 @@ export const inactivateRol = async (req: Request, res: Response) => {
 //Activa el Rol de la DBA
 export const activateRol = async (req: Request, res: Response) => {
     try {
-        const { rol, modificado_por } = req.body;
+        const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion  } = req.body;
 
         const _rol = await Roles.findOne({
             where: {rol: rol}

@@ -135,7 +135,7 @@ exports.updateRoles = updateRoles;
 //Inactiva el Rol de la DBA
 const inactivateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { rol, modificado_por } = req.body;
+        const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion } = req.body;
         const _rol = yield roles_models_1.Roles.findOne({
             where: { rol: rol }
         });
@@ -163,7 +163,7 @@ exports.inactivateRol = inactivateRol;
 //Activa el Rol de la DBA
 const activateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { rol, modificado_por } = req.body;
+        const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion } = req.body;
         const _rol = yield roles_models_1.Roles.findOne({
             where: { rol: rol }
         });
