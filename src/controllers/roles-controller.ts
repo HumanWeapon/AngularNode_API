@@ -126,9 +126,9 @@ export const updateRoles = async (req: Request, res: Response) => {
     });
 }
 
-//Inactiva el usuario de la DBA
+//Inactiva el Rol de la DBA
 export const inactivateRol = async (req: Request, res: Response) => {
-    const { rol } = req.body;
+    const { rol, modificado_por } = req.body;
 
     const _rol = await Roles.findOne({
         where: {rol: rol}
@@ -140,16 +140,17 @@ export const inactivateRol = async (req: Request, res: Response) => {
     }
 
     await _rol.update({
-        estado: 2
+        estado: 2,
+        modificado_por: modificado_por
     });
     res.json({
         msg: 'Rol: '+ rol+  ' inactivado exitosamente',
     });
 }
 
-//Activa el usuario de la DBA
+//Activa el Rol de la DBA
 export const activateRol = async (req: Request, res: Response) => {
-    const { rol } = req.body;
+    const { rol, modificado_por } = req.body;
 
     const _rol = await Roles.findOne({
         where: {rol: rol}
@@ -161,7 +162,8 @@ export const activateRol = async (req: Request, res: Response) => {
     }
 
     await _rol.update({
-        estado: 1
+        estado: 1,
+        modificado_por: modificado_por
     });
     res.json({
         msg: 'Rol: '+ rol+  ' ha sido activado exitosamente',

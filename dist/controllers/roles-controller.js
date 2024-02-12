@@ -124,9 +124,9 @@ const updateRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     });
 });
 exports.updateRoles = updateRoles;
-//Inactiva el usuario de la DBA
+//Inactiva el Rol de la DBA
 const inactivateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { rol } = req.body;
+    const { rol, modificado_por } = req.body;
     const _rol = yield roles_models_1.Roles.findOne({
         where: { rol: rol }
     });
@@ -136,16 +136,17 @@ const inactivateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
     yield _rol.update({
-        estado: 2
+        estado: 2,
+        modificado_por: modificado_por
     });
     res.json({
         msg: 'Rol: ' + rol + ' inactivado exitosamente',
     });
 });
 exports.inactivateRol = inactivateRol;
-//Activa el usuario de la DBA
+//Activa el Rol de la DBA
 const activateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { rol } = req.body;
+    const { rol, modificado_por } = req.body;
     const _rol = yield roles_models_1.Roles.findOne({
         where: { rol: rol }
     });
@@ -155,7 +156,8 @@ const activateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
     yield _rol.update({
-        estado: 1
+        estado: 1,
+        modificado_por: modificado_por
     });
     res.json({
         msg: 'Rol: ' + rol + ' ha sido activado exitosamente',
