@@ -134,57 +134,39 @@ const updateRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.updateRoles = updateRoles;
 //Inactiva el Rol de la DBA
 const inactivateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion } = req.body;
-        const _rol = yield roles_models_1.Roles.findOne({
-            where: { rol: rol }
-        });
-        if (!_rol) {
-            return res.status(404).json({
-                msg: "El Rol no existe: " + rol
-            });
-        }
-        yield _rol.update({
-            estado: 2,
-            modificado_por: modificado_por
-        });
-        res.json({
-            msg: 'Rol: ' + rol + ' inactivado exitosamente',
+    const { rol } = req.body;
+    const _rol = yield roles_models_1.Roles.findOne({
+        where: { rol: rol }
+    });
+    if (!_rol) {
+        return res.status(404).json({
+            msg: "El Rol no existe: " + rol
         });
     }
-    catch (error) {
-        console.error('Error al inactivar el rol:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al inactivar el rol',
-        });
-    }
+    yield _rol.update({
+        estado_rol: 2
+    });
+    res.json({
+        msg: 'Rol: ' + rol + ' inactivado exitosamente',
+    });
 });
 exports.inactivateRol = inactivateRol;
 //Activa el Rol de la DBA
 const activateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion } = req.body;
-        const _rol = yield roles_models_1.Roles.findOne({
-            where: { rol: rol }
-        });
-        if (!_rol) {
-            return res.status(404).json({
-                msg: "El Rol no existe: " + rol
-            });
-        }
-        yield _rol.update({
-            estado: 1,
-            modificado_por: modificado_por
-        });
-        res.json({
-            msg: 'Rol: ' + rol + ' ha sido activado exitosamente',
+    const { rol } = req.body;
+    const _rol = yield roles_models_1.Roles.findOne({
+        where: { rol: rol }
+    });
+    if (!_rol) {
+        return res.status(404).json({
+            msg: "El Rol no existe: " + rol
         });
     }
-    catch (error) {
-        console.error('Error al activar el rol:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al activar el rol',
-        });
-    }
+    yield _rol.update({
+        estado_rol: 1
+    });
+    res.json({
+        msg: 'Rol: ' + rol + ' ha sido activado exitosamente',
+    });
 });
 exports.activateRol = activateRol;

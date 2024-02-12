@@ -136,60 +136,42 @@ export const updateRoles = async (req: Request, res: Response) => {
 
 //Inactiva el Rol de la DBA
 export const inactivateRol = async (req: Request, res: Response) => {
-    try {
-        const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion  } = req.body;
+    const { rol } = req.body;
 
-        const _rol = await Roles.findOne({
-            where: {rol: rol}
-        });
-        if(!_rol){
-            return res.status(404).json({
-                msg: "El Rol no existe: "+ rol
-            });
-        }
-    
-        await _rol.update({
-            estado: 2,
-            modificado_por: modificado_por
-        });
-        res.json({
-            msg: 'Rol: '+ rol+  ' inactivado exitosamente',
-        });
-    } catch (error) {
-        console.error('Error al inactivar el rol:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al inactivar el rol',
+    const _rol = await Roles.findOne({
+        where: {rol: rol}
+    });
+    if(!_rol){
+        return res.status(404).json({
+            msg: "El Rol no existe: "+ rol
         });
     }
 
+    await _rol.update({
+        estado_rol: 2
+    });
+    res.json({
+        msg: 'Rol: '+ rol+  ' inactivado exitosamente',
+    });
 }
 
 //Activa el Rol de la DBA
 export const activateRol = async (req: Request, res: Response) => {
-    try {
-        const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion  } = req.body;
+    const { rol } = req.body;
 
-        const _rol = await Roles.findOne({
-            where: {rol: rol}
-        });
-        if(!_rol){
-            return res.status(404).json({
-                msg: "El Rol no existe: "+ rol
-            });
-        }
-    
-        await _rol.update({
-            estado: 1,
-            modificado_por: modificado_por
-        });
-        res.json({
-            msg: 'Rol: '+ rol+  ' ha sido activado exitosamente',
-        });
-    } catch (error) {
-        console.error('Error al activar el rol:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al activar el rol',
+    const _rol = await Roles.findOne({
+        where: {rol: rol}
+    });
+    if(!_rol){
+        return res.status(404).json({
+            msg: "El Rol no existe: "+ rol
         });
     }
 
+    await _rol.update({
+        estado_rol: 1
+    });
+    res.json({
+        msg: 'Rol: '+ rol +  ' ha sido activado exitosamente',
+    });
 }
