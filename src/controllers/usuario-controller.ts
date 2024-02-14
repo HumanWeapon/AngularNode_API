@@ -153,7 +153,7 @@ export const postUsuario = async (req: Request, res: Response) => {
                 fecha_vencimiento: fecha_vencimiento,
                 intentos_fallidos: intentos_fallidos
             })
-            return res.json(newUser); // Devolver el nuevo usuario creado como respuesta
+            return res.json(user); // Devolver el nuevo usuario creado como respuesta
         }
     }
     catch (error){
@@ -182,9 +182,7 @@ export const deleteUsuario = async (req: Request, res: Response) => {
     }
 
     await user.destroy();
-    res.json({
-        msg: 'Usuario: '+ usuario+  ' eliminado exitosamente',
-    });
+    res.json(user);
 }
 //Inactiva el usuario de la DBA
 export const inactivateUsuario = async (req: Request, res: Response) => {

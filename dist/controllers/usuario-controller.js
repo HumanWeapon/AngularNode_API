@@ -141,7 +141,7 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 fecha_vencimiento: fecha_vencimiento,
                 intentos_fallidos: intentos_fallidos
             });
-            return res.json(newUser); // Devolver el nuevo usuario creado como respuesta
+            return res.json(user); // Devolver el nuevo usuario creado como respuesta
         }
     }
     catch (error) {
@@ -169,9 +169,7 @@ const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
     yield user.destroy();
-    res.json({
-        msg: 'Usuario: ' + usuario + ' eliminado exitosamente',
-    });
+    res.json(user);
 });
 exports.deleteUsuario = deleteUsuario;
 //Inactiva el usuario de la DBA
