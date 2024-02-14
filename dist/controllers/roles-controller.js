@@ -82,9 +82,7 @@ const deleteRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
         if (_rol) {
             yield _rol.destroy();
-            res.json({
-                msg: 'El rol con el ID: ' + id_rol + ' ha sido eliminado exitosamente',
-            });
+            res.json(_rol);
         }
         else {
             res.status(404).json({
@@ -120,9 +118,7 @@ const updateRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             modificado_por: modificado_por,
             fecha_modificacion: fecha_modificacion
         });
-        res.json({
-            msg: 'El Rol con el ID: ' + id_rol + ' ha sido actualizado exitosamente',
-        });
+        res.json(_rol);
     }
     catch (error) {
         console.error('Error al actualizar el rol:', error);
@@ -148,9 +144,7 @@ const inactivateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             estado: 2,
             modificado_por: modificado_por
         });
-        res.json({
-            msg: 'Rol: ' + rol + ' inactivado exitosamente',
-        });
+        res.json(_rol);
     }
     catch (error) {
         console.error('Error al inactivar el rol:', error);
@@ -176,9 +170,7 @@ const activateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             estado: 1,
             modificado_por: modificado_por
         });
-        res.json({
-            msg: 'Rol: ' + rol + ' ha sido activado exitosamente',
-        });
+        res.json(_rol);
     }
     catch (error) {
         console.error('Error al activar el rol:', error);

@@ -82,9 +82,7 @@ export const deleteRol = async (req: Request, res: Response) => {
 
         if (_rol) {
             await _rol.destroy();
-            res.json({
-                msg: 'El rol con el ID: ' + id_rol + ' ha sido eliminado exitosamente',
-            });
+            res.json(_rol);
         } else {
             res.status(404).json({
                 msg: 'No se encontró ningun rol con el ID: ' + id_rol,
@@ -122,9 +120,7 @@ export const updateRoles = async (req: Request, res: Response) => {
             fecha_modificacion: fecha_modificacion
            
         });
-        res.json({
-            msg: 'El Rol con el ID: '+ id_rol+  ' ha sido actualizado exitosamente',
-        });
+        res.json(_rol);
     } catch (error) {
         console.error('Error al actualizar el rol:', error);
         res.status(500).json({
@@ -152,9 +148,7 @@ export const inactivateRol = async (req: Request, res: Response) => {
             estado: 2,
             modificado_por: modificado_por
         });
-        res.json({
-            msg: 'Rol: '+ rol+  ' inactivado exitosamente',
-        });
+        res.json(_rol);
     } catch (error) {
         console.error('Error al inactivar el rol:', error);
         res.status(500).json({
@@ -182,9 +176,7 @@ export const activateRol = async (req: Request, res: Response) => {
             estado: 1,
             modificado_por: modificado_por
         });
-        res.json({
-            msg: 'Rol: '+ rol+  ' ha sido activado exitosamente',
-        });
+        res.json(_rol);
     } catch (error) {
         console.error('Error al activar el rol:', error);
         res.status(500).json({
