@@ -46,7 +46,7 @@ const postRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         else {
-            yield roles_models_1.Roles.create({
+            const newrol = yield roles_models_1.Roles.create({
                 rol: rol,
                 descripcion: descripcion,
                 estado_rol: estado_rol,
@@ -55,9 +55,7 @@ const postRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 modificado_por: modificado_por,
                 fecha_modificacion: fecha_modificacion
             });
-            res.json({
-                msg: 'El Rol: ' + rol + ' ha sido creada exitosamente',
-            });
+            res.json(newrol);
         }
     }
     catch (error) {

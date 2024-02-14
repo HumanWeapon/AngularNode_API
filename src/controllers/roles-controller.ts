@@ -43,7 +43,7 @@ export const postRol = async (req: Request, res: Response) => {
                 msg: 'Rol ya registrado en la base de datos: '+ rol
             })
         }else{
-            await Roles.create({
+            const newrol = await Roles.create({
                 rol: rol,
                 descripcion: descripcion, 
                 estado_rol: estado_rol,
@@ -53,9 +53,7 @@ export const postRol = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion
                 
             })
-            res.json({
-                msg: 'El Rol: '+ rol+  ' ha sido creada exitosamente',
-            })
+            res.json(newrol)
         }
     }
     catch (error){
