@@ -231,9 +231,7 @@ const updateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         fecha_vencimiento: fecha_vencimiento,
         fecha_ultima_conexion: fecha_ultima_conexion
     });
-    res.json({
-        msg: 'Usuario: ' + usuario + ' ha sido actualizado exitosamente',
-    });
+    res.json(user);
 });
 exports.updateUsuario = updateUsuario;
 //Desbloquea la contraseña
