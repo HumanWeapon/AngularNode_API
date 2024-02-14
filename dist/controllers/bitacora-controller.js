@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteBitacora = exports.PostBitacora = exports.getAllBitacora = void 0;
 const bitacora_model_1 = require("../models/bitacora-model");
 const usuario_models_1 = require("../models/usuario-models");
+const objetos_models_1 = require("../models/objetos-models");
 //Obtiene todos los objetos de la tabla bitácora
 const getAllBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -23,7 +24,7 @@ const getAllBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function*
                     attributes: ['usuario', 'nombre_usuario']
                 },
                 {
-                    model: usuario_models_1.User,
+                    model: objetos_models_1.Objetos,
                     attributes: ['objeto']
                 }
             ]

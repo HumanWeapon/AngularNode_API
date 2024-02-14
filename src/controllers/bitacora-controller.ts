@@ -1,6 +1,7 @@
 import { Bitacora } from "../models/bitacora-model";
 import {Request, Response} from 'express';
 import { User } from "../models/usuario-models";
+import { Objetos } from "../models/objetos-models";
 
 //Obtiene todos los objetos de la tabla bitácora
 export const getAllBitacora = async (req: Request, res: Response) => {
@@ -13,7 +14,7 @@ export const getAllBitacora = async (req: Request, res: Response) => {
                     attributes: ['usuario', 'nombre_usuario']
                 },
                 {
-                    model: User,
+                    model: Objetos,
                     attributes: ['objeto']
                 }
             ]

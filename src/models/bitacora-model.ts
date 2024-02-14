@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../db/connection';
 import { User } from './usuario-models';
+import { Objetos } from './objetos-models';
 
 export const Bitacora: any = dataBase.define('bitacora', {
     id_bitacora: {
@@ -36,3 +37,4 @@ export const Bitacora: any = dataBase.define('bitacora', {
 });
 // Define la asociación
 Bitacora.belongsTo(User, { foreignKey: 'id_usuario', targetKey: 'id_usuario' });
+Bitacora.belongsTo(Objetos, { foreignKey: 'id_objeto', targetKey: 'id_objeto' });

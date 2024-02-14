@@ -7,6 +7,7 @@ exports.Bitacora = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
 const usuario_models_1 = require("./usuario-models");
+const objetos_models_1 = require("./objetos-models");
 exports.Bitacora = connection_1.default.define('bitacora', {
     id_bitacora: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -40,3 +41,4 @@ exports.Bitacora = connection_1.default.define('bitacora', {
 });
 // Define la asociación
 exports.Bitacora.belongsTo(usuario_models_1.User, { foreignKey: 'id_usuario', targetKey: 'id_usuario' });
+exports.Bitacora.belongsTo(objetos_models_1.Objetos, { foreignKey: 'id_objeto', targetKey: 'id_objeto' });
