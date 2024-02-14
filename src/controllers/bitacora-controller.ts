@@ -1,10 +1,28 @@
 import { Bitacora } from "../models/bitacora-model";
 import {Request, Response} from 'express';
+import { User } from "../models/usuario-models";
 
-//Obtiene todos los objetos de la base de datos
+//Obtiene todos los objetos de la tabla bitácora
 export const getAllBitacora = async (req: Request, res: Response) => {
-    const bitacora = await Bitacora.findAll();
-    res.json(bitacora)
+    try {
+        const bitacora = await Bitacora.findAll({
+            attributes: ['fecha', 'id_usuario', 'id_objeto', 'accion', 'descripcion'],
+            include: [
+                {
+                    model: User,
+                    attributes: ['usuario', 'nombre_usuario']
+                },
+                {
+                    model: User,
+                    attributes: ['objeto']
+                }
+            ]
+        });
+        res.json(bitacora);
+    } catch (error) {
+        console.error('Error al obtener la bitácora:', error);
+        res.status(500).json({ error: 'Error al obtener la bitácora' });
+    }
 }
 
 export const PostBitacora = async (req: Request, res: Response) => {

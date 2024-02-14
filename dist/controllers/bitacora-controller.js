@@ -11,10 +11,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteBitacora = exports.PostBitacora = exports.getAllBitacora = void 0;
 const bitacora_model_1 = require("../models/bitacora-model");
-//Obtiene todos los objetos de la base de datos
+const usuario_models_1 = require("../models/usuario-models");
+//Obtiene todos los objetos de la tabla bitácora
 const getAllBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const bitacora = yield bitacora_model_1.Bitacora.findAll();
-    res.json(bitacora);
+    try {
+        const bitacora = yield bitacora_model_1.Bitacora.findAll({
+            attributes: ['fecha', 'id_usuario', 'id_objeto', 'accion', 'descripcion'],
+            include: [
+                {
+                    model: usuario_models_1.User,
+                    attributes: ['usuario', 'nombre_usuario']
+                },
+                {
+                    model: usuario_models_1.User,
+                    attributes: ['objeto']
+                }
+            ]
+        });
+        res.json(bitacora);
+    }
+    catch (error) {
+        console.error('Error al obtener la bitácora:', error);
+        res.status(500).json({ error: 'Error al obtener la bitácora' });
+    }
 });
 exports.getAllBitacora = getAllBitacora;
 const PostBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
