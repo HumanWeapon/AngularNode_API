@@ -153,7 +153,7 @@ export const postUsuario = async (req: Request, res: Response) => {
                 fecha_vencimiento: fecha_vencimiento,
                 intentos_fallidos: intentos_fallidos
             })
-            return res.json(user); // Devolver el nuevo usuario creado como respuesta
+            return res.json(newUser); // Devolver el nuevo usuario creado como respuesta
         }
     }
     catch (error){
