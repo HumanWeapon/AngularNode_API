@@ -101,69 +101,85 @@ export const deleteParametro = async (req: Request, res: Response) => {
 
 //actualiza la pregunta de la base de datos
 export const updateParametro = async (req: Request, res: Response) => {
-    const { id_parametro, parametro, valor, estado_parametro, fecha_modificacion, modificado_por  } = req.body;
+    try {
+        const { id_parametro, parametro, valor, estado_parametro, fecha_modificacion, modificado_por  } = req.body;
 
-    const _parametro = await Parametros.findOne({
-        where: {id_parametro: id_parametro}
-    });
-    if(!_parametro){
-        return res.status(404).json({
-            msg: 'Parametro con el ID: '+ id_parametro +' no existe en la base de datos'
+        const _parametro = await Parametros.findOne({
+            where: {id_parametro: id_parametro}
+        });
+        if(!_parametro){
+            return res.status(404).json({
+                msg: 'Parametro con el ID: '+ id_parametro +' no existe en la base de datos'
+            });
+        }
+    
+        await _parametro.update({
+            id_parametro: id_parametro,
+            parametro: parametro,
+            valor: valor,
+            estado_parametro: estado_parametro,
+            fecha_modificacion: fecha_modificacion,
+            modificado_por: modificado_por        
+        });
+        res.json(_parametro);
+    } catch (error) {
+        console.error('Error al actualizar el parámetro:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar el parámetro',
         });
     }
-
-    await _parametro.update({
-        id_parametro: id_parametro,
-        parametro: parametro,
-        valor: valor,
-        estado_parametro: estado_parametro,
-        fecha_modificacion: fecha_modificacion,
-        modificado_por: modificado_por        
-    });
-    res.json({
-        msg: 'El parametro con el ID: '+ id_parametro+  ' ha sido actualizada exitosamente',
-    });
 }
 
 
 //Inactiva el parametro de la DBA
     export const inactivateParametro = async (req: Request, res: Response) => {
-    const { parametro } = req.body;
+        try {
+            const { parametro } = req.body;
+            const _parametro = await Parametros.findOne({
+                where: {parametro: parametro}
+            });
+            if(!_parametro){
+                return res.status(404).json({
+                    msg: "El Parametro no existe: "+ parametro
+                });
+            }
+        
+            await _parametro.update({
+                estado_parametro: 2
+            });
+            res.json(_parametro);
+        } catch (error) {
+            console.error('Error al inactivar el parámetro:', error);
+            res.status(500).json({
+                msg: 'Hubo un error al inactivar el parámetro',
+            });
+        }
 
-    const _parametro = await Parametros.findOne({
-        where: {parametro: parametro}
-    });
-    if(!_parametro){
-        return res.status(404).json({
-            msg: "El Parametro no existe: "+ parametro
-        });
-    }
-
-    await _parametro.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'Parametro: '+ parametro+  ' inactivado exitosamente',
-    });
 }
 
 //Activa el parametro de la DBA
 export const activateParametro = async (req: Request, res: Response) => {
-    const { parametro } = req.body;
+    try {
+        const { parametro } = req.body;
 
-    const _parametro = await Parametros.findOne({
-        where: {parametro: parametro}
-    });
-    if(!_parametro){
-        return res.status(404).json({
-            msg: "El Parametro no existe: "+ parametro
+        const _parametro = await Parametros.findOne({
+            where: {parametro: parametro}
+        });
+        if(!_parametro){
+            return res.status(404).json({
+                msg: "El Parametro no existe: "+ parametro
+            });
+        }
+    
+        await _parametro.update({
+            estado_parametro: 1
+        });
+        res.json(_parametro);
+    } catch (error) {
+        console.error('Error al activar el parámetro:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar el parámetro',
         });
     }
 
-    await _parametro.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'Rol: '+ parametro+  ' ha sido activado exitosamente',
-    });
 }
