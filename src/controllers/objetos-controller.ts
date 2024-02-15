@@ -43,7 +43,7 @@ export const postObjeto = async (req: Request, res: Response) => {
                 msg: 'Objeto ya registrado en la base de datos: '+ objeto
             })
         }else{
-            const newRol = await Objetos.create({
+            const newRol = await Objetos.create({ 
                 objeto: objeto,
                 descripcion: descripcion, 
                 tipo_objeto: tipo_objeto,
@@ -140,6 +140,7 @@ export const inactivateObjecto = async (req: Request, res: Response) => {
     await _objeto.update({
         estado_objeto: 2
     });
+    console.log(_objeto);
     res.json(_objeto);
 } catch (error) {
     console.error('Error al activar el objeto:', error);
@@ -166,7 +167,8 @@ export const activateObjeto = async (req: Request, res: Response) => {
 
     await _objeto.update({
         estado_objeto: 1
-    });
+    }); 
+    console.log(_objeto);
     res.json(_objeto);
 } catch (error) {
     console.error('Error al inactivar el objeto:', error);
