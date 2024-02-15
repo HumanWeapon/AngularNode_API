@@ -35,7 +35,7 @@ export const postObjeto = async (req: Request, res: Response) => {
 
     try{
         const _objeto = await Objetos.findOne({
-            where: {objeto: objeto}
+            where: {objeto: objeto} 
         })
     
         if (_objeto){
@@ -43,7 +43,7 @@ export const postObjeto = async (req: Request, res: Response) => {
                 msg: 'Objeto ya registrado en la base de datos: '+ objeto
             })
         }else{
-            await Objetos.create({
+            const newRol = await Objetos.create({
                 objeto: objeto,
                 descripcion: descripcion, 
                 tipo_objeto: tipo_objeto,
@@ -53,7 +53,7 @@ export const postObjeto = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion,
                 estado_objeto: estado_objeto
             })
-            res.json('El Objeto: '+ objeto+  ' ha sido creada exitosamente')
+            res.json(newRol)
         }
     }
     catch (error){
@@ -75,9 +75,7 @@ export const deleteObjeto = async (req: Request, res: Response) => {
 
         if (_objeto) {
             await _objeto.destroy();
-            res.json({
-                msg: 'El objeto con el ID: ' + id_objeto + ' ha sido eliminado exitosamente',
-            });
+            res.json(_objeto);
         } else {
             res.status(404).json({
                 msg: 'No se encontró un objeto con el ID ' + id_objeto,
@@ -92,8 +90,9 @@ export const deleteObjeto = async (req: Request, res: Response) => {
 };
 
 
-//actualiza el rol en la base de datos
+//actualiza el objeto en la base de datos
 export const updateObjetos = async (req: Request, res: Response) => {
+    try {
     const { id_objeto, objeto, descripcion, tipo_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
 
     const _objeto = await Objetos.findOne({
@@ -115,11 +114,18 @@ export const updateObjetos = async (req: Request, res: Response) => {
         modificado_por: modificado_por,
         fecha_modificacion: fecha_modificacion
     });
-    res.json('El Objeto con el ID: '+ id_objeto+  ' ha sido actualizado exitosamente');
+    res.json(_objeto);
+} catch (error) {
+    console.error('Error al actualizar el objeto:', error);
+    res.status(500).json({ 
+        msg: 'Hubo un error al actualizar el objeto',
+});
+}
 }
 
 //Inactiva el OBJ de la DBA
 export const inactivateObjecto = async (req: Request, res: Response) => {
+    try {
     const { objeto } = req.body;
 
     const _objeto = await Objetos.findOne({
@@ -134,11 +140,19 @@ export const inactivateObjecto = async (req: Request, res: Response) => {
     await _objeto.update({
         estado_objeto: 2
     });
-    res.json('Objeto: '+ objeto+  ' inactivado exitosamente');
+    res.json(_objeto);
+} catch (error) {
+    console.error('Error al activar el objeto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al activar el objeto',
+
+    });
+}
 }
 
 //Activa el usuario de la DBA
 export const activateObjeto = async (req: Request, res: Response) => {
+    try{
     const { objeto } = req.body;
 
     const _objeto = await Objetos.findOne({
@@ -153,9 +167,14 @@ export const activateObjeto = async (req: Request, res: Response) => {
     await _objeto.update({
         estado_objeto: 1
     });
-    res.json({
-        msg: 'Objeto: '+ objeto+  ' ha sido activado exitosamente',
+    res.json(_objeto);
+} catch (error) {
+    console.error('Error al inactivar el objeto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar el objeto',
+
     });
+}
 }
 //Obtiene un objeto de la base de datos     
 export const getAllObjetosMenu = async (req: Request, res: Response) => {
