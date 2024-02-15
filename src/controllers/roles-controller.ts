@@ -143,7 +143,7 @@ export const inactivateRol = async (req: Request, res: Response) => {
         }
     
         await _rol.update({
-            estado: 2,
+            estado_rol: 2,
             modificado_por: modificado_por
         });
         res.json(_rol);
@@ -171,7 +171,7 @@ export const activateRol = async (req: Request, res: Response) => {
         }
     
         await _rol.update({
-            estado: 1,
+            estado_rol: 1,
             modificado_por: modificado_por
         });
         res.json(_rol);

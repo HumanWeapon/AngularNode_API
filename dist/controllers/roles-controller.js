@@ -139,7 +139,7 @@ const inactivateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
         }
         yield _rol.update({
-            estado: 2,
+            estado_rol: 2,
             modificado_por: modificado_por
         });
         res.json(_rol);
@@ -165,7 +165,7 @@ const activateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             });
         }
         yield _rol.update({
-            estado: 1,
+            estado_rol: 1,
             modificado_por: modificado_por
         });
         res.json(_rol);
