@@ -17,6 +17,17 @@ const categoria_models_1 = require("../../models/negocio/categoria-models");
 const getAllOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const opproductos = yield productos_models_1.Productos.findAll({
+            attributes: [
+                'id_producto',
+                'id_categoria',
+                'producto',
+                'descripcion',
+                'creado_por',
+                'fecha_creacion',
+                'modificado_por',
+                'fecha_modificacion',
+                'estado'
+            ],
             include: [{
                     model: categoria_models_1.Categorias,
                     attributes: ['id_categoria', 'categoria', 'descripcion'],

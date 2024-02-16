@@ -8,6 +8,17 @@ import { Categorias } from '../../models/negocio/categoria-models';
 export const getAllOpProductos = async (req: Request, res: Response) => {
     try {
         const opproductos = await Productos.findAll({
+            attributes: [
+                'id_producto',
+                'id_categoria',
+                'producto',
+                'descripcion',
+                'creado_por',
+                'fecha_creacion',
+                'modificado_por',
+                'fecha_modificacion',
+                'estado'
+            ],
             include: [{
                 model: Categorias,
                 attributes: ['id_categoria', 'categoria', 'descripcion'],
