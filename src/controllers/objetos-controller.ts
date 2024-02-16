@@ -140,7 +140,7 @@ export const inactivateObjecto = async (req: Request, res: Response) => {
     await _objeto.update({
         estado_objeto: 2
     });
-    console.log(_objeto);
+    
     res.json(_objeto);
 } catch (error) {
     console.error('Error al activar el objeto:', error);
@@ -168,7 +168,7 @@ export const activateObjeto = async (req: Request, res: Response) => {
     await _objeto.update({
         estado_objeto: 1
     }); 
-    console.log(_objeto);
+   
     res.json(_objeto);
 } catch (error) {
     console.error('Error al inactivar el objeto:', error);

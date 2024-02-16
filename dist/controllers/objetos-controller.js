@@ -139,7 +139,6 @@ const inactivateObjecto = (req, res) => __awaiter(void 0, void 0, void 0, functi
         yield _objeto.update({
             estado_objeto: 2
         });
-        console.log(_objeto);
         res.json(_objeto);
     }
     catch (error) {
@@ -165,7 +164,6 @@ const activateObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function*
         yield _objeto.update({
             estado_objeto: 1
         });
-        console.log(_objeto);
         res.json(_objeto);
     }
     catch (error) {
