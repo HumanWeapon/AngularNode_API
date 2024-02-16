@@ -54,3 +54,5 @@ exports.Productos.belongsTo(categoria_models_1.Categorias, {
     foreignKey: 'id_categoria',
     as: 'categoria' // Alias para la relación
 });
+// En tu modelo de Productos
+exports.Productos.belongsTo(categoria_models_1.Categorias, { foreignKey: 'id_categoria' });
