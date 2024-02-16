@@ -81,10 +81,7 @@ const postPermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 modificado_por: modificado_por,
                 fecha_modificacion: fecha_modificacion
             });
-            return res.json({
-                msg: 'El permiso ha sido creado exitosamente.',
-                newPermiso
-            });
+            return res.json(newPermiso);
         }
     }
     catch (error) {
@@ -104,9 +101,7 @@ const deletePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
         if (_permisos) {
             yield _permisos.destroy();
-            res.json({
-                msg: 'El permiso ha sido eliminado exitosamente',
-            });
+            res.json(_permisos);
         }
         else {
             res.status(404).json({
@@ -145,9 +140,7 @@ const updatePermisos = (req, res) => __awaiter(void 0, void 0, void 0, function*
             modificado_por: modificado_por,
             fecha_modificacion: fecha_modificacion
         });
-        res.json({
-            msg: 'El permiso ha sido actualizado exitosamente',
-        });
+        res.json(_permiso);
     }
     catch (error) {
         res.status(500).json({
@@ -172,9 +165,7 @@ const inactivatePermiso = (req, res) => __awaiter(void 0, void 0, void 0, functi
         yield _permiso.update({
             estado: 2
         });
-        res.json({
-            msg: 'Permiso: ' + id_permisos + ' inactivado exitosamente',
-        });
+        res.json(_permiso);
     }
     catch (error) {
         res.status(500).json({
@@ -199,9 +190,7 @@ const activatePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function
         yield _permiso.update({
             estado: 1
         });
-        res.json({
-            msg: 'Permiso: ' + id_permisos + ' ha sido activado exitosamente',
-        });
+        res.json(_permiso);
     }
     catch (error) {
         res.status(500).json({

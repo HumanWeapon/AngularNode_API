@@ -43,7 +43,7 @@ export const postPregunta = async (req: Request, res: Response) => {
                 msg: 'Pregunta ya registrada en la base de datos: '+ pregunta
             })
         }else{
-            await Preguntas.create({
+            const newQuestion = await Preguntas.create({
                 pregunta: pregunta,
                 estado_pregunta: estado_pregunta,
                 creado_por: creado_por,
@@ -51,9 +51,7 @@ export const postPregunta = async (req: Request, res: Response) => {
                 modificado_por: modificado_por,
                 fecha_modificacion: fecha_modificacion
             })
-            res.json({
-                msg: 'La pregunta: '+ pregunta+  ' ha sido creada exitosamente',
-            })
+            res.json(newQuestion)
         }
     }
     catch (error){
@@ -70,26 +68,37 @@ export const postPregunta = async (req: Request, res: Response) => {
 }
 
 //Elimina la pregunta de la base de datos
+
+
+
 export const deletePregunta = async (req: Request, res: Response) => {
     const { id_pregunta } = req.body;
 
-    const _pregunta = await Preguntas.findOne({
-        where: {id_pregunta: id_pregunta}
-    });
-    if(_pregunta){
-        return res.status(404).json({
-            msg: 'Pregunta ya registrada en la base de datos: '+ id_pregunta
+    try {
+        const _pregunta = await Preguntas.findOne({
+            where: { id_pregunta : id_pregunta }
+        });
+
+        if (_pregunta) {
+            await _pregunta.destroy();
+            res.json(_pregunta);
+        } else {
+            res.status(404).json({
+                msg: 'No se encontró ninguna pregunta con el ID: ' + id_pregunta,
+            });
+        }
+    } catch (error) {
+        console.error('Error al eliminar la pregunta:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al eliminar la pregunta',
         });
     }
+};
 
-    await _pregunta.destroy();
-    res.json({
-        msg: 'La pregunta con el ID: '+ id_pregunta+  ' ha eliminada exitosamente',
-    });
-}
 
 //actualiza la pregunta de la base de datos
 export const updatePregunta = async (req: Request, res: Response) => {
+    try {
     const { id_pregunta, pregunta, estado_pregunta, modificado_por, fecha_modificacion  } = req.body;
 
     const _pregunta = await Preguntas.findOne({
@@ -108,13 +117,20 @@ export const updatePregunta = async (req: Request, res: Response) => {
         modificado_por: modificado_por,
         fecha_modificacion: fecha_modificacion
     });
-    res.json({
-        msg: 'La pregunta con el ID: '+ id_pregunta+  ' ha sido actualizada exitosamente',
+    res.json(_pregunta);
+
+} catch (error) {
+    console.error('Error al actualizar la pregunta:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al actualizar la pregunta',
     });
+}
+
 }
 
 //Inactiva la pregunta de la DBA
 export const inactivatePregunta = async (req: Request, res: Response) => {
+    try {
     const { pregunta } = req.body;
 
     const _pregunta = await Preguntas.findOne({
@@ -127,15 +143,22 @@ export const inactivatePregunta = async (req: Request, res: Response) => {
     }
 
     await _pregunta.update({
-        estado: 2
+        estado_pregunta: 2
     });
-    res.json({
-        msg: 'Pregunta: '+ pregunta+  ' inactivado exitosamente',
+    res.json(_pregunta);
+
+} catch (error) {
+    console.error('Error al Inactivar la pregunta:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al Inactivar la pregunta',
     });
 }
+}
+
 
 //Activa la pregunta de la DBA
 export const activatePregunta = async (req: Request, res: Response) => {
+    try {
     const { pregunta } = req.body;
 
     const _pregunta = await Preguntas.findOne({
@@ -148,9 +171,15 @@ export const activatePregunta = async (req: Request, res: Response) => {
     }
 
     await _pregunta.update({
-        estado: 1
+        estado_pregunta: 1
     });
-    res.json({
-        msg: 'Pregunta: '+ pregunta+  ' ha sido activado exitosamente',
+    res.json(_pregunta);
+
+} catch (error) {
+    console.error('Error al activar la pregunta:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al activar la pregunta',
     });
+}
+
 }

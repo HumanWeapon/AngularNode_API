@@ -91,10 +91,7 @@ export const postPermiso = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion
             });
 
-            return res.json({
-                msg: 'El permiso ha sido creado exitosamente.',
-                newPermiso
-            });
+            return res.json(newPermiso);
         }
     } catch (error) {
         res.status(500).json({
@@ -115,9 +112,7 @@ export const deletePermiso = async (req: Request, res: Response) => {
 
         if (_permisos) {
             await _permisos.destroy();
-            res.json({
-                msg: 'El permiso ha sido eliminado exitosamente',
-            });
+            res.json(_permisos);
         } else {
             res.status(404).json({
                 msg: 'No se encontró ningun permiso con esa numeracion',
@@ -157,9 +152,7 @@ export const updatePermisos = async (req: Request, res: Response) => {
         modificado_por: modificado_por,
         fecha_modificacion: fecha_modificacion
     });
-    res.json({
-        msg: 'El permiso ha sido actualizado exitosamente',
-    });
+    res.json(_permiso);
     } catch (error) {
         res.status(500).json({
             msg: 'Ha ocurrido un error interno, contacta al administrador.',
@@ -185,9 +178,7 @@ export const inactivatePermiso = async (req: Request, res: Response) => {
         await _permiso.update({
             estado: 2
         });
-        res.json({
-            msg: 'Permiso: '+ id_permisos+  ' inactivado exitosamente',
-        });
+        res.json(_permiso);
     } catch (error) {
         res.status(500).json({
             msg: 'Ha ocurrido un error interno, contacta al administrador.',
@@ -214,9 +205,7 @@ export const activatePermiso = async (req: Request, res: Response) => {
         await _permiso.update({
             estado: 1
         });
-        res.json({
-            msg: 'Permiso: '+ id_permisos+  ' ha sido activado exitosamente',
-        });
+        res.json(_permiso);
     } catch (error) {
         res.status(500).json({
             msg: 'Ha ocurrido un error interno, contacta al administrador.',

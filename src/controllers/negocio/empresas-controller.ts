@@ -83,9 +83,7 @@ export const deleteEmpresa = async (req: Request, res: Response) => {
 
         if (_empresa) {
             await _empresa.destroy();
-            res.json({
-                msg: 'La Empresa con el ID: ' + id_empresa + ' ha sido eliminada exitosamente',
-            });
+            res.json(_empresa);
         } else {
             res.status(404).json({
                 msg: 'No se encontró una Empresa con el ID ' + id_empresa,
@@ -144,7 +142,7 @@ export const inactivateEmpresa = async (req: Request, res: Response) => {
     await empresa.update({
         estado: 2
     });
-    res.json('Empresa inactivada');
+    res.json(empresa);
 }
 
 //Activa la empresa
@@ -165,5 +163,3 @@ export const activateEmpresa = async (req: Request, res: Response) => {
     });
     res.json('Empresa activada');
 }
-
-

@@ -46,7 +46,7 @@ const postPregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             });
         }
         else {
-            yield preguntas_model_1.Preguntas.create({
+            const newQuestion = yield preguntas_model_1.Preguntas.create({
                 pregunta: pregunta,
                 estado_pregunta: estado_pregunta,
                 creado_por: creado_por,
@@ -54,9 +54,7 @@ const postPregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 modificado_por: modificado_por,
                 fecha_modificacion: fecha_modificacion
             });
-            res.json({
-                msg: 'La pregunta: ' + pregunta + ' ha sido creada exitosamente',
-            });
+            res.json(newQuestion);
         }
     }
     catch (error) {
@@ -75,78 +73,104 @@ exports.postPregunta = postPregunta;
 //Elimina la pregunta de la base de datos
 const deletePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_pregunta } = req.body;
-    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
-        where: { id_pregunta: id_pregunta }
-    });
-    if (_pregunta) {
-        return res.status(404).json({
-            msg: 'Pregunta ya registrada en la base de datos: ' + id_pregunta
+    try {
+        const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+            where: { id_pregunta: id_pregunta }
+        });
+        if (_pregunta) {
+            yield _pregunta.destroy();
+            res.json(_pregunta);
+        }
+        else {
+            res.status(404).json({
+                msg: 'No se encontró ninguna pregunta con el ID: ' + id_pregunta,
+            });
+        }
+    }
+    catch (error) {
+        console.error('Error al eliminar la pregunta:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al eliminar la pregunta',
         });
     }
-    yield _pregunta.destroy();
-    res.json({
-        msg: 'La pregunta con el ID: ' + id_pregunta + ' ha eliminada exitosamente',
-    });
 });
 exports.deletePregunta = deletePregunta;
 //actualiza la pregunta de la base de datos
 const updatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_pregunta, pregunta, estado_pregunta, modificado_por, fecha_modificacion } = req.body;
-    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
-        where: { id_pregunta: id_pregunta }
-    });
-    if (!_pregunta) {
-        return res.status(404).json({
-            msg: 'Pregunta con el ID: ' + id_pregunta + ' no existe en la base de datos'
+    try {
+        const { id_pregunta, pregunta, estado_pregunta, modificado_por, fecha_modificacion } = req.body;
+        const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+            where: { id_pregunta: id_pregunta }
+        });
+        if (!_pregunta) {
+            return res.status(404).json({
+                msg: 'Pregunta con el ID: ' + id_pregunta + ' no existe en la base de datos'
+            });
+        }
+        yield _pregunta.update({
+            id_pregunta: id_pregunta,
+            pregunta: pregunta,
+            estado_pregunta: estado_pregunta,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion
+        });
+        res.json(_pregunta);
+    }
+    catch (error) {
+        console.error('Error al actualizar la pregunta:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar la pregunta',
         });
     }
-    yield _pregunta.update({
-        id_pregunta: id_pregunta,
-        pregunta: pregunta,
-        estado_pregunta: estado_pregunta,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion
-    });
-    res.json({
-        msg: 'La pregunta con el ID: ' + id_pregunta + ' ha sido actualizada exitosamente',
-    });
 });
 exports.updatePregunta = updatePregunta;
 //Inactiva la pregunta de la DBA
 const inactivatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { pregunta } = req.body;
-    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
-        where: { pregunta: pregunta }
-    });
-    if (!_pregunta) {
-        return res.status(404).json({
-            msg: "La pregunta no existe: " + pregunta
+    try {
+        const { pregunta } = req.body;
+        const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+            where: { pregunta: pregunta }
+        });
+        if (!_pregunta) {
+            return res.status(404).json({
+                msg: "La pregunta no existe: " + pregunta
+            });
+        }
+        yield _pregunta.update({
+            estado_pregunta: 2
+        });
+        res.json(_pregunta);
+    }
+    catch (error) {
+        console.error('Error al Inactivar la pregunta:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al Inactivar la pregunta',
         });
     }
-    yield _pregunta.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'Pregunta: ' + pregunta + ' inactivado exitosamente',
-    });
 });
 exports.inactivatePregunta = inactivatePregunta;
 //Activa la pregunta de la DBA
 const activatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { pregunta } = req.body;
-    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
-        where: { pregunta: pregunta }
-    });
-    if (!_pregunta) {
-        return res.status(404).json({
-            msg: "La Pregunta no existe: " + pregunta
+    try {
+        const { pregunta } = req.body;
+        const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+            where: { pregunta: pregunta }
+        });
+        if (!_pregunta) {
+            return res.status(404).json({
+                msg: "La Pregunta no existe: " + pregunta
+            });
+        }
+        yield _pregunta.update({
+            estado_pregunta: 1
+        });
+        res.json(_pregunta);
+    }
+    catch (error) {
+        console.error('Error al activar la pregunta:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar la pregunta',
         });
     }
-    yield _pregunta.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'Pregunta: ' + pregunta + ' ha sido activado exitosamente',
-    });
 });
 exports.activatePregunta = activatePregunta;
