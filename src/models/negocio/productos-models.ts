@@ -14,19 +14,10 @@ export const Productos: any = dataBase.define('productos', {
         type: DataTypes.INTEGER,
         primaryKey: true,
     },
-    id_pais: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-    },
-    id_contacto: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-    },
     producto: {
         type: DataTypes.STRING,
         allowNull: false
     },
-
     descripcion: {
         type: DataTypes.STRING,
         allowNull: false
@@ -61,13 +52,4 @@ export const Productos: any = dataBase.define('productos', {
 Productos.belongsTo(Categorias, {
     foreignKey: 'id_categoria',
     as: 'categoria' // Alias para la relación
-});
-Productos.belongsTo(Paises, {
-    foreignKey: 'id_pais',
-    as: 'paises' // Alias para la relación
-});
-
-Productos.belongsTo(Contacto, {
-    foreignKey: 'id_contacto',
-    as: 'contacto' // Alias para la relación
 });

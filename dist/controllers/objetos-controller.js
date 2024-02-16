@@ -46,7 +46,7 @@ const postObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             });
         }
         else {
-            yield objetos_models_1.Objetos.create({
+            const newRol = yield objetos_models_1.Objetos.create({
                 objeto: objeto,
                 descripcion: descripcion,
                 tipo_objeto: tipo_objeto,
@@ -56,7 +56,7 @@ const postObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 fecha_modificacion: fecha_modificacion,
                 estado_objeto: estado_objeto
             });
-            res.json('El Objeto: ' + objeto + ' ha sido creada exitosamente');
+            res.json(newRol);
         }
     }
     catch (error) {
@@ -76,9 +76,7 @@ const deleteObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
         if (_objeto) {
             yield _objeto.destroy();
-            res.json({
-                msg: 'El objeto con el ID: ' + id_objeto + ' ha sido eliminado exitosamente',
-            });
+            res.json(_objeto);
         }
         else {
             res.status(404).json({
@@ -94,64 +92,86 @@ const deleteObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.deleteObjeto = deleteObjeto;
-//actualiza el rol en la base de datos
+//actualiza el objeto en la base de datos
 const updateObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_objeto, objeto, descripcion, tipo_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
-    const _objeto = yield objetos_models_1.Objetos.findOne({
-        where: { id_objeto: id_objeto }
-    });
-    if (!_objeto) {
-        return res.status(404).json({
-            msg: 'Objeto con el ID: ' + id_objeto + ' no existe en la base de datos'
+    try {
+        const { id_objeto, objeto, descripcion, tipo_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
+        const _objeto = yield objetos_models_1.Objetos.findOne({
+            where: { id_objeto: id_objeto }
+        });
+        if (!_objeto) {
+            return res.status(404).json({
+                msg: 'Objeto con el ID: ' + id_objeto + ' no existe en la base de datos'
+            });
+        }
+        yield _objeto.update({
+            id_objeto: id_objeto,
+            objeto: objeto,
+            descripcion: descripcion,
+            tipo_objeto: tipo_objeto,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion
+        });
+        res.json(_objeto);
+    }
+    catch (error) {
+        console.error('Error al actualizar el objeto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar el objeto',
         });
     }
-    yield _objeto.update({
-        id_objeto: id_objeto,
-        objeto: objeto,
-        descripcion: descripcion,
-        tipo_objeto: tipo_objeto,
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion
-    });
-    res.json('El Objeto con el ID: ' + id_objeto + ' ha sido actualizado exitosamente');
 });
 exports.updateObjetos = updateObjetos;
 //Inactiva el OBJ de la DBA
 const inactivateObjecto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { objeto } = req.body;
-    const _objeto = yield objetos_models_1.Objetos.findOne({
-        where: { objeto: objeto }
-    });
-    if (!_objeto) {
-        return res.status(404).json({
-            msg: "El Objeto no existe: " + objeto
+    try {
+        const { objeto } = req.body;
+        const _objeto = yield objetos_models_1.Objetos.findOne({
+            where: { objeto: objeto }
+        });
+        if (!_objeto) {
+            return res.status(404).json({
+                msg: "El Objeto no existe: " + objeto
+            });
+        }
+        yield _objeto.update({
+            estado_objeto: 2
+        });
+        res.json(_objeto);
+    }
+    catch (error) {
+        console.error('Error al activar el objeto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar el objeto',
         });
     }
-    yield _objeto.update({
-        estado_objeto: 2
-    });
-    res.json('Objeto: ' + objeto + ' inactivado exitosamente');
 });
 exports.inactivateObjecto = inactivateObjecto;
 //Activa el usuario de la DBA
 const activateObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { objeto } = req.body;
-    const _objeto = yield objetos_models_1.Objetos.findOne({
-        where: { objeto: objeto }
-    });
-    if (!_objeto) {
-        return res.status(404).json({
-            msg: "El Objeto no existe: " + objeto
+    try {
+        const { objeto } = req.body;
+        const _objeto = yield objetos_models_1.Objetos.findOne({
+            where: { objeto: objeto }
+        });
+        if (!_objeto) {
+            return res.status(404).json({
+                msg: "El Objeto no existe: " + objeto
+            });
+        }
+        yield _objeto.update({
+            estado_objeto: 1
+        });
+        res.json(_objeto);
+    }
+    catch (error) {
+        console.error('Error al inactivar el objeto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar el objeto',
         });
     }
-    yield _objeto.update({
-        estado_objeto: 1
-    });
-    res.json({
-        msg: 'Objeto: ' + objeto + ' ha sido activado exitosamente',
-    });
 });
 exports.activateObjeto = activateObjeto;
 //Obtiene un objeto de la base de datos     
