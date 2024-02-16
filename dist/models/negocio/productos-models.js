@@ -52,5 +52,6 @@ exports.Productos = connection_1.default.define('productos', {
 });
 exports.Productos.belongsTo(categoria_models_1.Categorias, {
     foreignKey: 'id_categoria',
-    targetKey: 'id_categoria'
+    targetKey: 'id_categoria',
+    as: 'categoria' // Alias para la relación
 });

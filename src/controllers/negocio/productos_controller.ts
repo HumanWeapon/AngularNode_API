@@ -13,7 +13,6 @@ export const getAllOpProductos = async (req: Request, res: Response) => {
                 'id_categoria',
                 'producto',
                 'descripcion',
-                'categoria',
                 'creado_por',
                 'fecha_creacion',
                 'modificado_por',
@@ -65,9 +64,31 @@ export const getOpProductos = async (req: Request, res: Response) => {
 
 //Obtiene todos las categorias de productos de la base de datos
 export const getAllProductos = async (req: Request, res: Response) => {
-
-    const producto = await Productos.findAll();
-    res.json(producto)
+    try {
+        const opproductos = await Productos.findAll({
+            attributes: [
+                'id_producto',
+                'id_categoria',
+                'producto',
+                'descripcion',
+                'creado_por',
+                'fecha_creacion',
+                'modificado_por',
+                'fecha_modificacion',
+                'estado'
+            ],
+            include: [{
+                model: Categorias,
+                attributes: ['id_categoria', 'categoria', 'descripcion']
+            }]
+        });
+        res.json(opproductos);
+    } catch (error) {
+        console.error('Error al obtener los productos:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+        });
+    }
 }
 
 // Obtiene una categoria de la base de datos por su ID

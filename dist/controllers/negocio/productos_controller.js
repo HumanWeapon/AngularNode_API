@@ -22,7 +22,6 @@ const getAllOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 'id_categoria',
                 'producto',
                 'descripcion',
-                'categoria',
                 'creado_por',
                 'fecha_creacion',
                 'modificado_por',
@@ -74,8 +73,32 @@ const getOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getOpProductos = getOpProductos;
 //Obtiene todos las categorias de productos de la base de datos
 const getAllProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const producto = yield productos_models_1.Productos.findAll();
-    res.json(producto);
+    try {
+        const opproductos = yield productos_models_1.Productos.findAll({
+            attributes: [
+                'id_producto',
+                'id_categoria',
+                'producto',
+                'descripcion',
+                'creado_por',
+                'fecha_creacion',
+                'modificado_por',
+                'fecha_modificacion',
+                'estado'
+            ],
+            include: [{
+                    model: categoria_models_1.Categorias,
+                    attributes: ['id_categoria', 'categoria', 'descripcion']
+                }]
+        });
+        res.json(opproductos);
+    }
+    catch (error) {
+        console.error('Error al obtener los productos:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+        });
+    }
 });
 exports.getAllProductos = getAllProductos;
 // Obtiene una categoria de la base de datos por su ID
