@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Productos = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../../db/connection"));
-const categoria_models_1 = require("./categoria-models");
+const categoria_models_1 = require("./categoria-models"); // Asegúrate de que la importación sea correcta
 exports.Productos = connection_1.default.define('productos', {
     id_producto: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -15,7 +15,7 @@ exports.Productos = connection_1.default.define('productos', {
     },
     id_categoria: {
         type: sequelize_1.DataTypes.INTEGER,
-        primaryKey: true,
+        allowNull: false
     },
     producto: {
         type: sequelize_1.DataTypes.STRING,
@@ -54,5 +54,3 @@ exports.Productos.belongsTo(categoria_models_1.Categorias, {
     foreignKey: 'id_categoria',
     as: 'categoria' // Alias para la relación
 });
-// En tu modelo de Productos
-exports.Productos.belongsTo(categoria_models_1.Categorias, { foreignKey: 'id_categoria' });

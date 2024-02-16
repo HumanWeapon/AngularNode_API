@@ -1,8 +1,6 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
-import { Categorias} from './categoria-models';
-import { Paises } from './paises-models';
-import { Contacto } from './contacto-models';
+import { Categorias } from './categoria-models'; // Asegúrate de que la importación sea correcta
 
 export const Productos: any = dataBase.define('productos', {
     id_producto: {
@@ -12,7 +10,7 @@ export const Productos: any = dataBase.define('productos', {
     },
     id_categoria: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
+        allowNull: false
     },
     producto: {
         type: DataTypes.STRING,
@@ -42,8 +40,8 @@ export const Productos: any = dataBase.define('productos', {
         type: DataTypes.INTEGER,
         allowNull: false
     }
-    }, 
-    {
+}, 
+{
     tableName: 'tbl_me_productos',
     schema: 'mipyme',
     timestamps: false
@@ -53,5 +51,3 @@ Productos.belongsTo(Categorias, {
     foreignKey: 'id_categoria',
     as: 'categoria' // Alias para la relación
 });
-// En tu modelo de Productos
-Productos.belongsTo(Categorias, { foreignKey: 'id_categoria' });
