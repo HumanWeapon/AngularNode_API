@@ -13,18 +13,20 @@ exports.activateProducto = exports.inactivateProducto = exports.updateProducto =
 const productos_models_1 = require("../../models/negocio/productos-models");
 const paises_models_1 = require("../../models/negocio/paises-models");
 const contacto_models_1 = require("../../models/negocio/contacto-models");
+const categoria_models_1 = require("../../models/negocio/categoria-models");
 const getAllOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const opproductos = yield productos_models_1.Productos.findAll({
-            include: [
-                { model: paises_models_1.Paises, as: 'paises' },
-                { model: contacto_models_1.Contacto, as: 'contacto' },
-            ],
+            include: [{
+                    model: categoria_models_1.Categorias,
+                    attributes: ['id_categoria', 'categoria', 'descripcion'],
+                    required: false, // LEFT JOIN
+                }]
         });
         res.json(opproductos);
     }
     catch (error) {
-        console.error('Error al obtener todas las Operaciones de Empresas:', error);
+        console.error('Error al obtener los productos:', error);
         res.status(500).json({
             msg: 'Error interno del servidor',
         });

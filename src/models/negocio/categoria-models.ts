@@ -41,7 +41,6 @@ export const Categorias: any = dataBase.define('categoria', {
     tableName: 'tbl_me_categoria_productos',
     schema: 'mipyme',
     timestamps: false
-
 })
 
 

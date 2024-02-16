@@ -3,23 +3,26 @@ import { Productos } from '../../models/negocio/productos-models';
 import jwt from 'jsonwebtoken';
 import { Paises } from '../../models/negocio/paises-models';
 import { Contacto } from '../../models/negocio/contacto-models';
+import { Categorias } from '../../models/negocio/categoria-models';
 
 export const getAllOpProductos = async (req: Request, res: Response) => {
     try {
         const opproductos = await Productos.findAll({
-            include: [
-                { model: Paises, as: 'paises' },
-                { model: Contacto, as: 'contacto' },
-            ],
+            include: [{
+                model: Categorias,
+                attributes: ['id_categoria', 'categoria', 'descripcion'],
+                required: false, // LEFT JOIN
+            }]
         });
         res.json(opproductos);
     } catch (error) {
-        console.error('Error al obtener todas las Operaciones de Empresas:', error);
+        console.error('Error al obtener los productos:', error);
         res.status(500).json({
             msg: 'Error interno del servidor',
         });
     }
 };
+
 
 export const getOpProductos = async (req: Request, res: Response) => {
     try {
