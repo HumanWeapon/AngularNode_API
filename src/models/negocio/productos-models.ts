@@ -49,5 +49,5 @@ export const Productos: any = dataBase.define('productos', {
 
 Productos.belongsTo(Categorias, {
     foreignKey: 'id_categoria',
-    as: 'categoria' // Alias para la relación
+    targetKey: 'id_categoria'
 });

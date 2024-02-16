@@ -22,8 +22,7 @@ export const getAllOpProductos = async (req: Request, res: Response) => {
             ],
             include: [{
                 model: Categorias,
-                attributes: ['id_categoria', 'categoria', 'descripcion'],
-                required: true, // LEFT JOIN
+                attributes: ['id_categoria', 'categoria', 'descripcion']
             }]
         });
         res.json(opproductos);
