@@ -88,7 +88,9 @@ const getAllProductos = (req, res) => __awaiter(void 0, void 0, void 0, function
             ],
             include: [{
                     model: categoria_models_1.Categorias,
-                    attributes: ['id_categoria', 'categoria', 'descripcion']
+                    as: 'categoria',
+                    attributes: ['id_categoria', 'categoria', 'descripcion'],
+                    required: false
                 }]
         });
         res.json(opproductos);

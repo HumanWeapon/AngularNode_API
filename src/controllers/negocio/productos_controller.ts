@@ -79,8 +79,10 @@ export const getAllProductos = async (req: Request, res: Response) => {
             ],
             include: [{
                 model: Categorias,
-                attributes: ['id_categoria', 'categoria', 'descripcion']
-            }]
+                as: 'categoria', // Alias especificado aquí
+                attributes: ['id_categoria', 'categoria', 'descripcion'],
+                required: false
+              }]
         });
         res.json(opproductos);
     } catch (error) {
