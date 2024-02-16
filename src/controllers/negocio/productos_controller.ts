@@ -23,7 +23,7 @@ export const getAllOpProductos = async (req: Request, res: Response) => {
             include: [{
                 model: Categorias,
                 attributes: ['id_categoria', 'categoria', 'descripcion'],
-                required: false, // LEFT JOIN
+                required: true, // LEFT JOIN
             }]
         });
         res.json(opproductos);

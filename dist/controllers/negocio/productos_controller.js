@@ -32,7 +32,7 @@ const getAllOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, functi
             include: [{
                     model: categoria_models_1.Categorias,
                     attributes: ['id_categoria', 'categoria', 'descripcion'],
-                    required: false, // LEFT JOIN
+                    required: true, // LEFT JOIN
                 }]
         });
         res.json(opproductos);
