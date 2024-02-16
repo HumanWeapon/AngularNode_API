@@ -13,6 +13,7 @@ export const getAllOpProductos = async (req: Request, res: Response) => {
                 'id_categoria',
                 'producto',
                 'descripcion',
+                'categoria',
                 'creado_por',
                 'fecha_creacion',
                 'modificado_por',

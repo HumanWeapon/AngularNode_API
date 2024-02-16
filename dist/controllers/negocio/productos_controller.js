@@ -22,6 +22,7 @@ const getAllOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 'id_categoria',
                 'producto',
                 'descripcion',
+                'categoria',
                 'creado_por',
                 'fecha_creacion',
                 'modificado_por',
