@@ -133,6 +133,7 @@ export const updateCategoria = async (req: Request, res: Response) => {
 
 //Inactiva el usuario de la DBA
 export const inactivateCategoria = async (req: Request, res: Response) => {
+    try {
     const { id_categoria } = req.body;
 
     const cate = await Categorias.findOne({
@@ -148,10 +149,18 @@ export const inactivateCategoria = async (req: Request, res: Response) => {
         estado: 2
     });
     res.json(_categoria);
+
+} catch (error) {
+    console.error('Error al inactivar la categoria:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar la categoria',
+    });
+}
 }
 
 //Activa el usuario de la DBA
 export const activateCategoria = async (req: Request, res: Response) => {
+    try {
     const { id_categoria } = req.body;
 
     const cate = await Categorias.findOne({
@@ -167,6 +176,13 @@ export const activateCategoria = async (req: Request, res: Response) => {
         estado: 1
     });
     res.json(_categoria);
+
+} catch (error) {
+    console.error('Error al activar la categoria:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al activar la categoria',
+    });
+}
 }
 
 // Obtiene una Empresa por ID con información adicional de las tablas relacionadas

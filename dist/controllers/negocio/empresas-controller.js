@@ -85,9 +85,7 @@ const deleteEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
         if (_empresa) {
             yield _empresa.destroy();
-            res.json({
-                msg: 'La Empresa con el ID: ' + id_empresa + ' ha sido eliminada exitosamente',
-            });
+            res.json(_empresa);
         }
         else {
             res.status(404).json({
@@ -144,7 +142,7 @@ const inactivateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, functi
     yield empresa.update({
         estado: 2
     });
-    res.json('Empresa inactivada');
+    res.json(empresa);
 });
 exports.inactivateEmpresa = inactivateEmpresa;
 //Activa la empresa

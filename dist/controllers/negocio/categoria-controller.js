@@ -118,36 +118,52 @@ const updateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.updateCategoria = updateCategoria;
 //Inactiva el usuario de la DBA
 const inactivateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_categoria } = req.body;
-    const cate = yield categoria_models_1.Categorias.findOne({
-        where: { id_categoria: id_categoria }
-    });
-    if (!cate) {
-        return res.status(404).json({
-            msg: "La Categoria no existe: " + id_categoria
+    try {
+        const { id_categoria } = req.body;
+        const cate = yield categoria_models_1.Categorias.findOne({
+            where: { id_categoria: id_categoria }
+        });
+        if (!cate) {
+            return res.status(404).json({
+                msg: "La Categoria no existe: " + id_categoria
+            });
+        }
+        const _categoria = yield cate.update({
+            estado: 2
+        });
+        res.json(_categoria);
+    }
+    catch (error) {
+        console.error('Error al inactivar la categoria:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar la categoria',
         });
     }
-    const _categoria = yield cate.update({
-        estado: 2
-    });
-    res.json(_categoria);
 });
 exports.inactivateCategoria = inactivateCategoria;
 //Activa el usuario de la DBA
 const activateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_categoria } = req.body;
-    const cate = yield categoria_models_1.Categorias.findOne({
-        where: { id_categoria: id_categoria }
-    });
-    if (!cate) {
-        return res.status(404).json({
-            msg: "La Categoria no existe: " + id_categoria
+    try {
+        const { id_categoria } = req.body;
+        const cate = yield categoria_models_1.Categorias.findOne({
+            where: { id_categoria: id_categoria }
+        });
+        if (!cate) {
+            return res.status(404).json({
+                msg: "La Categoria no existe: " + id_categoria
+            });
+        }
+        const _categoria = yield cate.update({
+            estado: 1
+        });
+        res.json(_categoria);
+    }
+    catch (error) {
+        console.error('Error al activar la categoria:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar la categoria',
         });
     }
-    const _categoria = yield cate.update({
-        estado: 1
-    });
-    res.json(_categoria);
 });
 exports.activateCategoria = activateCategoria;
 // Obtiene una Empresa por ID con información adicional de las tablas relacionadas

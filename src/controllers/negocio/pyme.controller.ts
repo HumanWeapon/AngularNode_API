@@ -110,7 +110,7 @@ export const postPyme = async (req: Request, res: Response) => {
             where: {nombre_pyme: nombre_pyme}
         })
     
-            await Pyme.create({
+            const newPyme = await Pyme.create({
                 id_tipo_empresa:id_tipo_empresa,
                 nombre_pyme: nombre_pyme,
                 categoria: categoria,
@@ -121,9 +121,7 @@ export const postPyme = async (req: Request, res: Response) => {
                 fecha_modificacion: Date.now(),
                 estado: estado
             })
-            res.json({
-                msg: 'La Pyme: '+ nombre_pyme+  ' ha sido creada exitosamente',
-            })
+            res.json(newPyme)
         
     }
     catch (error){
@@ -145,9 +143,7 @@ export const deletePyme = async (req: Request, res: Response) => {
 
         if (_pyme) {
             await _pyme.destroy();
-            res.json({
-                msg: 'La Pyme con el ID: ' + id_pyme + ' ha sido eliminado exitosamente',
-            });
+            res.json(_pyme);
         } else {
             res.status(404).json({
                 msg: 'No se encontró una Pyme con el ID ' + id_pyme,
@@ -163,6 +159,8 @@ export const deletePyme = async (req: Request, res: Response) => {
 
 //actualiza el Telefono en la base de datos
 export const updatePyme = async (req: Request, res: Response) => {
+
+    try{
     const { id_pyme, nombre_pyme, id_tipo_empresa, categoria, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
     const _pyme = await Pyme.findOne({
@@ -188,13 +186,19 @@ export const updatePyme = async (req: Request, res: Response) => {
         estado: estado
         
     });
-    res.json({
-        msg: 'La Pyme con el ID: '+ id_pyme+  ' ha sido actualizado exitosamente',
+    res.json(_pyme);
+
+} catch (error) {
+    console.error('Error al actualizar la pyme:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al actualizar la pyme',
     });
+}
 }
 
 //Inactiva el la pyme de la DBA
 export const inactivatePyme = async (req: Request, res: Response) => {
+    try {
     const { nombre_pyme } = req.body;
 
     const _pymes = await Pyme.findOne({
@@ -209,13 +213,19 @@ export const inactivatePyme = async (req: Request, res: Response) => {
     await _pymes.update({
         estado: 2
     });
-    res.json({
-        msg: 'Pyme: '+ nombre_pyme+  ' inactivado exitosamente',
+    res.json(_pymes);
+
+} catch (error) {
+    console.error('Error al inactivar la pyme:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar la pyme',
     });
+}
 }
 
 //Activa la pyme de la DBA
 export const activatePyme = async (req: Request, res: Response) => {
+    try {
     const { nombre_pyme } = req.body;
 
     const _pyme = await Pyme.findOne({
@@ -230,9 +240,14 @@ export const activatePyme = async (req: Request, res: Response) => {
     await _pyme.update({
         estado: 1
     });
-    res.json({
-        msg: 'Pyme: '+ nombre_pyme +  ' ha sido activado exitosamente',
+    res.json(_pyme);
+
+} catch (error) {
+    console.error('Error al activar la pyme:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al activar la pyme',
     });
+}
 }
 
     export const pymesAllTipoEmpresa = async (req: Request, res: Response) => {

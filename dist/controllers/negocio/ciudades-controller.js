@@ -46,7 +46,7 @@ const postCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             });
         }
         else {
-            yield ciudades_models_1.Ciudades.create({
+            const newCuidad = yield ciudades_models_1.Ciudades.create({
                 ciudad: ciudad,
                 descripcion: descripcion,
                 creado_por: creado_por,
@@ -55,9 +55,7 @@ const postCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
-            res.json({
-                msg: 'La ciudad: ' + ciudad + ' ha sido creada exitosamente',
-            });
+            res.json(newCuidad);
         }
     }
     catch (error) {
@@ -82,9 +80,7 @@ const deleteCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
         if (_ciudad) {
             yield _ciudad.destroy();
-            res.json({
-                msg: 'La ciudad con el ID: ' + id_ciudad + ' ha sido eliminada exitosamente',
-            });
+            res.json(_ciudad);
         }
         else {
             res.status(404).json({
@@ -102,66 +98,84 @@ const deleteCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.deleteCiudad = deleteCiudad;
 //actualiza la ciudad en la base de datos
 const updateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const _ciudad = yield ciudades_models_1.Ciudades.findOne({
-        where: { id_ciudad: id_ciudad }
-    });
-    if (!_ciudad) {
-        return res.status(404).json({
-            msg: 'Ciudad con el ID: ' + id_ciudad + ' no existe en la base de datos'
+    try {
+        const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+        const _ciudad = yield ciudades_models_1.Ciudades.findOne({
+            where: { id_ciudad: id_ciudad }
+        });
+        if (!_ciudad) {
+            return res.status(404).json({
+                msg: 'Ciudad con el ID: ' + id_ciudad + ' no existe en la base de datos'
+            });
+        }
+        yield _ciudad.update({
+            id_ciudad: id_ciudad,
+            ciudad: ciudad,
+            descripcion: descripcion,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
+        });
+        res.json(_ciudad);
+    }
+    catch (error) {
+        console.error('Error al actualizar la ciudad:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar la ciudad',
         });
     }
-    yield _ciudad.update({
-        id_ciudad: id_ciudad,
-        ciudad: ciudad,
-        descripcion: descripcion,
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion,
-        estado: estado
-    });
-    res.json({
-        msg: 'La cuidad con el ID: ' + id_ciudad + ' ha sido actualizado exitosamente',
-    });
 });
 exports.updateCiudad = updateCiudad;
 //Inactiva el usuario de la DBA
 const inactivateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { ciudad } = req.body;
-    const ciu = yield ciudades_models_1.Ciudades.findOne({
-        where: { ciudad: ciudad }
-    });
-    if (!ciu) {
-        return res.status(404).json({
-            msg: "La Ciudad no existe: " + ciudad
+    try {
+        const { ciudad } = req.body;
+        const _ciudad = yield ciudades_models_1.Ciudades.findOne({
+            where: { ciudad: ciudad }
+        });
+        if (!ciudad) {
+            return res.status(404).json({
+                msg: "La Ciudad no existe: " + ciudad
+            });
+        }
+        yield ciudad.update({
+            estado: 2
+        });
+        res.json(_ciudad);
+    }
+    catch (error) {
+        console.error('Error al activar el objeto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar el objeto',
         });
     }
-    yield ciu.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'Ciudad: ' + ciudad + ' inactivado exitosamente',
-    });
 });
 exports.inactivateCiudad = inactivateCiudad;
 //Activa el usuario de la DBA
 const activateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { ciudad } = req.body;
-    const ciu = yield ciudades_models_1.Ciudades.findOne({
-        where: { ciudad: ciudad }
-    });
-    if (!ciu) {
-        return res.status(404).json({
-            msg: "La Ciudad no existe: " + ciudad
+    try {
+        const { ciudad } = req.body;
+        const _ciudad = yield ciudades_models_1.Ciudades.findOne({
+            where: { ciudad: ciudad }
+        });
+        if (!ciudad) {
+            return res.status(404).json({
+                msg: "La Ciudad no existe: " + ciudad
+            });
+        }
+        yield ciudad.update({
+            estado: 1
+        });
+        res.json(_ciudad);
+    }
+    catch (error) {
+        console.error('Error al inactivar la ciudad:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar la ciudad',
         });
     }
-    yield ciu.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'Ciudad: ' + ciudad + ' ha sido activado exitosamente',
-    });
 });
 exports.activateCiudad = activateCiudad;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
