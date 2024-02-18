@@ -104,61 +104,85 @@ exports.deleteEmpresa = deleteEmpresa;
 //actualiza el Telefono en la base de datos
 const updateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_empresa, id_tipo_empresa, nombre_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const _empresa = yield empresas_model_1.Empresas.findOne({
-        where: { id_empresa: id_empresa }
-    });
-    if (!_empresa) {
-        return res.status(404).json({
-            msg: 'Empresa con el ID: ' + id_empresa + ' no existe en la base de datos'
+    try {
+        const _empresa = yield empresas_model_1.Empresas.findOne({
+            where: { id_empresa: id_empresa }
         });
+        if (!_empresa) {
+            return res.status(404).json({
+                msg: 'Empresa con el ID: ' + id_empresa + ' no existe en la base de datos'
+            });
+        }
+        else {
+            const empresa = yield _empresa.update({
+                id_empresa: id_empresa,
+                id_tipo_empresa: id_tipo_empresa,
+                nombre_empresa: nombre_empresa,
+                descripcion: descripcion,
+                creado_por: creado_por,
+                fecha_creacion: fecha_creacion,
+                modificado_por: modificado_por,
+                fecha_modificacion: fecha_modificacion,
+                estado: estado
+            });
+            res.json(empresa);
+        }
     }
-    else {
-        const empresa = yield _empresa.update({
-            id_empresa: id_empresa,
-            id_tipo_empresa: id_tipo_empresa,
-            nombre_empresa: nombre_empresa,
-            descripcion: descripcion,
-            creado_por: creado_por,
-            fecha_creacion: fecha_creacion,
-            modificado_por: modificado_por,
-            fecha_modificacion: fecha_modificacion,
-            estado: estado
+    catch (error) {
+        console.error('Error al actualizar la empresa:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar la empresa',
         });
-        res.json(empresa);
     }
 });
 exports.updateEmpresa = updateEmpresa;
 //Inactiva la empresa
 const inactivateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_empresa } = req.body;
-    const empresa = yield empresas_model_1.Empresas.findOne({
-        where: { id_empresa: id_empresa }
-    });
-    if (!empresa) {
-        return res.status(404).json({
-            msg: "La Empresa no existe"
+    try {
+        const empresa = yield empresas_model_1.Empresas.findOne({
+            where: { id_empresa: id_empresa }
+        });
+        if (!empresa) {
+            return res.status(404).json({
+                msg: "La Empresa no existe"
+            });
+        }
+        yield empresa.update({
+            estado: 2
+        });
+        res.json(empresa);
+    }
+    catch (error) {
+        console.error('Error al inactivar el rol:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar el rol',
         });
     }
-    yield empresa.update({
-        estado: 2
-    });
-    res.json(empresa);
 });
 exports.inactivateEmpresa = inactivateEmpresa;
 //Activa la empresa
 const activateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_empresa } = req.body;
-    const empresa = yield empresas_model_1.Empresas.findOne({
-        where: { id_empresa: id_empresa }
-    });
-    if (!empresa) {
-        return res.status(404).json({
-            msg: "La Empresa no existe"
+    try {
+        const empresa = yield empresas_model_1.Empresas.findOne({
+            where: { id_empresa: id_empresa }
+        });
+        if (!empresa) {
+            return res.status(404).json({
+                msg: "La Empresa no existe"
+            });
+        }
+        yield empresa.update({
+            estado: 1
+        });
+        res.json(empresa);
+    }
+    catch (error) {
+        console.error('Error al activar la empresa:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar la empresa',
         });
     }
-    yield empresa.update({
-        estado: 1
-    });
-    res.json('Empresa activada');
 });
 exports.activateEmpresa = activateEmpresa;

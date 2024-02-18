@@ -36,7 +36,7 @@ export const postTelefono = async (req: Request, res: Response) => {
             where: {tipo_telefono: tipo_telefono}
         })
     
-            await tipoTelefono.create({
+            const newTtelefono = await tipoTelefono.create({
                 tipo_telefono: tipo_telefono,
                 descripcion: descripcion, 
                 creado_por: creado_por,
@@ -45,9 +45,7 @@ export const postTelefono = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
-            res.json({
-                msg: 'El Telefono: '+ tipo_telefono+  ' ha sido creada exitosamente',
-            })
+            res.json(newTtelefono)
         
     }
     catch (error){
@@ -71,9 +69,7 @@ export const deleteTelefono = async (req: Request, res: Response) => {
 
         if (_telefono) {
             await _telefono.destroy();
-            res.json({
-                msg: 'El Teléfono con el ID: ' + id_tipo_telefono + ' ha sido eliminado exitosamente',
-            });
+            res.json(_telefono);
         } else {
             res.status(404).json({
                 msg: 'No se encontró un Teléfono con el ID ' + id_tipo_telefono,
@@ -92,6 +88,7 @@ export const deleteTelefono = async (req: Request, res: Response) => {
 export const updateTelefono = async (req: Request, res: Response) => {
     const { id_tipo_telefono, tipo_telefono, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
+    try {
     const _telefono = await tipoTelefono.findOne({
         where: {id_tipo_telefono: id_tipo_telefono}
     });
@@ -111,7 +108,12 @@ export const updateTelefono = async (req: Request, res: Response) => {
         fecha_modificacion: fecha_modificacion,
         estado: estado
     });
-    res.json({
-        msg: 'El Telefono con el ID: '+ id_tipo_telefono+  ' ha sido actualizado exitosamente',
+    res.json(_telefono);
+
+} catch (error) {
+    console.error('Error al actualizar el tipo telefono:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al actualizar el tipo telefono',
     });
+}
 }

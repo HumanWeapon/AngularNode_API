@@ -43,7 +43,7 @@ export const postTipoDireccion = async (req: Request, res: Response) => {
                 msg: 'dirección ya registrada en la base de datos: '+ tipo_direccion
             })
         }else{
-            await TipoDireccion.create({
+            const newTD = await TipoDireccion.create({
                 tipo_direccion: tipo_direccion,
                 descripcion: descripcion, 
                 creado_por: creado_por,
@@ -52,9 +52,7 @@ export const postTipoDireccion = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
-            res.json({
-                msg: 'La dirección: '+ tipo_direccion+  ' ha sido creada exitosamente',
-            })
+            res.json(newTD)
         }
     }
     catch (error){
@@ -81,9 +79,7 @@ export const deleteTipoDireccion = async (req: Request, res: Response) => {
 
         if (_direc) {
             await _direc.destroy();
-            res.json({
-                msg: 'La dirección con el ID: ' + id_tipo_direccion + ' ha sido eliminada exitosamente',
-            });
+            res.json(_direc);
         } else {
             res.status(404).json({
                 msg: 'No se encontró una dirección con el ID ' + id_tipo_direccion,
@@ -100,8 +96,9 @@ export const deleteTipoDireccion = async (req: Request, res: Response) => {
 
 //actualiza la dirección en la base de datos
 export const updateTipoDireccion = async (req: Request, res: Response) => {
+    
     const { id_tipo_direccion, tipo_direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
-
+    try {
     const _direc = await TipoDireccion.findOne({
         where: {id_tipo_direccion: id_tipo_direccion}
     });
@@ -121,15 +118,21 @@ export const updateTipoDireccion = async (req: Request, res: Response) => {
         fecha_modificacion: fecha_modificacion,
         estado: estado
     });
-    res.json({
-        msg: 'La dirección con el ID: '+ id_tipo_direccion+  ' ha sido actualizado exitosamente',
+    res.json(_direc);
+
+} catch (error) {
+    console.error('Error al actualizar el tipo direccion:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al actualizar el tipo direccion',
     });
+}
 }
 
 //Inactiva el usuario de la DBA
 export const inactivateTipoDireccion = async (req: Request, res: Response) => {
+   
     const { tipo_direccion } = req.body;
-
+    try {
     const _direc = await TipoDireccion.findOne({
         where: {tipo_direccion: tipo_direccion}
     });
@@ -142,15 +145,20 @@ export const inactivateTipoDireccion = async (req: Request, res: Response) => {
     await _direc.update({
         estado: 2
     });
-    res.json({
-        msg: 'El Tipo de Direccion: '+tipo_direccion+  ' inactivado exitosamente',
+    res.json(_direc);
+} catch (error) {
+    console.error('Error al inactivar el tipo de direccion:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar el tipo de direccion',
     });
+}
 }
 
 //Activa el usuario de la DBA
 export const activateTipoDireccion = async (req: Request, res: Response) => {
+        
     const { tipo_direccion } = req.body;
-
+    try {
     const _direc = await TipoDireccion.findOne({
         where: {tipo_direccion: tipo_direccion}
     });
@@ -163,9 +171,14 @@ export const activateTipoDireccion = async (req: Request, res: Response) => {
     await _direc.update({
         estado: 1
     });
-    res.json({
-        msg: 'El tipo de Direccion: '+ tipo_direccion+  ' ha sido activado exitosamente',
+    res.json(_direc);
+
+} catch (error) {
+    console.error('Error al activar el tipo direccion:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al activar el tipo direccion',
     });
+}
 }
 
 

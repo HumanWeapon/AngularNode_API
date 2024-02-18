@@ -92,8 +92,9 @@ export const deleteContacto = async (req: Request, res: Response) => {
 
 //actualiza el contacto en la base de datos
 export const updateContacto = async (req: Request, res: Response) => {
+   
     const { id_contacto, id_tipo_contacto, dni, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
-
+    try {
     const _contacto = await Contacto.findOne({
         where: {id_contacto: id_contacto}
     });
@@ -118,15 +119,22 @@ export const updateContacto = async (req: Request, res: Response) => {
         fecha_modificacion: fecha_modificacion,
         estado: estado
     });
-    res.json({
-        msg: 'El contacto con el ID: '+ id_contacto+  ' ha sido actualizado exitosamente',
+    res.json(_contacto);
+
+
+} catch (error) {
+    console.error('Error al actualizar el contacto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al actualizar el contacto',
     });
+}
 }
 
 //Inactiva el usuario de la DBA
 export const inactivateContacto = async (req: Request, res: Response) => {
-    const { primer_nombre } = req.body;
 
+    const { primer_nombre } = req.body;
+    try {
     const _contacto = await Contacto.findOne({
         where: {primer_nombre: primer_nombre}
     });
@@ -139,15 +147,22 @@ export const inactivateContacto = async (req: Request, res: Response) => {
     await _contacto.update({
         estado: 2
     });
-    res.json({
-        msg: 'Contacto: '+ primer_nombre+  ' inactivado exitosamente',
+    res.json(_contacto);
+
+} catch (error) {
+    console.error('Error al inactivar el contacto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar el contacto',
     });
+}
+
 }
 
 //Activa el usuario de la DBA
 export const activateContacto = async (req: Request, res: Response) => {
-    const { primer_nombre } = req.body;
 
+    const { primer_nombre } = req.body;
+    try {
     const _contacto = await Contacto.findOne({
         where: {primer_nombre: primer_nombre}
     });
@@ -160,9 +175,15 @@ export const activateContacto = async (req: Request, res: Response) => {
     await _contacto.update({
         estado: 1
     });
-    res.json({
-        msg: 'Contacto: '+ primer_nombre+  ' ha sido activado exitosamente',
+    res.json(_contacto);
+
+} catch (error) {
+    console.error('Error al activar el contacto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al activar el contacto',
     });
+}
+
 }
 
 

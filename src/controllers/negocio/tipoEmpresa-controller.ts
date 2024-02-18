@@ -41,7 +41,7 @@ export const postTipoEmpresa = async (req: Request, res: Response) => {
             });
         }
         else {
-            await tipoEmpresa.create({
+            const newTE = await tipoEmpresa.create({
                 tipo_empresa: tipo_empresa,
                 descripcion: descripcion,
                 creado_por: creado_por,
@@ -50,9 +50,7 @@ export const postTipoEmpresa = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
-            res.json({
-                msg: 'El tipo de empresa: ' + tipo_empresa + ' ha sido creada exitosamente',
-            });
+            res.json(newTE);
         }
     }
     catch (error) {
@@ -72,9 +70,7 @@ export const deleteTipoEmpresa = async (req: Request, res: Response) => {
         });
         if (_emp) {
             await _emp.destroy();
-            res.json({
-                msg: 'El Tipo de empresa con el ID: ' + id_tipo_empresa + ' ha sido eliminada exitosamente',
-            });
+            res.json(_emp);
         }
         else {
             res.status(404).json({
@@ -91,8 +87,9 @@ export const deleteTipoEmpresa = async (req: Request, res: Response) => {
 };
 //actualiza el registro en la base de datos
 export const updateTipoEmpresa = async (req: Request, res: Response) => {
+ 
     const { id_tipo_empresa, tipo_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
-
+    try {
     const _emp = await tipoEmpresa.findOne({
         where: { id_tipo_empresa: id_tipo_empresa }
     });
@@ -111,16 +108,21 @@ export const updateTipoEmpresa = async (req: Request, res: Response) => {
         fecha_modificacion: fecha_modificacion,
         estado: estado
     });
-    res.json({
-        msg: 'El Tipo de empresa con el ID: ' + id_tipo_empresa + ' ha sido actualizado exitosamente',
-    });
+    res.json(_emp);
 
+} catch (error) {
+    console.error('Error al actualizar el tipo de empresa:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al actualizar el tipo de empresa',
+    });
+}
 }
 
 //Inactiva el usuario de la DBA
 export const inactivateTipoEmpresa = async (req: Request, res: Response) => {
+   
     const { tipo_empresa } = req.body;
-
+    try {
     const tipempresa = await tipoEmpresa.findOne({
         where: {tipo_empresa: tipo_empresa}
     });
@@ -133,15 +135,22 @@ export const inactivateTipoEmpresa = async (req: Request, res: Response) => {
     await tipempresa.update({
         estado: 2
     });
-    res.json({
-        msg: 'Tipo de Empresa: '+ tipo_empresa+  ' inactivado exitosamente',
+    res.json(tipoEmpresa);
+
+} catch (error) {
+    console.error('Error al inactivar el tipo de empresa:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar el tipo de empresa',
     });
 }
+}
+
 
 //Activa el usuario de la DBA
 export const activateTipoEmpresa = async (req: Request, res: Response) => {
+ 
     const { tipo_empresa } = req.body;
-
+    try {
     const tipempresa = await tipoEmpresa.findOne({
         where: {tipo_empresa: tipo_empresa}
     });
@@ -154,8 +163,13 @@ export const activateTipoEmpresa = async (req: Request, res: Response) => {
     await tipempresa.update({
         estado: 1
     });
-    res.json({
-        msg: 'Tipo de Empresa: '+ tipo_empresa+  ' ha sido activado exitosamente',
+    res.json(tipempresa);
+
+} catch (error) {
+    console.error('Error al inactivar el tipo de empresa:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar el tipo de empresa',
     });
+}
 }
 

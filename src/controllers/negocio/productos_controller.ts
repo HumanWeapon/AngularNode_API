@@ -126,7 +126,7 @@ export const postProducto = async (req: Request, res: Response) => {
                 msg: 'El producto ya fue registrado en la base de datos: '+ producto
             })
         }else{
-            await Productos.create({
+            const newProduc = await Productos.create({
                 id_categoria: id_categoria,
                 producto: producto,
                 descripcion: descripcion, 
@@ -136,9 +136,7 @@ export const postProducto = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
-            res.json({
-                msg: 'El producto: '+ producto+  ' ha sido creado exitosamente',
-            })
+            res.json(newProduc)
         }
     }
     catch (error){
@@ -161,9 +159,7 @@ export const deleteProducto = async (req: Request, res: Response) => {
 
         if (_producto) {
             await _producto.destroy();
-            res.json({
-                msg: 'El producto con el ID: ' + id_producto + ' ha sido eliminado exitosamente',
-            });
+            res.json(_producto);
         } else {
             res.status(404).json({
                 msg: 'No se encontró el producto con el ID ' + id_producto,
@@ -180,6 +176,7 @@ export const deleteProducto = async (req: Request, res: Response) => {
 
 //actualiza la categoria en la base de datos
 export const updateProducto = async (req: Request, res: Response) => {
+    try {
     const { 
         id_producto,
         id_categoria,
@@ -215,13 +212,19 @@ export const updateProducto = async (req: Request, res: Response) => {
         estado: estado
         
     });
-    res.json({
-        msg: 'Producto: '+ produc+  ' ha sido actualizado exitosamente',
+    res.json(produc);
+
+} catch (error) {
+    console.error('Error al actualizar el producto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al actualizar el producto',
     });
+}
 }
 
 //Inactiva el usuario de la DBA
 export const inactivateProducto = async (req: Request, res: Response) => {
+    try {   
     const { producto } = req.body;
 
     const productos = await Productos.findOne({
@@ -236,12 +239,19 @@ export const inactivateProducto = async (req: Request, res: Response) => {
     await productos.update({
         estado: 2
     });
-    res.json({
-        msg: 'Producto: '+ producto+  ' inactivado exitosamente',
+    res.json(productos);
+
+} catch (error) {
+    console.error('Error al inactivar el producto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar el producto',
     });
+}
 }
 //Activa el usuario de la DBA
 export const activateProducto = async (req: Request, res: Response) => {
+    try {
+
     const {producto } = req.body;
 
     const productos = await Productos.findOne({
@@ -256,8 +266,12 @@ export const activateProducto = async (req: Request, res: Response) => {
     await productos.update({
         estado: 1
     });
-    res.json({
-        msg: 'Producto: '+ producto+  ' ha sido activado exitosamente',
+    res.json(productos);
+} catch (error) {
+    console.error('Error al activar el producto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al activar el producto',
     });
+}
 }
 

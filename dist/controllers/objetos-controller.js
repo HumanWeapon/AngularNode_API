@@ -94,8 +94,8 @@ const deleteObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.deleteObjeto = deleteObjeto;
 //actualiza el objeto en la base de datos
 const updateObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_objeto, objeto, descripcion, tipo_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
     try {
-        const { id_objeto, objeto, descripcion, tipo_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
         const _objeto = yield objetos_models_1.Objetos.findOne({
             where: { id_objeto: id_objeto }
         });
@@ -126,8 +126,8 @@ const updateObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.updateObjetos = updateObjetos;
 //Inactiva el OBJ de la DBA
 const inactivateObjecto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { objeto } = req.body;
     try {
-        const { objeto } = req.body;
         const _objeto = yield objetos_models_1.Objetos.findOne({
             where: { objeto: objeto }
         });
@@ -151,8 +151,8 @@ const inactivateObjecto = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.inactivateObjecto = inactivateObjecto;
 //Activa el usuario de la DBA
 const activateObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { objeto } = req.body;
     try {
-        const { objeto } = req.body;
         const _objeto = yield objetos_models_1.Objetos.findOne({
             where: { objeto: objeto }
         });

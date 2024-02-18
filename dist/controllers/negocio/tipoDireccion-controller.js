@@ -46,7 +46,7 @@ const postTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, functi
             });
         }
         else {
-            yield tipoDireccion_models_1.TipoDireccion.create({
+            const newTD = yield tipoDireccion_models_1.TipoDireccion.create({
                 tipo_direccion: tipo_direccion,
                 descripcion: descripcion,
                 creado_por: creado_por,
@@ -55,9 +55,7 @@ const postTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
-            res.json({
-                msg: 'La dirección: ' + tipo_direccion + ' ha sido creada exitosamente',
-            });
+            res.json(newTD);
         }
     }
     catch (error) {
@@ -82,9 +80,7 @@ const deleteTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, func
         });
         if (_direc) {
             yield _direc.destroy();
-            res.json({
-                msg: 'La dirección con el ID: ' + id_tipo_direccion + ' ha sido eliminada exitosamente',
-            });
+            res.json(_direc);
         }
         else {
             res.status(404).json({
@@ -103,65 +99,83 @@ exports.deleteTipoDireccion = deleteTipoDireccion;
 //actualiza la dirección en la base de datos
 const updateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_tipo_direccion, tipo_direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const _direc = yield tipoDireccion_models_1.TipoDireccion.findOne({
-        where: { id_tipo_direccion: id_tipo_direccion }
-    });
-    if (!_direc) {
-        return res.status(404).json({
-            msg: 'dirección con el ID: ' + id_tipo_direccion + ' no existe en la base de datos'
+    try {
+        const _direc = yield tipoDireccion_models_1.TipoDireccion.findOne({
+            where: { id_tipo_direccion: id_tipo_direccion }
+        });
+        if (!_direc) {
+            return res.status(404).json({
+                msg: 'dirección con el ID: ' + id_tipo_direccion + ' no existe en la base de datos'
+            });
+        }
+        yield _direc.update({
+            id_tipo_direccion: id_tipo_direccion,
+            tipo_direccion: tipo_direccion,
+            descripcion: descripcion,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
+        });
+        res.json(_direc);
+    }
+    catch (error) {
+        console.error('Error al actualizar el tipo direccion:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar el tipo direccion',
         });
     }
-    yield _direc.update({
-        id_tipo_direccion: id_tipo_direccion,
-        tipo_direccion: tipo_direccion,
-        descripcion: descripcion,
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion,
-        estado: estado
-    });
-    res.json({
-        msg: 'La dirección con el ID: ' + id_tipo_direccion + ' ha sido actualizado exitosamente',
-    });
 });
 exports.updateTipoDireccion = updateTipoDireccion;
 //Inactiva el usuario de la DBA
 const inactivateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_direccion } = req.body;
-    const _direc = yield tipoDireccion_models_1.TipoDireccion.findOne({
-        where: { tipo_direccion: tipo_direccion }
-    });
-    if (!_direc) {
-        return res.status(404).json({
-            msg: "El tipo de Direccion no existe: " + tipo_direccion
+    try {
+        const _direc = yield tipoDireccion_models_1.TipoDireccion.findOne({
+            where: { tipo_direccion: tipo_direccion }
+        });
+        if (!_direc) {
+            return res.status(404).json({
+                msg: "El tipo de Direccion no existe: " + tipo_direccion
+            });
+        }
+        yield _direc.update({
+            estado: 2
+        });
+        res.json(_direc);
+    }
+    catch (error) {
+        console.error('Error al inactivar el tipo de direccion:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar el tipo de direccion',
         });
     }
-    yield _direc.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'El Tipo de Direccion: ' + tipo_direccion + ' inactivado exitosamente',
-    });
 });
 exports.inactivateTipoDireccion = inactivateTipoDireccion;
 //Activa el usuario de la DBA
 const activateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_direccion } = req.body;
-    const _direc = yield tipoDireccion_models_1.TipoDireccion.findOne({
-        where: { tipo_direccion: tipo_direccion }
-    });
-    if (!_direc) {
-        return res.status(404).json({
-            msg: "El tipo de Direccion no existe: " + tipo_direccion
+    try {
+        const _direc = yield tipoDireccion_models_1.TipoDireccion.findOne({
+            where: { tipo_direccion: tipo_direccion }
+        });
+        if (!_direc) {
+            return res.status(404).json({
+                msg: "El tipo de Direccion no existe: " + tipo_direccion
+            });
+        }
+        yield _direc.update({
+            estado: 1
+        });
+        res.json(_direc);
+    }
+    catch (error) {
+        console.error('Error al activar el tipo direccion:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar el tipo direccion',
         });
     }
-    yield _direc.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'El tipo de Direccion: ' + tipo_direccion + ' ha sido activado exitosamente',
-    });
 });
 exports.activateTipoDireccion = activateTipoDireccion;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ

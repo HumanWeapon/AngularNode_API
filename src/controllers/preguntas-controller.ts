@@ -98,9 +98,9 @@ export const deletePregunta = async (req: Request, res: Response) => {
 
 //actualiza la pregunta de la base de datos
 export const updatePregunta = async (req: Request, res: Response) => {
-    try {
+ 
     const { id_pregunta, pregunta, estado_pregunta, modificado_por, fecha_modificacion  } = req.body;
-
+    try {
     const _pregunta = await Preguntas.findOne({
         where: {id_pregunta: id_pregunta}
     });
@@ -130,9 +130,9 @@ export const updatePregunta = async (req: Request, res: Response) => {
 
 //Inactiva la pregunta de la DBA
 export const inactivatePregunta = async (req: Request, res: Response) => {
-    try {
+  
     const { pregunta } = req.body;
-
+    try {
     const _pregunta = await Preguntas.findOne({
         where: {pregunta: pregunta}
     });
@@ -158,9 +158,9 @@ export const inactivatePregunta = async (req: Request, res: Response) => {
 
 //Activa la pregunta de la DBA
 export const activatePregunta = async (req: Request, res: Response) => {
-    try {
+   
     const { pregunta } = req.body;
-
+    try {
     const _pregunta = await Preguntas.findOne({
         where: {pregunta: pregunta}
     });

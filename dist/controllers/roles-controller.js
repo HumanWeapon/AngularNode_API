@@ -98,8 +98,8 @@ const deleteRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.deleteRol = deleteRol;
 //actualiza el rol en la base de datos
 const updateRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion } = req.body;
     try {
-        const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion } = req.body;
         const _rol = yield roles_models_1.Roles.findOne({
             where: { id_rol: id_rol }
         });
@@ -128,8 +128,8 @@ const updateRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.updateRoles = updateRoles;
 //Inactiva el Rol de la DBA
 const inactivateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion } = req.body;
     try {
-        const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion } = req.body;
         const _rol = yield roles_models_1.Roles.findOne({
             where: { rol: rol }
         });
@@ -154,8 +154,8 @@ const inactivateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.inactivateRol = inactivateRol;
 //Activa el Rol de la DBA
 const activateRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion } = req.body;
     try {
-        const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion } = req.body;
         const _rol = yield roles_models_1.Roles.findOne({
             where: { rol: rol }
         });

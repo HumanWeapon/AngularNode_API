@@ -41,7 +41,7 @@ export const postTipo_Requisito = async (req: Request, res: Response) => {
                 msg: 'Tipo de requisito ya registrado en la base de datos: '
             })
         }else{
-            await Tipo_Requisito.create({                
+            const newTRE = await Tipo_Requisito.create({                
                 tipo_requisito: tipo_requisito,
                 descripcion: descripcion,                 
                 creado_por: creado_por,
@@ -50,9 +50,7 @@ export const postTipo_Requisito = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
-            res.json({
-                msg: 'El tipo requisito ha sido creada exitosamente',
-            })
+            res.json(newTRE)
         }
     }
     catch (error){
@@ -74,9 +72,7 @@ export const deleteTipo_Requisito = async (req: Request, res: Response) => {
 
         if (_tipreq) {
             await _tipreq.destroy();
-            res.json({
-                msg: 'El tipo requisito ha sido eliminado exitosamente',
-            });
+            res.json(_tipreq);
         } else {
             res.status(404).json({
                 msg: 'No se encontró ningun registro con esa numeracion',
@@ -92,8 +88,9 @@ export const deleteTipo_Requisito = async (req: Request, res: Response) => {
 
 //actualiza el tipo requisito en la base de datos
 export const updateTipo_Requisito = async (req: Request, res: Response) => {
+   
     const { id_tipo_requisito, tipo_requisito, descripcion, modificado_por, fecha_modificacion, estado  } = req.body;
-
+    try {
     const _tiporeq = await Tipo_Requisito.findOne({
         where: {id_tipo_requisito: id_tipo_requisito}
     });
@@ -111,15 +108,21 @@ export const updateTipo_Requisito = async (req: Request, res: Response) => {
         fecha_modificacion: fecha_modificacion,
         estado
     });
-    res.json({
-        msg: 'El valor ha sido actualizado exitosamente',
+    res.json(_tiporeq);
+
+} catch (error) {
+    console.error('Error al actualizar el tipo requisito:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al actualizar el tipo requisito',
     });
+}
 }
 
 //Inactiva el usuario de la DBA
 export const inactivateRequisito = async (req: Request, res: Response) => {
+    
     const { tipo_requisito } = req.body;
-
+    try {
     const tiporeq = await Tipo_Requisito.findOne({
         where: {tipo_requisito: tipo_requisito}
     });
@@ -132,15 +135,21 @@ export const inactivateRequisito = async (req: Request, res: Response) => {
     await tiporeq.update({
         estado: 2
     });
-    res.json({
-        msg: 'Requisito: '+ tipo_requisito+  ' inactivado exitosamente',
+    res.json(tiporeq);
+
+} catch (error) {
+    console.error('Error al inactivar el requisito de exportacion:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar el requisito de exportacion',
     });
+}
 }
 
 //Activa el usuario de la DBA
 export const activateRequisito = async (req: Request, res: Response) => {
+    
     const { tipo_requisito } = req.body;
-
+    try {
     const tiporeq = await Tipo_Requisito.findOne({
         where: {tipo_requisito: tipo_requisito}
     });
@@ -153,7 +162,12 @@ export const activateRequisito = async (req: Request, res: Response) => {
     await tiporeq.update({
         estado: 1
     });
-    res.json({
-        msg: 'Requisito: '+ tipo_requisito+  ' ha sido activado exitosamente',
+    res.json(tiporeq);
+
+} catch (error) {
+    console.error('Error al inactivar el requisito de exportacion:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar el requisito de exportacion',
     });
+}
 }

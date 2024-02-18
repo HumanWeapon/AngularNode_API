@@ -72,9 +72,7 @@ export const deleteDirecContactos = async (req: Request, res: Response) => {
 
         if (_direcontactos) {
             await _direcontactos.destroy();
-            res.json({
-                msg: 'La Direccion Contacto con el ID: ' + id_direccion + ' ha sido eliminada exitosamente',
-            });
+            res.json(_direcontactos);
         } else {
             res.status(404).json({
                 msg: 'No se encontró una Direccion Contacto con el ID ' + id_direccion,
@@ -90,8 +88,9 @@ export const deleteDirecContactos = async (req: Request, res: Response) => {
 
 //actualiza el Telefono en la base de datos
 export const updateDirecContactos = async (req: Request, res: Response) => {
+  
     const { id_direccion, id_contacto, id_tipo_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado} = req.body;
-
+    try {
     const _direcontactos = await DireccionesContactos.findOne({
         where: {id_direccion: id_direccion}
     });
@@ -113,15 +112,22 @@ export const updateDirecContactos = async (req: Request, res: Response) => {
          estado: estado
         
     });
-    res.json(direcontactos) 
+    res.json(direcontactos);
+}
 
-  }
+} catch (error) {
+    console.error('Error al actualizar la direccion del contacto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al actualizar la direccion del contacto',
+    });
+}
 }
 
 //Inactiva el usuario de la DBA
 export const inactivateDirecContactos = async (req: Request, res: Response) => {
+  
     const { direccion } = req.body;
-
+    try {
     const _direcontactos = await DireccionesContactos.findOne({
         where: {direccion: direccion}
     });
@@ -134,15 +140,21 @@ export const inactivateDirecContactos = async (req: Request, res: Response) => {
     await _direcontactos.update({
         estado: 2
     });
-    res.json({
-        msg: 'Direccion Contacto: '+ direccion+  ' inactivado exitosamente',
+    res.json(_direcontactos);
+
+} catch (error) {
+    console.error('Error al inactivar la direccion del contacto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar la direccion del contacto',
     });
+}
 }
 
 //Activa el usuario de la DBA
 export const activateDirecContactos = async (req: Request, res: Response) => {
+   
     const { direccion } = req.body;
-
+try {   
     const _direcontactos = await DireccionesContactos.findOne({
         where: {direccion: direccion}
     });
@@ -155,9 +167,14 @@ export const activateDirecContactos = async (req: Request, res: Response) => {
     await _direcontactos.update({
         estado: 1
     });
-    res.json({
-        msg: 'Direccion Contacto: '+ direccion+  ' ha sido activado exitosamente',
+    res.json(_direcontactos);
+
+} catch (error) {
+    console.error('Error al activar la direccion del contacto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar la direccion del contacto',
     });
+}
 }
 
 

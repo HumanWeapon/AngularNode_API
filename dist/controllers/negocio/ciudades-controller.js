@@ -98,8 +98,8 @@ const deleteCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.deleteCiudad = deleteCiudad;
 //actualiza la ciudad en la base de datos
 const updateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
-        const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
         const _ciudad = yield ciudades_models_1.Ciudades.findOne({
             where: { id_ciudad: id_ciudad }
         });
@@ -130,8 +130,8 @@ const updateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.updateCiudad = updateCiudad;
 //Inactiva el usuario de la DBA
 const inactivateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { ciudad } = req.body;
     try {
-        const { ciudad } = req.body;
         const _ciudad = yield ciudades_models_1.Ciudades.findOne({
             where: { ciudad: ciudad }
         });
@@ -155,8 +155,8 @@ const inactivateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.inactivateCiudad = inactivateCiudad;
 //Activa el usuario de la DBA
 const activateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { ciudad } = req.body;
     try {
-        const { ciudad } = req.body;
         const _ciudad = yield ciudades_models_1.Ciudades.findOne({
             where: { ciudad: ciudad }
         });

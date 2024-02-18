@@ -97,8 +97,8 @@ const deletePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.deletePregunta = deletePregunta;
 //actualiza la pregunta de la base de datos
 const updatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_pregunta, pregunta, estado_pregunta, modificado_por, fecha_modificacion } = req.body;
     try {
-        const { id_pregunta, pregunta, estado_pregunta, modificado_por, fecha_modificacion } = req.body;
         const _pregunta = yield preguntas_model_1.Preguntas.findOne({
             where: { id_pregunta: id_pregunta }
         });
@@ -126,8 +126,8 @@ const updatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.updatePregunta = updatePregunta;
 //Inactiva la pregunta de la DBA
 const inactivatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { pregunta } = req.body;
     try {
-        const { pregunta } = req.body;
         const _pregunta = yield preguntas_model_1.Preguntas.findOne({
             where: { pregunta: pregunta }
         });
@@ -151,8 +151,8 @@ const inactivatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.inactivatePregunta = inactivatePregunta;
 //Activa la pregunta de la DBA
 const activatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { pregunta } = req.body;
     try {
-        const { pregunta } = req.body;
         const _pregunta = yield preguntas_model_1.Preguntas.findOne({
             where: { pregunta: pregunta }
         });

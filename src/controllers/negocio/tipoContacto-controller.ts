@@ -43,7 +43,7 @@ export const postTipoContacto = async (req: Request, res: Response) => {
                 msg: 'Contacto ya registrado en la base de datos: '+ tipo_contacto
             })
         }else{
-            await TipoContacto.create({
+            const newTC = await TipoContacto.create({
                 tipo_contacto: tipo_contacto,
                 descripcion: descripcion, 
                 creado_por: creado_por,
@@ -52,9 +52,7 @@ export const postTipoContacto = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
-            res.json({
-                msg: 'El contacto: '+ tipo_contacto +  ' ha sido creada exitosamente',
-            })
+            res.json(newTC)
         }
     }
     catch (error){
@@ -81,9 +79,7 @@ export const deleteTipoContacto = async (req: Request, res: Response) => {
 
         if (_cont) {
             await _cont.destroy();
-            res.json({
-                msg: 'El contacto con el ID: ' + id_tipo_contacto + ' ha sido eliminada exitosamente',
-            });
+            res.json(_cont);
         } else {
             res.status(404).json({
                 msg: 'No se encontró un contacto con el ID ' + id_tipo_contacto,
@@ -100,8 +96,9 @@ export const deleteTipoContacto = async (req: Request, res: Response) => {
 
 //actualiza la dirección en la base de datos
 export const updateTipoContacto = async (req: Request, res: Response) => {
+    
     const { id_tipo_contacto, tipo_contacto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
-
+    try {
     const _cont = await TipoContacto.findOne({
         where: {id_tipo_contacto: id_tipo_contacto}
     });
@@ -121,15 +118,21 @@ export const updateTipoContacto = async (req: Request, res: Response) => {
         fecha_modificacion: fecha_modificacion,
         estado: estado
     });
-    res.json({
-        msg: 'El Contacto con el ID: '+ id_tipo_contacto +  ' ha sido actualizado exitosamente',
+    res.json(_cont);
+
+} catch (error) {
+    console.error('Error al actualizar el tipo de contacto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al actualizar el tipo de contacto',
     });
+}
 }
 
 //Inactiva el usuario de la DBA
 export const inactivateTipoContacto = async (req: Request, res: Response) => {
+  
     const { tipo_contacto } = req.body;
-
+    try {
     const _cont = await TipoContacto.findOne({
         where: {tipo_contacto: tipo_contacto}
     });
@@ -142,15 +145,21 @@ export const inactivateTipoContacto = async (req: Request, res: Response) => {
     await _cont.update({
         estado: 2
     });
-    res.json({
-        msg: 'Tipo de Contacto: '+ tipo_contacto+  ' inactivado exitosamente',
+    res.json(_cont);
+
+} catch (error) {
+    console.error('Error al inactivar el tipo contacto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar el tipo contacto',
     });
+}
 }
 
 //Activa el usuario de la DBA
 export const activateTipoContacto = async (req: Request, res: Response) => {
+    
     const { tipo_contacto } = req.body;
-
+    try {
     const _cont = await TipoContacto.findOne({
         where: {tipo_contacto: tipo_contacto}
     });
@@ -163,9 +172,13 @@ export const activateTipoContacto = async (req: Request, res: Response) => {
     await _cont.update({
         estado: 1
     });
-    res.json({
-        msg: 'Tipo de Contacto: '+ tipo_contacto+  ' ha sido activado exitosamente',
+    res.json(_cont);
+} catch (error) {
+    console.error('Error al activar el tipo contacto:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al activar el tipo contacto',
     });
+}
 }
 
 

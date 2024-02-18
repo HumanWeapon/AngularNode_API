@@ -95,70 +95,88 @@ exports.deleteContacto = deleteContacto;
 //actualiza el contacto en la base de datos
 const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_contacto, id_tipo_contacto, dni, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const _contacto = yield contacto_models_1.Contacto.findOne({
-        where: { id_contacto: id_contacto }
-    });
-    if (!_contacto) {
-        return res.status(404).json({
-            msg: 'Contacto con el ID: ' + id_contacto + ' no existe en la base de datos'
+    try {
+        const _contacto = yield contacto_models_1.Contacto.findOne({
+            where: { id_contacto: id_contacto }
+        });
+        if (!_contacto) {
+            return res.status(404).json({
+                msg: 'Contacto con el ID: ' + id_contacto + ' no existe en la base de datos'
+            });
+        }
+        yield _contacto.update({
+            id_tipo_contacto: id_tipo_contacto,
+            dni: dni,
+            primer_nombre: primer_nombre,
+            segundo_nombre: segundo_nombre,
+            primer_apellido: primer_apellido,
+            segundo_apellido: segundo_apellido,
+            correo: correo,
+            descripcion: descripcion,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
+        });
+        res.json(_contacto);
+    }
+    catch (error) {
+        console.error('Error al actualizar el contacto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar el contacto',
         });
     }
-    yield _contacto.update({
-        id_tipo_contacto: id_tipo_contacto,
-        dni: dni,
-        primer_nombre: primer_nombre,
-        segundo_nombre: segundo_nombre,
-        primer_apellido: primer_apellido,
-        segundo_apellido: segundo_apellido,
-        correo: correo,
-        descripcion: descripcion,
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion,
-        estado: estado
-    });
-    res.json({
-        msg: 'El contacto con el ID: ' + id_contacto + ' ha sido actualizado exitosamente',
-    });
 });
 exports.updateContacto = updateContacto;
 //Inactiva el usuario de la DBA
 const inactivateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { primer_nombre } = req.body;
-    const _contacto = yield contacto_models_1.Contacto.findOne({
-        where: { primer_nombre: primer_nombre }
-    });
-    if (!_contacto) {
-        return res.status(404).json({
-            msg: "El Contacto no existe: " + primer_nombre
+    try {
+        const _contacto = yield contacto_models_1.Contacto.findOne({
+            where: { primer_nombre: primer_nombre }
+        });
+        if (!_contacto) {
+            return res.status(404).json({
+                msg: "El Contacto no existe: " + primer_nombre
+            });
+        }
+        yield _contacto.update({
+            estado: 2
+        });
+        res.json(_contacto);
+    }
+    catch (error) {
+        console.error('Error al inactivar el contacto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar el contacto',
         });
     }
-    yield _contacto.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'Contacto: ' + primer_nombre + ' inactivado exitosamente',
-    });
 });
 exports.inactivateContacto = inactivateContacto;
 //Activa el usuario de la DBA
 const activateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { primer_nombre } = req.body;
-    const _contacto = yield contacto_models_1.Contacto.findOne({
-        where: { primer_nombre: primer_nombre }
-    });
-    if (!_contacto) {
-        return res.status(404).json({
-            msg: "El Contacto no existe: " + primer_nombre
+    try {
+        const _contacto = yield contacto_models_1.Contacto.findOne({
+            where: { primer_nombre: primer_nombre }
+        });
+        if (!_contacto) {
+            return res.status(404).json({
+                msg: "El Contacto no existe: " + primer_nombre
+            });
+        }
+        yield _contacto.update({
+            estado: 1
+        });
+        res.json(_contacto);
+    }
+    catch (error) {
+        console.error('Error al activar el contacto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar el contacto',
         });
     }
-    yield _contacto.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'Contacto: ' + primer_nombre + ' ha sido activado exitosamente',
-    });
 });
 exports.activateContacto = activateContacto;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ

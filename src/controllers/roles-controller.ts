@@ -97,9 +97,9 @@ export const deleteRol = async (req: Request, res: Response) => {
 
 //actualiza el rol en la base de datos
 export const updateRoles = async (req: Request, res: Response) => {
-    try {
+  
         const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion  } = req.body;
-
+        try {
         const _rol = await Roles.findOne({
             where: {id_rol: id_rol}
         });
@@ -130,9 +130,9 @@ export const updateRoles = async (req: Request, res: Response) => {
 
 //Inactiva el Rol de la DBA
 export const inactivateRol = async (req: Request, res: Response) => {
-    try {
+   
         const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion  } = req.body;
-
+        try {
         const _rol = await Roles.findOne({
             where: {rol: rol}
         });
@@ -158,9 +158,9 @@ export const inactivateRol = async (req: Request, res: Response) => {
 
 //Activa el Rol de la DBA
 export const activateRol = async (req: Request, res: Response) => {
-    try {
+  
         const { id_rol, rol, descripcion, estado_rol, modificado_por, fecha_modificacion  } = req.body;
-
+        try {
         const _rol = await Roles.findOne({
             where: {rol: rol}
         });

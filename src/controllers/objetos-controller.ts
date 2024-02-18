@@ -92,9 +92,9 @@ export const deleteObjeto = async (req: Request, res: Response) => {
 
 //actualiza el objeto en la base de datos
 export const updateObjetos = async (req: Request, res: Response) => {
-    try {
+  
     const { id_objeto, objeto, descripcion, tipo_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
-
+    try {
     const _objeto = await Objetos.findOne({
         where: {id_objeto: id_objeto}
     });
@@ -125,9 +125,9 @@ export const updateObjetos = async (req: Request, res: Response) => {
 
 //Inactiva el OBJ de la DBA
 export const inactivateObjecto = async (req: Request, res: Response) => {
-    try {
+    
     const { objeto } = req.body;
-
+    try {
     const _objeto = await Objetos.findOne({
         where: {objeto: objeto}
     });
@@ -153,9 +153,9 @@ export const inactivateObjecto = async (req: Request, res: Response) => {
 
 //Activa el usuario de la DBA
 export const activateObjeto = async (req: Request, res: Response) => {
-    try{
+   
     const { objeto } = req.body;
-
+    try {
     const _objeto = await Objetos.findOne({
         where: {objeto: objeto}
     });

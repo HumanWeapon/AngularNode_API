@@ -40,7 +40,7 @@ const postTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const _telefono = yield tipo_telefono_models_1.tipoTelefono.findOne({
             where: { tipo_telefono: tipo_telefono }
         });
-        yield tipo_telefono_models_1.tipoTelefono.create({
+        const newTtelefono = yield tipo_telefono_models_1.tipoTelefono.create({
             tipo_telefono: tipo_telefono,
             descripcion: descripcion,
             creado_por: creado_por,
@@ -49,9 +49,7 @@ const postTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             fecha_modificacion: fecha_modificacion,
             estado: estado
         });
-        res.json({
-            msg: 'El Telefono: ' + tipo_telefono + ' ha sido creada exitosamente',
-        });
+        res.json(newTtelefono);
     }
     catch (error) {
         res.status(400).json({
@@ -70,9 +68,7 @@ const deleteTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
         if (_telefono) {
             yield _telefono.destroy();
-            res.json({
-                msg: 'El Teléfono con el ID: ' + id_tipo_telefono + ' ha sido eliminado exitosamente',
-            });
+            res.json(_telefono);
         }
         else {
             res.status(404).json({
@@ -91,26 +87,32 @@ exports.deleteTelefono = deleteTelefono;
 //actualiza el Telefono en la base de datos
 const updateTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_tipo_telefono, tipo_telefono, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const _telefono = yield tipo_telefono_models_1.tipoTelefono.findOne({
-        where: { id_tipo_telefono: id_tipo_telefono }
-    });
-    if (!_telefono) {
-        return res.status(404).json({
-            msg: 'Telefono con el ID: ' + id_tipo_telefono + ' no existe en la base de datos'
+    try {
+        const _telefono = yield tipo_telefono_models_1.tipoTelefono.findOne({
+            where: { id_tipo_telefono: id_tipo_telefono }
+        });
+        if (!_telefono) {
+            return res.status(404).json({
+                msg: 'Telefono con el ID: ' + id_tipo_telefono + ' no existe en la base de datos'
+            });
+        }
+        yield _telefono.update({
+            id_tipo_telefono: id_tipo_telefono,
+            tipo_telefono: tipo_telefono,
+            descripcion: descripcion,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
+        });
+        res.json(_telefono);
+    }
+    catch (error) {
+        console.error('Error al actualizar el tipo telefono:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar el tipo telefono',
         });
     }
-    yield _telefono.update({
-        id_tipo_telefono: id_tipo_telefono,
-        tipo_telefono: tipo_telefono,
-        descripcion: descripcion,
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion,
-        estado: estado
-    });
-    res.json({
-        msg: 'El Telefono con el ID: ' + id_tipo_telefono + ' ha sido actualizado exitosamente',
-    });
 });
 exports.updateTelefono = updateTelefono;

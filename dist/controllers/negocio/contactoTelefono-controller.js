@@ -46,7 +46,7 @@ const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, fun
             });
         }
         else {
-            yield contactoTelefono_models_1.ContactoTelefono.create({
+            const newConT = yield contactoTelefono_models_1.ContactoTelefono.create({
                 id_contacto: id_contacto,
                 id_tipo_telefono: id_tipo_telefono,
                 telefono: telefono,
@@ -58,9 +58,7 @@ const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
-            res.json({
-                msg: 'El telefono: ' + telefono + ' ha sido creado exitosamente',
-            });
+            res.json(newConT);
         }
     }
     catch (error) {
@@ -85,9 +83,7 @@ const deleteContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
         });
         if (_contactoT) {
             yield _contactoT.destroy();
-            res.json({
-                msg: 'El telefono con el ID: ' + id_telefono + ' ha sido eliminado exitosamente',
-            });
+            res.json(_contactoT);
         }
         else {
             res.status(404).json({
@@ -106,67 +102,85 @@ exports.deleteContactoTelefono = deleteContactoTelefono;
 //actualiza el telefono en la base de datos
 const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_telefono, id_contacto, id_tipo_telefono, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findOne({
-        where: { id_telefono: id_telefono }
-    });
-    if (!_contactoT) {
-        return res.status(404).json({
-            msg: 'Telefono con el ID: ' + id_telefono + ' no existe en la base de datos'
+    try {
+        const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findOne({
+            where: { id_telefono: id_telefono }
+        });
+        if (!_contactoT) {
+            return res.status(404).json({
+                msg: 'Telefono con el ID: ' + id_telefono + ' no existe en la base de datos'
+            });
+        }
+        yield _contactoT.update({
+            id_telefono: id_telefono,
+            id_contacto: id_contacto,
+            id_tipo_telefono: id_tipo_telefono,
+            extencion: extencion,
+            descripcion: descripcion,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
+        });
+        res.json(_contactoT);
+    }
+    catch (error) {
+        console.error('Error al actualizar el contacto telefono:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar el contacto telefono:',
         });
     }
-    yield _contactoT.update({
-        id_telefono: id_telefono,
-        id_contacto: id_contacto,
-        id_tipo_telefono: id_tipo_telefono,
-        extencion: extencion,
-        descripcion: descripcion,
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion,
-        estado: estado
-    });
-    res.json({
-        msg: 'El telefono con el ID: ' + id_telefono + ' ha sido actualizado exitosamente',
-    });
 });
 exports.updateContactoTelefono = updateContactoTelefono;
 //Inactiva el usuario de la DBA
 const inactivateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { telefono } = req.body;
-    const _contacto = yield contactoTelefono_models_1.ContactoTelefono.findOne({
-        where: { telefono: telefono }
-    });
-    if (!_contacto) {
-        return res.status(404).json({
-            msg: "El Telefono no existe: " + telefono
+    try {
+        const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findOne({
+            where: { telefono: telefono }
+        });
+        if (!_contactoT) {
+            return res.status(404).json({
+                msg: "El Telefono no existe: " + telefono
+            });
+        }
+        yield _contactoT.update({
+            estado: 2
+        });
+        res.json(_contactoT);
+    }
+    catch (error) {
+        console.error('Error al inactivar el contacto telefono:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar el contacto telefono:',
         });
     }
-    yield _contacto.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'Telefono: ' + telefono + ' inactivado exitosamente',
-    });
 });
 exports.inactivateContactoTelefono = inactivateContactoTelefono;
 //Activa el usuario de la DBA
 const activateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { telefono } = req.body;
-    const _contacto = yield contactoTelefono_models_1.ContactoTelefono.findOne({
-        where: { telefono: telefono }
-    });
-    if (!_contacto) {
-        return res.status(404).json({
-            msg: "El Telefono no existe: " + telefono
+    try {
+        const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findOne({
+            where: { telefono: telefono }
+        });
+        if (!_contactoT) {
+            return res.status(404).json({
+                msg: "El Telefono no existe: " + telefono
+            });
+        }
+        yield _contactoT.update({
+            estado: 1
+        });
+        res.json(_contactoT);
+    }
+    catch (error) {
+        console.error('Error al activar el contacto telefono:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar el contacto telefono',
         });
     }
-    yield _contacto.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'Telefono: ' + telefono + ' ha sido activado exitosamente',
-    });
 });
 exports.activateContactoTelefono = activateContactoTelefono;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ

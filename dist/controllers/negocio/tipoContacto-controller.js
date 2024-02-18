@@ -46,7 +46,7 @@ const postTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, functio
             });
         }
         else {
-            yield tipoContacto_models_1.TipoContacto.create({
+            const newTC = yield tipoContacto_models_1.TipoContacto.create({
                 tipo_contacto: tipo_contacto,
                 descripcion: descripcion,
                 creado_por: creado_por,
@@ -55,9 +55,7 @@ const postTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
-            res.json({
-                msg: 'El contacto: ' + tipo_contacto + ' ha sido creada exitosamente',
-            });
+            res.json(newTC);
         }
     }
     catch (error) {
@@ -82,9 +80,7 @@ const deleteTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
         if (_cont) {
             yield _cont.destroy();
-            res.json({
-                msg: 'El contacto con el ID: ' + id_tipo_contacto + ' ha sido eliminada exitosamente',
-            });
+            res.json(_cont);
         }
         else {
             res.status(404).json({
@@ -103,65 +99,83 @@ exports.deleteTipoContacto = deleteTipoContacto;
 //actualiza la dirección en la base de datos
 const updateTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_tipo_contacto, tipo_contacto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const _cont = yield tipoContacto_models_1.TipoContacto.findOne({
-        where: { id_tipo_contacto: id_tipo_contacto }
-    });
-    if (!_cont) {
-        return res.status(404).json({
-            msg: 'contacto con el ID: ' + id_tipo_contacto + ' no existe en la base de datos'
+    try {
+        const _cont = yield tipoContacto_models_1.TipoContacto.findOne({
+            where: { id_tipo_contacto: id_tipo_contacto }
+        });
+        if (!_cont) {
+            return res.status(404).json({
+                msg: 'contacto con el ID: ' + id_tipo_contacto + ' no existe en la base de datos'
+            });
+        }
+        yield _cont.update({
+            id_tipo_contacto: id_tipo_contacto,
+            tipo_contacto: tipo_contacto,
+            descripcion: descripcion,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
+        });
+        res.json(_cont);
+    }
+    catch (error) {
+        console.error('Error al actualizar el tipo de contacto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar el tipo de contacto',
         });
     }
-    yield _cont.update({
-        id_tipo_contacto: id_tipo_contacto,
-        tipo_contacto: tipo_contacto,
-        descripcion: descripcion,
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion,
-        estado: estado
-    });
-    res.json({
-        msg: 'El Contacto con el ID: ' + id_tipo_contacto + ' ha sido actualizado exitosamente',
-    });
 });
 exports.updateTipoContacto = updateTipoContacto;
 //Inactiva el usuario de la DBA
 const inactivateTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_contacto } = req.body;
-    const _cont = yield tipoContacto_models_1.TipoContacto.findOne({
-        where: { tipo_contacto: tipo_contacto }
-    });
-    if (!_cont) {
-        return res.status(404).json({
-            msg: "El Tipo de Contacto no existe: " + tipo_contacto
+    try {
+        const _cont = yield tipoContacto_models_1.TipoContacto.findOne({
+            where: { tipo_contacto: tipo_contacto }
+        });
+        if (!_cont) {
+            return res.status(404).json({
+                msg: "El Tipo de Contacto no existe: " + tipo_contacto
+            });
+        }
+        yield _cont.update({
+            estado: 2
+        });
+        res.json(_cont);
+    }
+    catch (error) {
+        console.error('Error al inactivar el tipo contacto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar el tipo contacto',
         });
     }
-    yield _cont.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'Tipo de Contacto: ' + tipo_contacto + ' inactivado exitosamente',
-    });
 });
 exports.inactivateTipoContacto = inactivateTipoContacto;
 //Activa el usuario de la DBA
 const activateTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_contacto } = req.body;
-    const _cont = yield tipoContacto_models_1.TipoContacto.findOne({
-        where: { tipo_contacto: tipo_contacto }
-    });
-    if (!_cont) {
-        return res.status(404).json({
-            msg: "El tipo de Contacto no existe: " + tipo_contacto
+    try {
+        const _cont = yield tipoContacto_models_1.TipoContacto.findOne({
+            where: { tipo_contacto: tipo_contacto }
+        });
+        if (!_cont) {
+            return res.status(404).json({
+                msg: "El tipo de Contacto no existe: " + tipo_contacto
+            });
+        }
+        yield _cont.update({
+            estado: 1
+        });
+        res.json(_cont);
+    }
+    catch (error) {
+        console.error('Error al activar el tipo contacto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar el tipo contacto',
         });
     }
-    yield _cont.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'Tipo de Contacto: ' + tipo_contacto + ' ha sido activado exitosamente',
-    });
 });
 exports.activateTipoContacto = activateTipoContacto;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ

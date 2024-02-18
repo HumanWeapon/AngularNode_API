@@ -69,9 +69,7 @@ const deletePais = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
         if (_pais) {
             yield _pais.destroy();
-            res.json({
-                msg: 'El Pais con el ID: ' + id_pais + ' ha sido eliminado exitosamente',
-            });
+            res.json(_pais);
         }
         else {
             res.status(404).json({
@@ -90,64 +88,82 @@ exports.deletePais = deletePais;
 //actualiza el Telefono en la base de datos
 const updatePais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_pais, pais, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const _pais = yield paises_models_1.Paises.findOne({
-        where: { id_pais: id_pais }
-    });
-    if (!_pais) {
-        return res.status(404).json({
-            msg: 'Pais con el ID: ' + id_pais + ' no existe en la base de datos'
+    try {
+        const _pais = yield paises_models_1.Paises.findOne({
+            where: { id_pais: id_pais }
+        });
+        if (!_pais) {
+            return res.status(404).json({
+                msg: 'Pais con el ID: ' + id_pais + ' no existe en la base de datos'
+            });
+        }
+        yield _pais.update({
+            id_pais: id_pais,
+            pais: pais,
+            descripcion: descripcion,
+            creado_por: creado_por,
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por,
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
+        });
+        res.json(_pais);
+    }
+    catch (error) {
+        console.error('Error al actualizar el pais:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar el pais',
         });
     }
-    yield _pais.update({
-        id_pais: id_pais,
-        pais: pais,
-        descripcion: descripcion,
-        creado_por: creado_por,
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
-        fecha_modificacion: fecha_modificacion,
-        estado: estado
-    });
-    res.json({
-        msg: 'El Pais con el ID: ' + id_pais + ' ha sido actualizado exitosamente',
-    });
 });
 exports.updatePais = updatePais;
 //Inactiva el usuario de la DBA
 const inactivatePais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { pais } = req.body;
-    const paises = yield paises_models_1.Paises.findOne({
-        where: { pais: pais }
-    });
-    if (!paises) {
-        return res.status(404).json({
-            msg: "El Pais no existe: " + pais
+    try {
+        const paises = yield paises_models_1.Paises.findOne({
+            where: { pais: pais }
+        });
+        if (!paises) {
+            return res.status(404).json({
+                msg: "El Pais no existe: " + pais
+            });
+        }
+        yield paises.update({
+            estado: 2
+        });
+        res.json(paises);
+    }
+    catch (error) {
+        console.error('Error al inactivar el pais:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar el pais',
         });
     }
-    yield paises.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'Pais: ' + pais + ' inactivado exitosamente',
-    });
 });
 exports.inactivatePais = inactivatePais;
 //Activa el usuario de la DBA
 const activatePais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { pais } = req.body;
-    const paises = yield paises_models_1.Paises.findOne({
-        where: { pais: pais }
-    });
-    if (!paises) {
-        return res.status(404).json({
-            msg: "El Pais no existe: " + pais
+    try {
+        const paises = yield paises_models_1.Paises.findOne({
+            where: { pais: pais }
+        });
+        if (!paises) {
+            return res.status(404).json({
+                msg: "El Pais no existe: " + pais
+            });
+        }
+        yield paises.update({
+            estado: 1
+        });
+        res.json(paises);
+    }
+    catch (error) {
+        console.error('Error al activar el pais:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar el pais',
         });
     }
-    yield paises.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'Pais: ' + pais + ' ha sido activado exitosamente',
-    });
 });
 exports.activatePais = activatePais;

@@ -43,7 +43,7 @@ export const postContactoTelefono = async (req: Request, res: Response) => {
                 msg: 'Telefono ya registrado en la base de datos: '+ telefono
             })
         }else{
-            await ContactoTelefono.create({
+            const newConT = await ContactoTelefono.create({
                 id_contacto: id_contacto,
                 id_tipo_telefono: id_tipo_telefono,
                 telefono: telefono,
@@ -55,9 +55,7 @@ export const postContactoTelefono = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
-            res.json({
-                msg: 'El telefono: '+ telefono+  ' ha sido creado exitosamente',
-            })
+            res.json(newConT)
         }
     }
     catch (error){
@@ -84,9 +82,7 @@ export const deleteContactoTelefono = async (req: Request, res: Response) => {
 
         if (_contactoT) {
             await _contactoT.destroy();
-            res.json({
-                msg: 'El telefono con el ID: ' + id_telefono + ' ha sido eliminado exitosamente',
-            });
+            res.json(_contactoT);
         } else {
             res.status(404).json({
                 msg: 'No se encontró un telefono con el ID ' + id_telefono,
@@ -103,8 +99,9 @@ export const deleteContactoTelefono = async (req: Request, res: Response) => {
 
 //actualiza el telefono en la base de datos
 export const updateContactoTelefono = async (req: Request, res: Response) => {
+    
     const { id_telefono, id_contacto, id_tipo_telefono, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
-
+    try {
     const _contactoT = await ContactoTelefono.findOne({
         where: {id_telefono: id_telefono}
     });
@@ -126,50 +123,67 @@ export const updateContactoTelefono = async (req: Request, res: Response) => {
         fecha_modificacion: fecha_modificacion,
         estado: estado
     });
-    res.json({
-        msg: 'El telefono con el ID: '+ id_telefono+  ' ha sido actualizado exitosamente',
+    res.json(_contactoT);
+
+} catch (error) {
+    console.error('Error al actualizar el contacto telefono:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al actualizar el contacto telefono:',
     });
+}
 }
     //Inactiva el usuario de la DBA
     export const inactivateContactoTelefono = async (req: Request, res: Response) => {
+       
     const { telefono } = req.body;
-
-    const _contacto = await ContactoTelefono.findOne({
+    try {
+    const _contactoT = await ContactoTelefono.findOne({
         where: {telefono: telefono}
     });
-    if(!_contacto){
+    if(!_contactoT){
         return res.status(404).json({
             msg: "El Telefono no existe: "+ telefono
         });
     }
 
-    await _contacto.update({
+    await _contactoT.update({
         estado: 2
     });
-    res.json({
-        msg: 'Telefono: '+ telefono+  ' inactivado exitosamente',
+    res.json(_contactoT);
+
+} catch (error) {
+    console.error('Error al inactivar el contacto telefono:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar el contacto telefono:',
     });
+}
 }
 
 //Activa el usuario de la DBA
 export const activateContactoTelefono = async (req: Request, res: Response) => {
+    
     const { telefono } = req.body;
-
-    const _contacto = await ContactoTelefono.findOne({
+    try {
+    const _contactoT = await ContactoTelefono.findOne({
         where: {telefono: telefono}
     });
-    if(!_contacto){
+    if(!_contactoT){
         return res.status(404).json({
             msg: "El Telefono no existe: "+ telefono
         });
     }
 
-    await _contacto.update({
+    await _contactoT.update({
         estado: 1
     });
-    res.json({
-        msg: 'Telefono: '+ telefono+  ' ha sido activado exitosamente',
+    res.json(_contactoT);
+
+} catch (error) {
+    console.error('Error al activar el contacto telefono:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al activar el contacto telefono',
     });
+}
 }
 
 

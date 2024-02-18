@@ -133,9 +133,9 @@ export const updateCategoria = async (req: Request, res: Response) => {
 
 //Inactiva el usuario de la DBA
 export const inactivateCategoria = async (req: Request, res: Response) => {
-    try {
+  
     const { id_categoria } = req.body;
-
+    try {
     const cate = await Categorias.findOne({
         where: {id_categoria: id_categoria}
     });
@@ -160,9 +160,9 @@ export const inactivateCategoria = async (req: Request, res: Response) => {
 
 //Activa el usuario de la DBA
 export const activateCategoria = async (req: Request, res: Response) => {
-    try {
+  
     const { id_categoria } = req.body;
-
+    try {
     const cate = await Categorias.findOne({
         where: {id_categoria: id_categoria}
     });
@@ -187,9 +187,9 @@ export const activateCategoria = async (req: Request, res: Response) => {
 
 // Obtiene una Empresa por ID con información adicional de las tablas relacionadas
 export const getAllProductosByCategoria = async (req: Request, res: Response) => {
-    try {
+ 
         const { id_categoria } = req.body;
-
+    try {
         // Realiza la consulta con la información adicional de las tablas relacionadas
         const _procate = await Categorias.findOne({
             where: { id_categoria: id_categoria },

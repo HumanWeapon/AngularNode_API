@@ -77,9 +77,7 @@ const deleteDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
         if (_direcontactos) {
             yield _direcontactos.destroy();
-            res.json({
-                msg: 'La Direccion Contacto con el ID: ' + id_direccion + ' ha sido eliminada exitosamente',
-            });
+            res.json(_direcontactos);
         }
         else {
             res.status(404).json({
@@ -98,66 +96,86 @@ exports.deleteDirecContactos = deleteDirecContactos;
 //actualiza el Telefono en la base de datos
 const updateDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_direccion, id_contacto, id_tipo_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findOne({
-        where: { id_direccion: id_direccion }
-    });
-    if (!_direcontactos) {
-        return res.status(404).json({
-            msg: 'Direccion Contacto con el ID: ' + id_direccion + ' no existe en la base de datos'
+    try {
+        const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findOne({
+            where: { id_direccion: id_direccion }
         });
+        if (!_direcontactos) {
+            return res.status(404).json({
+                msg: 'Direccion Contacto con el ID: ' + id_direccion + ' no existe en la base de datos'
+            });
+        }
+        else {
+            const direcontactos = yield _direcontactos.update({
+                id_direccion: id_direccion,
+                id_contacto: id_contacto,
+                id_tipo_direccion: id_tipo_direccion,
+                direccion: direccion,
+                descripcion: descripcion,
+                creado_por: creado_por,
+                fecha_creacion: fecha_creacion,
+                modificado_por: modificado_por,
+                fecha_modificacion: fecha_modificacion,
+                estado: estado
+            });
+            res.json(direcontactos);
+        }
     }
-    else {
-        const direcontactos = yield _direcontactos.update({
-            id_direccion: id_direccion,
-            id_contacto: id_contacto,
-            id_tipo_direccion: id_tipo_direccion,
-            direccion: direccion,
-            descripcion: descripcion,
-            creado_por: creado_por,
-            fecha_creacion: fecha_creacion,
-            modificado_por: modificado_por,
-            fecha_modificacion: fecha_modificacion,
-            estado: estado
+    catch (error) {
+        console.error('Error al actualizar la direccion del contacto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar la direccion del contacto',
         });
-        res.json(direcontactos);
     }
 });
 exports.updateDirecContactos = updateDirecContactos;
 //Inactiva el usuario de la DBA
 const inactivateDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { direccion } = req.body;
-    const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findOne({
-        where: { direccion: direccion }
-    });
-    if (!_direcontactos) {
-        return res.status(404).json({
-            msg: "La Direccion Contacto no existe: " + direccion
+    try {
+        const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findOne({
+            where: { direccion: direccion }
+        });
+        if (!_direcontactos) {
+            return res.status(404).json({
+                msg: "La Direccion Contacto no existe: " + direccion
+            });
+        }
+        yield _direcontactos.update({
+            estado: 2
+        });
+        res.json(_direcontactos);
+    }
+    catch (error) {
+        console.error('Error al inactivar la direccion del contacto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar la direccion del contacto',
         });
     }
-    yield _direcontactos.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'Direccion Contacto: ' + direccion + ' inactivado exitosamente',
-    });
 });
 exports.inactivateDirecContactos = inactivateDirecContactos;
 //Activa el usuario de la DBA
 const activateDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { direccion } = req.body;
-    const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findOne({
-        where: { direccion: direccion }
-    });
-    if (!_direcontactos) {
-        return res.status(404).json({
-            msg: "La Direccion Contacto no existe: " + direccion
+    try {
+        const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findOne({
+            where: { direccion: direccion }
+        });
+        if (!_direcontactos) {
+            return res.status(404).json({
+                msg: "La Direccion Contacto no existe: " + direccion
+            });
+        }
+        yield _direcontactos.update({
+            estado: 1
+        });
+        res.json(_direcontactos);
+    }
+    catch (error) {
+        console.error('Error al activar la direccion del contacto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar la direccion del contacto',
         });
     }
-    yield _direcontactos.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'Direccion Contacto: ' + direccion + ' ha sido activado exitosamente',
-    });
 });
 exports.activateDirecContactos = activateDirecContactos;

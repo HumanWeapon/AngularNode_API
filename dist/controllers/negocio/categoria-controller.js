@@ -118,8 +118,8 @@ const updateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.updateCategoria = updateCategoria;
 //Inactiva el usuario de la DBA
 const inactivateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_categoria } = req.body;
     try {
-        const { id_categoria } = req.body;
         const cate = yield categoria_models_1.Categorias.findOne({
             where: { id_categoria: id_categoria }
         });
@@ -143,8 +143,8 @@ const inactivateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, func
 exports.inactivateCategoria = inactivateCategoria;
 //Activa el usuario de la DBA
 const activateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_categoria } = req.body;
     try {
-        const { id_categoria } = req.body;
         const cate = yield categoria_models_1.Categorias.findOne({
             where: { id_categoria: id_categoria }
         });
@@ -168,8 +168,8 @@ const activateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.activateCategoria = activateCategoria;
 // Obtiene una Empresa por ID con información adicional de las tablas relacionadas
 const getAllProductosByCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_categoria } = req.body;
     try {
-        const { id_categoria } = req.body;
         // Realiza la consulta con la información adicional de las tablas relacionadas
         const _procate = yield categoria_models_1.Categorias.findOne({
             where: { id_categoria: id_categoria },
