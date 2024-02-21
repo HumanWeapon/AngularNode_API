@@ -13,8 +13,16 @@ exports.activatePais = exports.inactivatePais = exports.updatePais = exports.del
 const paises_models_1 = require("../../models/negocio/paises-models");
 //Obtiene todos los objetos de la base de datos
 const getAllPaises = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const paises = yield paises_models_1.Paises.findAll();
-    res.json(paises);
+    try {
+        const paises = yield paises_models_1.Paises.findAll();
+        res.json(paises);
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
 });
 exports.getAllPaises = getAllPaises;
 //Obtiene un Pais por ID

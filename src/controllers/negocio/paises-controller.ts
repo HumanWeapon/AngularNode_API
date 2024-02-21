@@ -5,10 +5,16 @@ import { where } from 'sequelize';
 
 //Obtiene todos los objetos de la base de datos
 export const getAllPaises = async (req: Request, res: Response) => {
-
-    const paises = await Paises.findAll();
-    res.json(paises)
-
+    try {
+        const paises = await Paises.findAll();
+        res.json(paises)
+    }
+    catch (error){
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        }); 
+    }
 }
 
 //Obtiene un Pais por ID
