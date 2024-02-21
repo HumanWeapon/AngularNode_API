@@ -1,7 +1,5 @@
 import {Request, Response} from 'express';
-import bcrypt from 'bcrypt';
 import { Empresas } from '../../models/negocio/empresas-model';
-import jwt from 'jsonwebtoken';
 
 //Obtiene todas las Empresas
 export const getAllEmpresas = async (req: Request, res: Response) => {
@@ -100,7 +98,7 @@ export const deleteEmpresa = async (req: Request, res: Response) => {
 //actualiza el Telefono en la base de datos
 export const updateEmpresa = async (req: Request, res: Response) => {
     const { id_empresa, id_tipo_empresa, nombre_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado} = req.body;
-try {
+
     const _empresa = await Empresas.findOne({
         where: {id_empresa: id_empresa}
     });
@@ -121,23 +119,15 @@ try {
          estado: estado
         
     });
-    res.json(empresa);
-}
-
-} catch (error) {
-    console.error('Error al actualizar la empresa:', error);
-    res.status(500).json({
-        msg: 'Hubo un error al actualizar la empresa',
-    });
-}
+    res.json(empresa) 
 
   }
-
+}
 
 //Inactiva la empresa
 export const inactivateEmpresa = async (req: Request, res: Response) => {
     const { id_empresa } = req.body;
-try {
+
     const empresa = await Empresas.findOne({
         where: {id_empresa: id_empresa}
     });
@@ -151,19 +141,12 @@ try {
         estado: 2
     });
     res.json(empresa);
-
-} catch (error) {
-    console.error('Error al inactivar el rol:', error);
-    res.status(500).json({
-        msg: 'Hubo un error al inactivar el rol',
-    });
-}
 }
 
 //Activa la empresa
 export const activateEmpresa = async (req: Request, res: Response) => {
     const { id_empresa } = req.body;
-try {
+
     const empresa = await Empresas.findOne({
         where: {id_empresa: id_empresa}
     });
@@ -176,11 +159,5 @@ try {
     await empresa.update({
         estado: 1
     });
-    res.json(empresa);
-} catch (error) {
-    console.error('Error al activar la empresa:', error);
-    res.status(500).json({
-        msg: 'Hubo un error al activar la empresa',
-    });
-}
+    res.json('Empresa activada');
 }

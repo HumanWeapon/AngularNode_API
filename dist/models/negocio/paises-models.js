@@ -46,6 +46,10 @@ exports.Paises = connection_1.default.define('paises', {
     estado: {
         type: sequelize_1.DataTypes.NUMBER,
         allowNull: false
+    },
+    cod_pais: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     }
 }, {
     tableName: 'tbl_me_paises',

@@ -41,6 +41,10 @@ export const Paises: any = dataBase.define('paises', {
     estado: {
         type: DataTypes.NUMBER,
         allowNull: false
+    },
+    cod_pais: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
     }, 
     {
