@@ -43,10 +43,10 @@ export const postTipo_Requisito = async (req: Request, res: Response) => {
         }else{
             const newTRE = await Tipo_Requisito.create({                
                 tipo_requisito: tipo_requisito,
-                descripcion: descripcion,                 
-                creado_por: creado_por,
+                descripcion: descripcion.toUpperCase(),                
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
@@ -103,8 +103,8 @@ export const updateTipo_Requisito = async (req: Request, res: Response) => {
     await _tiporeq.update({ 
         id_tipo_requisito: id_tipo_requisito,       
         tipo_requisito: tipo_requisito,
-        descripcion: descripcion,                
-        modificado_por: modificado_por,
+        descripcion: descripcion.toUpperCase(),              
+        modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
         estado
     });

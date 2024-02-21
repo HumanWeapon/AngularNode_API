@@ -41,11 +41,11 @@ export const postDirecContactos = async (req: Request, res: Response) => {
             const _direcontactos = await DireccionesContactos.create({
                 id_contacto: id_contacto,
                 id_tipo_direccion: id_tipo_direccion,
-                direccion: direccion,
-                descripcion: descripcion, 
-                creado_por: creado_por,
+                direccion: direccion.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
@@ -103,11 +103,11 @@ export const updateDirecContactos = async (req: Request, res: Response) => {
          id_direccion: id_direccion,
          id_contacto:id_contacto,
          id_tipo_direccion: id_tipo_direccion,
-         direccion: direccion,
-         descripcion: descripcion, 
-         creado_por: creado_por,
+         direccion: direccion.toUpperCase(),
+         descripcion: descripcion.toUpperCase(),
+         creado_por: creado_por.toUpperCase(),
          fecha_creacion: fecha_creacion,
-         modificado_por: modificado_por,
+         modificado_por: modificado_por.toUpperCase(),
          fecha_modificacion: fecha_modificacion,
          estado: estado
         

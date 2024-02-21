@@ -45,10 +45,10 @@ export const postTipoContacto = async (req: Request, res: Response) => {
         }else{
             const newTC = await TipoContacto.create({
                 tipo_contacto: tipo_contacto,
-                descripcion: descripcion, 
-                creado_por: creado_por,
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
@@ -111,10 +111,10 @@ export const updateTipoContacto = async (req: Request, res: Response) => {
     await _cont.update({
         id_tipo_contacto: id_tipo_contacto,
         tipo_contacto: tipo_contacto,
-        descripcion: descripcion, 
-        creado_por: creado_por,
+        descripcion: descripcion.toUpperCase(),
+        creado_por: creado_por.toUpperCase(),
         fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
+        modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
         estado: estado
     });

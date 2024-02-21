@@ -35,8 +35,8 @@ export const PostBitacora = async (req: Request, res: Response) => {
             fecha: fecha,
             id_usuario: id_usuario, 
             id_objeto: id_objeto,
-            accion: accion,
-            descripcion: descripcion
+            accion: accion.toUpperCase(),
+            descripcion: descripcion.toUpperCase(),
         })
         res.json({
             msg: 'El evento se ha registrado exitosamente',

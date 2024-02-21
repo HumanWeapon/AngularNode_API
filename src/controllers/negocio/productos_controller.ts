@@ -128,11 +128,11 @@ export const postProducto = async (req: Request, res: Response) => {
         }else{
             const newProduc = await Productos.create({
                 id_categoria: id_categoria,
-                producto: producto,
-                descripcion: descripcion, 
-                creado_por: creado_por,
+                producto: producto.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
@@ -203,11 +203,11 @@ export const updateProducto = async (req: Request, res: Response) => {
     await produc.update({
         id_producto: id_producto,
         id_categoria:id_categoria,
-        producto: producto,
-        descripcion: descripcion, 
-        creado_por: creado_por,
+        producto: producto.toUpperCase(),
+        descripcion: descripcion.toUpperCase(), 
+        creado_por: creado_por.toUpperCase(),
         fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
+        modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
         estado: estado
         

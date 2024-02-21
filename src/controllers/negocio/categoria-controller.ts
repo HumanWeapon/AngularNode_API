@@ -46,11 +46,11 @@ export const postCategoria = async (req: Request, res: Response) => {
             })
         }else{
             const categorias = await Categorias.create({
-                categoria: categoria,
-                descripcion: descripcion, 
-                creado_por: creado_por,
+                categoria: categoria.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
@@ -119,11 +119,11 @@ export const updateCategoria = async (req: Request, res: Response) => {
 
     const _categoria = await catego.update({
         id_categoria: id_categoria,
-        categoria: categoria,
-        descripcion: descripcion, 
-        creado_por: creado_por,
+        categoria: categoria.toUpperCase(),
+        descripcion: descripcion.toUpperCase(),
+        creado_por: creado_por.toUpperCase(),
         fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
+        modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
         estado: estado
         

@@ -112,12 +112,12 @@ export const postPyme = async (req: Request, res: Response) => {
     
             const newPyme = await Pyme.create({
                 id_tipo_empresa:id_tipo_empresa,
-                nombre_pyme: nombre_pyme,
-                categoria: categoria,
-                descripcion: descripcion, 
-                creado_por: creado_por,
+                nombre_pyme: nombre_pyme.toUpperCase(),
+                categoria: categoria.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: Date.now(),
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: Date.now(),
                 estado: estado
             })
@@ -175,13 +175,13 @@ export const updatePyme = async (req: Request, res: Response) => {
     await _pyme.update({
 
         id_pyme:id_pyme,
-        nombre_pyme: nombre_pyme,
+        nombre_pyme: nombre_pyme.toUpperCase(),
         id_tipo_empresa:id_tipo_empresa,
-        categoria: categoria,
-        descripcion: descripcion, 
-        creado_por: creado_por,
+        categoria: categoria.toUpperCase(),
+        descripcion: descripcion.toUpperCase(),
+        creado_por: creado_por.toUpperCase(),
         fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
+        modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
         estado: estado
         

@@ -45,11 +45,11 @@ export const postPais = async (req: Request, res: Response) => {
         })
     
             const paises = await Paises.create({
-                pais: pais,
-                descripcion: descripcion, 
-                creado_por: creado_por,
+                pais: pais.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: Date.now(),
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: Date.now(),
                 estado: estado
             })
@@ -106,11 +106,11 @@ export const updatePais = async (req: Request, res: Response) => {
     await _pais.update({
 
         id_pais: id_pais,
-        pais: pais,
-        descripcion: descripcion, 
-        creado_por: creado_por,
+        pais: pais.toUpperCase(),
+        descripcion: descripcion.toUpperCase(),
+        creado_por: creado_por.toUpperCase(),
         fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
+        modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
         estado: estado
         

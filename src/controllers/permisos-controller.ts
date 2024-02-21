@@ -85,9 +85,9 @@ export const postPermiso = async (req: Request, res: Response) => {
                 permiso_eliminacion: permiso_eliminacion,
                 permiso_actualizacion: permiso_actualizacion,
                 permiso_consultar: permiso_consultar,
-                creado_por: creado_por,
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion
             });
 
@@ -149,7 +149,7 @@ export const updatePermisos = async (req: Request, res: Response) => {
         permiso_eliminacion: permiso_eliminacion,
         permiso_actualizacion: permiso_actualizacion,
         permiso_consultar: permiso_consultar,        
-        modificado_por: modificado_por,
+        modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion
     });
     res.json(_permiso);

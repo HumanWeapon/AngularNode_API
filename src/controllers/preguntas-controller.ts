@@ -44,11 +44,11 @@ export const postPregunta = async (req: Request, res: Response) => {
             })
         }else{
             const newQuestion = await Preguntas.create({
-                pregunta: pregunta,
+                pregunta: pregunta.toUpperCase(),
                 estado_pregunta: estado_pregunta,
-                creado_por: creado_por,
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion
             })
             res.json(newQuestion)
@@ -112,9 +112,9 @@ export const updatePregunta = async (req: Request, res: Response) => {
 
     await _pregunta.update({
         id_pregunta: id_pregunta,
-        pregunta: pregunta,
+        pregunta: pregunta.toUpperCase(),
         estado_pregunta: estado_pregunta,
-        modificado_por: modificado_por,
+        modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion
     });
     res.json(_pregunta);

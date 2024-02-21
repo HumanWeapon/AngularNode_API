@@ -44,11 +44,11 @@ export const postCiudad = async (req: Request, res: Response) => {
             })
         }else{
             const newCuidad = await Ciudades.create({
-                ciudad: ciudad,
-                descripcion: descripcion, 
-                creado_por: creado_por,
+                ciudad: ciudad.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
@@ -110,11 +110,11 @@ export const updateCiudad = async (req: Request, res: Response) => {
 
     await _ciudad.update({
         id_ciudad: id_ciudad,
-        ciudad: ciudad,
-        descripcion: descripcion, 
-        creado_por: creado_por,
+        ciudad: ciudad.toUpperCase(),
+        descripcion: descripcion.toUpperCase(),
+        creado_por: creado_por.toUpperCase(),
         fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
+        modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
         estado: estado
     });

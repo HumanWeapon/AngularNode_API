@@ -42,11 +42,11 @@ export const postTipoEmpresa = async (req: Request, res: Response) => {
         }
         else {
             const newTE = await tipoEmpresa.create({
-                tipo_empresa: tipo_empresa,
-                descripcion: descripcion,
-                creado_por: creado_por,
+                tipo_empresa: tipo_empresa.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
@@ -100,11 +100,11 @@ export const updateTipoEmpresa = async (req: Request, res: Response) => {
     }
     await _emp.update({
         id_tipo_empresa: id_tipo_empresa,
-        tipo_empresa: tipo_empresa,
-        descripcion: descripcion,
-        creado_por: creado_por,
+        tipo_empresa: tipo_empresa.toUpperCase(),
+        descripcion: descripcion.toUpperCase(),
+        creado_por: creado_por.toUpperCase(),
         fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
+        modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
         estado: estado
     });

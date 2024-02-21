@@ -38,10 +38,10 @@ export const postTelefono = async (req: Request, res: Response) => {
     
             const newTtelefono = await tipoTelefono.create({
                 tipo_telefono: tipo_telefono,
-                descripcion: descripcion, 
-                creado_por: creado_por,
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
