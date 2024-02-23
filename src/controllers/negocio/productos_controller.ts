@@ -33,7 +33,7 @@ export const getAllOpProductos = async (req: Request, res: Response) => {
     }
 };
 
-export const getAllOpProductosActivos = async (req: Request, res: Response) => {
+export const getAllProductosActivos = async (req: Request, res: Response) => {
     try {
         const opproductos = await Productos.findAll({
             attributes: [
@@ -47,10 +47,6 @@ export const getAllOpProductosActivos = async (req: Request, res: Response) => {
                 'fecha_modificacion',
                 'estado'
             ],
-            include: [{
-                model: Categorias,
-                attributes: ['id_categoria', 'categoria', 'descripcion']
-            }],
             where: {
                 estado: 1 // Filtrar por estado igual a 1
             }

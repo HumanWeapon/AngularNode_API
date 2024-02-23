@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateProducto = exports.inactivateProducto = exports.updateProducto = exports.deleteProducto = exports.postProducto = exports.getProductos = exports.getAllProductos = exports.getOpProductos = exports.getAllOpProductosActivos = exports.getAllOpProductos = void 0;
+exports.activateProducto = exports.inactivateProducto = exports.updateProducto = exports.deleteProducto = exports.postProducto = exports.getProductos = exports.getAllProductos = exports.getOpProductos = exports.getAllProductosActivos = exports.getAllOpProductos = void 0;
 const productos_models_1 = require("../../models/negocio/productos-models");
 const paises_models_1 = require("../../models/negocio/paises-models");
 const contacto_models_1 = require("../../models/negocio/contacto-models");
@@ -43,7 +43,7 @@ const getAllOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.getAllOpProductos = getAllOpProductos;
-const getAllOpProductosActivos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllProductosActivos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const opproductos = yield productos_models_1.Productos.findAll({
             attributes: [
@@ -57,10 +57,6 @@ const getAllOpProductosActivos = (req, res) => __awaiter(void 0, void 0, void 0,
                 'fecha_modificacion',
                 'estado'
             ],
-            include: [{
-                    model: categoria_models_1.Categorias,
-                    attributes: ['id_categoria', 'categoria', 'descripcion']
-                }],
             where: {
                 estado: 1 // Filtrar por estado igual a 1
             }
@@ -74,7 +70,7 @@ const getAllOpProductosActivos = (req, res) => __awaiter(void 0, void 0, void 0,
         });
     }
 });
-exports.getAllOpProductosActivos = getAllOpProductosActivos;
+exports.getAllProductosActivos = getAllProductosActivos;
 const getOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id_producto } = req.body;
