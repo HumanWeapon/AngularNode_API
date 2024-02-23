@@ -40,6 +40,7 @@ const productos_1 = __importDefault(require("../routes/negocio/productos"));
 const empresas_1 = __importDefault(require("../routes/negocio/empresas"));
 const operacionEmpresas_1 = __importDefault(require("../routes/negocio/operacionEmpresas"));
 const direccionContacto_1 = __importDefault(require("../routes/negocio/direccionContacto"));
+const Empresas_Productos_1 = __importDefault(require("../routes/negocio/Operaciones/Empresas_Productos"));
 class Server {
     constructor() {
         console.log('Estoy en el constructor');
@@ -79,6 +80,7 @@ class Server {
         this.app.use('/api/empresa', empresas_1.default);
         this.app.use('/api/opempresa', operacionEmpresas_1.default);
         this.app.use('/api/direcontactos', direccionContacto_1.default);
+        this.app.use('/api/empresas_productos', Empresas_Productos_1.default);
     }
     midlewares() {
         this.app.use(express_1.default.urlencoded({ extended: true }));
