@@ -58,5 +58,4 @@ OperacionesEmpresasProductos.belongsTo(Productos, {
     foreignKey: 'id_producto',
     targetKey: 'id_producto',
     as: 'producto' // Alias para la relación
-  });
-  
+});

@@ -8,11 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.eliminarOperacionEmpresaProducto = exports.consultarOperacionEmpresaProductoPorId = exports.agregarOperacionEmpresaProducto = exports.consultarOperacionesEmpresasProductos = void 0;
+exports.eliminarOperacionEmpresaProducto = exports.consultarProductosNoRegistradosPorId = exports.consultarOperacionEmpresaProductoPorId = exports.agregarOperacionEmpresaProducto = exports.consultarOperacionesEmpresasProductos = void 0;
 const Empresas_Productos_1 = require("../../../models/negocio/Operaciones/Empresas_Productos");
 const productos_models_1 = require("../../../models/negocio/productos-models");
 const categoria_models_1 = require("../../../models/negocio/categoria-models");
+const connection_1 = __importDefault(require("../../../db/connection"));
 // Consultar todos los registros
 const consultarOperacionesEmpresasProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -71,6 +75,36 @@ const consultarOperacionEmpresaProductoPorId = (req, res) => __awaiter(void 0, v
     }
 });
 exports.consultarOperacionEmpresaProductoPorId = consultarOperacionEmpresaProductoPorId;
+const consultarProductosNoRegistradosPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT 
+            B.id_empresa,
+            A.id_producto,
+            A.id_categoria,
+            C.categoria,
+            A.producto,
+            A.descripcion
+        FROM mipyme.tbl_me_productos AS A
+        LEFT JOIN (SELECT id_empresa, id_producto, estado FROM mipyme.operaciones_empresas_productos 
+                WHERE estado = 1 AND id_empresa = ${id}) AS B
+        ON A.id_producto = B.id_producto
+        LEFT JOIN (SELECT id_categoria, categoria, estado FROM mipyme.tbl_me_categoria_productos WHERE estado = 1) AS C
+        ON A.id_categoria = C.id_categoria
+        WHERE A.estado = 1
+            AND B.id_empresa IS NULL
+            AND C.categoria is NOT NULL
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        console.error('Error al consultar productos no registrados:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.consultarProductosNoRegistradosPorId = consultarProductosNoRegistradosPorId;
 // Eliminar un registro por ID
 const eliminarOperacionEmpresaProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;

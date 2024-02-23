@@ -3,6 +3,7 @@ import { OperacionesEmpresasProductos } from '../../../models/negocio/Operacione
 import sequelize from 'sequelize/types/sequelize';
 import { Productos } from '../../../models/negocio/productos-models';
 import { Categorias } from '../../../models/negocio/categoria-models';
+import db from '../../../db/connection';
 
 // Consultar todos los registros
 export const consultarOperacionesEmpresasProductos = async (req: Request, res: Response) => {
@@ -60,6 +61,36 @@ export const consultarOperacionEmpresaProductoPorId = async (req: Request, res: 
     }
 };
 
+export const consultarProductosNoRegistradosPorId = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT 
+            B.id_empresa,
+            A.id_producto,
+            A.id_categoria,
+            C.categoria,
+            A.producto,
+            A.descripcion
+        FROM mipyme.tbl_me_productos AS A
+        LEFT JOIN (SELECT id_empresa, id_producto, estado FROM mipyme.operaciones_empresas_productos 
+                WHERE estado = 1 AND id_empresa = ${id}) AS B
+        ON A.id_producto = B.id_producto
+        LEFT JOIN (SELECT id_categoria, categoria, estado FROM mipyme.tbl_me_categoria_productos WHERE estado = 1) AS C
+        ON A.id_categoria = C.id_categoria
+        WHERE A.estado = 1
+            AND B.id_empresa IS NULL
+            AND C.categoria is NOT NULL
+        `;
+
+        const [results, metadata] = await db.query(query);
+
+        res.json(results);
+    } catch (error) {
+        console.error('Error al consultar productos no registrados:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+};
 
 
 // Eliminar un registro por ID

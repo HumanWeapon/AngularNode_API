@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
 import { Categorias } from './categoria-models'; // Asegúrate de que la importación sea correcta
+import { OperacionesEmpresasProductos } from './Operaciones/Empresas_Productos';
 
 export const Productos: any = dataBase.define('productos', {
     id_producto: {
