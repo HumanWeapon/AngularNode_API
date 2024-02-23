@@ -47,11 +47,11 @@ const postPregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         else {
             const newQuestion = yield preguntas_model_1.Preguntas.create({
-                pregunta: pregunta,
+                pregunta: pregunta.toUpperCase(),
                 estado_pregunta: estado_pregunta,
-                creado_por: creado_por,
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion
             });
             res.json(newQuestion);
@@ -109,9 +109,9 @@ const updatePregunta = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         yield _pregunta.update({
             id_pregunta: id_pregunta,
-            pregunta: pregunta,
+            pregunta: pregunta.toUpperCase(),
             estado_pregunta: estado_pregunta,
-            modificado_por: modificado_por,
+            modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: fecha_modificacion
         });
         res.json(_pregunta);

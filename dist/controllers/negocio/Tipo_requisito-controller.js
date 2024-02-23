@@ -48,10 +48,10 @@ const postTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, funct
         else {
             const newTRE = yield Tipo_requisito_models_1.Tipo_Requisito.create({
                 tipo_requisito: tipo_requisito,
-                descripcion: descripcion,
-                creado_por: creado_por,
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
@@ -106,8 +106,8 @@ const updateTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, fun
         yield _tiporeq.update({
             id_tipo_requisito: id_tipo_requisito,
             tipo_requisito: tipo_requisito,
-            descripcion: descripcion,
-            modificado_por: modificado_por,
+            descripcion: descripcion.toUpperCase(),
+            modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: fecha_modificacion,
             estado
         });

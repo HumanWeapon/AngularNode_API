@@ -78,11 +78,11 @@ const postOpEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         else {
             const _opempresa = yield operacionEmpresas_models_1.operacionEmpresas.create({
                 id_tipo_empresa: id_tipo_empresa,
-                nombre_empresa: nombre_empresa,
-                descripcion: descripcion,
-                creado_por: creado_por,
+                nombre_empresa: nombre_empresa.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });

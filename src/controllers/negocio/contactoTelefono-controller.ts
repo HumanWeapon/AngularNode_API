@@ -14,7 +14,7 @@ export const getAllContactosTelefono = async (req: Request, res: Response) => {
 //Obtiene un contacto de la base de datos     
 export const getContactoTelefono = async (req: Request, res: Response) => {
     const { id_contacto } = req.body;
-
+try {
     const _contactoT = await ContactoTelefono.findAll({
         where: {id_contacto: id_contacto}
     });
@@ -26,6 +26,12 @@ export const getContactoTelefono = async (req: Request, res: Response) => {
             msg: `No existen datos: ${id_contacto}`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Inserta un contacto en la base de datos

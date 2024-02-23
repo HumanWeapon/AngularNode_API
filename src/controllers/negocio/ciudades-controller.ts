@@ -14,7 +14,7 @@ export const getAllCiudades = async (req: Request, res: Response) => {
 //Obtiene una ciudad de la base de datos     
 export const getCiudad = async (req: Request, res: Response) => {
     const { ciudad } = req.body;
-
+try {
     const _ciudad = await Ciudades.findOne({
         where: {ciudad: ciudad}
     });
@@ -26,6 +26,12 @@ export const getCiudad = async (req: Request, res: Response) => {
             msg: `La ciudad no existe: ${ciudad}`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Inserta una ciudad en la base de datos

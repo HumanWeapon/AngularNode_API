@@ -10,17 +10,23 @@ export const getAllEmpresas = async (req: Request, res: Response) => {
 //Obtiene todas las Empresas pyme o exportadoreas
 export const getEmpresasPymes = async (req: Request, res: Response) => {
     const { id_tipo_empresa } = req.body;
-
+try {
     const empresa = await Empresas.findAll({
         where: {id_tipo_empresa: id_tipo_empresa}
     });
     res.json(empresa)
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Obtiene una Empresa por ID
 export const getEmpresa = async (req: Request, res: Response) => {
     const { id_empresa } = req.body;
-
+try {
     const _empresa = await Empresas.findOne({
         where: {id_empresa: id_empresa}
     });
@@ -32,6 +38,12 @@ export const getEmpresa = async (req: Request, res: Response) => {
             msg: `el ID de la Empresa no existe: ${id_empresa}`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 // Inserta una nueva Empresa en la base de datos
@@ -98,7 +110,7 @@ export const deleteEmpresa = async (req: Request, res: Response) => {
 //actualiza el Telefono en la base de datos
 export const updateEmpresa = async (req: Request, res: Response) => {
     const { id_empresa, id_tipo_empresa, nombre_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado} = req.body;
-
+try {
     const _empresa = await Empresas.findOne({
         where: {id_empresa: id_empresa}
     });
@@ -122,12 +134,19 @@ export const updateEmpresa = async (req: Request, res: Response) => {
     res.json(empresa) 
 
   }
+
+} catch (error) {
+    console.error('Error al actualizar la empresa:', error);
+    res.status(500).json({ 
+        msg: 'Hubo un error al actualizar la empresa',
+});
+}
 }
 
 //Inactiva la empresa
 export const inactivateEmpresa = async (req: Request, res: Response) => {
     const { id_empresa } = req.body;
-
+try {
     const empresa = await Empresas.findOne({
         where: {id_empresa: id_empresa}
     });
@@ -141,12 +160,20 @@ export const inactivateEmpresa = async (req: Request, res: Response) => {
         estado: 2
     });
     res.json(empresa);
+
+} catch (error) {
+    console.error('Error al inactivar la empresa:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al inactivar la empresa',
+
+    });
+}
 }
 
 //Activa la empresa
 export const activateEmpresa = async (req: Request, res: Response) => {
     const { id_empresa } = req.body;
-
+try {
     const empresa = await Empresas.findOne({
         where: {id_empresa: id_empresa}
     });
@@ -160,4 +187,13 @@ export const activateEmpresa = async (req: Request, res: Response) => {
         estado: 1
     });
     res.json('Empresa activada');
+
+
+} catch (error) {
+    console.error('Error al activar la empres:', error);
+    res.status(500).json({
+        msg: 'Hubo un error al activar la empresa',
+
+    });
+}
 }

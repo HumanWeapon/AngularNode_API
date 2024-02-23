@@ -72,9 +72,9 @@ const postPreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, func
                     id_pregunta: id_pregunta,
                     id_usuario: id_usuario,
                     respuesta: hashedresponse,
-                    creado_por: creado_por,
+                    creado_por: creado_por.toUpperCase(),
                     fecha_creacion: fecha_creacion,
-                    modificado_por: modificado_por,
+                    modificado_por: modificado_por.toUpperCase(),
                     fecha_modificacion: fecha_modificacion
                 });
                 res.json({

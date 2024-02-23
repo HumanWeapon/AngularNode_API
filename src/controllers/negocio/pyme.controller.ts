@@ -86,7 +86,7 @@ export const getAllPymes = async (req: Request, res: Response) => {
 //Obtiene una Pyme por ID
 export const getPyme = async (req: Request, res: Response) => {
     const { id_pyme } = req.body;
-
+try {
     const _pyme = await Pyme.findOne({
         where: {id_pyme: id_pyme}
     });
@@ -98,6 +98,13 @@ export const getPyme = async (req: Request, res: Response) => {
             msg: `el ID de la pregunta no existe: ${id_pyme}`
         })
     }
+
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 // Inserta una nueva Pyme en la base de datos

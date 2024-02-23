@@ -14,7 +14,7 @@ export const getAllContactos = async (req: Request, res: Response) => {
 //Obtiene un contacto de la base de datos     
 export const getContacto = async (req: Request, res: Response) => {
     const { dni } = req.body;
-
+try {
     const _contacto = await Contacto.findAll({
         where: {dni: dni}
     });
@@ -27,6 +27,12 @@ export const getContacto = async (req: Request, res: Response) => {
             msg: `El contacto con el RTN:${dni} no existe`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 //Inserta un contacto en la base de datos
 export const postContacto = async (req: Request, res: Response) => {

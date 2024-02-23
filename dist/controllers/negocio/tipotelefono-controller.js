@@ -42,10 +42,10 @@ const postTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
         const newTtelefono = yield tipo_telefono_models_1.tipoTelefono.create({
             tipo_telefono: tipo_telefono,
-            descripcion: descripcion,
-            creado_por: creado_por,
+            descripcion: descripcion.toUpperCase(),
+            creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
-            modificado_por: modificado_por,
+            modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: fecha_modificacion,
             estado: estado
         });

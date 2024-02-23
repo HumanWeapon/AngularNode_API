@@ -47,11 +47,11 @@ const postCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         else {
             const newCuidad = yield ciudades_models_1.Ciudades.create({
-                ciudad: ciudad,
-                descripcion: descripcion,
-                creado_por: creado_por,
+                ciudad: ciudad.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
@@ -110,11 +110,11 @@ const updateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         yield _ciudad.update({
             id_ciudad: id_ciudad,
-            ciudad: ciudad,
-            descripcion: descripcion,
-            creado_por: creado_por,
+            ciudad: ciudad.toUpperCase(),
+            descripcion: descripcion.toUpperCase(),
+            creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
-            modificado_por: modificado_por,
+            modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: fecha_modificacion,
             estado: estado
         });

@@ -51,10 +51,10 @@ const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 id_tipo_telefono: id_tipo_telefono,
                 telefono: telefono,
                 extencion: extencion,
-                descripcion: descripcion,
-                creado_por: creado_por,
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
@@ -116,10 +116,10 @@ const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
             id_contacto: id_contacto,
             id_tipo_telefono: id_tipo_telefono,
             extencion: extencion,
-            descripcion: descripcion,
-            creado_por: creado_por,
+            descripcion: descripcion.toUpperCase(),
+            creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
-            modificado_por: modificado_por,
+            modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: fecha_modificacion,
             estado: estado
         });

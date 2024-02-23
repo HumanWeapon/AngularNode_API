@@ -48,10 +48,10 @@ const postTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, functio
         else {
             const newTC = yield tipoContacto_models_1.TipoContacto.create({
                 tipo_contacto: tipo_contacto,
-                descripcion: descripcion,
-                creado_por: creado_por,
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
@@ -111,10 +111,10 @@ const updateTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, funct
         yield _cont.update({
             id_tipo_contacto: id_tipo_contacto,
             tipo_contacto: tipo_contacto,
-            descripcion: descripcion,
-            creado_por: creado_por,
+            descripcion: descripcion.toUpperCase(),
+            creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
-            modificado_por: modificado_por,
+            modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: fecha_modificacion,
             estado: estado
         });

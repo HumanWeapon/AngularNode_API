@@ -14,7 +14,7 @@ export const getAllRoles = async (req: Request, res: Response) => {
 //Obtiene un rol de la base de datos
 export const getRol = async (req: Request, res: Response) => {
     const { id_rol } = req.body;
-
+try {   
     const _rol = await Roles.findOne({
         where: {id_rol: id_rol}
     });
@@ -26,6 +26,12 @@ export const getRol = async (req: Request, res: Response) => {
             msg: `el Id del rol no existe: ${id_rol}`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Inserta un rol en la base de datos

@@ -48,11 +48,11 @@ const postCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
         else {
             const categorias = yield categoria_models_1.Categorias.create({
-                categoria: categoria,
-                descripcion: descripcion,
-                creado_por: creado_por,
+                categoria: categoria.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
@@ -105,11 +105,11 @@ const updateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     const _categoria = yield catego.update({
         id_categoria: id_categoria,
-        categoria: categoria,
-        descripcion: descripcion,
-        creado_por: creado_por,
+        categoria: categoria.toUpperCase(),
+        descripcion: descripcion.toUpperCase(),
+        creado_por: creado_por.toUpperCase(),
         fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por,
+        modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
         estado: estado
     });

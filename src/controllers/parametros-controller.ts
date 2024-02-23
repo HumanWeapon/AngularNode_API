@@ -14,7 +14,7 @@ export const getAllParametros = async (req: Request, res: Response) => {
 //Obtiene un parametro de la base de datos
 export const getParametro = async (req: Request, res: Response) => {
     const { id_parametro } = req.body;
-
+try {
     const _parametro = await Parametros.findOne({
         where: {id_parametro: id_parametro}
     });
@@ -26,6 +26,12 @@ export const getParametro = async (req: Request, res: Response) => {
             msg: `el ID del parametro: ${id_parametro} no existe `
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Inserta un parametro en la base de datos
@@ -122,6 +128,7 @@ export const updateParametro = async (req: Request, res: Response) => {
             modificado_por: modificado_por.toUpperCase(),        
         });
         res.json(_parametro);
+        
     } catch (error) {
         console.error('Error al actualizar el parámetro:', error);
         res.status(500).json({

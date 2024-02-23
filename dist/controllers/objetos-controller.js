@@ -47,12 +47,12 @@ const postObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         else {
             const newRol = yield objetos_models_1.Objetos.create({
-                objeto: objeto,
-                descripcion: descripcion,
-                tipo_objeto: tipo_objeto,
-                creado_por: creado_por,
+                objeto: objeto.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                tipo_objeto: tipo_objeto.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado_objeto: estado_objeto
             });

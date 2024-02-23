@@ -15,7 +15,7 @@ export const getAllCategorias = async (req: Request, res: Response) => {
 // Obtiene una categoria de la base de datos por su ID
 export const getCategoria = async (req: Request, res: Response) => {
     const { id_categoria } = req.body;
-
+try {
     const _categoria = await Categorias.findOne({
         where: {id_categoria: id_categoria}
     });
@@ -27,6 +27,12 @@ export const getCategoria = async (req: Request, res: Response) => {
             msg: `el ID de la categoria no existe: ${id_categoria}`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 

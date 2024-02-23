@@ -14,7 +14,7 @@ export const getAllObjetos = async (req: Request, res: Response) => {
 //Obtiene un objeto de la base de datos     
 export const getObjeto = async (req: Request, res: Response) => {
     const { objeto } = req.body;
-
+try{
     const _objeto = await Objetos.findOne({
         where: {objeto: objeto}
     });
@@ -26,6 +26,12 @@ export const getObjeto = async (req: Request, res: Response) => {
             msg: `el  objeto no existe: ${objeto}`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Inserta un objeto en la base de datos

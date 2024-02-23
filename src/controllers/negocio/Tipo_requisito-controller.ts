@@ -12,7 +12,7 @@ export const getAllTipo_Requisito = async (req: Request, res: Response) => {
 //Obtiene un tipo de requisito de la base de datos
 export const getTipo_Requisito = async (req: Request, res: Response) => {
     const { tipo_requisito } = req.body;
-
+try {
     const _tiporeq = await Tipo_Requisito.findOne({
         where: {tipo_requisito: tipo_requisito}
     });
@@ -24,6 +24,12 @@ export const getTipo_Requisito = async (req: Request, res: Response) => {
             msg: `el Id del tipo de permiso no existe: ${tipo_requisito}`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Inserta un tipo_requisito en la base de datos

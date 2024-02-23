@@ -184,7 +184,7 @@ export const preguntasRespuestas = async (req: Request, res: Response) => {
 //Inactiva la pregunta de la DBA
 export const inactivatePreguntaUsuario = async (req: Request, res: Response) => {
     const { pregunta } = req.body;
-
+try {
     const _pregunta = await Preguntas.findOne({
         where: {pregunta: pregunta}
     });
@@ -200,12 +200,19 @@ export const inactivatePreguntaUsuario = async (req: Request, res: Response) => 
     res.json({
         msg: 'Pregunta: '+ pregunta+  ' inactivado exitosamente',
     });
+
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Activa la pregunta de la DBA
 export const activatePreguntaUsuario = async (req: Request, res: Response) => {
     const { pregunta } = req.body;
-
+try {
     const _pregunta = await Preguntas.findOne({
         where: {pregunta: pregunta}
     });
@@ -221,5 +228,12 @@ export const activatePreguntaUsuario = async (req: Request, res: Response) => {
     res.json({
         msg: 'Pregunta: '+ pregunta+  ' ha sido activado exitosamente',
     });
+
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 

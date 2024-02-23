@@ -10,7 +10,7 @@ export const getAllDirecContactos = async (req: Request, res: Response) => {
 //Obtiene una Empresa por ID
 export const getDirecContactos = async (req: Request, res: Response) => {
     const { id_contacto } = req.body;
-
+try {
     const _direcontactos = await DireccionesContactos.findAll({
         where: {id_contacto: id_contacto}
     });
@@ -22,6 +22,12 @@ export const getDirecContactos = async (req: Request, res: Response) => {
             msg: `el ID de la Direccion Contacto no existe: ${id_contacto}`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 // Inserta una nueva Empresa en la base de datos

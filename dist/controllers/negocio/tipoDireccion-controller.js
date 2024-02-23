@@ -48,10 +48,10 @@ const postTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, functi
         else {
             const newTD = yield tipoDireccion_models_1.TipoDireccion.create({
                 tipo_direccion: tipo_direccion,
-                descripcion: descripcion,
-                creado_por: creado_por,
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
@@ -111,10 +111,10 @@ const updateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, func
         yield _direc.update({
             id_tipo_direccion: id_tipo_direccion,
             tipo_direccion: tipo_direccion,
-            descripcion: descripcion,
-            creado_por: creado_por,
+            descripcion: descripcion.toUpperCase(),
+            creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
-            modificado_por: modificado_por,
+            modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: fecha_modificacion,
             estado: estado
         });

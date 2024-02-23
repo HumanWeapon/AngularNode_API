@@ -14,7 +14,7 @@ export const getAllTipoContactos = async (req: Request, res: Response) => {
 //Obtiene un contacto de la base de datos     
 export const getTipoContacto = async (req: Request, res: Response) => {
     const { tipo_contacto } = req.body;
-
+try {
     const _cont = await TipoContacto.findOne({
         where: {tipo_contacto: tipo_contacto}
     });
@@ -26,6 +26,13 @@ export const getTipoContacto = async (req: Request, res: Response) => {
             msg: `El Contacto no existe: ${tipo_contacto}`
         })
     }
+
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Inserta un contacto en la base de datos

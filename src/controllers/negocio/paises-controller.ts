@@ -20,6 +20,7 @@ export const getAllPaises = async (req: Request, res: Response) => {
 //Obtiene un Pais por ID
 export const getPais = async (req: Request, res: Response) => {
     const { id_pais } = req.body;
+try {
 
     const _pais = await Paises.findAll({
         where: {id_pais: id_pais}
@@ -32,6 +33,13 @@ export const getPais = async (req: Request, res: Response) => {
             msg: `el ID del Pais no existe: ${id_pais}`
         })
     }
+
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 // Inserta una nueva Empresa en la base de datos

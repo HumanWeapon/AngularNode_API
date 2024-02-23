@@ -14,7 +14,7 @@ export const getAllTipoDirecciones = async (req: Request, res: Response) => {
 //Obtiene una direccion de la base de datos     
 export const getTipoDireccion = async (req: Request, res: Response) => {
     const { tipo_direccion } = req.body;
-
+try {
     const _direc = await TipoDireccion.findOne({
         where: {tipo_direccion: tipo_direccion}
     });
@@ -26,6 +26,12 @@ export const getTipoDireccion = async (req: Request, res: Response) => {
             msg: `La dirección no existe: ${tipo_direccion}`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Inserta una direccion en la base de datos

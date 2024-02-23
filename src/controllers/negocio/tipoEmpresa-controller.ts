@@ -12,7 +12,7 @@ export const getAllTipoEmpresa = async (req: Request, res: Response) => {
 //Obtiene un registro de la base de datos     
 export const getTipoEmpresa = async (req: Request, res: Response) => {
     const { tipo_empresa } = req.body;
-
+try {
     const _emp  = await tipoEmpresa.findOne({
         where: {tipo_empresa: tipo_empresa}
     });
@@ -24,6 +24,12 @@ export const getTipoEmpresa = async (req: Request, res: Response) => {
             msg: `El Tipo de empresa buscado no existe en la BD: ${tipo_empresa}`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Inserta un registro en la base de datos

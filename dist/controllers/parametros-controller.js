@@ -47,13 +47,13 @@ const postParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
         else {
             yield parametros_models_1.Parametros.create({
-                parametro: parametro,
+                parametro: parametro.toUpperCase(),
                 valor: valor,
                 estado_parametro: estado_parametro,
                 fecha_creacion: fecha_creacion,
                 fecha_modificacion: fecha_modificacion,
-                creado_por: creado_por,
-                modificado_por: modificado_por
+                creado_por: creado_por.toUpperCase(),
+                modificado_por: modificado_por.toUpperCase(),
             });
             res.json({
                 msg: 'El Parametro: ' + parametro + ' ha sido creada exitosamente',
@@ -114,11 +114,11 @@ const updateParametro = (req, res) => __awaiter(void 0, void 0, void 0, function
         }
         yield _parametro.update({
             id_parametro: id_parametro,
-            parametro: parametro,
+            parametro: parametro.toUpperCase(),
             valor: valor,
             estado_parametro: estado_parametro,
             fecha_modificacion: fecha_modificacion,
-            modificado_por: modificado_por
+            modificado_por: modificado_por.toUpperCase(),
         });
         res.json(_parametro);
     }

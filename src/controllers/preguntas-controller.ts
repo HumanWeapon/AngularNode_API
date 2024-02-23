@@ -14,7 +14,7 @@ export const getAllPreguntas = async (req: Request, res: Response) => {
 //Obtiene una pregunta de la base de datos
 export const getPregunta = async (req: Request, res: Response) => {
     const { id_pregunta } = req.body;
-
+try{
     const _pregunta = await Preguntas.findOne({
         where: {id_pregunta: id_pregunta}
     });
@@ -26,6 +26,12 @@ export const getPregunta = async (req: Request, res: Response) => {
             msg: `el ID de la pregunta no existe: ${id_pregunta}`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Inserta una pregunta en la base de datos

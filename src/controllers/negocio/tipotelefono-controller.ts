@@ -11,7 +11,7 @@ export const getAllTelefonos = async (req: Request, res: Response) => {
 // Obtiene un teléfono de la base de datos por su ID
 export const getTelefono = async (req: Request, res: Response) => {
     const { id_tipo_telefono } = req.body;
-
+try {   
     const _telefono = await tipoTelefono.findOne({
         where: {id_tipo_telefono: id_tipo_telefono}
     });
@@ -23,6 +23,13 @@ export const getTelefono = async (req: Request, res: Response) => {
             msg: `el ID de la pregunta no existe: ${id_tipo_telefono}`
         })
     }
+
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 

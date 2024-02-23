@@ -23,7 +23,7 @@ export const getAllPermisos = async (req: Request, res: Response) => {
 //Obtiene un permiso de la base de datos
 export const getPermiso = async (req: Request, res: Response) => {
     const { id_permisos } = req.body;
-
+try {
     const _permiso = await Permisos.findOne({
         where: {id_permisos: id_permisos}
     });
@@ -35,6 +35,12 @@ export const getPermiso = async (req: Request, res: Response) => {
             msg: `el Id del permiso no existe: ${id_permisos}`
         })
     }
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 //Inserta un nuevo permiso 
@@ -129,9 +135,9 @@ export const deletePermiso = async (req: Request, res: Response) => {
 
 //actualiza el permiso en la base de datos
 export const updatePermisos = async (req: Request, res: Response) => {
-    try {
+   
         const { id_permisos, id_rol, id_objeto, permiso_insercion, permiso_eliminacion, permiso_actualizacion, permiso_consultar, modificado_por, fecha_modificacion  } = req.body;
-
+        try {
     const _permiso = await Permisos.findOne({
         where: {id_permisos: id_permisos}
     });
@@ -164,9 +170,9 @@ export const updatePermisos = async (req: Request, res: Response) => {
 
 //Inactiva el usuario de la DBA
 export const inactivatePermiso = async (req: Request, res: Response) => {
-    try {
+   
         const { id_permisos } = req.body;
-
+        try {
         const _permiso = await Permisos.findOne({
             where: {id_permisos: id_permisos}
         });
@@ -190,9 +196,9 @@ export const inactivatePermiso = async (req: Request, res: Response) => {
 
 //Activa el usuario de la DBA
 export const activatePermiso = async (req: Request, res: Response) => {
-    try {
+   
         const { id_permisos } = req.body;
-
+        try {
         const _permiso= await Permisos.findOne({
             where: {id_permisos:id_permisos}
         });

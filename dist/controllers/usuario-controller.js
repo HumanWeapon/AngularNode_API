@@ -127,12 +127,12 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         else {
             const newUser = yield usuario_models_1.User.create({
-                creado_por: creado_por,
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: Date.now(),
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: Date.now(),
-                usuario: usuario,
-                nombre_usuario: nombre_usuario,
+                usuario: usuario.toUpperCase(),
+                nombre_usuario: nombre_usuario.toUpperCase(),
                 correo_electronico: correo_electronico,
                 estado_usuario: estado_usuario,
                 contrasena: hashedPassword,

@@ -47,12 +47,12 @@ const postRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         else {
             const newrol = yield roles_models_1.Roles.create({
-                rol: rol,
-                descripcion: descripcion,
+                rol: rol.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
                 estado_rol: estado_rol,
-                creado_por: creado_por,
+                creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por,
+                modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion
             });
             res.json(newrol);
@@ -110,10 +110,10 @@ const updateRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         yield _rol.update({
             id_rol: id_rol,
-            rol: rol,
-            descripcion: descripcion,
+            rol: rol.toUpperCase(),
+            descripcion: descripcion.toUpperCase(),
             estado_rol: estado_rol,
-            modificado_por: modificado_por,
+            modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: fecha_modificacion
         });
         res.json(_rol);

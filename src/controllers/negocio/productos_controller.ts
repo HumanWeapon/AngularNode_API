@@ -96,7 +96,7 @@ export const getAllProductos = async (req: Request, res: Response) => {
 // Obtiene una categoria de la base de datos por su ID
 export const getProductos = async (req: Request, res: Response) => {
     const { producto } = req.body;
-
+try {
     const _producto = await Productos.findOne({
         where: {producto: producto}
     });
@@ -108,6 +108,13 @@ export const getProductos = async (req: Request, res: Response) => {
             msg: `el producto no existe: ${producto}`
         })
     }
+
+} catch (error) {
+    res.status(400).json({
+        msg: 'Contactate con el administrador',
+        error
+    }); 
+}
 }
 
 
@@ -224,9 +231,9 @@ export const updateProducto = async (req: Request, res: Response) => {
 
 //Inactiva el usuario de la DBA
 export const inactivateProducto = async (req: Request, res: Response) => {
-    try {   
+  
     const { producto } = req.body;
-
+try {
     const productos = await Productos.findOne({
         where: {producto: producto}
     });
@@ -250,10 +257,9 @@ export const inactivateProducto = async (req: Request, res: Response) => {
 }
 //Activa el usuario de la DBA
 export const activateProducto = async (req: Request, res: Response) => {
-    try {
-
+   
     const {producto } = req.body;
-
+try {
     const productos = await Productos.findOne({
         where: {producto: producto}
     });
