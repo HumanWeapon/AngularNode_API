@@ -17,7 +17,7 @@ export const OperacionesEmpresasProductos: any = dataBase.define('operaciones_em
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    Descripcion: {
+    descripcion: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -43,7 +43,7 @@ export const OperacionesEmpresasProductos: any = dataBase.define('operaciones_em
     }
 }, 
 {
-    tableName: 'Operaciones_Empresas_Productos',
+    tableName: 'operaciones_empresas_productos',
     schema: 'mipyme',
     timestamps: false
 });
@@ -58,4 +58,5 @@ OperacionesEmpresasProductos.belongsTo(Productos, {
     foreignKey: 'id_producto',
     targetKey: 'id_producto',
     as: 'producto' // Alias para la relación
-});
+  });
+  

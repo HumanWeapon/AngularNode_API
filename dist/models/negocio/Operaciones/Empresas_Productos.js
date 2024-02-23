@@ -22,7 +22,7 @@ exports.OperacionesEmpresasProductos = connection_1.default.define('operaciones_
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
-    Descripcion: {
+    descripcion: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
@@ -47,7 +47,7 @@ exports.OperacionesEmpresasProductos = connection_1.default.define('operaciones_
         allowNull: false
     }
 }, {
-    tableName: 'Operaciones_Empresas_Productos',
+    tableName: 'operaciones_empresas_productos',
     schema: 'mipyme',
     timestamps: false
 });

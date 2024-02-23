@@ -7,7 +7,7 @@ const empresasProductos = Router();
 
 empresasProductos.post('/agregarOperacionEmpresaProducto', validarToken, agregarOperacionEmpresaProducto);
 empresasProductos.get('/consultarOperacionesEmpresasProductos', validarToken, consultarOperacionesEmpresasProductos);
-empresasProductos.get('/consultarOperacionEmpresaProductoPorId:id', validarToken, consultarOperacionEmpresaProductoPorId);
-empresasProductos.delete('/eliminarOperacionEmpresaProducto:id', validarToken, eliminarOperacionEmpresaProducto);
+empresasProductos.get('/consultarOperacionEmpresaProductoPorId/:id', validarToken, consultarOperacionEmpresaProductoPorId);
+empresasProductos.delete('/eliminarOperacionEmpresaProducto/:id', validarToken, eliminarOperacionEmpresaProducto);
 
 export default empresasProductos;

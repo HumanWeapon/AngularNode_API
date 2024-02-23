@@ -11,6 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.eliminarOperacionEmpresaProducto = exports.consultarOperacionEmpresaProductoPorId = exports.agregarOperacionEmpresaProducto = exports.consultarOperacionesEmpresasProductos = void 0;
 const Empresas_Productos_1 = require("../../../models/negocio/Operaciones/Empresas_Productos");
+const productos_models_1 = require("../../../models/negocio/productos-models");
+const categoria_models_1 = require("../../../models/negocio/categoria-models");
 // Consultar todos los registros
 const consultarOperacionesEmpresasProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -35,18 +37,36 @@ const agregarOperacionEmpresaProducto = (req, res) => __awaiter(void 0, void 0, 
     }
 });
 exports.agregarOperacionEmpresaProducto = agregarOperacionEmpresaProducto;
-// Consultar un registro por ID
+// Consultar todos los registros por ID de empresa
 const consultarOperacionEmpresaProductoPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const operacion = yield Empresas_Productos_1.OperacionesEmpresasProductos.findByPk(id);
-        if (!operacion) {
-            return res.status(404).json({ msg: 'Operación empresa producto no encontrada' });
-        }
-        res.json(operacion);
+        // Buscar todas las operaciones que corresponden al ID de la empresa
+        const operaciones = yield Empresas_Productos_1.OperacionesEmpresasProductos.findAll({
+            where: { id_empresa: id },
+            include: [
+                {
+                    model: productos_models_1.Productos,
+                    as: 'producto',
+                    include: [
+                        {
+                            model: categoria_models_1.Categorias,
+                            required: true,
+                            as: 'categoria',
+                            attributes: ['categoria'],
+                            where: { estado: 1 } // Condición para la categoría
+                        }
+                    ],
+                    required: true,
+                    attributes: ['producto', 'descripcion'],
+                    where: { estado: 1 }
+                }
+            ]
+        });
+        res.json(operaciones);
     }
     catch (error) {
-        console.error('Error al consultar la operación empresa producto por ID:', error);
+        console.error('Error al consultar las operaciones empresa producto por ID de empresa:', error);
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 });

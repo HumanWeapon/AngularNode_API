@@ -9,6 +9,6 @@ const validarToken_1 = __importDefault(require("../../validarToken"));
 const empresasProductos = (0, express_1.Router)();
 empresasProductos.post('/agregarOperacionEmpresaProducto', validarToken_1.default, Empresas_Productos_controller_1.agregarOperacionEmpresaProducto);
 empresasProductos.get('/consultarOperacionesEmpresasProductos', validarToken_1.default, Empresas_Productos_controller_1.consultarOperacionesEmpresasProductos);
-empresasProductos.get('/consultarOperacionEmpresaProductoPorId:id', validarToken_1.default, Empresas_Productos_controller_1.consultarOperacionEmpresaProductoPorId);
-empresasProductos.delete('/eliminarOperacionEmpresaProducto:id', validarToken_1.default, Empresas_Productos_controller_1.eliminarOperacionEmpresaProducto);
+empresasProductos.get('/consultarOperacionEmpresaProductoPorId/:id', validarToken_1.default, Empresas_Productos_controller_1.consultarOperacionEmpresaProductoPorId);
+empresasProductos.delete('/eliminarOperacionEmpresaProducto/:id', validarToken_1.default, Empresas_Productos_controller_1.eliminarOperacionEmpresaProducto);
 exports.default = empresasProductos;
