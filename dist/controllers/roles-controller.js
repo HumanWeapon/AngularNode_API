@@ -20,15 +20,23 @@ exports.getAllRoles = getAllRoles;
 //Obtiene un rol de la base de datos
 const getRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_rol } = req.body;
-    const _rol = yield roles_models_1.Roles.findOne({
-        where: { id_rol: id_rol }
-    });
-    if (_rol) {
-        res.json({ _rol });
+    try {
+        const _rol = yield roles_models_1.Roles.findOne({
+            where: { id_rol: id_rol }
+        });
+        if (_rol) {
+            res.json({ _rol });
+        }
+        else {
+            res.status(404).json({
+                msg: `el Id del rol no existe: ${id_rol}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el Id del rol no existe: ${id_rol}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

@@ -20,15 +20,23 @@ exports.getAllTipo_Requisito = getAllTipo_Requisito;
 //Obtiene un tipo de requisito de la base de datos
 const getTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_requisito } = req.body;
-    const _tiporeq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
-        where: { tipo_requisito: tipo_requisito }
-    });
-    if (_tiporeq) {
-        res.json({ _tiporeq });
+    try {
+        const _tiporeq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
+            where: { tipo_requisito: tipo_requisito }
+        });
+        if (_tiporeq) {
+            res.json({ _tiporeq });
+        }
+        else {
+            res.status(404).json({
+                msg: `el Id del tipo de permiso no existe: ${tipo_requisito}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el Id del tipo de permiso no existe: ${tipo_requisito}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

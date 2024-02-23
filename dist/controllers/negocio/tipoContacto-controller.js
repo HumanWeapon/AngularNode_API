@@ -20,15 +20,23 @@ exports.getAllTipoContactos = getAllTipoContactos;
 //Obtiene un contacto de la base de datos     
 const getTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_contacto } = req.body;
-    const _cont = yield tipoContacto_models_1.TipoContacto.findOne({
-        where: { tipo_contacto: tipo_contacto }
-    });
-    if (_cont) {
-        res.json({ _cont });
+    try {
+        const _cont = yield tipoContacto_models_1.TipoContacto.findOne({
+            where: { tipo_contacto: tipo_contacto }
+        });
+        if (_cont) {
+            res.json({ _cont });
+        }
+        else {
+            res.status(404).json({
+                msg: `El Contacto no existe: ${tipo_contacto}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `El Contacto no existe: ${tipo_contacto}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

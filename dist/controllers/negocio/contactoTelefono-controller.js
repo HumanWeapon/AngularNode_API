@@ -20,15 +20,23 @@ exports.getAllContactosTelefono = getAllContactosTelefono;
 //Obtiene un contacto de la base de datos     
 const getContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_contacto } = req.body;
-    const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findAll({
-        where: { id_contacto: id_contacto }
-    });
-    if (_contactoT) {
-        res.json(_contactoT);
+    try {
+        const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findAll({
+            where: { id_contacto: id_contacto }
+        });
+        if (_contactoT) {
+            res.json(_contactoT);
+        }
+        else {
+            res.status(404).json({
+                msg: `No existen datos: ${id_contacto}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `No existen datos: ${id_contacto}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

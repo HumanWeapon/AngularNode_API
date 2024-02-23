@@ -20,15 +20,23 @@ exports.getAllPreguntas = getAllPreguntas;
 //Obtiene una pregunta de la base de datos
 const getPregunta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_pregunta } = req.body;
-    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
-        where: { id_pregunta: id_pregunta }
-    });
-    if (_pregunta) {
-        res.json(_pregunta);
+    try {
+        const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+            where: { id_pregunta: id_pregunta }
+        });
+        if (_pregunta) {
+            res.json(_pregunta);
+        }
+        else {
+            res.status(404).json({
+                msg: `el ID de la pregunta no existe: ${id_pregunta}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el ID de la pregunta no existe: ${id_pregunta}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

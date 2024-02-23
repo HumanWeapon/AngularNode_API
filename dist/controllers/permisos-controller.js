@@ -31,15 +31,23 @@ exports.getAllPermisos = getAllPermisos;
 //Obtiene un permiso de la base de datos
 const getPermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_permisos } = req.body;
-    const _permiso = yield permisos_models_1.Permisos.findOne({
-        where: { id_permisos: id_permisos }
-    });
-    if (_permiso) {
-        res.json({ _permiso });
+    try {
+        const _permiso = yield permisos_models_1.Permisos.findOne({
+            where: { id_permisos: id_permisos }
+        });
+        if (_permiso) {
+            res.json({ _permiso });
+        }
+        else {
+            res.status(404).json({
+                msg: `el Id del permiso no existe: ${id_permisos}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el Id del permiso no existe: ${id_permisos}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });
@@ -119,8 +127,8 @@ const deletePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.deletePermiso = deletePermiso;
 //actualiza el permiso en la base de datos
 const updatePermisos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_permisos, id_rol, id_objeto, permiso_insercion, permiso_eliminacion, permiso_actualizacion, permiso_consultar, modificado_por, fecha_modificacion } = req.body;
     try {
-        const { id_permisos, id_rol, id_objeto, permiso_insercion, permiso_eliminacion, permiso_actualizacion, permiso_consultar, modificado_por, fecha_modificacion } = req.body;
         const _permiso = yield permisos_models_1.Permisos.findOne({
             where: { id_permisos: id_permisos }
         });
@@ -152,8 +160,8 @@ const updatePermisos = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.updatePermisos = updatePermisos;
 //Inactiva el usuario de la DBA
 const inactivatePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_permisos } = req.body;
     try {
-        const { id_permisos } = req.body;
         const _permiso = yield permisos_models_1.Permisos.findOne({
             where: { id_permisos: id_permisos }
         });
@@ -177,8 +185,8 @@ const inactivatePermiso = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.inactivatePermiso = inactivatePermiso;
 //Activa el usuario de la DBA
 const activatePermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_permisos } = req.body;
     try {
-        const { id_permisos } = req.body;
         const _permiso = yield permisos_models_1.Permisos.findOne({
             where: { id_permisos: id_permisos }
         });

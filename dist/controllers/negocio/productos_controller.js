@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateProducto = exports.inactivateProducto = exports.updateProducto = exports.deleteProducto = exports.postProducto = exports.getProductos = exports.getAllProductos = exports.getOpProductos = exports.getAllOpProductos = void 0;
+exports.activateProducto = exports.inactivateProducto = exports.updateProducto = exports.deleteProducto = exports.postProducto = exports.getProductos = exports.getAllProductos = exports.getOpProductos = exports.getAllOpProductosActivos = exports.getAllOpProductos = void 0;
 const productos_models_1 = require("../../models/negocio/productos-models");
 const paises_models_1 = require("../../models/negocio/paises-models");
 const contacto_models_1 = require("../../models/negocio/contacto-models");
@@ -43,6 +43,38 @@ const getAllOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.getAllOpProductos = getAllOpProductos;
+const getAllOpProductosActivos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const opproductos = yield productos_models_1.Productos.findAll({
+            attributes: [
+                'id_producto',
+                'id_categoria',
+                'producto',
+                'descripcion',
+                'creado_por',
+                'fecha_creacion',
+                'modificado_por',
+                'fecha_modificacion',
+                'estado'
+            ],
+            include: [{
+                    model: categoria_models_1.Categorias,
+                    attributes: ['id_categoria', 'categoria', 'descripcion']
+                }],
+            where: {
+                estado: 1 // Filtrar por estado igual a 1
+            }
+        });
+        res.json(opproductos);
+    }
+    catch (error) {
+        console.error('Error al obtener los productos:', error);
+        res.status(500).json({
+            msg: 'Error interno del servidor',
+        });
+    }
+});
+exports.getAllOpProductosActivos = getAllOpProductosActivos;
 const getOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id_producto } = req.body;
@@ -106,15 +138,23 @@ exports.getAllProductos = getAllProductos;
 // Obtiene una categoria de la base de datos por su ID
 const getProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { producto } = req.body;
-    const _producto = yield productos_models_1.Productos.findOne({
-        where: { producto: producto }
-    });
-    if (_producto) {
-        res.json(_producto);
+    try {
+        const _producto = yield productos_models_1.Productos.findOne({
+            where: { producto: producto }
+        });
+        if (_producto) {
+            res.json(_producto);
+        }
+        else {
+            res.status(404).json({
+                msg: `el producto no existe: ${producto}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el producto no existe: ${producto}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });
@@ -213,8 +253,8 @@ const updateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.updateProducto = updateProducto;
 //Inactiva el usuario de la DBA
 const inactivateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { producto } = req.body;
     try {
-        const { producto } = req.body;
         const productos = yield productos_models_1.Productos.findOne({
             where: { producto: producto }
         });
@@ -238,8 +278,8 @@ const inactivateProducto = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.inactivateProducto = inactivateProducto;
 //Activa el usuario de la DBA
 const activateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { producto } = req.body;
     try {
-        const { producto } = req.body;
         const productos = yield productos_models_1.Productos.findOne({
             where: { producto: producto }
         });

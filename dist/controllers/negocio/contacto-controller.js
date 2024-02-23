@@ -20,15 +20,23 @@ exports.getAllContactos = getAllContactos;
 //Obtiene un contacto de la base de datos     
 const getContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { dni } = req.body;
-    const _contacto = yield contacto_models_1.Contacto.findAll({
-        where: { dni: dni }
-    });
-    if (_contacto) {
-        res.json(_contacto);
+    try {
+        const _contacto = yield contacto_models_1.Contacto.findAll({
+            where: { dni: dni }
+        });
+        if (_contacto) {
+            res.json(_contacto);
+        }
+        else {
+            res.status(404).json({
+                msg: `El contacto con el RTN:${dni} no existe`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `El contacto con el RTN:${dni} no existe`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });
