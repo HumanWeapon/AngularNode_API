@@ -1,20 +1,20 @@
 import { DataTypes } from 'sequelize';
-import dataBase from '../../db/connection';
-import { Categorias } from './categoria-models'; // Asegúrate de que la importación sea correcta
-import { OperacionesEmpresasProductos } from './Operaciones/Empresas_Productos';
+import dataBase from '../../../db/connection';
+import { Empresas } from '../empresas-model';
+import { Productos } from '../productos-models';
 
-export const Productos: any = dataBase.define('productos', {
-    id_producto: {
+export const OperacionesEmpresasProductos: any = dataBase.define('operaciones_empresas_productos', {
+    id_emp_prod: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    id_categoria: {
+    id_empresa: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    producto: {
-        type: DataTypes.STRING,
+    id_producto: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     descripcion: {
@@ -43,13 +43,19 @@ export const Productos: any = dataBase.define('productos', {
     }
 }, 
 {
-    tableName: 'tbl_me_productos',
+    tableName: 'operaciones_empresas_productos',
     schema: 'mipyme',
     timestamps: false
 });
 
-Productos.belongsTo(Categorias, {
-    foreignKey: 'id_categoria',
-    targetKey: 'id_categoria',
-    as: 'categoria' // Alias para la relación
+OperacionesEmpresasProductos.belongsTo(Empresas, {
+    foreignKey: 'id_empresa',
+    targetKey: 'id_empresa',
+    as: 'empresa' // Alias para la relación
+});
+
+OperacionesEmpresasProductos.belongsTo(Productos, {
+    foreignKey: 'id_producto',
+    targetKey: 'id_producto',
+    as: 'producto' // Alias para la relación
 });
