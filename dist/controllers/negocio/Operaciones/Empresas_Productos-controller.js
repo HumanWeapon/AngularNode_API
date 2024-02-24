@@ -81,6 +81,7 @@ const consultarProductosNoRegistradosPorId = (req, res) => __awaiter(void 0, voi
         const query = `
         SELECT 
             B.id_emp_prod,
+            B.id_empresa,
             CASE
                 WHEN B.id_empresa IS NULL THEN FALSE
                 ELSE TRUE
