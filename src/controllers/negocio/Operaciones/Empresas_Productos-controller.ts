@@ -20,7 +20,7 @@ export const consultarOperacionesEmpresasProductos = async (req: Request, res: R
 export const agregarOperacionEmpresaProducto = async (req: Request, res: Response) => {
     try {
         const nuevoRegistro = await OperacionesEmpresasProductos.create(req.body);
-        res.status(201).json(nuevoRegistro);
+        res.json(nuevoRegistro);
     } catch (error) {
         console.error('Error al agregar la operación empresa producto:', error);
         res.status(500).json({ msg: 'Error interno del servidor' });

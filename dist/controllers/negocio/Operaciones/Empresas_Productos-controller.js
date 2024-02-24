@@ -33,7 +33,7 @@ exports.consultarOperacionesEmpresasProductos = consultarOperacionesEmpresasProd
 const agregarOperacionEmpresaProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const nuevoRegistro = yield Empresas_Productos_1.OperacionesEmpresasProductos.create(req.body);
-        res.status(201).json(nuevoRegistro);
+        res.json(nuevoRegistro);
     }
     catch (error) {
         console.error('Error al agregar la operación empresa producto:', error);
