@@ -80,6 +80,10 @@ const consultarProductosNoRegistradosPorId = (req, res) => __awaiter(void 0, voi
     try {
         const query = `
         SELECT 
+            CASE
+                WHEN B.id_empresa IS NULL THEN FALSE
+                ELSE TRUE
+            END AS POSEE_PRODUCTO,
             B.id_empresa,
             A.id_producto,
             A.id_categoria,
