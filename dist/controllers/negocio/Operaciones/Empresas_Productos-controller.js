@@ -93,7 +93,7 @@ const consultarProductosNoRegistradosPorId = (req, res) => __awaiter(void 0, voi
             A.descripcion
         FROM mipyme.tbl_me_productos AS A
         LEFT JOIN (SELECT id_emp_prod, id_empresa, id_producto, estado FROM mipyme.operaciones_empresas_productos 
-                WHERE estado = 1 AND id_empresa = 111) AS B
+                WHERE estado = 1 AND id_empresa = ${id}) AS B
         ON A.id_producto = B.id_producto
         LEFT JOIN (SELECT id_categoria, categoria, estado FROM mipyme.tbl_me_categoria_productos WHERE estado = 1) AS C
         ON A.id_categoria = C.id_categoria
