@@ -66,19 +66,19 @@ export const consultarProductosNoRegistradosPorId = async (req: Request, res: Re
     try {
         const query = `
         SELECT 
+            B.id_emp_prod,
             CASE
                 WHEN B.id_empresa IS NULL THEN FALSE
                 ELSE TRUE
             END AS POSEE_PRODUCTO,
-            B.id_empresa,
             A.id_producto,
             A.id_categoria,
             C.categoria,
             A.producto,
             A.descripcion
         FROM mipyme.tbl_me_productos AS A
-        LEFT JOIN (SELECT id_empresa, id_producto, estado FROM mipyme.operaciones_empresas_productos 
-                WHERE estado = 1 AND id_empresa = ${id}) AS B
+        LEFT JOIN (SELECT id_emp_prod, id_empresa, id_producto, estado FROM mipyme.operaciones_empresas_productos 
+                WHERE estado = 1 AND id_empresa = 111) AS B
         ON A.id_producto = B.id_producto
         LEFT JOIN (SELECT id_categoria, categoria, estado FROM mipyme.tbl_me_categoria_productos WHERE estado = 1) AS C
         ON A.id_categoria = C.id_categoria
