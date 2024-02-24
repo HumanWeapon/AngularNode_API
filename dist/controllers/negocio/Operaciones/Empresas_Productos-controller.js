@@ -97,7 +97,7 @@ const consultarProductosNoRegistradosPorId = (req, res) => __awaiter(void 0, voi
         LEFT JOIN (SELECT id_categoria, categoria, estado FROM mipyme.tbl_me_categoria_productos WHERE estado = 1) AS C
         ON A.id_categoria = C.id_categoria
         WHERE A.estado = 1
-            AND B.id_empresa IS NULL
+            --AND B.id_empresa IS NULL
             AND C.categoria is NOT NULL
         `;
         const [results, metadata] = yield connection_1.default.query(query);
