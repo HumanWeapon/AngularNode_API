@@ -20,15 +20,23 @@ exports.getAllTipoEmpresa = getAllTipoEmpresa;
 //Obtiene un registro de la base de datos     
 const getTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_empresa } = req.body;
-    const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
-        where: { tipo_empresa: tipo_empresa }
-    });
-    if (_emp) {
-        res.json({ _emp });
+    try {
+        const _emp = yield tipoEmpresa_models_1.tipoEmpresa.findOne({
+            where: { tipo_empresa: tipo_empresa }
+        });
+        if (_emp) {
+            res.json({ _emp });
+        }
+        else {
+            res.status(404).json({
+                msg: `El Tipo de empresa buscado no existe en la BD: ${tipo_empresa}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `El Tipo de empresa buscado no existe en la BD: ${tipo_empresa}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

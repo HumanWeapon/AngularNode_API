@@ -20,15 +20,23 @@ exports.getAllParametros = getAllParametros;
 //Obtiene un parametro de la base de datos
 const getParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_parametro } = req.body;
-    const _parametro = yield parametros_models_1.Parametros.findOne({
-        where: { id_parametro: id_parametro }
-    });
-    if (_parametro) {
-        res.json({ _parametro });
+    try {
+        const _parametro = yield parametros_models_1.Parametros.findOne({
+            where: { id_parametro: id_parametro }
+        });
+        if (_parametro) {
+            res.json({ _parametro });
+        }
+        else {
+            res.status(404).json({
+                msg: `el ID del parametro: ${id_parametro} no existe `
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el ID del parametro: ${id_parametro} no existe `
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

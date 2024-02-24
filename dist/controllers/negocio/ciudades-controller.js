@@ -20,15 +20,23 @@ exports.getAllCiudades = getAllCiudades;
 //Obtiene una ciudad de la base de datos     
 const getCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { ciudad } = req.body;
-    const _ciudad = yield ciudades_models_1.Ciudades.findOne({
-        where: { ciudad: ciudad }
-    });
-    if (_ciudad) {
-        res.json({ _ciudad });
+    try {
+        const _ciudad = yield ciudades_models_1.Ciudades.findOne({
+            where: { ciudad: ciudad }
+        });
+        if (_ciudad) {
+            res.json({ _ciudad });
+        }
+        else {
+            res.status(404).json({
+                msg: `La ciudad no existe: ${ciudad}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `La ciudad no existe: ${ciudad}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

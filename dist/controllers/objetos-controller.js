@@ -20,15 +20,23 @@ exports.getAllObjetos = getAllObjetos;
 //Obtiene un objeto de la base de datos     
 const getObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { objeto } = req.body;
-    const _objeto = yield objetos_models_1.Objetos.findOne({
-        where: { objeto: objeto }
-    });
-    if (_objeto) {
-        res.json({ _objeto });
+    try {
+        const _objeto = yield objetos_models_1.Objetos.findOne({
+            where: { objeto: objeto }
+        });
+        if (_objeto) {
+            res.json({ _objeto });
+        }
+        else {
+            res.status(404).json({
+                msg: `el  objeto no existe: ${objeto}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el  objeto no existe: ${objeto}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

@@ -21,15 +21,23 @@ exports.getAllCategorias = getAllCategorias;
 // Obtiene una categoria de la base de datos por su ID
 const getCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_categoria } = req.body;
-    const _categoria = yield categoria_models_1.Categorias.findOne({
-        where: { id_categoria: id_categoria }
-    });
-    if (_categoria) {
-        res.json(_categoria);
+    try {
+        const _categoria = yield categoria_models_1.Categorias.findOne({
+            where: { id_categoria: id_categoria }
+        });
+        if (_categoria) {
+            res.json(_categoria);
+        }
+        else {
+            res.status(404).json({
+                msg: `el ID de la categoria no existe: ${id_categoria}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el ID de la categoria no existe: ${id_categoria}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

@@ -182,38 +182,54 @@ exports.preguntasRespuestas = preguntasRespuestas;
 //Inactiva la pregunta de la DBA
 const inactivatePreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { pregunta } = req.body;
-    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
-        where: { pregunta: pregunta }
-    });
-    if (!_pregunta) {
-        return res.status(404).json({
-            msg: "La pregunta no existe: " + pregunta
+    try {
+        const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+            where: { pregunta: pregunta }
+        });
+        if (!_pregunta) {
+            return res.status(404).json({
+                msg: "La pregunta no existe: " + pregunta
+            });
+        }
+        yield _pregunta.update({
+            estado: 2
+        });
+        res.json({
+            msg: 'Pregunta: ' + pregunta + ' inactivado exitosamente',
         });
     }
-    yield _pregunta.update({
-        estado: 2
-    });
-    res.json({
-        msg: 'Pregunta: ' + pregunta + ' inactivado exitosamente',
-    });
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
 });
 exports.inactivatePreguntaUsuario = inactivatePreguntaUsuario;
 //Activa la pregunta de la DBA
 const activatePreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { pregunta } = req.body;
-    const _pregunta = yield preguntas_model_1.Preguntas.findOne({
-        where: { pregunta: pregunta }
-    });
-    if (!_pregunta) {
-        return res.status(404).json({
-            msg: "La Pregunta no existe: " + pregunta
+    try {
+        const _pregunta = yield preguntas_model_1.Preguntas.findOne({
+            where: { pregunta: pregunta }
+        });
+        if (!_pregunta) {
+            return res.status(404).json({
+                msg: "La Pregunta no existe: " + pregunta
+            });
+        }
+        yield _pregunta.update({
+            estado: 1
+        });
+        res.json({
+            msg: 'Pregunta: ' + pregunta + ' ha sido activado exitosamente',
         });
     }
-    yield _pregunta.update({
-        estado: 1
-    });
-    res.json({
-        msg: 'Pregunta: ' + pregunta + ' ha sido activado exitosamente',
-    });
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
 });
 exports.activatePreguntaUsuario = activatePreguntaUsuario;

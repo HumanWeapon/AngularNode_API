@@ -20,15 +20,23 @@ exports.getAllTelefonos = getAllTelefonos;
 // Obtiene un teléfono de la base de datos por su ID
 const getTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_tipo_telefono } = req.body;
-    const _telefono = yield tipo_telefono_models_1.tipoTelefono.findOne({
-        where: { id_tipo_telefono: id_tipo_telefono }
-    });
-    if (_telefono) {
-        res.json(_telefono);
+    try {
+        const _telefono = yield tipo_telefono_models_1.tipoTelefono.findOne({
+            where: { id_tipo_telefono: id_tipo_telefono }
+        });
+        if (_telefono) {
+            res.json(_telefono);
+        }
+        else {
+            res.status(404).json({
+                msg: `el ID de la pregunta no existe: ${id_tipo_telefono}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el ID de la pregunta no existe: ${id_tipo_telefono}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

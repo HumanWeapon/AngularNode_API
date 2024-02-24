@@ -106,15 +106,23 @@ exports.getAllProductos = getAllProductos;
 // Obtiene una categoria de la base de datos por su ID
 const getProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { producto } = req.body;
-    const _producto = yield productos_models_1.Productos.findOne({
-        where: { producto: producto }
-    });
-    if (_producto) {
-        res.json(_producto);
+    try {
+        const _producto = yield productos_models_1.Productos.findOne({
+            where: { producto: producto }
+        });
+        if (_producto) {
+            res.json(_producto);
+        }
+        else {
+            res.status(404).json({
+                msg: `el producto no existe: ${producto}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el producto no existe: ${producto}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });
@@ -213,8 +221,8 @@ const updateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.updateProducto = updateProducto;
 //Inactiva el usuario de la DBA
 const inactivateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { producto } = req.body;
     try {
-        const { producto } = req.body;
         const productos = yield productos_models_1.Productos.findOne({
             where: { producto: producto }
         });
@@ -238,8 +246,8 @@ const inactivateProducto = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.inactivateProducto = inactivateProducto;
 //Activa el usuario de la DBA
 const activateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { producto } = req.body;
     try {
-        const { producto } = req.body;
         const productos = yield productos_models_1.Productos.findOne({
             where: { producto: producto }
         });

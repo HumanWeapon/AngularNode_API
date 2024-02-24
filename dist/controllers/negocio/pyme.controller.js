@@ -91,15 +91,23 @@ exports.getAllPymes = getAllPymes;
 //Obtiene una Pyme por ID
 const getPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_pyme } = req.body;
-    const _pyme = yield pyme_models_1.Pyme.findOne({
-        where: { id_pyme: id_pyme }
-    });
-    if (_pyme) {
-        res.json(_pyme);
+    try {
+        const _pyme = yield pyme_models_1.Pyme.findOne({
+            where: { id_pyme: id_pyme }
+        });
+        if (_pyme) {
+            res.json(_pyme);
+        }
+        else {
+            res.status(404).json({
+                msg: `el ID de la pregunta no existe: ${id_pyme}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el ID de la pregunta no existe: ${id_pyme}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

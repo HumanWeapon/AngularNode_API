@@ -28,15 +28,23 @@ exports.getAllPaises = getAllPaises;
 //Obtiene un Pais por ID
 const getPais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_pais } = req.body;
-    const _pais = yield paises_models_1.Paises.findAll({
-        where: { id_pais: id_pais }
-    });
-    if (_pais) {
-        res.json(_pais);
+    try {
+        const _pais = yield paises_models_1.Paises.findAll({
+            where: { id_pais: id_pais }
+        });
+        if (_pais) {
+            res.json(_pais);
+        }
+        else {
+            res.status(404).json({
+                msg: `el ID del Pais no existe: ${id_pais}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `el ID del Pais no existe: ${id_pais}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });

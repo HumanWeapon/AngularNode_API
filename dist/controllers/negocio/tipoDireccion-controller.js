@@ -20,15 +20,23 @@ exports.getAllTipoDirecciones = getAllTipoDirecciones;
 //Obtiene una direccion de la base de datos     
 const getTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_direccion } = req.body;
-    const _direc = yield tipoDireccion_models_1.TipoDireccion.findOne({
-        where: { tipo_direccion: tipo_direccion }
-    });
-    if (_direc) {
-        res.json({ _direc });
+    try {
+        const _direc = yield tipoDireccion_models_1.TipoDireccion.findOne({
+            where: { tipo_direccion: tipo_direccion }
+        });
+        if (_direc) {
+            res.json({ _direc });
+        }
+        else {
+            res.status(404).json({
+                msg: `La dirección no existe: ${tipo_direccion}`
+            });
+        }
     }
-    else {
-        res.status(404).json({
-            msg: `La dirección no existe: ${tipo_direccion}`
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });
