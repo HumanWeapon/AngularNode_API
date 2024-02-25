@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateTipoContacto = exports.inactivateTipoContacto = exports.updateTipoContacto = exports.deleteTipoContacto = exports.postTipoContacto = exports.getTipoContacto = exports.getAllTipoContactos = void 0;
+exports.activateTipoContacto = exports.inactivateTipoContacto = exports.updateTipoContacto = exports.deleteTipoContacto = exports.postTipoContacto = exports.getTipoContacto = exports.getAllTipoContactosActivos = exports.getAllTipoContactos = void 0;
 const tipoContacto_models_1 = require("../../models/negocio/tipoContacto-models");
 //Obtiene todos los contacto de la base de datos
 const getAllTipoContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -17,6 +17,14 @@ const getAllTipoContactos = (req, res) => __awaiter(void 0, void 0, void 0, func
     res.json(_cont);
 });
 exports.getAllTipoContactos = getAllTipoContactos;
+//Obtiene todos los contactos activos de la base de datos
+const getAllTipoContactosActivos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const _cont = yield tipoContacto_models_1.TipoContacto.findAll({
+        where: { estado: 1 }
+    });
+    res.json(_cont);
+});
+exports.getAllTipoContactosActivos = getAllTipoContactosActivos;
 //Obtiene un contacto de la base de datos     
 const getTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo_contacto } = req.body;

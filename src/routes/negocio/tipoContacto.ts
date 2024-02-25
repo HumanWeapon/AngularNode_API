@@ -1,11 +1,12 @@
 import {Router} from 'express';
 import validarToken from '.././validarToken';
-import { activateTipoContacto, deleteTipoContacto, getAllTipoContactos, getTipoContacto, inactivateTipoContacto, postTipoContacto, updateTipoContacto } from '../../controllers/negocio/tipoContacto-controller';
+import { activateTipoContacto, deleteTipoContacto, getAllTipoContactos, getAllTipoContactosActivos, getTipoContacto, inactivateTipoContacto, postTipoContacto, updateTipoContacto } from '../../controllers/negocio/tipoContacto-controller';
 import routertipoTelefono from './tipotelefono';
 
 const routerTipoContacto = Router()
 
 routerTipoContacto.get('/getAllTipoContactos',validarToken, getAllTipoContactos);//consulta todas las direcciónes en la base de datos
+routerTipoContacto.get('/getAllTipoContactosActivos',validarToken, getAllTipoContactosActivos);//consulta todos los tipo de contactos activos de la dba
 routerTipoContacto.get('/getTipoContacto',validarToken, getTipoContacto);//consulta una dirección en la base de datos
 routerTipoContacto.post('/postTipoContacto',validarToken, postTipoContacto); // Inserta una dirección en la base de datos
 routerTipoContacto.delete('/deleteTipoContacto',validarToken, deleteTipoContacto); //Elimina una dirección en la base de datos

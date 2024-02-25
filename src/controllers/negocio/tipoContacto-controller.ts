@@ -11,6 +11,15 @@ export const getAllTipoContactos = async (req: Request, res: Response) => {
 
 }
 
+//Obtiene todos los contactos activos de la base de datos
+export const getAllTipoContactosActivos = async (req: Request, res: Response) => {
+
+    const _cont = await TipoContacto.findAll({
+        where: { estado: 1 }
+    });
+    res.json(_cont);
+}
+
 //Obtiene un contacto de la base de datos     
 export const getTipoContacto = async (req: Request, res: Response) => {
     const { tipo_contacto } = req.body;
