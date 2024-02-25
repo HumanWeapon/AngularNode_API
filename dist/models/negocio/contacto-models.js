@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Contacto = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../../db/connection"));
+const tipoContacto_models_1 = require("./tipoContacto-models");
 exports.Contacto = connection_1.default.define('contacto', {
     id_contacto: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -14,14 +15,6 @@ exports.Contacto = connection_1.default.define('contacto', {
     },
     id_tipo_contacto: {
         type: sequelize_1.DataTypes.INTEGER,
-        references: {
-            model: 'TipoContacto',
-            key: 'id' // Nombre del campo al que hace referencia en el modelo 'TipoContacto'
-        }
-    },
-    dni: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
     },
     primer_nombre: {
         type: sequelize_1.DataTypes.STRING,
@@ -36,10 +29,6 @@ exports.Contacto = connection_1.default.define('contacto', {
         allowNull: false
     },
     segundo_apellido: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
-    correo: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
@@ -68,9 +57,13 @@ exports.Contacto = connection_1.default.define('contacto', {
         allowNull: false
     }
 }, {
-    tableName: 'tbl_me_contacto',
+    tableName: 'tbl_me_contactos',
     schema: 'mipyme',
     timestamps: false
+});
+exports.Contacto.belongsTo(tipoContacto_models_1.TipoContacto, {
+    foreignKey: 'id_tipo_contacto',
+    as: 'tipo_contacto' // Alias para la relación
 });
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932

@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
+import { tipoTelefono } from './tipo_telefono-models';
 
 export const ContactoTelefono: any = dataBase.define('contactoTelefono', {
     id_telefono: {
@@ -7,20 +8,10 @@ export const ContactoTelefono: any = dataBase.define('contactoTelefono', {
         primaryKey: true,
         autoIncrement: true
     },
-    id_contacto: {
+    id_tipo_telefono: {
         type: DataTypes.INTEGER,
-        references: {
-          model: 'Contacto', // Nombre del modelo al que hace referencia
-          key: 'id' // Nombre del campo al que hace referencia en el modelo 'Contacto'
-        }
-      },
-      id_tipo_telefono: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: 'TipoTelefono', // Nombre del modelo al que hace referencia
-          key: 'id' // Nombre del campo al que hace referencia en el modelo 'TipoTelefono'
-        }
-      },
+        allowNull: false
+    },
     telefono: {
         type: DataTypes.STRING,
         allowNull: false
@@ -55,22 +46,14 @@ export const ContactoTelefono: any = dataBase.define('contactoTelefono', {
     }
     }, 
     {
-    tableName: 'tbl_me_contacto_telefono',
+    tableName: 'tbl_me_telefonos',
     schema: 'mipyme',
     timestamps: false
-})
-
-
-
-
-
-
-
-
-
-
-
-
+});
+ContactoTelefono.belongsTo(tipoTelefono, {
+    foreignKey: 'id_tipo_telefono',
+    as: 'tipo_telefono' // Alias para la relación
+});
 
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932

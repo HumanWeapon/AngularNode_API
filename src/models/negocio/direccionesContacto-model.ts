@@ -9,10 +9,6 @@ export const DireccionesContactos: any = dataBase.define('direccionesContacto', 
         primaryKey: true,
         autoIncrement: true,
     },
-    id_contacto: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
     id_tipo_direccion: {
         type: DataTypes.STRING,
         allowNull: false
@@ -51,12 +47,6 @@ export const DireccionesContactos: any = dataBase.define('direccionesContacto', 
     schema: 'mipyme',
     timestamps: false
 });
-
-DireccionesContactos.belongsTo(Contacto, {
-    foreignKey: 'id_contacto',
-    as: 'contacto' // Alias para la relación
-});
-
 DireccionesContactos.belongsTo(TipoDireccion, {
     foreignKey: 'id_tipo_direccion',
     as: 'tipoDireccion' // Alias para la relación
