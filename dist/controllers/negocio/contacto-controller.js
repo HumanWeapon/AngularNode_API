@@ -46,13 +46,11 @@ const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const { dni, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const contac = yield contacto_models_1.Contacto.create({
-            dni: dni,
             id_tipo_contacto: id_tipo_contacto,
             primer_nombre: primer_nombre.toUpperCase(),
             segundo_nombre: segundo_nombre.toUpperCase(),
             primer_apellido: primer_apellido.toUpperCase(),
             segundo_apellido: segundo_apellido.toUpperCase(),
-            correo: correo.toUpperCase(),
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
@@ -68,11 +66,6 @@ const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             error
         });
     }
-    /*// Generamos token
-    const token = jwt.sign({
-        usuario: usuario
-    }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);*/
 });
 exports.postContacto = postContacto;
 //Elimina una ciudad de la base de datos

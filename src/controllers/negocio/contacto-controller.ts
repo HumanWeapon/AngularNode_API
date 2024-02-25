@@ -41,13 +41,11 @@ export const postContacto = async (req: Request, res: Response) => {
 
     try{
         const contac = await Contacto.create({
-            dni: dni,
             id_tipo_contacto: id_tipo_contacto,
             primer_nombre: primer_nombre.toUpperCase(),
             segundo_nombre: segundo_nombre.toUpperCase(),
             primer_apellido: primer_apellido.toUpperCase(),
             segundo_apellido: segundo_apellido.toUpperCase(),
-            correo: correo.toUpperCase(),
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
@@ -63,11 +61,6 @@ export const postContacto = async (req: Request, res: Response) => {
             error
         }); 
     }
-    /*// Generamos token
-    const token = jwt.sign({
-        usuario: usuario
-    }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);*/
 }
 
 //Elimina una ciudad de la base de datos
