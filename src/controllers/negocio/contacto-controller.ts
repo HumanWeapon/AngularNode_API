@@ -105,12 +105,10 @@ export const updateContacto = async (req: Request, res: Response) => {
 
     await _contacto.update({
         id_tipo_contacto: id_tipo_contacto,
-        dni: dni,
         primer_nombre: primer_nombre.toUpperCase(),
         segundo_nombre: segundo_nombre.toUpperCase(),
         primer_apellido: primer_apellido.toUpperCase(),
         segundo_apellido: segundo_apellido.toUpperCase(),
-        correo: correo.toUpperCase(),
         descripcion: descripcion.toUpperCase(),
         creado_por: creado_por.toUpperCase(),
         fecha_creacion: fecha_creacion,
