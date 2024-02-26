@@ -95,7 +95,7 @@ const deleteContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.deleteContacto = deleteContacto;
 //actualiza el contacto en la base de datos
 const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_contacto, id_tipo_contacto, dni, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_contacto, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _contacto = yield contacto_models_1.Contacto.findOne({
             where: { id_contacto: id_contacto }

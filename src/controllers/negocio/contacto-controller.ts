@@ -92,7 +92,7 @@ export const deleteContacto = async (req: Request, res: Response) => {
 //actualiza el contacto en la base de datos
 export const updateContacto = async (req: Request, res: Response) => {
    
-    const { id_contacto, id_tipo_contacto, dni, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
+    const { id_contacto, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
     try {
     const _contacto = await Contacto.findOne({
         where: {id_contacto: id_contacto}
