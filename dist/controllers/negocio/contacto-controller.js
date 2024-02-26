@@ -9,14 +9,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateContacto = exports.inactivateContacto = exports.updateContacto = exports.deleteContacto = exports.postContacto = exports.getContacto = exports.getAllContactos = void 0;
+exports.activateContacto = exports.inactivateContacto = exports.updateContacto = exports.deleteContacto = exports.postContacto = exports.getContacto = exports.getAllContactosconTipoContacto = exports.getAllContactos = void 0;
 const contacto_models_1 = require("../../models/negocio/contacto-models");
+const tipoContacto_models_1 = require("../../models/negocio/tipoContacto-models");
 //Obtiene todos las ciudades de la base de datos
 const getAllContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const _contacto = yield contacto_models_1.Contacto.findAll();
     res.json(_contacto);
 });
 exports.getAllContactos = getAllContactos;
+//Obtiene todos las contactos con el tipo de contacto de la base de datos
+const getAllContactosconTipoContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const _contacto = yield contacto_models_1.Contacto.findAll({
+            include: {
+                model: tipoContacto_models_1.TipoContacto,
+                as: 'tipo_contacto',
+                where: {
+                    estado: 1
+                },
+                attributes: ['id_tipo_contacto', 'tipo_contacto']
+            }
+        });
+        res.json(_contacto);
+    }
+    catch (error) {
+        console.error('Error al obtener los contactos:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al obtener los contactos'
+        });
+    }
+});
+exports.getAllContactosconTipoContacto = getAllContactosconTipoContacto;
 //Obtiene un contacto de la base de datos     
 const getContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { dni } = req.body;

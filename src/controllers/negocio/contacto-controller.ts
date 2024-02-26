@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import { Contacto } from '../../models/negocio/contacto-models';
 import jwt from 'jsonwebtoken';
+import { TipoContacto } from '../../models/negocio/tipoContacto-models';
 
 
 //Obtiene todos las ciudades de la base de datos
@@ -9,6 +10,28 @@ export const getAllContactos = async (req: Request, res: Response) => {
     const _contacto = await Contacto.findAll();
     res.json(_contacto)
 
+}
+
+//Obtiene todos las contactos con el tipo de contacto de la base de datos
+export const getAllContactosconTipoContacto = async (req: Request, res: Response) => {
+    try {
+        const _contacto = await Contacto.findAll({
+            include: {
+                model: TipoContacto,
+                as: 'tipo_contacto',
+                where: {
+                    estado: 1
+                },
+                attributes: ['id_tipo_contacto', 'tipo_contacto']
+            }
+        });
+        res.json(_contacto);
+    } catch (error) {
+        console.error('Error al obtener los contactos:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al obtener los contactos'
+        });
+    }
 }
 
 //Obtiene un contacto de la base de datos     
