@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import { Contacto } from '../../models/negocio/contacto-models';
 import jwt from 'jsonwebtoken';
+import { TipoContacto } from '../../models/negocio/tipoContacto-models';
 
 
 //Obtiene todos las ciudades de la base de datos
@@ -9,6 +10,28 @@ export const getAllContactos = async (req: Request, res: Response) => {
     const _contacto = await Contacto.findAll();
     res.json(_contacto)
 
+}
+
+//Obtiene todos las contactos con el tipo de contacto de la base de datos
+export const getAllContactosconTipoContacto = async (req: Request, res: Response) => {
+    try {
+        const _contacto = await Contacto.findAll({
+            include: {
+                model: TipoContacto,
+                as: 'tipo_contacto',
+                where: {
+                    estado: 1
+                },
+                attributes: ['id_tipo_contacto', 'tipo_contacto']
+            }
+        });
+        res.json(_contacto);
+    } catch (error) {
+        console.error('Error al obtener los contactos:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al obtener los contactos'
+        });
+    }
 }
 
 //Obtiene un contacto de la base de datos     
@@ -41,13 +64,11 @@ export const postContacto = async (req: Request, res: Response) => {
 
     try{
         const contac = await Contacto.create({
-            dni: dni,
             id_tipo_contacto: id_tipo_contacto,
             primer_nombre: primer_nombre.toUpperCase(),
             segundo_nombre: segundo_nombre.toUpperCase(),
             primer_apellido: primer_apellido.toUpperCase(),
             segundo_apellido: segundo_apellido.toUpperCase(),
-            correo: correo.toUpperCase(),
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
@@ -63,11 +84,6 @@ export const postContacto = async (req: Request, res: Response) => {
             error
         }); 
     }
-    /*// Generamos token
-    const token = jwt.sign({
-        usuario: usuario
-    }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);*/
 }
 
 //Elimina una ciudad de la base de datos
@@ -99,7 +115,7 @@ export const deleteContacto = async (req: Request, res: Response) => {
 //actualiza el contacto en la base de datos
 export const updateContacto = async (req: Request, res: Response) => {
    
-    const { id_contacto, id_tipo_contacto, dni, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
+    const { id_contacto, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
     try {
     const _contacto = await Contacto.findOne({
         where: {id_contacto: id_contacto}
@@ -112,12 +128,10 @@ export const updateContacto = async (req: Request, res: Response) => {
 
     await _contacto.update({
         id_tipo_contacto: id_tipo_contacto,
-        dni: dni,
         primer_nombre: primer_nombre.toUpperCase(),
         segundo_nombre: segundo_nombre.toUpperCase(),
         primer_apellido: primer_apellido.toUpperCase(),
         segundo_apellido: segundo_apellido.toUpperCase(),
-        correo: correo.toUpperCase(),
         descripcion: descripcion.toUpperCase(),
         creado_por: creado_por.toUpperCase(),
         fecha_creacion: fecha_creacion,

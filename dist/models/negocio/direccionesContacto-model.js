@@ -6,17 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DireccionesContactos = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../../db/connection"));
-const contacto_models_1 = require("./contacto-models");
 const tipoDireccion_models_1 = require("./tipoDireccion-models");
 exports.DireccionesContactos = connection_1.default.define('direccionesContacto', {
     id_direccion: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-    },
-    id_contacto: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false
     },
     id_tipo_direccion: {
         type: sequelize_1.DataTypes.STRING,
@@ -54,10 +49,6 @@ exports.DireccionesContactos = connection_1.default.define('direccionesContacto'
     tableName: 'tbl_me_direcciones_contactos',
     schema: 'mipyme',
     timestamps: false
-});
-exports.DireccionesContactos.belongsTo(contacto_models_1.Contacto, {
-    foreignKey: 'id_contacto',
-    as: 'contacto' // Alias para la relación
 });
 exports.DireccionesContactos.belongsTo(tipoDireccion_models_1.TipoDireccion, {
     foreignKey: 'id_tipo_direccion',

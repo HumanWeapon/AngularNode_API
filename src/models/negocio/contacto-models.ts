@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
+import { TipoContacto } from './tipoContacto-models';
 
 export const Contacto: any = dataBase.define('contacto', {
     id_contacto: {
@@ -9,14 +10,6 @@ export const Contacto: any = dataBase.define('contacto', {
     },
     id_tipo_contacto: {
         type: DataTypes.INTEGER,
-        references: {
-          model: 'TipoContacto', // Nombre del modelo al que hace referencia
-          key: 'id' // Nombre del campo al que hace referencia en el modelo 'TipoContacto'
-        }
-      },
-    dni: {
-        type: DataTypes.STRING,
-        allowNull: false
     },
     primer_nombre: {
         type: DataTypes.STRING,
@@ -31,10 +24,6 @@ export const Contacto: any = dataBase.define('contacto', {
         allowNull: false
     },
     segundo_apellido: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    correo: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -64,10 +53,14 @@ export const Contacto: any = dataBase.define('contacto', {
     }
     }, 
     {
-    tableName: 'tbl_me_contacto',
+    tableName: 'tbl_me_contactos',
     schema: 'mipyme',
     timestamps: false
-})
+});
+Contacto.belongsTo(TipoContacto, {
+    foreignKey: 'id_tipo_contacto',
+    as: 'tipo_contacto' // Alias para la relación
+});
 
 
 

@@ -33,7 +33,7 @@ exports.consultarOperacionesEmpresasProductos = consultarOperacionesEmpresasProd
 const agregarOperacionEmpresaProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const nuevoRegistro = yield Empresas_Productos_1.OperacionesEmpresasProductos.create(req.body);
-        res.status(201).json(nuevoRegistro);
+        res.json(nuevoRegistro);
     }
     catch (error) {
         console.error('Error al agregar la operación empresa producto:', error);
@@ -80,24 +80,25 @@ const consultarProductosNoRegistradosPorId = (req, res) => __awaiter(void 0, voi
     try {
         const query = `
         SELECT 
+            B.id_emp_prod,
+            B.id_empresa,
             CASE
                 WHEN B.id_empresa IS NULL THEN FALSE
                 ELSE TRUE
             END AS POSEE_PRODUCTO,
-            B.id_empresa,
             A.id_producto,
             A.id_categoria,
             C.categoria,
             A.producto,
             A.descripcion
         FROM mipyme.tbl_me_productos AS A
-        LEFT JOIN (SELECT id_empresa, id_producto, estado FROM mipyme.operaciones_empresas_productos 
+        LEFT JOIN (SELECT id_emp_prod, id_empresa, id_producto, estado FROM mipyme.operaciones_empresas_productos 
                 WHERE estado = 1 AND id_empresa = ${id}) AS B
         ON A.id_producto = B.id_producto
         LEFT JOIN (SELECT id_categoria, categoria, estado FROM mipyme.tbl_me_categoria_productos WHERE estado = 1) AS C
         ON A.id_categoria = C.id_categoria
         WHERE A.estado = 1
-            AND B.id_empresa IS NULL
+            --AND B.id_empresa IS NULL
             AND C.categoria is NOT NULL
         `;
         const [results, metadata] = yield connection_1.default.query(query);

@@ -37,7 +37,7 @@ export const TipoDireccion: any = dataBase.define('tipoDireccion', {
     }
     }, 
     {
-    tableName: 'tbl_me_tipo_direccion',
+    tableName: 'tbl_me_tipo_direcciones_contactos',
     schema: 'mipyme',
     timestamps: false
 })
