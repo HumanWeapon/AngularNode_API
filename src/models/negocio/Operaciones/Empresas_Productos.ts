@@ -43,7 +43,7 @@ export const OperacionesEmpresasProductos: any = dataBase.define('operaciones_em
     }
 }, 
 {
-    tableName: 'operaciones_empresas_productos',
+    tableName: 'tbl_op_empresas_productos',
     schema: 'mipyme',
     timestamps: false
 });

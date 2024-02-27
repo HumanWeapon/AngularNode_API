@@ -47,7 +47,7 @@ exports.OperacionesEmpresasProductos = connection_1.default.define('operaciones_
         allowNull: false
     }
 }, {
-    tableName: 'operaciones_empresas_productos',
+    tableName: 'tbl_op_empresas_productos',
     schema: 'mipyme',
     timestamps: false
 });
