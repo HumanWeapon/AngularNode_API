@@ -20,35 +20,32 @@ const consultarContactosNoRegistradosPorId = (req, res) => __awaiter(void 0, voi
     try {
         const query = `
         SELECT 
-            OPERACIONES_CONTACTOS.id_empresa,
-            OPERACIONES_CONTACTOS.id_contacto,
-            CASE
-                WHEN OPERACIONES_CONTACTOS.id_empresa IS NULL THEN FALSE
-                ELSE TRUE
-            END AS POSEE_CONTACTO,
-            CONTACTOS.id_tipo_contacto,
-            TIPO_CONTACTO.tipo_contacto,
-            CONTACTOS.primer_nombre,
-            CONTACTOS.segundo_nombre,
-            CONTACTOS.primer_apellido,
-            CONTACTOS.segundo_apellido,
-            CONTACTOS.descripcion,
-            CONTACTOS.creado_por,
-            CONTACTOS.fecha_modificacion,
-            CONTACTOS.modificado_por,
-            CONTACTOS.fecha_modificacion,
-            CONTACTOS.estado
-        FROM mipyme.tbl_me_contactos AS CONTACTOS
-        LEFT JOIN (SELECT * FROM mipyme.tbl_me_tipo_contacto WHERE estado = 1) AS TIPO_CONTACTO
-        ON CONTACTOS.id_tipo_contacto = TIPO_CONTACTO.id_tipo_contacto
-        LEFT JOIN 
-            (
-                SELECT * 
-                FROM mipyme.tbl_op_empresas_contactos
-                WHERE estado = 1 AND id_empresa = ${id}
-            ) AS OPERACIONES_CONTACTOS
-        ON CONTACTOS.id_contacto = OPERACIONES_CONTACTOS.id_contacto
-        WHERE CONTACTOS.ESTADO = 1
+        OPERACIONES_CONTACTOS.id_empresa,
+        OPERACIONES_CONTACTOS.id_contacto,
+        CASE
+            WHEN OPERACIONES_CONTACTOS.id_empresa IS NULL THEN FALSE
+            ELSE TRUE
+        END AS POSEE_CONTACTO,
+        CONTACTOS.id_tipo_contacto,
+        TIPO_CONTACTO.tipo_contacto,
+        (CONTACTOS.primer_nombre||' '||CONTACTOS.segundo_nombre||' '||CONTACTOS.primer_apellido||' '||CONTACTOS.segundo_apellido) nombre_completo,
+        CONTACTOS.descripcion,
+        CONTACTOS.creado_por,
+        CONTACTOS.fecha_modificacion,
+        CONTACTOS.modificado_por,
+        CONTACTOS.fecha_modificacion,
+        CONTACTOS.estado
+    FROM mipyme.tbl_me_contactos AS CONTACTOS
+    LEFT JOIN (SELECT * FROM mipyme.tbl_me_tipo_contacto WHERE estado = 1) AS TIPO_CONTACTO
+    ON CONTACTOS.id_tipo_contacto = TIPO_CONTACTO.id_tipo_contacto
+    LEFT JOIN 
+        (
+            SELECT * 
+            FROM mipyme.tbl_op_empresas_contactos
+            WHERE estado = 1 AND id_empresa = ${id}
+        ) AS OPERACIONES_CONTACTOS
+    ON CONTACTOS.id_contacto = OPERACIONES_CONTACTOS.id_contacto
+    WHERE CONTACTOS.ESTADO = 1
         `;
         const [results, metadata] = yield connection_1.default.query(query);
         res.json(results);
