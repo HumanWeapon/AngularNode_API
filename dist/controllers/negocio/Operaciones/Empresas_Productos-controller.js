@@ -105,7 +105,7 @@ const consultarProductosNoRegistradosPorId = (req, res) => __awaiter(void 0, voi
         res.json(results);
     }
     catch (error) {
-        console.error('Error al consultar productos no registrados:', error);
+        console.error('Error al consultar productos:', error);
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 });

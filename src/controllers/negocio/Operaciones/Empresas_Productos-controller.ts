@@ -92,7 +92,7 @@ export const consultarProductosNoRegistradosPorId = async (req: Request, res: Re
 
         res.json(results);
     } catch (error) {
-        console.error('Error al consultar productos no registrados:', error);
+        console.error('Error al consultar productos:', error);
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 };
