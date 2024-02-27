@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.consultarContactosActivos = exports.consultarContactosNoRegistradosPorId = void 0;
+exports.consultarContactosActivosporId = exports.consultarContactosNoRegistradosPorId = void 0;
 const connection_1 = __importDefault(require("../../../db/connection"));
 //obtiene los contactos registrados y no registrados de una empresa
 const consultarContactosNoRegistradosPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -60,7 +60,7 @@ const consultarContactosNoRegistradosPorId = (req, res) => __awaiter(void 0, voi
 });
 exports.consultarContactosNoRegistradosPorId = consultarContactosNoRegistradosPorId;
 //obtiene los contactos registrados de una empresa
-const consultarContactosActivos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const consultarContactosActivosporId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
         const query = `
@@ -102,4 +102,4 @@ const consultarContactosActivos = (req, res) => __awaiter(void 0, void 0, void 0
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 });
-exports.consultarContactosActivos = consultarContactosActivos;
+exports.consultarContactosActivosporId = consultarContactosActivosporId;

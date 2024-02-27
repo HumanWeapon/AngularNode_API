@@ -48,7 +48,7 @@ export const consultarContactosNoRegistradosPorId = async (req: Request, res: Re
 };
 
 //obtiene los contactos registrados de una empresa
-export const consultarContactosActivos = async (req: Request, res: Response) => {
+export const consultarContactosActivosporId = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         const query = `
