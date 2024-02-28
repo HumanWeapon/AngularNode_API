@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Ciudades = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../../db/connection"));
+const paises_models_1 = require("./paises-models");
 exports.Ciudades = connection_1.default.define('ciudades', {
     id_ciudad: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -48,6 +49,10 @@ exports.Ciudades = connection_1.default.define('ciudades', {
     tableName: 'tbl_me_ciudades',
     schema: 'mipyme',
     timestamps: false
+});
+exports.Ciudades.belongsTo(paises_models_1.Paises, {
+    foreignKey: 'id_pais',
+    as: 'pais' // Alias para la relación
 });
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932

@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
+import { Paises } from './paises-models';
 
 export const Ciudades: any = dataBase.define('ciudades', {
     id_ciudad: {
@@ -44,7 +45,12 @@ export const Ciudades: any = dataBase.define('ciudades', {
     tableName: 'tbl_me_ciudades',
     schema: 'mipyme',
     timestamps: false
-})
+});
+Ciudades.belongsTo(Paises, {
+    foreignKey: 'id_pais',
+    as: 'pais' // Alias para la relación
+});
+
 
 
 

@@ -11,10 +11,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCiudades = exports.activateCiudad = exports.inactivateCiudad = exports.updateCiudad = exports.deleteCiudad = exports.postCiudad = exports.getCiudad = exports.getAllCiudades = void 0;
 const ciudades_models_1 = require("../../models/negocio/ciudades-models");
-//Obtiene todos las ciudades de la base de datos
+const paises_models_1 = require("../../models/negocio/paises-models");
+// Obtiene todas las ciudades de la base de datos
 const getAllCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const _ciudades = yield ciudades_models_1.Ciudades.findAll();
-    res.json(_ciudades);
+    try {
+        const _ciudades = yield ciudades_models_1.Ciudades.findAll({
+            include: {
+                model: paises_models_1.Paises,
+                as: 'pais' // El alias para referenciar al país en los resultados
+            }
+        });
+        res.json(_ciudades);
+    }
+    catch (error) {
+        // Manejo de errores
+        console.error('Error al obtener las ciudades:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 });
 exports.getAllCiudades = getAllCiudades;
 //Obtiene una ciudad de la base de datos     

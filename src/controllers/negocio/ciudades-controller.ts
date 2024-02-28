@@ -1,14 +1,24 @@
 import {Request, Response} from 'express';
 import { Ciudades } from '../../models/negocio/ciudades-models';
 import jwt from 'jsonwebtoken';
+import { Paises } from '../../models/negocio/paises-models';
 
 
-//Obtiene todos las ciudades de la base de datos
+// Obtiene todas las ciudades de la base de datos
 export const getAllCiudades = async (req: Request, res: Response) => {
-
-    const _ciudades = await Ciudades.findAll();
-    res.json(_ciudades)
-
+    try {
+        const _ciudades = await Ciudades.findAll({
+            include: {
+                model: Paises, // El modelo que deseas incluir
+                as: 'pais' // El alias para referenciar al país en los resultados
+            }
+        });
+        res.json(_ciudades);
+    } catch (error) {
+        // Manejo de errores
+        console.error('Error al obtener las ciudades:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 }
 
 //Obtiene una ciudad de la base de datos     
