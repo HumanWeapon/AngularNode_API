@@ -182,15 +182,20 @@ export const activateCiudad = async (req: Request, res: Response) => {
     });
     res.json(_ciudad);
 
-} catch (error) {
-    console.error('Error al inactivar la ciudad:', error);
-    res.status(500).json({
-        msg: 'Hubo un error al inactivar la ciudad',
+    } catch (error) {
+        console.error('Error al inactivar la ciudad:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar la ciudad',
 
-    });
+        });
+    }
 }
-}
+//Obtiene todos las ciudades de la base de datos
+export const getCiudades = async (req: Request, res: Response) => {
+    const _ciudades = await Ciudades.findAll();
+    res.json(_ciudades)
 
+}
 
 
 

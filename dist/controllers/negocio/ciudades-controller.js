@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateCiudad = exports.inactivateCiudad = exports.updateCiudad = exports.deleteCiudad = exports.postCiudad = exports.getCiudad = exports.getAllCiudades = void 0;
+exports.getCiudades = exports.activateCiudad = exports.inactivateCiudad = exports.updateCiudad = exports.deleteCiudad = exports.postCiudad = exports.getCiudad = exports.getAllCiudades = void 0;
 const ciudades_models_1 = require("../../models/negocio/ciudades-models");
 //Obtiene todos las ciudades de la base de datos
 const getAllCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -186,6 +186,12 @@ const activateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.activateCiudad = activateCiudad;
+//Obtiene todos las ciudades de la base de datos
+const getCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const _ciudades = yield ciudades_models_1.Ciudades.findAll();
+    res.json(_ciudades);
+});
+exports.getCiudades = getCiudades;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
  */ 
