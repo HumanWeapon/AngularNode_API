@@ -27,7 +27,7 @@ import routerTipo_Requisito from '../routes/negocio/Tipo_Requisito';
 import routerProductos from '../routes/negocio/productos';
 import routerEmpresa from '../routes/negocio/empresas';
 import routerOpEmpresa from '../routes/negocio/operacionEmpresas';
-import routerDireccionContacto from '../routes/negocio/direccionContacto';
+import routerDireccionContacto from '../routes/negocio/direcciones';
 import empresasProductos from '../routes/negocio/Operaciones/Empresas_Productos';
 import empresasContatos from '../routes/negocio/Operaciones/Emprersas_Contactos';
 
