@@ -21,6 +21,7 @@ const consultarContactosNoRegistradosPorId = (req, res) => __awaiter(void 0, voi
     try {
         const query = `
         SELECT 
+            OPERACIONES_CONTACTOS.id_emp_contactos,
             OPERACIONES_CONTACTOS.id_empresa,
             CONTACTOS.id_contacto,
             CASE

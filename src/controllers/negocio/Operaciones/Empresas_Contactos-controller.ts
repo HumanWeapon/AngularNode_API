@@ -8,6 +8,7 @@ export const consultarContactosNoRegistradosPorId = async (req: Request, res: Re
     try {
         const query = `
         SELECT 
+            OPERACIONES_CONTACTOS.id_emp_contactos,
             OPERACIONES_CONTACTOS.id_empresa,
             CONTACTOS.id_contacto,
             CASE
@@ -44,6 +45,7 @@ export const consultarContactosNoRegistradosPorId = async (req: Request, res: Re
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 };
+
 
 //obtiene los contactos registrados de una empresa
 export const consultarContactosActivosporId = async (req: Request, res: Response) => {
