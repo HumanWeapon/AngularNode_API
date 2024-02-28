@@ -165,9 +165,9 @@ export const inactivateCiudad = async (req: Request, res: Response) => {
     res.json(_ciudad);
 
 } catch (error) {
-    console.error('Error al activar el objeto:', error);
+    console.error('Error al inactivar la ciudad:', error);
     res.status(500).json({
-        msg: 'Hubo un error al activar el objeto',
+        msg: 'Hubo un error al inactivar la ciudad',
 
     });
 }
@@ -193,9 +193,9 @@ export const activateCiudad = async (req: Request, res: Response) => {
     res.json(_ciudad);
 
     } catch (error) {
-        console.error('Error al inactivar la ciudad:', error);
+        console.error('Error al activar la ciudad:', error);
         res.status(500).json({
-            msg: 'Hubo un error al inactivar la ciudad',
+            msg: 'Hubo un error al activar la ciudad',
 
         });
     }
