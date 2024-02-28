@@ -34,6 +34,10 @@ export const Ciudades: any = dataBase.define('ciudades', {
     estado: {
         type: DataTypes.NUMBER,
         allowNull: false
+    },
+    cod_pais: {
+        type: DataTypes.NUMBER,
+        allowNull: false
     }
     }, 
     {
