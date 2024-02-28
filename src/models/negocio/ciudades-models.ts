@@ -35,7 +35,7 @@ export const Ciudades: any = dataBase.define('ciudades', {
         type: DataTypes.NUMBER,
         allowNull: false
     },
-    cod_pais: {
+    id_pais: {
         type: DataTypes.NUMBER,
         allowNull: false
     }

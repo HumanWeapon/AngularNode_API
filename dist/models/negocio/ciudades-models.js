@@ -40,7 +40,7 @@ exports.Ciudades = connection_1.default.define('ciudades', {
         type: sequelize_1.DataTypes.NUMBER,
         allowNull: false
     },
-    cod_pais: {
+    id_pais: {
         type: sequelize_1.DataTypes.NUMBER,
         allowNull: false
     }
