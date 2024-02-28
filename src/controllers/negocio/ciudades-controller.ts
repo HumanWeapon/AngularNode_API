@@ -113,7 +113,7 @@ export const deleteCiudad = async (req: Request, res: Response) => {
 //actualiza la ciudad en la base de datos
 export const updateCiudad = async (req: Request, res: Response) => {
  
-    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
+    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_pais  } = req.body;
     try {
     const _ciudad = await Ciudades.findOne({
         where: {id_ciudad: id_ciudad}
@@ -132,7 +132,8 @@ export const updateCiudad = async (req: Request, res: Response) => {
         fecha_creacion: fecha_creacion,
         modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
-        estado: estado
+        estado: estado,
+        id_pais: id_pais
     });
     res.json(_ciudad);
 
@@ -148,7 +149,7 @@ export const updateCiudad = async (req: Request, res: Response) => {
 //Inactiva el usuario de la DBA
 export const inactivateCiudad = async (req: Request, res: Response) => {
   
-    const { ciudad } = req.body;
+    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_pais  } = req.body;
     try {
     const _ciudad = await Ciudades.findOne({
         where: {ciudad: ciudad}
@@ -176,7 +177,7 @@ export const inactivateCiudad = async (req: Request, res: Response) => {
 //Activa el usuario de la DBA
 export const activateCiudad = async (req: Request, res: Response) => {
    
-    const { ciudad } = req.body;
+    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_pais  } = req.body;
     try {
     const _ciudad = await Ciudades.findOne({
         where: {ciudad: ciudad}
