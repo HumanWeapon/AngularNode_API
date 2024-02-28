@@ -97,7 +97,7 @@ export const agregarOperacionEmpresaContacto = async (req: Request, res: Respons
         const nuevoRegistro = await OperacionesEmpresasContacto.create(req.body);
         res.json(nuevoRegistro);
     } catch (error) {
-        console.error('Error al agregar la operación empresa producto:', error);
+        console.error('Error al agregar el contacto:', error);
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 };
@@ -111,7 +111,7 @@ export const eliminarOperacionEmpresaContacto = async (req: Request, res: Respon
             return res.status(404).json({ msg: 'Operación empresa producto no encontrada' });
         }
         await operacion.destroy();
-        res.json({ msg: 'Operación empresa producto eliminada correctamente' });
+        res.json({ msg: 'Contacto eliminado correctamente' });
     } catch (error) {
         console.error('Error al eliminar la operación empresa producto:', error);
         res.status(500).json({ msg: 'Error interno del servidor' });
