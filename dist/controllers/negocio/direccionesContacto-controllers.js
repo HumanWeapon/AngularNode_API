@@ -13,7 +13,7 @@ exports.activateDirecContactos = exports.inactivateDirecContactos = exports.upda
 const direccionesContacto_model_1 = require("../../models/negocio/direccionesContacto-model");
 //Obtiene todas las Empresas
 const getAllDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findAll();
+    const _direcontactos = yield direccionesContacto_model_1.Direcciones.findAll();
     res.json(_direcontactos);
 });
 exports.getAllDirecContactos = getAllDirecContactos;
@@ -21,7 +21,7 @@ exports.getAllDirecContactos = getAllDirecContactos;
 const getDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_contacto } = req.body;
     try {
-        const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findAll({
+        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findAll({
             where: { id_contacto: id_contacto }
         });
         if (_direcontactos) {
@@ -45,7 +45,7 @@ exports.getDirecContactos = getDirecContactos;
 const postDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_contacto, id_tipo_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
-        const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findOne({
+        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findOne({
             where: { direccion: direccion }
         });
         if (_direcontactos) {
@@ -54,7 +54,7 @@ const postDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, funct
             });
         }
         else {
-            const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.create({
+            const _direcontactos = yield direccionesContacto_model_1.Direcciones.create({
                 id_contacto: id_contacto,
                 id_tipo_direccion: id_tipo_direccion,
                 direccion: direccion.toUpperCase(),
@@ -80,7 +80,7 @@ exports.postDirecContactos = postDirecContactos;
 const deleteDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_direccion } = req.body; // Obtén el ID desde los parámetros de la URL
     try {
-        const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findOne({
+        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findOne({
             where: { id_direccion: id_direccion }
         });
         if (_direcontactos) {
@@ -105,7 +105,7 @@ exports.deleteDirecContactos = deleteDirecContactos;
 const updateDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_direccion, id_contacto, id_tipo_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
-        const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findOne({
+        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findOne({
             where: { id_direccion: id_direccion }
         });
         if (!_direcontactos) {
@@ -141,7 +141,7 @@ exports.updateDirecContactos = updateDirecContactos;
 const inactivateDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { direccion } = req.body;
     try {
-        const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findOne({
+        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findOne({
             where: { direccion: direccion }
         });
         if (!_direcontactos) {
@@ -166,7 +166,7 @@ exports.inactivateDirecContactos = inactivateDirecContactos;
 const activateDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { direccion } = req.body;
     try {
-        const _direcontactos = yield direccionesContacto_model_1.DireccionesContactos.findOne({
+        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findOne({
             where: { direccion: direccion }
         });
         if (!_direcontactos) {
