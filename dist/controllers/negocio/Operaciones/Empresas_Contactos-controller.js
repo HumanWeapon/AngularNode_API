@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.consultarContactosActivosporId = exports.consultarContactosNoRegistradosPorId = void 0;
+exports.eliminarOperacionEmpresaContacto = exports.agregarOperacionEmpresaContacto = exports.consultarContactosActivosporId = exports.consultarContactosNoRegistradosPorId = void 0;
 const connection_1 = __importDefault(require("../../../db/connection"));
+const Empresas_Contactos_1 = require("../../../models/negocio/Operaciones/Empresas_Contactos");
 //obtiene los contactos registrados y no registrados de una empresa
 const consultarContactosNoRegistradosPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
@@ -21,7 +22,7 @@ const consultarContactosNoRegistradosPorId = (req, res) => __awaiter(void 0, voi
         const query = `
         SELECT 
             OPERACIONES_CONTACTOS.id_empresa,
-            OPERACIONES_CONTACTOS.id_contacto,
+            CONTACTOS.id_contacto,
             CASE
                 WHEN OPERACIONES_CONTACTOS.id_empresa IS NULL THEN FALSE
                 ELSE TRUE
@@ -101,3 +102,32 @@ const consultarContactosActivosporId = (req, res) => __awaiter(void 0, void 0, v
     }
 });
 exports.consultarContactosActivosporId = consultarContactosActivosporId;
+// Agregar un nuevo registro
+const agregarOperacionEmpresaContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const nuevoRegistro = yield Empresas_Contactos_1.OperacionesEmpresasContacto.create(req.body);
+        res.json(nuevoRegistro);
+    }
+    catch (error) {
+        console.error('Error al agregar la operación empresa producto:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.agregarOperacionEmpresaContacto = agregarOperacionEmpresaContacto;
+// Eliminar un registro por ID
+const eliminarOperacionEmpresaContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const operacion = yield Empresas_Contactos_1.OperacionesEmpresasContacto.findByPk(id);
+        if (!operacion) {
+            return res.status(404).json({ msg: 'Operación empresa producto no encontrada' });
+        }
+        yield operacion.destroy();
+        res.json({ msg: 'Operación empresa producto eliminada correctamente' });
+    }
+    catch (error) {
+        console.error('Error al eliminar la operación empresa producto:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.eliminarOperacionEmpresaContacto = eliminarOperacionEmpresaContacto;

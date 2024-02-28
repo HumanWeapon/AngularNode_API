@@ -9,7 +9,6 @@ const Empresas_Contactos_controller_1 = require("../../../controllers/negocio/Op
 const empresasContatos = (0, express_1.Router)();
 empresasContatos.get('/consultarContactosNoRegistradosPorId/:id', validarToken_1.default, Empresas_Contactos_controller_1.consultarContactosNoRegistradosPorId);
 empresasContatos.get('/consultarContactosActivosporId/:id', validarToken_1.default, Empresas_Contactos_controller_1.consultarContactosActivosporId);
-//empresasContatos.get('/consultarOperacionEmpresaProductoPorId/:id', validarToken, consultarOperacionEmpresaProductoPorId);
-//empresasContatos.get('/consultarProductosNoRegistradosPorId/:id', validarToken, consultarProductosNoRegistradosPorId);
-//empresasContatos.delete('/eliminarOperacionEmpresaProducto/:id', validarToken, eliminarOperacionEmpresaProducto);
+empresasContatos.post('/agregarOperacionEmpresaContacto', validarToken_1.default, Empresas_Contactos_controller_1.agregarOperacionEmpresaContacto);
+empresasContatos.delete('/eliminarOperacionEmpresaContacto/:id', validarToken_1.default, Empresas_Contactos_controller_1.eliminarOperacionEmpresaContacto);
 exports.default = empresasContatos;
