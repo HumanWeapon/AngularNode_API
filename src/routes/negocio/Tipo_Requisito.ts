@@ -2,7 +2,6 @@ import {Router} from 'express';
 import validarToken from '../validarToken';
 import { activateRequisito, deleteTipo_Requisito, getAllTipo_Requisito, inactivateRequisito, postTipo_Requisito, updateTipo_Requisito } from '../../controllers/negocio/Tipo_requisito-controller';
 import { getTipo_Requisito } from '../../controllers/negocio/Tipo_requisito-controller';
-import routertipoTelefono from './tipotelefono';
 
 
 const routerTipo_Requisito = Router()
