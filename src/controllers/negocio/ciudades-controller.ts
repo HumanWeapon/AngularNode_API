@@ -160,18 +160,18 @@ export const inactivateCiudad = async (req: Request, res: Response) => {
         });
     }
 
-    await ciudad.update({
+    await _ciudad.update({
         estado: 2
     });
     res.json(_ciudad);
 
-} catch (error) {
-    console.error('Error al inactivar la ciudad:', error);
-    res.status(500).json({
-        msg: 'Hubo un error al inactivar la ciudad',
+    } catch (error) {
+        console.error('Error al inactivar la ciudad:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar la ciudad',
 
-    });
-}
+        });
+    }
 }
 
 //Activa el usuario de la DBA
@@ -188,7 +188,7 @@ export const activateCiudad = async (req: Request, res: Response) => {
         });
     }
 
-    await ciudad.update({
+    await _ciudad.update({
         estado: 1
     });
     res.json(_ciudad);

@@ -162,7 +162,7 @@ const inactivateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 msg: "La Ciudad no existe: " + ciudad
             });
         }
-        yield ciudad.update({
+        yield _ciudad.update({
             estado: 2
         });
         res.json(_ciudad);
@@ -187,7 +187,7 @@ const activateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 msg: "La Ciudad no existe: " + ciudad
             });
         }
-        yield ciudad.update({
+        yield _ciudad.update({
             estado: 1
         });
         res.json(_ciudad);
