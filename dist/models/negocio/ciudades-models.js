@@ -39,10 +39,6 @@ exports.Ciudades = connection_1.default.define('ciudades', {
     estado: {
         type: sequelize_1.DataTypes.NUMBER,
         allowNull: false
-    },
-    cod_pais: {
-        type: sequelize_1.DataTypes.NUMBER,
-        allowNull: false
     }
 }, {
     tableName: 'tbl_me_ciudades',
