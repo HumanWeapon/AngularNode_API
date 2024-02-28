@@ -72,7 +72,7 @@ class Server{
         this.app.use('/api/productos', routerProductos);
         this.app.use('/api/empresa',routerEmpresa);
         this.app.use('/api/opempresa',routerOpEmpresa);
-        this.app.use('/api/direcontactos',routerDireccionContacto);
+        this.app.use('/api/direcciones',routerDireccionContacto);
         this.app.use('/api/empresas_productos',empresasProductos);
         this.app.use('/api/empresas_contactos',empresasContatos);
         

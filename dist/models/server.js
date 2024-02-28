@@ -80,7 +80,7 @@ class Server {
         this.app.use('/api/productos', productos_1.default);
         this.app.use('/api/empresa', empresas_1.default);
         this.app.use('/api/opempresa', operacionEmpresas_1.default);
-        this.app.use('/api/direcontactos', direcciones_1.default);
+        this.app.use('/api/direcciones', direcciones_1.default);
         this.app.use('/api/empresas_productos', Empresas_Productos_1.default);
         this.app.use('/api/empresas_contactos', Emprersas_Contactos_1.default);
     }
