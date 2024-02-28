@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import dataBase from '../../../db/connection';
 import { Empresas } from '../empresas-model';
 import { Productos } from '../productos-models';
-import { DireccionesContactos } from '../direccionesContacto-model';
+import { Direcciones } from '../direccionesContacto-model';
 
 export const OperacionesEmpresasDirecciones: any = dataBase.define('operaciones_empresas_direcciones', {
     id_emp_dir: {
@@ -55,7 +55,7 @@ OperacionesEmpresasDirecciones.belongsTo(Empresas, {
     as: 'empresa' // Alias para la relación
 });
 
-OperacionesEmpresasDirecciones.belongsTo(DireccionesContactos, {
+OperacionesEmpresasDirecciones.belongsTo(Direcciones, {
     foreignKey: 'id_direccion',
     targetKey: 'id_direccion',
     as: 'producto' // Alias para la relación

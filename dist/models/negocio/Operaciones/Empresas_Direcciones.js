@@ -56,7 +56,7 @@ exports.OperacionesEmpresasDirecciones.belongsTo(empresas_model_1.Empresas, {
     targetKey: 'id_empresa',
     as: 'empresa' // Alias para la relación
 });
-exports.OperacionesEmpresasDirecciones.belongsTo(direccionesContacto_model_1.DireccionesContactos, {
+exports.OperacionesEmpresasDirecciones.belongsTo(direccionesContacto_model_1.Direcciones, {
     foreignKey: 'id_direccion',
     targetKey: 'id_direccion',
     as: 'producto' // Alias para la relación
