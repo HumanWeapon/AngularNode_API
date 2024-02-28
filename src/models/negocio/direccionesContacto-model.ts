@@ -43,7 +43,7 @@ export const DireccionesContactos: any = dataBase.define('direccionesContacto', 
     }
     }, 
     {
-    tableName: 'tbl_me_direcciones_contactos',
+    tableName: 'tbl_me_direcciones',
     schema: 'mipyme',
     timestamps: false
 });

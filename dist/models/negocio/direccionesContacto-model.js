@@ -46,7 +46,7 @@ exports.DireccionesContactos = connection_1.default.define('direccionesContacto'
         allowNull: false
     }
 }, {
-    tableName: 'tbl_me_direcciones_contactos',
+    tableName: 'tbl_me_direcciones',
     schema: 'mipyme',
     timestamps: false
 });
