@@ -69,6 +69,7 @@ exports.getContacto = getContacto;
 const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { dni, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
+        // Crea el contacto
         const contac = yield contacto_models_1.Contacto.create({
             id_tipo_contacto: id_tipo_contacto,
             primer_nombre: primer_nombre.toUpperCase(),
@@ -82,7 +83,19 @@ const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             fecha_modificacion: fecha_modificacion,
             estado: estado
         });
-        res.json(contac);
+        // Consulta el contacto recién creado con su tipo de contacto asociado
+        const contactoConTipo = yield contacto_models_1.Contacto.findByPk(contac.id, {
+            include: {
+                model: tipoContacto_models_1.TipoContacto,
+                as: 'tipo_contacto',
+                where: {
+                    estado: 1
+                },
+                attributes: ['id_tipo_contacto', 'tipo_contacto']
+            }
+        });
+        // Devuelve el contacto con su tipo de contacto asociado en la respuesta
+        res.json(contactoConTipo);
     }
     catch (error) {
         res.status(400).json({
