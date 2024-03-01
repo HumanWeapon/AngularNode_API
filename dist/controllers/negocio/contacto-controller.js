@@ -67,7 +67,7 @@ const getContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getContacto = getContacto;
 //Inserta un contacto en la base de datos
 const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { dni, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         // Crea el contacto
         const contac = yield contacto_models_1.Contacto.create({
@@ -84,7 +84,7 @@ const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             estado: estado
         });
         // Consulta el contacto recién creado con su tipo de contacto asociado
-        const contactoConTipo = yield contacto_models_1.Contacto.findByPk(contac.id, {
+        const contactoConTipo = yield contacto_models_1.Contacto.findByPk(contac.id_tipo_contacto, {
             include: {
                 model: tipoContacto_models_1.TipoContacto,
                 as: 'tipo_contacto',

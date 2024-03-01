@@ -59,7 +59,7 @@ try {
 }
 //Inserta un contacto en la base de datos
 export const postContacto = async (req: Request, res: Response) => {
-    const { dni, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
     try {
         // Crea el contacto
@@ -78,7 +78,7 @@ export const postContacto = async (req: Request, res: Response) => {
         });
 
         // Consulta el contacto recién creado con su tipo de contacto asociado
-        const contactoConTipo = await Contacto.findByPk(contac.id, {
+        const contactoConTipo = await Contacto.findByPk(contac.id_tipo_contacto, {
             include: {
                 model: TipoContacto,
                 as: 'tipo_contacto',
@@ -192,41 +192,32 @@ export const inactivateContacto = async (req: Request, res: Response) => {
 }
 
 //Activa el usuario de la DBA
-export const activateContacto = async (req: Request, res: Response) => {
+    export const activateContacto = async (req: Request, res: Response) => {
 
-    const { primer_nombre } = req.body;
-    try {
-    const _contacto = await Contacto.findOne({
-        where: {primer_nombre: primer_nombre}
-    });
-    if(!_contacto){
-        return res.status(404).json({
-            msg: "El Contacto no existe: "+ primer_nombre
+        const { primer_nombre } = req.body;
+        try {
+        const _contacto = await Contacto.findOne({
+            where: {primer_nombre: primer_nombre}
+        });
+        if(!_contacto){
+            return res.status(404).json({
+                msg: "El Contacto no existe: "+ primer_nombre
+            });
+        }
+
+        await _contacto.update({
+            estado: 1
+        });
+        res.json(_contacto);
+
+    } catch (error) {
+        console.error('Error al activar el contacto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar el contacto',
         });
     }
 
-    await _contacto.update({
-        estado: 1
-    });
-    res.json(_contacto);
-
-} catch (error) {
-    console.error('Error al activar el contacto:', error);
-    res.status(500).json({
-        msg: 'Hubo un error al activar el contacto',
-    });
 }
-
-}
-
-
-
-
-
-
-
-
-
 
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
