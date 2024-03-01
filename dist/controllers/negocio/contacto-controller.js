@@ -84,7 +84,8 @@ const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             estado: estado
         });
         // Consulta el contacto recién creado con su tipo de contacto asociado
-        const contactoConTipo = yield contacto_models_1.Contacto.findByPk(contac.id, {
+        const contactoConTipo = yield contacto_models_1.Contacto.findOne({
+            where: { primer_nombre: contac.primer_nombre, segundo_nombre: contac.segundo_nombre, primer_apellido: contac.primer_apellido, segundo_apellido: contac.segundo_apellido },
             include: {
                 model: tipoContacto_models_1.TipoContacto,
                 as: 'tipo_contacto',

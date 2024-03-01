@@ -2,6 +2,7 @@ import {Request, Response} from 'express';
 import { Contacto } from '../../models/negocio/contacto-models';
 import jwt from 'jsonwebtoken';
 import { TipoContacto } from '../../models/negocio/tipoContacto-models';
+import { and } from 'sequelize';
 
 
 //Obtiene todos las ciudades de la base de datos
@@ -78,7 +79,8 @@ export const postContacto = async (req: Request, res: Response) => {
         });
 
         // Consulta el contacto recién creado con su tipo de contacto asociado
-        const contactoConTipo = await Contacto.findByPk(contac.id, {
+        const contactoConTipo = await Contacto.findOne({
+            where : {primer_nombre: contac.primer_nombre, segundo_nombre: contac.segundo_nombre, primer_apellido: contac.primer_apellido, segundo_apellido: contac.segundo_apellido},
             include: {
                 model: TipoContacto,
                 as: 'tipo_contacto',
