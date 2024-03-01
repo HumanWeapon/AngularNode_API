@@ -78,7 +78,7 @@ export const postContacto = async (req: Request, res: Response) => {
         });
 
         // Consulta el contacto recién creado con su tipo de contacto asociado
-        const contactoConTipo = await Contacto.findByPk(contac.id_tipo_contacto, {
+        const contactoConTipo = await Contacto.findByPk(contac.id, {
             include: {
                 model: TipoContacto,
                 as: 'tipo_contacto',
