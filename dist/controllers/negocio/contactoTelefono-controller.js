@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
+exports.consultarContactosNoRegistradosPorId = exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
 const contactoTelefono_models_1 = require("../../models/negocio/contactoTelefono-models");
+const connection_1 = __importDefault(require("../../db/connection"));
 //Obtiene todos los contactos de la base de datos
 const getAllContactosTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findAll();
@@ -191,6 +195,43 @@ const activateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.activateContactoTelefono = activateContactoTelefono;
+const consultarContactosNoRegistradosPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT 
+            TELEFONOS.id_telefono, 
+            TELEFONOS.telefono, 
+            (CONTACTOS.primer_nombre||' '||CONTACTOS.segundo_nombre||' '||CONTACTOS.primer_apellido||' '||CONTACTOS.segundo_apellido) AS CONTACTO,
+            TELEFONOS.extencion, 
+            TELEFONOS.descripcion, 
+            TELEFONOS.creado_por, 
+            TELEFONOS.fecha_creacion, 
+            TELEFONOS.modificado_por, 
+            TELEFONOS.fecha_modificacion, 
+            TELEFONOS.estado, 
+            TELEFONOS.id_contacto
+        FROM mipyme.tbl_me_telefonos AS TELEFONOS
+        LEFT JOIN 
+            (
+                SELECT id_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, estado
+                FROM mipyme.tbl_me_contactos
+                WHERE estado = 1
+            ) AS CONTACTOS
+        ON 
+        TELEFONOS.id_contacto = CONTACTOS.id_contacto
+        WHERE TELEFONOS.id_contacto = ${id}
+            AND TELEFONOS.estado = 1
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        console.error('Error al consultar telefonos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.consultarContactosNoRegistradosPorId = consultarContactosNoRegistradosPorId;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
  */ 

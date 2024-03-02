@@ -9,12 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateCiudad = exports.inactivateCiudad = exports.updateCiudad = exports.deleteCiudad = exports.postCiudad = exports.getCiudad = exports.getAllCiudades = void 0;
+exports.getCiudades = exports.activateCiudad = exports.inactivateCiudad = exports.updateCiudad = exports.deleteCiudad = exports.postCiudad = exports.getCiudad = exports.getAllCiudades = void 0;
 const ciudades_models_1 = require("../../models/negocio/ciudades-models");
-//Obtiene todos las ciudades de la base de datos
+const paises_models_1 = require("../../models/negocio/paises-models");
+// Obtiene todas las ciudades de la base de datos
 const getAllCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const _ciudades = yield ciudades_models_1.Ciudades.findAll();
-    res.json(_ciudades);
+    try {
+        const _ciudades = yield ciudades_models_1.Ciudades.findAll({
+            include: {
+                model: paises_models_1.Paises,
+                as: 'pais' // El alias para referenciar al país en los resultados
+            }
+        });
+        res.json(_ciudades);
+    }
+    catch (error) {
+        // Manejo de errores
+        console.error('Error al obtener las ciudades:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 });
 exports.getAllCiudades = getAllCiudades;
 //Obtiene una ciudad de la base de datos     
@@ -106,7 +119,7 @@ const deleteCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.deleteCiudad = deleteCiudad;
 //actualiza la ciudad en la base de datos
 const updateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_pais } = req.body;
     try {
         const _ciudad = yield ciudades_models_1.Ciudades.findOne({
             where: { id_ciudad: id_ciudad }
@@ -124,7 +137,8 @@ const updateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             fecha_creacion: fecha_creacion,
             modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: fecha_modificacion,
-            estado: estado
+            estado: estado,
+            id_pais: id_pais
         });
         res.json(_ciudad);
     }
@@ -138,7 +152,7 @@ const updateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.updateCiudad = updateCiudad;
 //Inactiva el usuario de la DBA
 const inactivateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { ciudad } = req.body;
+    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_pais } = req.body;
     try {
         const _ciudad = yield ciudades_models_1.Ciudades.findOne({
             where: { ciudad: ciudad }
@@ -148,33 +162,8 @@ const inactivateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 msg: "La Ciudad no existe: " + ciudad
             });
         }
-        yield ciudad.update({
+        yield _ciudad.update({
             estado: 2
-        });
-        res.json(_ciudad);
-    }
-    catch (error) {
-        console.error('Error al activar el objeto:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al activar el objeto',
-        });
-    }
-});
-exports.inactivateCiudad = inactivateCiudad;
-//Activa el usuario de la DBA
-const activateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { ciudad } = req.body;
-    try {
-        const _ciudad = yield ciudades_models_1.Ciudades.findOne({
-            where: { ciudad: ciudad }
-        });
-        if (!ciudad) {
-            return res.status(404).json({
-                msg: "La Ciudad no existe: " + ciudad
-            });
-        }
-        yield ciudad.update({
-            estado: 1
         });
         res.json(_ciudad);
     }
@@ -185,7 +174,38 @@ const activateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     }
 });
+exports.inactivateCiudad = inactivateCiudad;
+//Activa el usuario de la DBA
+const activateCiudad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_pais } = req.body;
+    try {
+        const _ciudad = yield ciudades_models_1.Ciudades.findOne({
+            where: { ciudad: ciudad }
+        });
+        if (!ciudad) {
+            return res.status(404).json({
+                msg: "La Ciudad no existe: " + ciudad
+            });
+        }
+        yield _ciudad.update({
+            estado: 1
+        });
+        res.json(_ciudad);
+    }
+    catch (error) {
+        console.error('Error al activar la ciudad:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar la ciudad',
+        });
+    }
+});
 exports.activateCiudad = activateCiudad;
+//Obtiene todos las ciudades de la base de datos
+const getCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const _ciudades = yield ciudades_models_1.Ciudades.findAll();
+    res.json(_ciudades);
+});
+exports.getCiudades = getCiudades;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
  */ 

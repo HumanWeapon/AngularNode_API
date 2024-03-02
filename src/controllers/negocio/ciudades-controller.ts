@@ -1,14 +1,24 @@
 import {Request, Response} from 'express';
 import { Ciudades } from '../../models/negocio/ciudades-models';
 import jwt from 'jsonwebtoken';
+import { Paises } from '../../models/negocio/paises-models';
 
 
-//Obtiene todos las ciudades de la base de datos
+// Obtiene todas las ciudades de la base de datos
 export const getAllCiudades = async (req: Request, res: Response) => {
-
-    const _ciudades = await Ciudades.findAll();
-    res.json(_ciudades)
-
+    try {
+        const _ciudades = await Ciudades.findAll({
+            include: {
+                model: Paises, // El modelo que deseas incluir
+                as: 'pais' // El alias para referenciar al país en los resultados
+            }
+        });
+        res.json(_ciudades);
+    } catch (error) {
+        // Manejo de errores
+        console.error('Error al obtener las ciudades:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 }
 
 //Obtiene una ciudad de la base de datos     
@@ -103,7 +113,7 @@ export const deleteCiudad = async (req: Request, res: Response) => {
 //actualiza la ciudad en la base de datos
 export const updateCiudad = async (req: Request, res: Response) => {
  
-    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
+    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_pais  } = req.body;
     try {
     const _ciudad = await Ciudades.findOne({
         where: {id_ciudad: id_ciudad}
@@ -122,7 +132,8 @@ export const updateCiudad = async (req: Request, res: Response) => {
         fecha_creacion: fecha_creacion,
         modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
-        estado: estado
+        estado: estado,
+        id_pais: id_pais
     });
     res.json(_ciudad);
 
@@ -138,7 +149,7 @@ export const updateCiudad = async (req: Request, res: Response) => {
 //Inactiva el usuario de la DBA
 export const inactivateCiudad = async (req: Request, res: Response) => {
   
-    const { ciudad } = req.body;
+    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_pais  } = req.body;
     try {
     const _ciudad = await Ciudades.findOne({
         where: {ciudad: ciudad}
@@ -149,24 +160,24 @@ export const inactivateCiudad = async (req: Request, res: Response) => {
         });
     }
 
-    await ciudad.update({
+    await _ciudad.update({
         estado: 2
     });
     res.json(_ciudad);
 
-} catch (error) {
-    console.error('Error al activar el objeto:', error);
-    res.status(500).json({
-        msg: 'Hubo un error al activar el objeto',
+    } catch (error) {
+        console.error('Error al inactivar la ciudad:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar la ciudad',
 
-    });
-}
+        });
+    }
 }
 
 //Activa el usuario de la DBA
 export const activateCiudad = async (req: Request, res: Response) => {
    
-    const { ciudad } = req.body;
+    const { id_ciudad, ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_pais  } = req.body;
     try {
     const _ciudad = await Ciudades.findOne({
         where: {ciudad: ciudad}
@@ -177,20 +188,25 @@ export const activateCiudad = async (req: Request, res: Response) => {
         });
     }
 
-    await ciudad.update({
+    await _ciudad.update({
         estado: 1
     });
     res.json(_ciudad);
 
-} catch (error) {
-    console.error('Error al inactivar la ciudad:', error);
-    res.status(500).json({
-        msg: 'Hubo un error al inactivar la ciudad',
+    } catch (error) {
+        console.error('Error al activar la ciudad:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar la ciudad',
 
-    });
+        });
+    }
 }
-}
+//Obtiene todos las ciudades de la base de datos
+export const getCiudades = async (req: Request, res: Response) => {
+    const _ciudades = await Ciudades.findAll();
+    res.json(_ciudades)
 
+}
 
 
 

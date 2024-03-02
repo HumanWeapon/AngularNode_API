@@ -9,6 +9,7 @@ const ciudades_controller_1 = require("../../controllers/negocio/ciudades-contro
 const routerCiudades = (0, express_1.Router)();
 routerCiudades.get('/getAllCiudades', validarToken_1.default, ciudades_controller_1.getAllCiudades); //consulta todas las ciudades en la base de datos
 routerCiudades.get('/getCiudad', validarToken_1.default, ciudades_controller_1.getCiudad); //consulta una ciudad en la base de datos
+routerCiudades.get('/getCiudades', validarToken_1.default, ciudades_controller_1.getCiudades); //consulta una ciudad en la base de datos
 routerCiudades.post('/postCiudad', validarToken_1.default, ciudades_controller_1.postCiudad); // Inserta una ciudad en la base de datos
 routerCiudades.delete('/deleteCiudad', validarToken_1.default, ciudades_controller_1.deleteCiudad); //Elimina una ciudad en la base de datos
 routerCiudades.post('/updateCiudad', validarToken_1.default, ciudades_controller_1.updateCiudad); // actualiza una ciudad en la base de datos

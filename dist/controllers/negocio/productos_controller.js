@@ -226,18 +226,28 @@ const updateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 msg: "El producto con el ID: " + id_producto + " no existe"
             });
         }
-        yield produc.update({
-            id_producto: id_producto,
-            id_categoria: id_categoria,
-            producto: producto.toUpperCase(),
-            descripcion: descripcion.toUpperCase(),
-            creado_por: creado_por.toUpperCase(),
-            fecha_creacion: fecha_creacion,
-            modificado_por: modificado_por.toUpperCase(),
-            fecha_modificacion: fecha_modificacion,
-            estado: estado
+        const validar_producto = yield productos_models_1.Productos.findOne({
+            where: { producto: producto }
         });
-        res.json(produc);
+        if (validar_producto) {
+            return res.status(404).json({
+                msg: "Ya existe un producto con ese nombre"
+            });
+        }
+        else {
+            yield produc.update({
+                id_producto: id_producto,
+                id_categoria: id_categoria,
+                producto: producto.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
+                fecha_creacion: fecha_creacion,
+                modificado_por: modificado_por.toUpperCase(),
+                fecha_modificacion: fecha_modificacion,
+                estado: estado
+            });
+            res.json(produc);
+        }
     }
     catch (error) {
         console.error('Error al actualizar el producto:', error);

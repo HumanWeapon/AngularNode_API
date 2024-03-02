@@ -78,7 +78,7 @@ export const consultarProductosNoRegistradosPorId = async (req: Request, res: Re
             A.producto,
             A.descripcion
         FROM mipyme.tbl_me_productos AS A
-        LEFT JOIN (SELECT id_emp_prod, id_empresa, id_producto, estado FROM mipyme.operaciones_empresas_productos 
+        LEFT JOIN (SELECT id_emp_prod, id_empresa, id_producto, estado FROM mipyme.tbl_op_empresas_productos 
                 WHERE estado = 1 AND id_empresa = ${id}) AS B
         ON A.id_producto = B.id_producto
         LEFT JOIN (SELECT id_categoria, categoria, estado FROM mipyme.tbl_me_categoria_productos WHERE estado = 1) AS C
@@ -92,7 +92,7 @@ export const consultarProductosNoRegistradosPorId = async (req: Request, res: Re
 
         res.json(results);
     } catch (error) {
-        console.error('Error al consultar productos no registrados:', error);
+        console.error('Error al consultar productos:', error);
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 };

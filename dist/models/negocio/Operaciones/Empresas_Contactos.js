@@ -3,18 +3,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Ciudades = void 0;
+exports.OperacionesEmpresasContacto = void 0;
 const sequelize_1 = require("sequelize");
-const connection_1 = __importDefault(require("../../db/connection"));
-const paises_models_1 = require("./paises-models");
-exports.Ciudades = connection_1.default.define('ciudades', {
-    id_ciudad: {
+const connection_1 = __importDefault(require("../../../db/connection"));
+const empresas_model_1 = require("../empresas-model");
+const contacto_models_1 = require("../contacto-models");
+exports.OperacionesEmpresasContacto = connection_1.default.define('operaciones_empresas_productos', {
+    id_emp_contactos: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    ciudad: {
-        type: sequelize_1.DataTypes.STRING,
+    id_empresa: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
+    },
+    id_contacto: {
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
     descripcion: {
@@ -38,22 +43,21 @@ exports.Ciudades = connection_1.default.define('ciudades', {
         allowNull: false
     },
     estado: {
-        type: sequelize_1.DataTypes.NUMBER,
-        allowNull: false
-    },
-    id_pais: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     }
 }, {
-    tableName: 'tbl_me_ciudades',
+    tableName: 'tbl_op_empresas_contactos',
     schema: 'mipyme',
     timestamps: false
 });
-exports.Ciudades.belongsTo(paises_models_1.Paises, {
-    foreignKey: 'id_pais',
-    as: 'pais' // Alias para la relación
+exports.OperacionesEmpresasContacto.belongsTo(empresas_model_1.Empresas, {
+    foreignKey: 'id_empresa',
+    targetKey: 'id_empresa',
+    as: 'empresa' // Alias para la relación
 });
-/*                                          FRANKLIN ALEXANDER MURILLO CRUZ
-                                                CUENTA: 20151021932
- */ 
+exports.OperacionesEmpresasContacto.belongsTo(contacto_models_1.Contacto, {
+    foreignKey: 'id_contacto',
+    targetKey: 'id_contacto',
+    as: 'contacto' // Alias para la relación
+});

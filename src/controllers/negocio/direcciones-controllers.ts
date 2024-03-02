@@ -1,9 +1,9 @@
 import {Request, Response} from 'express';
-import { DireccionesContactos } from '../../models/negocio/direccionesContacto-model';
+import { Direcciones } from '../../models/negocio/direccionesContacto-model';
 
 //Obtiene todas las Empresas
 export const getAllDirecContactos = async (req: Request, res: Response) => {
-    const _direcontactos = await DireccionesContactos.findAll();
+    const _direcontactos = await Direcciones.findAll();
     res.json(_direcontactos)
 }
 
@@ -11,7 +11,7 @@ export const getAllDirecContactos = async (req: Request, res: Response) => {
 export const getDirecContactos = async (req: Request, res: Response) => {
     const { id_contacto } = req.body;
 try {
-    const _direcontactos = await DireccionesContactos.findAll({
+    const _direcontactos = await Direcciones.findAll({
         where: {id_contacto: id_contacto}
     });
     if(_direcontactos){
@@ -36,7 +36,7 @@ export const postDirecContactos = async (req: Request, res: Response) => {
     const { id_contacto, id_tipo_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado} = req.body;
 
     try{
-        const _direcontactos = await DireccionesContactos.findOne({
+        const _direcontactos = await Direcciones.findOne({
             where: {direccion: direccion}
         })
         if (_direcontactos){
@@ -44,7 +44,7 @@ export const postDirecContactos = async (req: Request, res: Response) => {
                 msg: 'Direccion Contacto ya registrada en la base de datos: '+ direccion
             })
         }else{
-            const _direcontactos = await DireccionesContactos.create({
+            const _direcontactos = await Direcciones.create({
                 id_contacto: id_contacto,
                 id_tipo_direccion: id_tipo_direccion,
                 direccion: direccion.toUpperCase(),
@@ -72,7 +72,7 @@ export const deleteDirecContactos = async (req: Request, res: Response) => {
     const { id_direccion } = req.body; // Obtén el ID desde los parámetros de la URL
 
     try {
-        const _direcontactos = await DireccionesContactos.findOne({
+        const _direcontactos = await Direcciones.findOne({
             where: { id_direccion: id_direccion}
         });
 
@@ -97,7 +97,7 @@ export const updateDirecContactos = async (req: Request, res: Response) => {
   
     const { id_direccion, id_contacto, id_tipo_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado} = req.body;
     try {
-    const _direcontactos = await DireccionesContactos.findOne({
+    const _direcontactos = await Direcciones.findOne({
         where: {id_direccion: id_direccion}
     });
     if(!_direcontactos){
@@ -134,7 +134,7 @@ export const inactivateDirecContactos = async (req: Request, res: Response) => {
   
     const { direccion } = req.body;
     try {
-    const _direcontactos = await DireccionesContactos.findOne({
+    const _direcontactos = await Direcciones.findOne({
         where: {direccion: direccion}
     });
     if(!_direcontactos){
@@ -161,7 +161,7 @@ export const activateDirecContactos = async (req: Request, res: Response) => {
    
     const { direccion } = req.body;
 try {   
-    const _direcontactos = await DireccionesContactos.findOne({
+    const _direcontactos = await Direcciones.findOne({
         where: {direccion: direccion}
     });
     if(!_direcontactos){

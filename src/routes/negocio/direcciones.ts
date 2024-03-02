@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validarToken from '../validarToken';
-import { activateDirecContactos, deleteDirecContactos, getAllDirecContactos, getDirecContactos, inactivateDirecContactos, postDirecContactos, updateDirecContactos } from '../../controllers/negocio/direccionesContacto-controllers';
+import { activateDirecContactos, deleteDirecContactos, getAllDirecContactos, getDirecContactos, inactivateDirecContactos, postDirecContactos, updateDirecContactos } from '../../controllers/negocio/direcciones-controllers';
 
 
 const routerDireccionContacto = Router()

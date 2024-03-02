@@ -2,6 +2,7 @@ import {Request, Response} from 'express';
 import { Contacto } from '../../models/negocio/contacto-models';
 import jwt from 'jsonwebtoken';
 import { TipoContacto } from '../../models/negocio/tipoContacto-models';
+import { and } from 'sequelize';
 
 
 //Obtiene todos las ciudades de la base de datos
@@ -59,10 +60,10 @@ try {
 }
 //Inserta un contacto en la base de datos
 export const postContacto = async (req: Request, res: Response) => {
+    const { id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
-    const { dni, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-
-    try{
+    try {
+        // Crea el contacto
         const contac = await Contacto.create({
             id_tipo_contacto: id_tipo_contacto,
             primer_nombre: primer_nombre.toUpperCase(),
@@ -75,14 +76,28 @@ export const postContacto = async (req: Request, res: Response) => {
             modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: fecha_modificacion,
             estado: estado
-        })
-        res.json(contac)
-    }
-    catch (error){
+        });
+
+        // Consulta el contacto recién creado con su tipo de contacto asociado
+        const contactoConTipo = await Contacto.findOne({
+            where : {primer_nombre: contac.primer_nombre, segundo_nombre: contac.segundo_nombre, primer_apellido: contac.primer_apellido, segundo_apellido: contac.segundo_apellido},
+            include: {
+                model: TipoContacto,
+                as: 'tipo_contacto',
+                where: {
+                    estado: 1
+                },
+                attributes: ['id_tipo_contacto', 'tipo_contacto']
+            }
+        });
+
+        // Devuelve el contacto con su tipo de contacto asociado en la respuesta
+        res.json(contactoConTipo);
+    } catch (error) {
         res.status(400).json({
             msg: 'Contactate con el administrador',
             error
-        }); 
+        });
     }
 }
 
@@ -179,41 +194,32 @@ export const inactivateContacto = async (req: Request, res: Response) => {
 }
 
 //Activa el usuario de la DBA
-export const activateContacto = async (req: Request, res: Response) => {
+    export const activateContacto = async (req: Request, res: Response) => {
 
-    const { primer_nombre } = req.body;
-    try {
-    const _contacto = await Contacto.findOne({
-        where: {primer_nombre: primer_nombre}
-    });
-    if(!_contacto){
-        return res.status(404).json({
-            msg: "El Contacto no existe: "+ primer_nombre
+        const { primer_nombre } = req.body;
+        try {
+        const _contacto = await Contacto.findOne({
+            where: {primer_nombre: primer_nombre}
+        });
+        if(!_contacto){
+            return res.status(404).json({
+                msg: "El Contacto no existe: "+ primer_nombre
+            });
+        }
+
+        await _contacto.update({
+            estado: 1
+        });
+        res.json(_contacto);
+
+    } catch (error) {
+        console.error('Error al activar el contacto:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar el contacto',
         });
     }
 
-    await _contacto.update({
-        estado: 1
-    });
-    res.json(_contacto);
-
-} catch (error) {
-    console.error('Error al activar el contacto:', error);
-    res.status(500).json({
-        msg: 'Hubo un error al activar el contacto',
-    });
 }
-
-}
-
-
-
-
-
-
-
-
-
 
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932

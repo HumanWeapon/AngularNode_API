@@ -3,13 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OperacionesEmpresasProductos = void 0;
+exports.OperacionesEmpresasDirecciones = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../../../db/connection"));
 const empresas_model_1 = require("../empresas-model");
-const productos_models_1 = require("../productos-models");
-exports.OperacionesEmpresasProductos = connection_1.default.define('operaciones_empresas_productos', {
-    id_emp_prod: {
+const direccionesContacto_model_1 = require("../direccionesContacto-model");
+const paises_models_1 = require("../paises-models");
+const ciudades_models_1 = require("../ciudades-models");
+exports.OperacionesEmpresasDirecciones = connection_1.default.define('operaciones_empresas_direcciones', {
+    id_emp_dir: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
@@ -18,7 +20,15 @@ exports.OperacionesEmpresasProductos = connection_1.default.define('operaciones_
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
-    id_producto: {
+    id_direccion: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
+    },
+    id_pais: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
+    },
+    id_ciudad: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
@@ -47,17 +57,27 @@ exports.OperacionesEmpresasProductos = connection_1.default.define('operaciones_
         allowNull: false
     }
 }, {
-    tableName: 'tbl_op_empresas_productos',
+    tableName: 'tbl_op_empresas_direcciones',
     schema: 'mipyme',
     timestamps: false
 });
-exports.OperacionesEmpresasProductos.belongsTo(empresas_model_1.Empresas, {
+exports.OperacionesEmpresasDirecciones.belongsTo(empresas_model_1.Empresas, {
     foreignKey: 'id_empresa',
     targetKey: 'id_empresa',
     as: 'empresa' // Alias para la relación
 });
-exports.OperacionesEmpresasProductos.belongsTo(productos_models_1.Productos, {
-    foreignKey: 'id_producto',
-    targetKey: 'id_producto',
-    as: 'producto' // Alias para la relación
+exports.OperacionesEmpresasDirecciones.belongsTo(direccionesContacto_model_1.Direcciones, {
+    foreignKey: 'id_direccion',
+    targetKey: 'id_direccion',
+    as: 'direcciones' // Alias para la relación
+});
+exports.OperacionesEmpresasDirecciones.belongsTo(paises_models_1.Paises, {
+    foreignKey: 'id_pais',
+    targetKey: 'id_pais',
+    as: 'pais' // Alias para la relación
+});
+exports.OperacionesEmpresasDirecciones.belongsTo(ciudades_models_1.Ciudades, {
+    foreignKey: 'id_ciudad',
+    targetKey: 'id_ciudad',
+    as: 'ciudad' // Alias para la relación
 });

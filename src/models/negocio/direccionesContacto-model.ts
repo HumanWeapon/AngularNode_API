@@ -3,7 +3,7 @@ import dataBase from '../../db/connection';
 import { Contacto } from './contacto-models'
 import { TipoDireccion } from './tipoDireccion-models'
 
-export const DireccionesContactos: any = dataBase.define('direccionesContacto', {
+export const Direcciones: any = dataBase.define('direccionesContacto', {
     id_direccion: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -43,11 +43,11 @@ export const DireccionesContactos: any = dataBase.define('direccionesContacto', 
     }
     }, 
     {
-    tableName: 'tbl_me_direcciones_contactos',
+    tableName: 'tbl_me_direcciones',
     schema: 'mipyme',
     timestamps: false
 });
-DireccionesContactos.belongsTo(TipoDireccion, {
+Direcciones.belongsTo(TipoDireccion, {
     foreignKey: 'id_tipo_direccion',
     as: 'tipoDireccion' // Alias para la relación
 });
