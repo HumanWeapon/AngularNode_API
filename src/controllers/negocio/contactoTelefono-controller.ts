@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import { ContactoTelefono } from '../../models/negocio/contactoTelefono-models';
+import db from '../../db/connection';
 import jwt from 'jsonwebtoken';
 
 
@@ -195,7 +196,43 @@ export const activateContactoTelefono = async (req: Request, res: Response) => {
 
 
 
+export const consultarContactosNoRegistradosPorId = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT 
+            TELEFONOS.id_telefono, 
+            TELEFONOS.telefono, 
+            (CONTACTOS.primer_nombre||' '||CONTACTOS.segundo_nombre||' '||CONTACTOS.primer_apellido||' '||CONTACTOS.segundo_apellido) AS CONTACTO,
+            TELEFONOS.extencion, 
+            TELEFONOS.descripcion, 
+            TELEFONOS.creado_por, 
+            TELEFONOS.fecha_creacion, 
+            TELEFONOS.modificado_por, 
+            TELEFONOS.fecha_modificacion, 
+            TELEFONOS.estado, 
+            TELEFONOS.id_contacto
+        FROM mipyme.tbl_me_telefonos AS TELEFONOS
+        LEFT JOIN 
+            (
+                SELECT id_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, estado
+                FROM mipyme.tbl_me_contactos
+                WHERE estado = 1
+            ) AS CONTACTOS
+        ON 
+        TELEFONOS.id_contacto = CONTACTOS.id_contacto
+        WHERE TELEFONOS.id_contacto = ${id}
+            AND TELEFONOS.estado = 1
+        `;
 
+        const [results, metadata] = await db.query(query);
+
+        res.json(results);
+    } catch (error) {
+        console.error('Error al consultar telefonos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+};
 
 
 
