@@ -5,7 +5,6 @@ import jwt, { JsonWebTokenError, JwtPayload } from 'jsonwebtoken';
 import { Roles } from '../models/roles-models';
 import { Objetos } from '../models/objetos-models';
 import { Permisos } from '../models/permisos-models';
-import { validate } from 'class-validator';
 import config from './config';
 
 
