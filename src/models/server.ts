@@ -17,7 +17,7 @@ import routerCiudades from '../routes/negocio/ciudades';
 import routerTipoDireccion from '../routes/negocio/tipoDireccion';
 import routerTipoContacto from '../routes/negocio/tipoContacto';
 import routerContacto from '../routes/negocio/contacto';
-import routerContactoTelefono from '../routes/negocio/contactoTelefono';
+import routerContactoTelefono from '../routes/negocio/Telefonos';
 import routertipoTelefono from '../routes/negocio/tipotelefono';
 import routerPyme from '../routes/negocio/pyme';
 import routerBitacora from '../routes/Bitacora';
@@ -63,7 +63,7 @@ class Server{
         this.app.use('/api/tipoDireccion', routerTipoDireccion); //FM
         this.app.use('/api/tipoContacto', routerTipoContacto); //FM
         this.app.use('/api/contacto', routerContacto); //FM
-        this.app.use('/api/contactoTelefono', routerContactoTelefono); //FM
+        this.app.use('/api/telefonos', routerContactoTelefono); //FM
         this.app.use('/api/tipotelefono', routertipoTelefono);
         this.app.use('/api/pyme', routerPyme);
         this.app.use('/api/categoria',routerCategoria);//BF

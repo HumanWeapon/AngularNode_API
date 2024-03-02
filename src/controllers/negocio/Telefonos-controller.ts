@@ -196,7 +196,7 @@ export const activateContactoTelefono = async (req: Request, res: Response) => {
 
 
 
-export const consultarContactosNoRegistradosPorId = async (req: Request, res: Response) => {
+export const telefonosdeContactosPorId = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         const query = `
