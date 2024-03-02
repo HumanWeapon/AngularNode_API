@@ -17,8 +17,16 @@ const telefonos_models_1 = require("../../models/negocio/telefonos-models");
 const connection_1 = __importDefault(require("../../db/connection"));
 //Obtiene todos los contactos de la base de datos
 const getAllContactosTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const _contactoT = yield telefonos_models_1.ContactoTelefono.findAll();
-    res.json(_contactoT);
+    try {
+        const _contactoT = yield telefonos_models_1.ContactoTelefono.findAll();
+        res.json(_contactoT);
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
 });
 exports.getAllContactosTelefono = getAllContactosTelefono;
 //Obtiene un contacto de la base de datos     
