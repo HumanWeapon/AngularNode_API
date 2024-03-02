@@ -157,7 +157,7 @@ const getProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getProductos = getProductos;
 // Inserta una categoria en la base de datos
 const postProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_producto, id_categoria, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_categoria, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _producto = yield productos_models_1.Productos.findOne({
             where: { producto: producto }
@@ -179,7 +179,7 @@ const postProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 estado: estado
             });
             const producto_tipo = yield contacto_models_1.Contacto.findOne({
-                where: { id_producto: newProduc.id_producto },
+                where: { producto: newProduc.producto },
                 include: {
                     model: categoria_models_1.Categorias,
                     as: 'categoria',
@@ -190,6 +190,7 @@ const postProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 }
             });
             res.json(producto_tipo);
+            console.log(producto_tipo);
         }
     }
     catch (error) {

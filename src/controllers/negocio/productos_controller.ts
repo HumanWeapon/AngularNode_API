@@ -147,7 +147,7 @@ try {
 // Inserta una categoria en la base de datos
 export const postProducto = async (req: Request, res: Response) => {
 
-    const {id_producto, id_categoria, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const {id_categoria, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
     try{
         const _producto= await Productos.findOne({
@@ -170,7 +170,7 @@ export const postProducto = async (req: Request, res: Response) => {
                 estado: estado
             });
             const producto_tipo = await Contacto.findOne({
-                where : {id_producto: newProduc.id_producto},
+                where : {producto: newProduc.producto},
                 include: {
                     model: Categorias,
                     as: 'categoria',
@@ -181,6 +181,7 @@ export const postProducto = async (req: Request, res: Response) => {
                 }
             });
             res.json(producto_tipo)
+            console.log(producto_tipo);
         }
     }
     catch (error){
