@@ -56,14 +56,14 @@ export const User: any = dataBase.define('usuario', {
             type: DataTypes.DATE,
             allowNull: true
         },
+        resetToken: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         intentos_fallidos: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        /*rol: {
-            type: DataTypes.STRING,
-            allowNull: false
-        }*/
     }, 
     {
     tableName: 'tbl_ms_usuario',

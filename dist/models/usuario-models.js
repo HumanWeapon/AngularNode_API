@@ -61,14 +61,14 @@ exports.User = connection_1.default.define('usuario', {
         type: sequelize_1.DataTypes.DATE,
         allowNull: true
     },
+    resetToken: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
     intentos_fallidos: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
-    /*rol: {
-        type: DataTypes.STRING,
-        allowNull: false
-    }*/
 }, {
     tableName: 'tbl_ms_usuario',
     schema: 'mipyme',
