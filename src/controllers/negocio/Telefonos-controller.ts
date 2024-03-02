@@ -1,7 +1,6 @@
 import {Request, Response} from 'express';
-import { ContactoTelefono } from '../../models/negocio/contactoTelefono-models';
+import { ContactoTelefono } from '../../models/negocio/telefonos-models';
 import db from '../../db/connection';
-import jwt from 'jsonwebtoken';
 
 
 //Obtiene todos los contactos de la base de datos

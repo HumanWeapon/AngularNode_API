@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.telefonosdeContactosPorId = exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
-const contactoTelefono_models_1 = require("../../models/negocio/contactoTelefono-models");
+const telefonos_models_1 = require("../../models/negocio/telefonos-models");
 const connection_1 = __importDefault(require("../../db/connection"));
 //Obtiene todos los contactos de la base de datos
 const getAllContactosTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findAll();
+    const _contactoT = yield telefonos_models_1.ContactoTelefono.findAll();
     res.json(_contactoT);
 });
 exports.getAllContactosTelefono = getAllContactosTelefono;
@@ -25,7 +25,7 @@ exports.getAllContactosTelefono = getAllContactosTelefono;
 const getContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_contacto } = req.body;
     try {
-        const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findAll({
+        const _contactoT = yield telefonos_models_1.ContactoTelefono.findAll({
             where: { id_contacto: id_contacto }
         });
         if (_contactoT) {
@@ -49,7 +49,7 @@ exports.getContactoTelefono = getContactoTelefono;
 const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_contacto, id_tipo_telefono, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
-        const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findOne({
+        const _contactoT = yield telefonos_models_1.ContactoTelefono.findOne({
             where: { telefono: telefono }
         });
         if (_contactoT) {
@@ -58,7 +58,7 @@ const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, fun
             });
         }
         else {
-            const newConT = yield contactoTelefono_models_1.ContactoTelefono.create({
+            const newConT = yield telefonos_models_1.ContactoTelefono.create({
                 id_contacto: id_contacto,
                 id_tipo_telefono: id_tipo_telefono,
                 telefono: telefono,
@@ -90,7 +90,7 @@ exports.postContactoTelefono = postContactoTelefono;
 const deleteContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_telefono } = req.body;
     try {
-        const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findOne({
+        const _contactoT = yield telefonos_models_1.ContactoTelefono.findOne({
             where: { id_telefono: id_telefono }
         });
         if (_contactoT) {
@@ -115,7 +115,7 @@ exports.deleteContactoTelefono = deleteContactoTelefono;
 const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_telefono, id_contacto, id_tipo_telefono, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
-        const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findOne({
+        const _contactoT = yield telefonos_models_1.ContactoTelefono.findOne({
             where: { id_telefono: id_telefono }
         });
         if (!_contactoT) {
@@ -149,7 +149,7 @@ exports.updateContactoTelefono = updateContactoTelefono;
 const inactivateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { telefono } = req.body;
     try {
-        const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findOne({
+        const _contactoT = yield telefonos_models_1.ContactoTelefono.findOne({
             where: { telefono: telefono }
         });
         if (!_contactoT) {
@@ -174,7 +174,7 @@ exports.inactivateContactoTelefono = inactivateContactoTelefono;
 const activateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { telefono } = req.body;
     try {
-        const _contactoT = yield contactoTelefono_models_1.ContactoTelefono.findOne({
+        const _contactoT = yield telefonos_models_1.ContactoTelefono.findOne({
             where: { telefono: telefono }
         });
         if (!_contactoT) {
