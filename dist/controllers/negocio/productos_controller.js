@@ -155,7 +155,7 @@ const getProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getProductos = getProductos;
-// Inserta una categoria en la base de datos
+// Inserta una producto en la base de datos
 const postProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_categoria, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
@@ -178,19 +178,17 @@ const postProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
-            const producto_tipo = yield contacto_models_1.Contacto.findOne({
-                where: { producto: newProduc.producto },
-                include: {
-                    model: categoria_models_1.Categorias,
-                    as: 'categoria',
-                    where: {
-                        estado: 1
-                    },
-                    attributes: ['id_categoria', 'categoria']
-                }
+            // Consultar el producto con su categoría
+            const productoConCategoria = yield productos_models_1.Productos.findOne({
+                where: { id_producto: newProduc.id_producto },
+                include: [{
+                        model: categoria_models_1.Categorias,
+                        as: 'categoria',
+                        attributes: ['id_categoria', 'categoria'] // Selecciona los campos que deseas devolver
+                    }]
             });
-            res.json(producto_tipo);
-            console.log(producto_tipo);
+            // Devolver el producto con su categoría
+            res.json(productoConCategoria);
         }
     }
     catch (error) {
