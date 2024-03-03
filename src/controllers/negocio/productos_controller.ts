@@ -144,7 +144,7 @@ try {
 }
 
 
-// Inserta una categoria en la base de datos
+// Inserta una producto en la base de datos
 export const postProducto = async (req: Request, res: Response) => {
 
     const {id_categoria, producto, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
@@ -168,8 +168,19 @@ export const postProducto = async (req: Request, res: Response) => {
                 modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
-            })
-            res.json(newProduc)
+            });
+            // Consultar el producto con su categoría
+            const productoConCategoria = await Productos.findOne({
+                where: { id_producto: newProduc.id_producto },
+                include: [{
+                    model: Categorias,
+                    as: 'categoria', // Alias para la relación
+                    attributes: ['id_categoria', 'categoria'] // Selecciona los campos que deseas devolver
+                }]
+            });
+
+            // Devolver el producto con su categoría
+            res.json(productoConCategoria);
         }
     }
     catch (error){

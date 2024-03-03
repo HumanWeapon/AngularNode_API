@@ -8,10 +8,6 @@ export const ContactoTelefono: any = dataBase.define('contactoTelefono', {
         primaryKey: true,
         autoIncrement: true
     },
-    id_tipo_telefono: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
     telefono: {
         type: DataTypes.STRING,
         allowNull: false
@@ -49,10 +45,6 @@ export const ContactoTelefono: any = dataBase.define('contactoTelefono', {
     tableName: 'tbl_me_telefonos',
     schema: 'mipyme',
     timestamps: false
-});
-ContactoTelefono.belongsTo(tipoTelefono, {
-    foreignKey: 'id_tipo_telefono',
-    as: 'tipo_telefono' // Alias para la relación
 });
 
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ

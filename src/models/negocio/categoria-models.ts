@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
+import { Productos } from './productos-models';
 
 export const Categorias: any = dataBase.define('categoria', {
     id_categoria: {

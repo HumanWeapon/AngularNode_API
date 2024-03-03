@@ -12,14 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.usuariosAllParametros = exports.usuariosAllRoles = exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.deleteUsuario = exports.postUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
+exports.resetPassword = exports.forgotPassword = exports.usuariosAllParametros = exports.usuariosAllRoles = exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.deleteUsuario = exports.postUsuario = exports.getCorreoElectronicoPorUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const usuario_models_1 = require("../models/usuario-models");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const roles_models_1 = require("../models/roles-models");
 const permisos_models_1 = require("../models/permisos-models");
+const config_1 = __importDefault(require("./config"));
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { usuario, contrasena, id_usuario, creado_por, fecha_creacion, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_ultima_conexion, primer_ingreso, fecha_vencimiento, intentos_fallidos } = req.body;
+    const { usuario, contrasena, id_usuario, creado_por, fecha_creacion, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_ultima_conexion, primer_ingreso, resetToken, fecha_vencimiento, intentos_fallidos } = req.body;
     try {
         // Busca el usuario en la base de datos
         const user = yield usuario_models_1.User.findOne({
@@ -112,6 +113,30 @@ const getUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getUsuario = getUsuario;
+const getCorreoElectronicoPorUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { usuario } = req.body;
+        const user = yield usuario_models_1.User.findOne({
+            attributes: ['correo_electronico'],
+            where: { usuario: usuario }
+        });
+        if (user) {
+            res.json(user.correo_electronico); // Devuelve solo el correo electrónico
+        }
+        else {
+            res.status(404).json({
+                msg: `No existe el usuario: ${usuario}`
+            });
+        }
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
+});
+exports.getCorreoElectronicoPorUsuario = getCorreoElectronicoPorUsuario;
 //Inserta un usuario en la base de datos
 const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { creado_por, fecha_creacion, modificado_por, fecha_modificacion, usuario, nombre_usuario, correo_electronico, contrasena, id_rol, fecha_ultima_conexion, fecha_vencimiento, intentos_fallidos, estado_usuario } = req.body;
@@ -311,3 +336,100 @@ const usuariosAllParametros = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.usuariosAllParametros = usuariosAllParametros;
+const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { usuario } = req.body;
+    if (!usuario) {
+        return res.status(400).json({ message: 'El Usuario es Requerido!' });
+    }
+    let emailStatus = 'OK';
+    let verificationLink;
+    try {
+        const user = yield usuario_models_1.User.findOne({ where: { usuario } });
+        if (!user) {
+            return res.status(400).json({ message: 'Usuario no encontrado' });
+        }
+        const token = jsonwebtoken_1.default.sign({ userId: user.id_usuario }, config_1.default.jwtSecretReset, { expiresIn: '10m' });
+        verificationLink = `http://localhost:3001/resetPassword${token}`;
+        user.resetToken = token; // Asignar el token al usuario
+        yield user.save(); // Guardar el usuario con el token de restablecimiento
+        // Aquí debes implementar la lógica para enviar el correo electrónico con el enlace de verificación
+        return res.json({ message: 'Verifica tu correo electrónico', userEmail: user.correo_electronico, info: emailStatus, test: verificationLink });
+    }
+    catch (error) {
+        console.error('Error al generar el token de restablecimiento:', error);
+        emailStatus = 'error';
+        return res.status(500).json({ message: 'Error al generar el token de restablecimiento' });
+    }
+});
+exports.forgotPassword = forgotPassword;
+const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { newPassword } = req.body;
+    const resetToken = req.headers.reset;
+    try {
+        if (!resetToken || !newPassword || typeof resetToken !== 'string' || typeof newPassword !== 'string') {
+            return res.status(400).json({ message: 'Token y nueva contraseña son requeridos' });
+        }
+        let user;
+        let jwtPayload;
+        jwtPayload = jsonwebtoken_1.default.verify(resetToken, config_1.default.jwtSecretReset);
+        user = yield usuario_models_1.User.findOne({ where: { resetToken } });
+        if (!user) {
+            return res.status(401).json({ message: 'Token de reinicio inválido' });
+        }
+        const hashedPassword = yield bcrypt_1.default.hash(newPassword, 10);
+        yield user.update({ contrasena: hashedPassword, resetToken: resetToken });
+        return res.json({ message: 'Contraseña restablecida con éxito' });
+    }
+    catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        return res.status(500).json({ message: 'Error al restablecer la contraseña' });
+    }
+});
+exports.resetPassword = resetPassword;
+//Nueva Contraseña
+/*export const newPassword = async (req: Request, res: Response) => {
+    const { newPassword } = req.body;
+    const resetToken = req.headers.reset as string;
+
+    if (!(resetToken && newPassword)) {
+        return res.status(400).json({ message: 'Todos los valores son requeridos' });
+    }
+
+    let user;
+    let jwtPayload;
+
+    try {
+        jwtPayload = jwt.verify(resetToken, config.jwtSecretReset);
+        user = await User.findOne({ where: { resetToken } });
+
+        if (!user) {
+            return res.status(401).json({ message: 'Token de reinicio inválido' });
+        }
+
+        user.contrasena = newPassword;
+        const validationOps = { validationError: { target: false, value: false } };
+        const errors = await validate(user, validationOps);
+
+        if (errors.length > 0) {
+            return res.status(400).json(errors);
+        }
+
+        // Hashear la nueva contraseña antes de guardarla
+        user.hashPassword();
+        await user.save();
+    } catch (error) {
+        console.error('Error al cambiar la contraseña:', error);
+
+        // Verificar el tipo de error y devolver un mensaje más específico
+        let errorMessage;
+           if (error instanceof JsonWebTokenError) {
+              errorMessage = 'El token de reinicio es inválido';
+           } else {
+               errorMessage = 'Ocurrió un error al cambiar la contraseña';
+}
+
+        return res.status(500).json({ message: errorMessage });
+    }
+
+    res.json({ message: 'Se cambió la contraseña correctamente' });
+}*/

@@ -29,7 +29,7 @@ const ciudades_1 = __importDefault(require("../routes/negocio/ciudades"));
 const tipoDireccion_1 = __importDefault(require("../routes/negocio/tipoDireccion"));
 const tipoContacto_1 = __importDefault(require("../routes/negocio/tipoContacto"));
 const contacto_1 = __importDefault(require("../routes/negocio/contacto"));
-const contactoTelefono_1 = __importDefault(require("../routes/negocio/contactoTelefono"));
+const Telefonos_1 = __importDefault(require("../routes/negocio/Telefonos"));
 const tipotelefono_1 = __importDefault(require("../routes/negocio/tipotelefono"));
 const pyme_1 = __importDefault(require("../routes/negocio/pyme"));
 const Bitacora_1 = __importDefault(require("../routes/Bitacora"));
@@ -71,7 +71,7 @@ class Server {
         this.app.use('/api/tipoDireccion', tipoDireccion_1.default); //FM
         this.app.use('/api/tipoContacto', tipoContacto_1.default); //FM
         this.app.use('/api/contacto', contacto_1.default); //FM
-        this.app.use('/api/contactoTelefono', contactoTelefono_1.default); //FM
+        this.app.use('/api/telefonos', Telefonos_1.default); //FM
         this.app.use('/api/tipotelefono', tipotelefono_1.default);
         this.app.use('/api/pyme', pyme_1.default);
         this.app.use('/api/categoria', categoria_1.default); //BF

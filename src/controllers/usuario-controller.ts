@@ -1,10 +1,12 @@
 import {Request, Response, request} from 'express';
 import bcrypt from 'bcrypt';
 import { User } from '../models/usuario-models';
-import jwt from 'jsonwebtoken';
+import jwt, { JsonWebTokenError, JwtPayload } from 'jsonwebtoken';
 import { Roles } from '../models/roles-models';
 import { Objetos } from '../models/objetos-models';
 import { Permisos } from '../models/permisos-models';
+import config from './config';
+
 
 export const loginUser = async (req: Request, res: Response) => {
     const {
@@ -21,6 +23,7 @@ export const loginUser = async (req: Request, res: Response) => {
         id_rol,
         fecha_ultima_conexion,
         primer_ingreso,
+        resetToken,
         fecha_vencimiento,
         intentos_fallidos
     } = req.body
@@ -118,8 +121,29 @@ export const getUsuario = async (req: Request, res: Response) => {
             error
         }); 
     }
-
 }
+
+export const getCorreoElectronicoPorUsuario = async (req: Request, res: Response) => {
+    try {
+        const { usuario } = req.body;
+        const user = await User.findOne({
+            attributes: ['correo_electronico'], // Solo selecciona el campo de correo electrónico
+            where: { usuario: usuario }
+        });
+        if (user) {
+            res.json(user.correo_electronico); // Devuelve solo el correo electrónico
+        } else {
+            res.status(404).json({
+                msg: `No existe el usuario: ${usuario}`
+            });
+        }
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
+};
 //Inserta un usuario en la base de datos
 export const postUsuario = async (req: Request, res: Response) => {
 
@@ -333,4 +357,122 @@ export const usuariosAllParametros = async (req: Request, res: Response) => {
       console.error('Error al obtener parámetros de usuario:', error);
       res.status(500).json({ error: 'Error al obtener parámetros de usuario de usuario' });
     }
-  };
+  }
+  
+  export const forgotPassword = async (req: Request, res: Response) => {
+    const { usuario } = req.body;
+
+    if (!usuario) {
+        return res.status(400).json({ message: 'El Usuario es Requerido!' });
+    }
+
+    let emailStatus = 'OK';
+    let verificationLink;
+
+    try {
+        const user = await User.findOne({ where: { usuario } });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Usuario no encontrado' });
+        }
+
+        const token = jwt.sign({ userId: user.id_usuario }, config.jwtSecretReset, { expiresIn: '10m' });
+        verificationLink = `http://localhost:3001/resetPassword${token}`;
+
+        user.resetToken = token; // Asignar el token al usuario
+        await user.save(); // Guardar el usuario con el token de restablecimiento
+
+        // Aquí debes implementar la lógica para enviar el correo electrónico con el enlace de verificación
+
+        return res.json({ message: 'Verifica tu correo electrónico', userEmail: user.correo_electronico, info: emailStatus, test: verificationLink });
+    } catch (error) {
+        console.error('Error al generar el token de restablecimiento:', error);
+        emailStatus = 'error';
+        return res.status(500).json({ message: 'Error al generar el token de restablecimiento' });
+    }
+}
+
+
+export const resetPassword = async (req: Request, res: Response) => {
+    const { newPassword } = req.body;
+    const resetToken = req.headers.reset as string;
+
+    try {
+        if (!resetToken || !newPassword || typeof resetToken !== 'string' || typeof newPassword !== 'string') {
+            return res.status(400).json({ message: 'Token y nueva contraseña son requeridos' });
+        }
+
+        let user;
+        let jwtPayload; 
+
+        jwtPayload = jwt.verify(resetToken, config.jwtSecretReset);
+        user = await User.findOne({ where: { resetToken } });
+
+        if (!user) {
+            return res.status(401).json({ message: 'Token de reinicio inválido' });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await user.update({ contrasena: hashedPassword, resetToken: resetToken });
+
+        return res.json({ message: 'Contraseña restablecida con éxito' });
+    } catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        return res.status(500).json({ message: 'Error al restablecer la contraseña' });
+    }
+}
+
+
+//Nueva Contraseña
+/*export const newPassword = async (req: Request, res: Response) => {
+    const { newPassword } = req.body;
+    const resetToken = req.headers.reset as string;
+
+    if (!(resetToken && newPassword)) {
+        return res.status(400).json({ message: 'Todos los valores son requeridos' });
+    }
+
+    let user;
+    let jwtPayload;
+
+    try {
+        jwtPayload = jwt.verify(resetToken, config.jwtSecretReset);
+        user = await User.findOne({ where: { resetToken } });
+
+        if (!user) {
+            return res.status(401).json({ message: 'Token de reinicio inválido' });
+        }
+
+        user.contrasena = newPassword;
+        const validationOps = { validationError: { target: false, value: false } };
+        const errors = await validate(user, validationOps);
+
+        if (errors.length > 0) {
+            return res.status(400).json(errors);
+        }
+
+        // Hashear la nueva contraseña antes de guardarla
+        user.hashPassword();
+        await user.save();
+    } catch (error) {
+        console.error('Error al cambiar la contraseña:', error);
+
+        // Verificar el tipo de error y devolver un mensaje más específico
+        let errorMessage;
+           if (error instanceof JsonWebTokenError) {
+              errorMessage = 'El token de reinicio es inválido';
+           } else {
+               errorMessage = 'Ocurrió un error al cambiar la contraseña';
+}
+
+        return res.status(500).json({ message: errorMessage });
+    }
+
+    res.json({ message: 'Se cambió la contraseña correctamente' });
+}*/
+
+
+
+
+ 
+
