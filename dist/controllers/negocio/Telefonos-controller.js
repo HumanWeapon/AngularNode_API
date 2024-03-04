@@ -101,7 +101,7 @@ const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 WHERE TELEFONOS.id_telefono = ${newConT.id_telefono}
             `;
             const [results, metadata] = yield connection_1.default.query(query);
-            res.json(results);
+            res.json(results[0]);
         }
     }
     catch (error) {

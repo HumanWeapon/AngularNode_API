@@ -90,7 +90,7 @@ export const postContactoTelefono = async (req: Request, res: Response) => {
                 WHERE TELEFONOS.id_telefono = ${newConT.id_telefono}
             `;
             const [results, metadata] = await db.query(query);
-            res.json(results)
+            res.json(results[0])
         }
     }
     catch (error){
