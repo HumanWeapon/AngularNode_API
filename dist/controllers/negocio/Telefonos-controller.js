@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.telefonosdeContactosPorId = exports.telefonosconcontacto = exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
+exports.getcontactosActivos = exports.telefonosdeContactosPorId = exports.telefonosconcontacto = exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
 const telefonos_models_1 = require("../../models/negocio/telefonos-models");
 const connection_1 = __importDefault(require("../../db/connection"));
 //Obtiene todos los contactos de la base de datos
@@ -273,6 +273,22 @@ const telefonosdeContactosPorId = (req, res) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.telefonosdeContactosPorId = telefonosdeContactosPorId;
+const getcontactosActivos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const query = `
+        SELECT id_contacto, (primer_nombre||' '||segundo_nombre||' '||primer_apellido||' '||segundo_apellido) AS contacto 
+        FROM mipyme.tbl_me_contactos
+        WHERE estado = 1
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.getcontactosActivos = getcontactosActivos;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
  */ 

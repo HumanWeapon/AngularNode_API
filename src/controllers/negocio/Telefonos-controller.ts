@@ -270,7 +270,22 @@ export const telefonosdeContactosPorId = async (req: Request, res: Response) => 
     }
 };
 
+export const getcontactosActivos = async (req: Request, res: Response) => {
+    try {
+        const query = `
+        SELECT id_contacto, (primer_nombre||' '||segundo_nombre||' '||primer_apellido||' '||segundo_apellido) AS contacto 
+        FROM mipyme.tbl_me_contactos
+        WHERE estado = 1
+        `;
 
+        const [results, metadata] = await db.query(query);
+
+        res.json(results);
+    } catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+};
 
 
 
