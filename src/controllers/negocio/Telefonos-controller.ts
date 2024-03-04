@@ -197,7 +197,39 @@ export const activateContactoTelefono = async (req: Request, res: Response) => {
 }
 }
 
+export const telefonosconcontacto = async (req: Request, res: Response) => {
+    try {
+        const query = `
+        SELECT 
+            TELEFONOS.id_telefono,
+            CONTACTOS.NOMBRE,
+            TELEFONOS.telefono, 
+            TELEFONOS.extencion, 
+            TELEFONOS.descripcion, 
+            TELEFONOS.creado_por, 
+            TELEFONOS.fecha_creacion, 
+            TELEFONOS.modificado_por, 
+            TELEFONOS.fecha_modificacion, 
+            TELEFONOS.estado, 
+            TELEFONOS.id_contacto
+        FROM mipyme.tbl_me_telefonos AS TELEFONOS
+        LEFT JOIN 
+            (
+                SELECT id_contacto, estado, (primer_nombre||' '||segundo_nombre||' '||primer_apellido||' '||segundo_apellido) AS NOMBRE 
+                FROM mipyme.tbl_me_contactos
+                WHERE estado = 1
+            ) AS CONTACTOS
+        ON TELEFONOS.id_contacto = CONTACTOS.id_contacto
+        `;
 
+        const [results, metadata] = await db.query(query);
+
+        res.json(results);
+    } catch (error) {
+        console.error('Error al consultar telefonos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+};
 
 
 export const telefonosdeContactosPorId = async (req: Request, res: Response) => {

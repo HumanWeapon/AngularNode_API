@@ -43,6 +43,10 @@ exports.ContactoTelefono = connection_1.default.define('contactoTelefono', {
     estado: {
         type: sequelize_1.DataTypes.NUMBER,
         allowNull: false
+    },
+    id_contacto: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'tbl_me_telefonos',
