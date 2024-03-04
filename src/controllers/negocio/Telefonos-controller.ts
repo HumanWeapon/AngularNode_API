@@ -51,7 +51,7 @@ export const postContactoTelefono = async (req: Request, res: Response) => {
     
         if (_contactoT){
             return res.status(400).json({
-                msg: 'Telefono ya registrado en la base de datos: '+ telefono
+                msg: 'Telefono ya existe: '+ telefono
             })
         }else{
             const newConT = await ContactoTelefono.create({
@@ -65,7 +65,33 @@ export const postContactoTelefono = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
-            res.json(newConT)
+
+            const query = `
+                SELECT 
+                    TELEFONOS.id_telefono,
+                    CONTACTOS.NOMBRE,
+                    CONTACTOS.NOMBRE,
+                    TELEFONOS.telefono,
+                    TELEFONOS.extencion, 
+                    TELEFONOS.descripcion, 
+                    TELEFONOS.creado_por, 
+                    TELEFONOS.fecha_creacion, 
+                    TELEFONOS.modificado_por, 
+                    TELEFONOS.fecha_modificacion, 
+                    TELEFONOS.estado, 
+                    TELEFONOS.id_contacto
+                FROM mipyme.tbl_me_telefonos AS TELEFONOS
+                LEFT JOIN 
+                    (
+                        SELECT id_contacto, estado, (primer_nombre||' '||segundo_nombre||' '||primer_apellido||' '||segundo_apellido) AS NOMBRE 
+                        FROM mipyme.tbl_me_contactos
+                        WHERE estado = 1
+                    ) AS CONTACTOS
+                ON TELEFONOS.id_contacto = CONTACTOS.id_contacto
+                WHERE TELEFONOS.id_telefono = ${newConT.id_telefono}
+            `;
+            const [results, metadata] = await db.query(query);
+            res.json(results)
         }
     }
     catch (error){
@@ -74,11 +100,6 @@ export const postContactoTelefono = async (req: Request, res: Response) => {
             error
         }); 
     }
-    /*// Generamos token
-    const token = jwt.sign({
-        usuario: usuario
-    }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);*/
 }
 
 //Elimina una ciudad de la base de datos
@@ -219,7 +240,6 @@ export const telefonosconcontacto = async (req: Request, res: Response) => {
             ) AS CONTACTOS
         ON TELEFONOS.id_contacto = CONTACTOS.id_contacto
         `;
-
         const [results, metadata] = await db.query(query);
 
         res.json(results);
