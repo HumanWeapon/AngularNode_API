@@ -70,7 +70,6 @@ export const postContactoTelefono = async (req: Request, res: Response) => {
                 SELECT 
                     TELEFONOS.id_telefono,
                     CONTACTOS.NOMBRE,
-                    CONTACTOS.NOMBRE,
                     TELEFONOS.telefono,
                     TELEFONOS.extencion, 
                     TELEFONOS.descripcion, 
@@ -221,7 +220,6 @@ export const telefonosconcontacto = async (req: Request, res: Response) => {
         const query = `
         SELECT 
             TELEFONOS.id_telefono,
-            CONTACTOS.NOMBRE,
             CONTACTOS.NOMBRE,
             TELEFONOS.telefono, 
             TELEFONOS.extencion, 

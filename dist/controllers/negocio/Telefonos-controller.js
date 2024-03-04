@@ -81,7 +81,6 @@ const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 SELECT 
                     TELEFONOS.id_telefono,
                     CONTACTOS.NOMBRE,
-                    CONTACTOS.NOMBRE,
                     TELEFONOS.telefono,
                     TELEFONOS.extencion, 
                     TELEFONOS.descripcion, 
@@ -226,7 +225,6 @@ const telefonosconcontacto = (req, res) => __awaiter(void 0, void 0, void 0, fun
         const query = `
         SELECT 
             TELEFONOS.id_telefono,
-            CONTACTOS.NOMBRE,
             CONTACTOS.NOMBRE,
             TELEFONOS.telefono, 
             TELEFONOS.extencion, 
