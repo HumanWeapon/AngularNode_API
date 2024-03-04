@@ -42,7 +42,7 @@ export const getContactoTelefono = async (req: Request, res: Response) => {
 //Inserta un contacto en la base de datos
 export const postContactoTelefono = async (req: Request, res: Response) => {
 
-    const { id_contacto, id_tipo_telefono, telefono, extencion,  descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_contacto, telefono, extencion,  descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
     try{
         const _contactoT = await ContactoTelefono.findOne({
@@ -56,7 +56,6 @@ export const postContactoTelefono = async (req: Request, res: Response) => {
         }else{
             const newConT = await ContactoTelefono.create({
                 id_contacto: id_contacto,
-                id_tipo_telefono: id_tipo_telefono,
                 telefono: telefono,
                 extencion: extencion,
                 descripcion: descripcion.toUpperCase(),
@@ -111,7 +110,7 @@ export const deleteContactoTelefono = async (req: Request, res: Response) => {
 //actualiza el telefono en la base de datos
 export const updateContactoTelefono = async (req: Request, res: Response) => {
     
-    const { id_telefono, id_contacto, id_tipo_telefono, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
+    const { id_telefono, id_contacto, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
     try {
     const _contactoT = await ContactoTelefono.findOne({
         where: {id_telefono: id_telefono}
@@ -125,7 +124,6 @@ export const updateContactoTelefono = async (req: Request, res: Response) => {
     await _contactoT.update({
         id_telefono: id_telefono,
         id_contacto: id_contacto,
-        id_tipo_telefono: id_tipo_telefono,
         extencion: extencion,
         descripcion: descripcion.toUpperCase(),
         creado_por: creado_por.toUpperCase(),

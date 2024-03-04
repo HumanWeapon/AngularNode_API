@@ -55,7 +55,7 @@ const getContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, func
 exports.getContactoTelefono = getContactoTelefono;
 //Inserta un contacto en la base de datos
 const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_contacto, id_tipo_telefono, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_contacto, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _contactoT = yield telefonos_models_1.ContactoTelefono.findOne({
             where: { telefono: telefono }
@@ -68,7 +68,6 @@ const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, fun
         else {
             const newConT = yield telefonos_models_1.ContactoTelefono.create({
                 id_contacto: id_contacto,
-                id_tipo_telefono: id_tipo_telefono,
                 telefono: telefono,
                 extencion: extencion,
                 descripcion: descripcion.toUpperCase(),
@@ -121,7 +120,7 @@ const deleteContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
 exports.deleteContactoTelefono = deleteContactoTelefono;
 //actualiza el telefono en la base de datos
 const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_telefono, id_contacto, id_tipo_telefono, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_telefono, id_contacto, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _contactoT = yield telefonos_models_1.ContactoTelefono.findOne({
             where: { id_telefono: id_telefono }
@@ -134,7 +133,6 @@ const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
         yield _contactoT.update({
             id_telefono: id_telefono,
             id_contacto: id_contacto,
-            id_tipo_telefono: id_tipo_telefono,
             extencion: extencion,
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
