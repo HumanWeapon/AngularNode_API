@@ -227,6 +227,7 @@ const telefonosconcontacto = (req, res) => __awaiter(void 0, void 0, void 0, fun
         SELECT 
             TELEFONOS.id_telefono,
             CONTACTOS.NOMBRE,
+            CONTACTOS.NOMBRE,
             TELEFONOS.telefono, 
             TELEFONOS.extencion, 
             TELEFONOS.descripcion, 
@@ -244,6 +245,7 @@ const telefonosconcontacto = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 WHERE estado = 1
             ) AS CONTACTOS
         ON TELEFONOS.id_contacto = CONTACTOS.id_contacto
+        WHERE CONTACTOS.nombre IS NOT NULL 
         `;
         const [results, metadata] = yield connection_1.default.query(query);
         res.json(results);

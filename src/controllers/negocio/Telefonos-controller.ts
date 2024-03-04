@@ -222,6 +222,7 @@ export const telefonosconcontacto = async (req: Request, res: Response) => {
         SELECT 
             TELEFONOS.id_telefono,
             CONTACTOS.NOMBRE,
+            CONTACTOS.NOMBRE,
             TELEFONOS.telefono, 
             TELEFONOS.extencion, 
             TELEFONOS.descripcion, 
@@ -239,6 +240,7 @@ export const telefonosconcontacto = async (req: Request, res: Response) => {
                 WHERE estado = 1
             ) AS CONTACTOS
         ON TELEFONOS.id_contacto = CONTACTOS.id_contacto
+        WHERE CONTACTOS.nombre IS NOT NULL 
         `;
         const [results, metadata] = await db.query(query);
 
