@@ -1,10 +1,19 @@
 import {Request, Response} from 'express';
 import { Empresas } from '../../models/negocio/empresas-model';
+import { tipoEmpresa } from '../../models/negocio/tipoEmpresa-models';
 
 //Obtiene todas las Empresas
 export const getAllEmpresas = async (req: Request, res: Response) => {
-    const empresa = await Empresas.findAll();
-    res.json(empresa)
+    try {
+        const empresas = await Empresas.findAll({
+            include: tipoEmpresa // Incluye el modelo TipoEmpresa en la consulta
+        });
+        res.json(empresas);
+    } catch (error) {
+        // Manejo de errores
+        console.error('Error al obtener todas las empresas:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 }
 
 //Obtiene todas las Empresas pyme o exportadoreas
