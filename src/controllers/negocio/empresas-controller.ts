@@ -2,11 +2,14 @@ import {Request, Response} from 'express';
 import { Empresas } from '../../models/negocio/empresas-model';
 import { tipoEmpresa } from '../../models/negocio/tipoEmpresa-models';
 
-//Obtiene todas las Empresas
+// Obtiene todas las Empresas con el tipo de empresa
 export const getAllEmpresas = async (req: Request, res: Response) => {
     try {
         const empresas = await Empresas.findAll({
-            include: tipoEmpresa // Incluye el modelo TipoEmpresa en la consulta
+            include: {
+                model: tipoEmpresa,
+                as: 'tipoEmpresa' // Usar el alias definido en la asociación
+            }
         });
         res.json(empresas);
     } catch (error) {

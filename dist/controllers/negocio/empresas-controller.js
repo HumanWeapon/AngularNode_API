@@ -12,11 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.activateEmpresa = exports.inactivateEmpresa = exports.updateEmpresa = exports.deleteEmpresa = exports.postEmpresa = exports.getEmpresa = exports.getEmpresasPymes = exports.getAllEmpresas = void 0;
 const empresas_model_1 = require("../../models/negocio/empresas-model");
 const tipoEmpresa_models_1 = require("../../models/negocio/tipoEmpresa-models");
-//Obtiene todas las Empresas
+// Obtiene todas las Empresas con el tipo de empresa
 const getAllEmpresas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const empresas = yield empresas_model_1.Empresas.findAll({
-            include: tipoEmpresa_models_1.tipoEmpresa // Incluye el modelo TipoEmpresa en la consulta
+            include: {
+                model: tipoEmpresa_models_1.tipoEmpresa,
+                as: 'tipoEmpresa' // Usar el alias definido en la asociación
+            }
         });
         res.json(empresas);
     }
