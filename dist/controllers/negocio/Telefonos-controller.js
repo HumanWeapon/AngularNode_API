@@ -182,7 +182,7 @@ const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
             ) AS CONTACTOS
         ON 
         TELEFONOS.id_contacto = CONTACTOS.id_contacto
-        WHERE TELEFONOS.id_contacto = ${_contactoT.id_telefono}
+        WHERE TELEFONOS.id_contacto = ${_contactoT.id_contacto}
             AND TELEFONOS.estado = 1
         `;
         const [results, metadata] = yield connection_1.default.query(query);

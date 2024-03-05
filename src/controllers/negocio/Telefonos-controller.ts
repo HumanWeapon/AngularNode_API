@@ -174,7 +174,7 @@ export const updateContactoTelefono = async (req: Request, res: Response) => {
             ) AS CONTACTOS
         ON 
         TELEFONOS.id_contacto = CONTACTOS.id_contacto
-        WHERE TELEFONOS.id_contacto = ${_contactoT.id_telefono}
+        WHERE TELEFONOS.id_contacto = ${_contactoT.id_contacto}
             AND TELEFONOS.estado = 1
         `;
 
