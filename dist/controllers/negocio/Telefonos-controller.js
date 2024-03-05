@@ -160,7 +160,33 @@ const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
             fecha_modificacion: fecha_modificacion,
             estado: estado
         });
-        res.json(_contactoT);
+        const query = `
+        SELECT 
+            TELEFONOS.id_telefono, 
+            TELEFONOS.telefono, 
+            (CONTACTOS.primer_nombre||' '||CONTACTOS.segundo_nombre||' '||CONTACTOS.primer_apellido||' '||CONTACTOS.segundo_apellido) AS CONTACTO,
+            TELEFONOS.extencion, 
+            TELEFONOS.descripcion, 
+            TELEFONOS.creado_por, 
+            TELEFONOS.fecha_creacion, 
+            TELEFONOS.modificado_por, 
+            TELEFONOS.fecha_modificacion, 
+            TELEFONOS.estado, 
+            TELEFONOS.id_contacto
+        FROM mipyme.tbl_me_telefonos AS TELEFONOS
+        LEFT JOIN 
+            (
+                SELECT id_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, estado
+                FROM mipyme.tbl_me_contactos
+                WHERE estado = 1
+            ) AS CONTACTOS
+        ON 
+        TELEFONOS.id_contacto = CONTACTOS.id_contacto
+        WHERE TELEFONOS.id_contacto = ${_contactoT.id_telefono}
+            AND TELEFONOS.estado = 1
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
     }
     catch (error) {
         console.error('Error al actualizar el contacto telefono:', error);

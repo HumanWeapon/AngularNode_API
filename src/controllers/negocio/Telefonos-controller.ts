@@ -132,34 +132,62 @@ export const updateContactoTelefono = async (req: Request, res: Response) => {
     
     const { id_telefono, id_contacto, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
     try {
-    const _contactoT = await ContactoTelefono.findOne({
-        where: {id_telefono: id_telefono}
-    });
-    if(!_contactoT){
-        return res.status(404).json({
-            msg: 'Telefono con el ID: '+ id_telefono +' no existe en la base de datos'
+        const _contactoT = await ContactoTelefono.findOne({
+            where: {id_telefono: id_telefono}
+        });
+        if(!_contactoT){
+            return res.status(404).json({
+                msg: 'Telefono con el ID: '+ id_telefono +' no existe en la base de datos'
+            });
+        }
+
+        await _contactoT.update({
+            id_telefono: id_telefono,
+            id_contacto: id_contacto,
+            extencion: extencion,
+            descripcion: descripcion.toUpperCase(),
+            creado_por: creado_por.toUpperCase(),
+            fecha_creacion: fecha_creacion,
+            modificado_por: modificado_por.toUpperCase(),
+            fecha_modificacion: fecha_modificacion,
+            estado: estado
+        });
+        const query = `
+        SELECT 
+            TELEFONOS.id_telefono, 
+            TELEFONOS.telefono, 
+            (CONTACTOS.primer_nombre||' '||CONTACTOS.segundo_nombre||' '||CONTACTOS.primer_apellido||' '||CONTACTOS.segundo_apellido) AS CONTACTO,
+            TELEFONOS.extencion, 
+            TELEFONOS.descripcion, 
+            TELEFONOS.creado_por, 
+            TELEFONOS.fecha_creacion, 
+            TELEFONOS.modificado_por, 
+            TELEFONOS.fecha_modificacion, 
+            TELEFONOS.estado, 
+            TELEFONOS.id_contacto
+        FROM mipyme.tbl_me_telefonos AS TELEFONOS
+        LEFT JOIN 
+            (
+                SELECT id_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, estado
+                FROM mipyme.tbl_me_contactos
+                WHERE estado = 1
+            ) AS CONTACTOS
+        ON 
+        TELEFONOS.id_contacto = CONTACTOS.id_contacto
+        WHERE TELEFONOS.id_contacto = ${_contactoT.id_telefono}
+            AND TELEFONOS.estado = 1
+        `;
+
+        const [results, metadata] = await db.query(query);
+
+        res.json(results);
+
+    } catch (error) {
+        console.error('Error al actualizar el contacto telefono:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al actualizar el contacto telefono:',
         });
     }
-
-    await _contactoT.update({
-        id_telefono: id_telefono,
-        id_contacto: id_contacto,
-        extencion: extencion,
-        descripcion: descripcion.toUpperCase(),
-        creado_por: creado_por.toUpperCase(),
-        fecha_creacion: fecha_creacion,
-        modificado_por: modificado_por.toUpperCase(),
-        fecha_modificacion: fecha_modificacion,
-        estado: estado
-    });
-    res.json(_contactoT);
-
-} catch (error) {
-    console.error('Error al actualizar el contacto telefono:', error);
-    res.status(500).json({
-        msg: 'Hubo un error al actualizar el contacto telefono:',
-    });
-}
 }
     //Inactiva el usuario de la DBA
     export const inactivateContactoTelefono = async (req: Request, res: Response) => {
