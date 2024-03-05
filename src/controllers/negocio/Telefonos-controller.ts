@@ -180,7 +180,7 @@ export const updateContactoTelefono = async (req: Request, res: Response) => {
 
         const [results, metadata] = await db.query(query);
 
-        res.json(results);
+        res.json(results[0]);
 
     } catch (error) {
         console.error('Error al actualizar el contacto telefono:', error);

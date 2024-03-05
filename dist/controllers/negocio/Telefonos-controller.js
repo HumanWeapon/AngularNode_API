@@ -186,7 +186,7 @@ const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
             AND TELEFONOS.estado = 1
         `;
         const [results, metadata] = yield connection_1.default.query(query);
-        res.json(results);
+        res.json(results[0]);
     }
     catch (error) {
         console.error('Error al actualizar el contacto telefono:', error);
