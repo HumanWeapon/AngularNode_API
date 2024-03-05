@@ -142,11 +142,16 @@ try {
          fecha_modificacion: fecha_modificacion,
          estado: estado
         
-    });
-    res.json(empresa) 
-
-  }
-
+        });
+        const empresas = await Empresas.findOne({
+            where: {id_empresa: empresa.id_empresa},
+            include: {
+                model: tipoEmpresa,
+                as: 'tipoEmpresa' // Usar el alias definido en la asociación
+            }
+        });
+        res.json(empresas);
+    }
 } catch (error) {
     console.error('Error al actualizar la empresa:', error);
     res.status(500).json({ 
