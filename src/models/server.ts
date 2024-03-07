@@ -82,8 +82,10 @@ class Server{
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.json());
 
-        //Cors
-        this.app.use(cors());
+// Configurar CORS
+this.app.use(cors({
+
+  }));
     }
     async dbConnect() {
         try {

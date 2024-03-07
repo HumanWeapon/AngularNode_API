@@ -87,8 +87,8 @@ class Server {
     midlewares() {
         this.app.use(express_1.default.urlencoded({ extended: true }));
         this.app.use(express_1.default.json());
-        //Cors
-        this.app.use((0, cors_1.default)());
+        // Configurar CORS
+        this.app.use((0, cors_1.default)({}));
     }
     dbConnect() {
         return __awaiter(this, void 0, void 0, function* () {
