@@ -1,25 +1,19 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
 import { tipoEmpresa } from './tipoEmpresa-models';
+import { Roles } from '../roles-models';
 
 export const Pyme: any = dataBase.define('pyme', {
     id_pyme: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-      },
-      id_tipo_empresa: {
-        type: DataTypes.INTEGER,
-      },
+    },
     nombre_pyme: {
         type: DataTypes.STRING,
         allowNull: false
     },
     rtn: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    categoria: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -46,6 +40,10 @@ export const Pyme: any = dataBase.define('pyme', {
     estado: {
         type: DataTypes.NUMBER,
         allowNull: false
+    },
+    id_rol: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
     }, 
     {
@@ -53,8 +51,7 @@ export const Pyme: any = dataBase.define('pyme', {
     schema: 'mipyme',
     timestamps: false
 });
-
-Pyme.belongsTo(tipoEmpresa, {
-    foreignKey: 'id_tipo_empresa',
-    as: 'tipoEmpresa' // Alias para la relación
+Pyme.belongsTo(Roles, {
+    foreignKey: 'id_rol',
+    as: 'rol', // Nombre del alias para la relación
 });
