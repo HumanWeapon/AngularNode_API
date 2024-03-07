@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.telefonosdeContactosPorId = exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
+exports.getcontactosActivos = exports.telefonosdeContactosPorId = exports.telefonosconcontacto = exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
 const telefonos_models_1 = require("../../models/negocio/telefonos-models");
 const connection_1 = __importDefault(require("../../db/connection"));
 //Obtiene todos los contactos de la base de datos
@@ -55,20 +55,19 @@ const getContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, func
 exports.getContactoTelefono = getContactoTelefono;
 //Inserta un contacto en la base de datos
 const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_contacto, id_tipo_telefono, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_contacto, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _contactoT = yield telefonos_models_1.ContactoTelefono.findOne({
             where: { telefono: telefono }
         });
         if (_contactoT) {
             return res.status(400).json({
-                msg: 'Telefono ya registrado en la base de datos: ' + telefono
+                msg: 'Telefono ya existe: ' + telefono
             });
         }
         else {
             const newConT = yield telefonos_models_1.ContactoTelefono.create({
                 id_contacto: id_contacto,
-                id_tipo_telefono: id_tipo_telefono,
                 telefono: telefono,
                 extencion: extencion,
                 descripcion: descripcion.toUpperCase(),
@@ -78,7 +77,31 @@ const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
-            res.json(newConT);
+            const query = `
+                SELECT 
+                    TELEFONOS.id_telefono,
+                    CONTACTOS.NOMBRE,
+                    TELEFONOS.telefono,
+                    TELEFONOS.extencion, 
+                    TELEFONOS.descripcion, 
+                    TELEFONOS.creado_por, 
+                    TELEFONOS.fecha_creacion, 
+                    TELEFONOS.modificado_por, 
+                    TELEFONOS.fecha_modificacion, 
+                    TELEFONOS.estado, 
+                    TELEFONOS.id_contacto
+                FROM mipyme.tbl_me_telefonos AS TELEFONOS
+                LEFT JOIN 
+                    (
+                        SELECT id_contacto, estado, (primer_nombre||' '||segundo_nombre||' '||primer_apellido||' '||segundo_apellido) AS NOMBRE 
+                        FROM mipyme.tbl_me_contactos
+                        WHERE estado = 1
+                    ) AS CONTACTOS
+                ON TELEFONOS.id_contacto = CONTACTOS.id_contacto
+                WHERE TELEFONOS.id_telefono = ${newConT.id_telefono}
+            `;
+            const [results, metadata] = yield connection_1.default.query(query);
+            res.json(results[0]);
         }
     }
     catch (error) {
@@ -87,11 +110,6 @@ const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, fun
             error
         });
     }
-    /*// Generamos token
-    const token = jwt.sign({
-        usuario: usuario
-    }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);*/
 });
 exports.postContactoTelefono = postContactoTelefono;
 //Elimina una ciudad de la base de datos
@@ -121,7 +139,7 @@ const deleteContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
 exports.deleteContactoTelefono = deleteContactoTelefono;
 //actualiza el telefono en la base de datos
 const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_telefono, id_contacto, id_tipo_telefono, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_telefono, id_contacto, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _contactoT = yield telefonos_models_1.ContactoTelefono.findOne({
             where: { id_telefono: id_telefono }
@@ -134,7 +152,6 @@ const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
         yield _contactoT.update({
             id_telefono: id_telefono,
             id_contacto: id_contacto,
-            id_tipo_telefono: id_tipo_telefono,
             extencion: extencion,
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
@@ -143,7 +160,33 @@ const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
             fecha_modificacion: fecha_modificacion,
             estado: estado
         });
-        res.json(_contactoT);
+        const query = `
+        SELECT 
+            TELEFONOS.id_telefono, 
+            TELEFONOS.telefono, 
+            (CONTACTOS.primer_nombre||' '||CONTACTOS.segundo_nombre||' '||CONTACTOS.primer_apellido||' '||CONTACTOS.segundo_apellido) AS CONTACTO,
+            TELEFONOS.extencion, 
+            TELEFONOS.descripcion, 
+            TELEFONOS.creado_por, 
+            TELEFONOS.fecha_creacion, 
+            TELEFONOS.modificado_por, 
+            TELEFONOS.fecha_modificacion, 
+            TELEFONOS.estado, 
+            TELEFONOS.id_contacto
+        FROM mipyme.tbl_me_telefonos AS TELEFONOS
+        LEFT JOIN 
+            (
+                SELECT id_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, estado
+                FROM mipyme.tbl_me_contactos
+                WHERE estado = 1
+            ) AS CONTACTOS
+        ON 
+        TELEFONOS.id_contacto = CONTACTOS.id_contacto
+        WHERE TELEFONOS.id_contacto = ${_contactoT.id_contacto}
+            AND TELEFONOS.estado = 1
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results[0]);
     }
     catch (error) {
         console.error('Error al actualizar el contacto telefono:', error);
@@ -203,6 +246,40 @@ const activateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.activateContactoTelefono = activateContactoTelefono;
+const telefonosconcontacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const query = `
+        SELECT 
+            TELEFONOS.id_telefono,
+            CONTACTOS.NOMBRE,
+            TELEFONOS.telefono, 
+            TELEFONOS.extencion, 
+            TELEFONOS.descripcion, 
+            TELEFONOS.creado_por, 
+            TELEFONOS.fecha_creacion, 
+            TELEFONOS.modificado_por, 
+            TELEFONOS.fecha_modificacion, 
+            TELEFONOS.estado, 
+            TELEFONOS.id_contacto
+        FROM mipyme.tbl_me_telefonos AS TELEFONOS
+        LEFT JOIN 
+            (
+                SELECT id_contacto, estado, (primer_nombre||' '||segundo_nombre||' '||primer_apellido||' '||segundo_apellido) AS NOMBRE 
+                FROM mipyme.tbl_me_contactos
+                WHERE estado = 1
+            ) AS CONTACTOS
+        ON TELEFONOS.id_contacto = CONTACTOS.id_contacto
+        WHERE CONTACTOS.nombre IS NOT NULL 
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        console.error('Error al consultar telefonos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.telefonosconcontacto = telefonosconcontacto;
 const telefonosdeContactosPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
@@ -240,6 +317,22 @@ const telefonosdeContactosPorId = (req, res) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.telefonosdeContactosPorId = telefonosdeContactosPorId;
+const getcontactosActivos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const query = `
+        SELECT id_contacto, (primer_nombre||' '||segundo_nombre||' '||primer_apellido||' '||segundo_apellido) AS contacto 
+        FROM mipyme.tbl_me_contactos
+        WHERE estado = 1
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.getcontactosActivos = getcontactosActivos;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
  */ 

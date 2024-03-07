@@ -12,13 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPassword = exports.forgotPassword = exports.usuariosAllParametros = exports.usuariosAllRoles = exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.deleteUsuario = exports.postUsuario = exports.getCorreoElectronicoPorUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
+exports.resetPassword = exports.forgotPassword = exports.usuariosAllParametros = exports.usuariosAllRoles = exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.postUsuario = exports.getCorreoElectronicoPorUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const usuario_models_1 = require("../models/usuario-models");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const roles_models_1 = require("../models/roles-models");
 const permisos_models_1 = require("../models/permisos-models");
 const config_1 = __importDefault(require("./config"));
+const mailer_1 = require("./mailer");
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario, contrasena, id_usuario, creado_por, fecha_creacion, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_ultima_conexion, primer_ingreso, resetToken, fecha_vencimiento, intentos_fallidos } = req.body;
     try {
@@ -182,20 +183,6 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.postUsuario = postUsuario;
 //Destruye el usuario de la DBA
-const deleteUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { usuario } = req.body;
-    const user = yield usuario_models_1.User.findOne({
-        where: { usuario: usuario }
-    });
-    if (!user) {
-        return res.status(404).json({
-            msg: "El usuario no existe: " + usuario
-        });
-    }
-    yield user.destroy();
-    res.json(user);
-});
-exports.deleteUsuario = deleteUsuario;
 //Inactiva el usuario de la DBA
 const inactivateUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario } = req.body;
@@ -337,23 +324,37 @@ const usuariosAllParametros = (req, res) => __awaiter(void 0, void 0, void 0, fu
 });
 exports.usuariosAllParametros = usuariosAllParametros;
 const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { usuario } = req.body;
-    if (!usuario) {
-        return res.status(400).json({ message: 'El Usuario es Requerido!' });
+    const { correo_electronico } = req.body;
+    if (!correo_electronico) {
+        return res.status(400).json({ message: 'El Correo Electronico es Requerido!' });
     }
     let emailStatus = 'OK';
     let verificationLink;
     try {
-        const user = yield usuario_models_1.User.findOne({ where: { usuario } });
+        const user = yield usuario_models_1.User.findOne({ where: { correo_electronico } });
         if (!user) {
-            return res.status(400).json({ message: 'Usuario no encontrado' });
+            return res.status(400).json({ message: 'Correo Electronico no encontrado' });
         }
         const token = jsonwebtoken_1.default.sign({ userId: user.id_usuario }, config_1.default.jwtSecretReset, { expiresIn: '10m' });
-        verificationLink = `http://localhost:3001/resetPassword${token}`;
-        user.resetToken = token; // Asignar el token al usuario
-        yield user.save(); // Guardar el usuario con el token de restablecimiento
-        // Aquí debes implementar la lógica para enviar el correo electrónico con el enlace de verificación
-        return res.json({ message: 'Verifica tu correo electrónico', userEmail: user.correo_electronico, info: emailStatus, test: verificationLink });
+        verificationLink = `http://localhost:4200/resetPassword${token}`;
+        user.resetToken = token;
+        yield user.save();
+        try {
+            yield mailer_1.transporter.sendMail({
+                from: '"Recuperacion de Contraseña" <utilidadMiPyme>',
+                to: user.correo_electronico,
+                subject: "Recuperacion de Contraseña ✔ Utilidad MiPyme",
+                html: `
+                <b>Por favor da click en el enlace para poder recuperar tu contraseña:</b>
+                <a href="${verificationLink}">${verificationLink}</a>
+                `
+            });
+        }
+        catch (error) {
+            console.error('Error al enviar el correo electrónico:', error);
+            return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
+        }
+        return res.json({ message: 'Verifica tu correo electrónico', userEmail: user.correo_electronico, info: emailStatus });
     }
     catch (error) {
         console.error('Error al generar el token de restablecimiento:', error);

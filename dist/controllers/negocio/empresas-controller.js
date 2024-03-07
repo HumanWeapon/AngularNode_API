@@ -11,10 +11,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activateEmpresa = exports.inactivateEmpresa = exports.updateEmpresa = exports.deleteEmpresa = exports.postEmpresa = exports.getEmpresa = exports.getEmpresasPymes = exports.getAllEmpresas = void 0;
 const empresas_model_1 = require("../../models/negocio/empresas-model");
-//Obtiene todas las Empresas
+const tipoEmpresa_models_1 = require("../../models/negocio/tipoEmpresa-models");
+// Obtiene todas las Empresas con el tipo de empresa
 const getAllEmpresas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const empresa = yield empresas_model_1.Empresas.findAll();
-    res.json(empresa);
+    try {
+        const empresas = yield empresas_model_1.Empresas.findAll({
+            include: {
+                model: tipoEmpresa_models_1.tipoEmpresa,
+                as: 'tipoEmpresa' // Usar el alias definido en la asociación
+            }
+        });
+        res.json(empresas);
+    }
+    catch (error) {
+        // Manejo de errores
+        console.error('Error al obtener todas las empresas:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 });
 exports.getAllEmpresas = getAllEmpresas;
 //Obtiene todas las Empresas pyme o exportadoreas
@@ -141,7 +154,14 @@ const updateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
-            res.json(empresa);
+            const empresas = yield empresas_model_1.Empresas.findOne({
+                where: { id_empresa: empresa.id_empresa },
+                include: {
+                    model: tipoEmpresa_models_1.tipoEmpresa,
+                    as: 'tipoEmpresa' // Usar el alias definido en la asociación
+                }
+            });
+            res.json(empresas);
         }
     }
     catch (error) {

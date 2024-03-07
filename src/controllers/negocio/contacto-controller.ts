@@ -221,6 +221,8 @@ export const inactivateContacto = async (req: Request, res: Response) => {
 
 }
 
+
+
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
  */

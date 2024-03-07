@@ -6,7 +6,8 @@ import { Roles } from '../models/roles-models';
 import { Objetos } from '../models/objetos-models';
 import { Permisos } from '../models/permisos-models';
 import config from './config';
-
+import { transporter } from './mailer';
+import { PreguntasUsuario} from '../models/preguntas_usuario-model'
 
 export const loginUser = async (req: Request, res: Response) => {
     const {
@@ -192,21 +193,8 @@ export const postUsuario = async (req: Request, res: Response) => {
     res.json(token);*/
 }
 //Destruye el usuario de la DBA
-export const deleteUsuario = async (req: Request, res: Response) => {
-    const { usuario } = req.body;
 
-    const user = await User.findOne({
-        where: {usuario: usuario}
-    });
-    if(!user){
-        return res.status(404).json({
-            msg: "El usuario no existe: "+ usuario
-        });
-    }
 
-    await user.destroy();
-    res.json(user);
-}
 //Inactiva el usuario de la DBA
 export const inactivateUsuario = async (req: Request, res: Response) => {
     const { usuario } = req.body;
@@ -357,40 +345,54 @@ export const usuariosAllParametros = async (req: Request, res: Response) => {
       console.error('Error al obtener parámetros de usuario:', error);
       res.status(500).json({ error: 'Error al obtener parámetros de usuario de usuario' });
     }
-  }
+}
   
   export const forgotPassword = async (req: Request, res: Response) => {
-    const { usuario } = req.body;
+    const { correo_electronico } = req.body;
 
-    if (!usuario) {
-        return res.status(400).json({ message: 'El Usuario es Requerido!' });
+    if (!correo_electronico) {
+        return res.status(400).json({ message: 'El Correo Electronico es Requerido!' });
     }
 
     let emailStatus = 'OK';
     let verificationLink;
 
     try {
-        const user = await User.findOne({ where: { usuario } });
+        const user = await User.findOne({ where: { correo_electronico } });
 
         if (!user) {
-            return res.status(400).json({ message: 'Usuario no encontrado' });
+            return res.status(400).json({ message: 'Correo Electronico no encontrado' });
         }
 
         const token = jwt.sign({ userId: user.id_usuario }, config.jwtSecretReset, { expiresIn: '10m' });
-        verificationLink = `http://localhost:3001/resetPassword${token}`;
+        verificationLink = `http://localhost:4200/resetPassword${token}`;
 
-        user.resetToken = token; // Asignar el token al usuario
-        await user.save(); // Guardar el usuario con el token de restablecimiento
+        user.resetToken = token;
+        await user.save();
 
-        // Aquí debes implementar la lógica para enviar el correo electrónico con el enlace de verificación
+        try {
+            await transporter.sendMail({
+                from: '"Recuperacion de Contraseña" <utilidadMiPyme>',
+                to: user.correo_electronico,
+                subject: "Recuperacion de Contraseña ✔ Utilidad MiPyme",
+                html: `
+                <b>Por favor da click en el enlace para poder recuperar tu contraseña:</b>
+                <a href="${verificationLink}">${verificationLink}</a>
+                `
+            });
+        } catch (error) {
+            console.error('Error al enviar el correo electrónico:', error);
+            return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
+        }
 
-        return res.json({ message: 'Verifica tu correo electrónico', userEmail: user.correo_electronico, info: emailStatus, test: verificationLink });
+        return res.json({ message: 'Verifica tu correo electrónico', userEmail: user.correo_electronico, info: emailStatus });
     } catch (error) {
         console.error('Error al generar el token de restablecimiento:', error);
         emailStatus = 'error';
         return res.status(500).json({ message: 'Error al generar el token de restablecimiento' });
     }
 }
+
 
 
 export const resetPassword = async (req: Request, res: Response) => {

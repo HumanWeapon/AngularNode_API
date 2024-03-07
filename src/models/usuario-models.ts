@@ -58,7 +58,7 @@ export const User: any = dataBase.define('usuario', {
         },
         resetToken: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         intentos_fallidos: {
             type: DataTypes.INTEGER,

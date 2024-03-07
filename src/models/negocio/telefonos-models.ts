@@ -39,6 +39,10 @@ export const ContactoTelefono: any = dataBase.define('contactoTelefono', {
     estado: {
         type: DataTypes.NUMBER,
         allowNull: false
+    },
+    id_contacto: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
     }, 
     {
