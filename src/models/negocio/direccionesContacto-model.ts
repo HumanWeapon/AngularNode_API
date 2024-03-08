@@ -2,6 +2,8 @@ import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
 import { Contacto } from './contacto-models'
 import { TipoDireccion } from './tipoDireccion-models'
+import { Ciudades } from './ciudades-models';
+import { Paises } from './paises-models';
 
 export const Direcciones: any = dataBase.define('direccionesContacto', {
     id_direccion: {
@@ -9,7 +11,7 @@ export const Direcciones: any = dataBase.define('direccionesContacto', {
         primaryKey: true,
         autoIncrement: true,
     },
-    id_tipo_direccion: {
+    url: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -40,6 +42,14 @@ export const Direcciones: any = dataBase.define('direccionesContacto', {
     estado: {
         type: DataTypes.NUMBER,
         allowNull: false
+    },
+    id_ciudad: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    id_pais: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
     }, 
     {
@@ -47,7 +57,12 @@ export const Direcciones: any = dataBase.define('direccionesContacto', {
     schema: 'mipyme',
     timestamps: false
 });
-Direcciones.belongsTo(TipoDireccion, {
-    foreignKey: 'id_tipo_direccion',
-    as: 'tipoDireccion' // Alias para la relación
+Direcciones.belongsTo(Ciudades, {
+    foreignKey: 'id_ciudad',
+    as: 'ciudad' // Alias para la relación con la tabla de ciudades
+});
+
+Direcciones.belongsTo(Paises, {
+    foreignKey: 'id_pais',
+    as: 'pais' // Alias para la relación con la tabla de países
 });
