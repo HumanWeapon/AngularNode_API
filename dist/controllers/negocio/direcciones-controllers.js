@@ -8,14 +8,48 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getdirecciones = void 0;
-const direccionesContacto_model_1 = require("../../models/negocio/direccionesContacto-model");
+const connection_1 = __importDefault(require("../../db/connection"));
 //Obtiene todas las Empresas
 const getdirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findAll();
-        res.json(_direcontactos);
+        const query = `
+        SELECT 
+            DIRECCIONES.id_direccion,
+            DIRECCIONES.direccion,
+            DIRECCIONES.url,
+            DIRECCIONES.id_ciudad,
+            CIUDAD.ciudad,
+            CIUDAD.id_pais,
+            CIUDAD.pais,
+            DIRECCIONES.descripcion,
+            DIRECCIONES.creado_por,
+            DIRECCIONES.fecha_creacion,
+            DIRECCIONES.modificado_por,
+            DIRECCIONES.fecha_modificacion,
+            DIRECCIONES.estado
+        FROM mipyme.tbl_me_direcciones AS DIRECCIONES
+        LEFT JOIN 
+            (
+                SELECT A.id_ciudad, A.ciudad, A.id_pais, B.pais
+                FROM mipyme.tbl_me_ciudades as A
+                LEFT JOIN 
+                    (
+                        SELECT id_pais , pais
+                        FROM mipyme.tbl_me_paises
+                        WHERE estado = 1
+                    ) AS B
+                ON A.id_pais = B.id_pais
+                WHERE A.estado = 1
+            ) AS CIUDAD
+        ON DIRECCIONES.id_ciudad = CIUDAD.id_ciudad
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
     }
     catch (error) {
         res.status(400).json({
