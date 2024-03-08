@@ -12,21 +12,7 @@ import { PreguntasUsuario} from '../models/preguntas_usuario-model'
 export const loginUser = async (req: Request, res: Response) => {
     const {
         usuario,
-        contrasena,
-        id_usuario,
-        creado_por,
-        fecha_creacion,
-        modificado_por,
-        fecha_modificacion,
-        nombre_usuario,
-        correo_electronico,
-        estado_usuario,
-        id_rol,
-        fecha_ultima_conexion,
-        primer_ingreso,
-        resetToken,
-        fecha_vencimiento,
-        intentos_fallidos
+        contrasena
     } = req.body
     
     try {

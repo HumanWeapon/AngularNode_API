@@ -21,7 +21,7 @@ const permisos_models_1 = require("../models/permisos-models");
 const config_1 = __importDefault(require("./config"));
 const mailer_1 = require("./mailer");
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { usuario, contrasena, id_usuario, creado_por, fecha_creacion, modificado_por, fecha_modificacion, nombre_usuario, correo_electronico, estado_usuario, id_rol, fecha_ultima_conexion, primer_ingreso, resetToken, fecha_vencimiento, intentos_fallidos } = req.body;
+    const { usuario, contrasena } = req.body;
     try {
         // Busca el usuario en la base de datos
         const user = yield usuario_models_1.User.findOne({
