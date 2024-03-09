@@ -6,5 +6,6 @@ import { getdirecciones } from '../../controllers/negocio/direcciones-controller
 const routerDireccionContacto = Router()
 
 routerDireccionContacto.get('/getdirecciones',validarToken , getdirecciones); // Obtiene todas las Empresas
+routerDireccionContacto.get('/getTipoDirecciones',validarToken , getTipoDirecciones); // Obtiene todas las Empresas
 
 export default routerDireccionContacto;
