@@ -49,7 +49,11 @@ export const Permisos: any = dataBase.define('permisos', {
     fecha_modificacion: {
         type: DataTypes.DATE,
         allowNull: false
-    }   
+    },
+    estado_permiso: {
+        type: DataTypes.NUMBER,
+        allowNull: false
+    }
     }, 
     {
     tableName: 'tbl_ms_permisos',

@@ -36,39 +36,39 @@ try{
 
 //Inserta un objeto en la base de datos
 export const postObjeto = async (req: Request, res: Response) => {
-
-    const { objeto, descripcion, tipo_objeto, estado_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
-
-    try{
-        const _objeto = await Objetos.findOne({
-            where: {objeto: objeto} 
-        })
-    
+    const { objeto, descripcion, tipo_objeto, url, icono, creado_por, modificado_por, fecha_modificacion, fecha_creacion, estado_objeto} = req.body;
+    try {
+        const _objeto = await Objetos.findOne({ where: { objeto: objeto }});
         if (_objeto){
             return res.status(400).json({
                 msg: 'Objeto ya registrado en la base de datos: '+ objeto
-            })
-        }else{
-            const newRol = await Objetos.create({ 
+            });
+        } else {
+            const nuevoObjeto = await Objetos.create({
                 objeto: objeto.toUpperCase(),
-                descripcion: descripcion.toUpperCase(),
                 tipo_objeto: tipo_objeto.toUpperCase(),
+                descripcion: descripcion.toUpperCase(), 
                 creado_por: creado_por.toUpperCase(),
+                url: null,
+                icono: null,
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado_objeto: estado_objeto
-            })
-            res.json(newRol)
+            });
+            return res.status(200).json({
+                msg: 'Objeto creado exitosamente',
+                objeto: nuevoObjeto // Devuelve el nuevo objeto creado
+            });
         }
-    }
-    catch (error){
-        res.status(400).json({
+    } catch (error) {
+        return res.status(500).json({
             msg: 'Contactate con el administrador',
-            error
+            error: error
         }); 
     }
 }
+
 
 //Elimina un objeto de la base de datos
 export const deleteObjeto = async (req: Request, res: Response) => {

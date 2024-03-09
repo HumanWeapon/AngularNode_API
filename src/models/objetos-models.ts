@@ -21,11 +21,11 @@ export const Objetos: any = dataBase.define('objetos', {
     },
     url: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     icono: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     creado_por: {
         type: DataTypes.STRING,

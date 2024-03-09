@@ -54,6 +54,10 @@ exports.Permisos = connection_1.default.define('permisos', {
     fecha_modificacion: {
         type: sequelize_1.DataTypes.DATE,
         allowNull: false
+    },
+    estado_permiso: {
+        type: sequelize_1.DataTypes.NUMBER,
+        allowNull: false
     }
 }, {
     tableName: 'tbl_ms_permisos',
