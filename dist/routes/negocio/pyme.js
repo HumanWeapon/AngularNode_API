@@ -12,7 +12,7 @@ routerPyme.get('/getAllPymes', validarToken_1.default, pyme_controller_1.getAllP
 routerPyme.post('/getPyme', pyme_controller_1.getPyme); // obtiene la Pyme especificada
 routerPyme.delete('/deletePyme', validarToken_1.default, pyme_controller_1.deletePyme); //Elimina la Pyme de la Base de Datos
 routerPyme.post('/updatePyme', validarToken_1.default, pyme_controller_1.updatePyme); //Actualiza la Pyme en la Base de Datos
-routerPyme.post('/postPyme', validarToken_1.default, pyme_controller_1.postPyme); //Inserta un nuevo Pyme en la Base de Datos
+routerPyme.post('/postPyme', pyme_controller_1.postPyme); //Inserta un nuevo Pyme en la Base de Datos
 routerPyme.post('/inactivatePyme', validarToken_1.default, pyme_controller_1.inactivatePyme); //Inactiva una Pyme en la DB
 routerPyme.post('/activatePyme', validarToken_1.default, pyme_controller_1.activatePyme); //Activa una Pyme en la DB
 routerPyme.get('/pymesAllTipoEmpresa', validarToken_1.default, pyme_controller_1.pymesAllTipoEmpresa); //Activa un usuario en la DB
