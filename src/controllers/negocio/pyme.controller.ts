@@ -283,7 +283,7 @@ export const getRolPyme = async (req: Request, res: Response) => {
         WHERE ROL = 'PYME'
         `;
         const [results, metadata] = await db.query(query);
-        res.json(results);
+        res.json(results[0]);
     } catch (error) {
         res.status(400).json({
             msg: 'Contactate con el administrador',
