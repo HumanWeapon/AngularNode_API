@@ -90,16 +90,16 @@ exports.getTipoDirecciones = getTipoDirecciones;
 const getCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = `
-        SELECT A.id_ciudad, A.ciudad, A.id_pais, B.pais
-		FROM mipyme.tbl_me_ciudades as A
-		LEFT JOIN 
-			(
-				SELECT id_pais , pais
-				FROM mipyme.tbl_me_paises
-				WHERE estado = 1
-			) AS B
-		ON A.id_pais = B.id_pais
-		WHERE A.estado = 1
+        SELECT A.id_ciudad, (A.ciudad||' | '||B.pais) AS CIUDAD
+        FROM mipyme.tbl_me_ciudades as A
+        LEFT JOIN 
+            (
+                SELECT id_pais , pais
+                FROM mipyme.tbl_me_paises
+                WHERE estado = 1
+            ) AS B
+        ON A.id_pais = B.id_pais
+        WHERE A.estado = 1
         `;
         const [results, metadata] = yield connection_1.default.query(query);
         res.json(results);
