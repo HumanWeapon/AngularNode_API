@@ -114,21 +114,21 @@ const getPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getPyme = getPyme;
 // Inserta una nueva Pyme en la base de datos
 const postPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nombre_pyme, id_tipo_empresa, categoria, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { nombre_pyme, rtn, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_rol } = req.body;
     try {
         const _pyme = yield pyme_models_1.Pyme.findOne({
             where: { nombre_pyme: nombre_pyme }
         });
         const newPyme = yield pyme_models_1.Pyme.create({
-            id_tipo_empresa: id_tipo_empresa,
             nombre_pyme: nombre_pyme.toUpperCase(),
-            categoria: categoria.toUpperCase(),
+            rtn: rtn,
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
             fecha_creacion: Date.now(),
             modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: Date.now(),
-            estado: estado
+            estado: estado,
+            id_rol: id_rol
         });
         res.json(newPyme);
     }
