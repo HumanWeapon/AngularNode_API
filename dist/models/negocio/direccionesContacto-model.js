@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Direcciones = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../../db/connection"));
+const tipoDireccion_models_1 = require("./tipoDireccion-models");
 const ciudades_models_1 = require("./ciudades-models");
 const paises_models_1 = require("./paises-models");
 exports.Direcciones = connection_1.default.define('direccionesContacto', {
@@ -14,8 +15,8 @@ exports.Direcciones = connection_1.default.define('direccionesContacto', {
         primaryKey: true,
         autoIncrement: true,
     },
-    url: {
-        type: sequelize_1.DataTypes.STRING,
+    id_tipo_direccion: {
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
     direccion: {
@@ -66,4 +67,8 @@ exports.Direcciones.belongsTo(ciudades_models_1.Ciudades, {
 exports.Direcciones.belongsTo(paises_models_1.Paises, {
     foreignKey: 'id_pais',
     as: 'pais' // Alias para la relación con la tabla de países
+});
+exports.Direcciones.belongsTo(tipoDireccion_models_1.TipoDireccion, {
+    foreignKey: 'id_tipo_direccion',
+    as: 'tipo_direccion' // Alias para la relación con la tabla de países
 });

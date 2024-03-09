@@ -11,8 +11,8 @@ export const Direcciones: any = dataBase.define('direccionesContacto', {
         primaryKey: true,
         autoIncrement: true,
     },
-    url: {
-        type: DataTypes.STRING,
+    id_tipo_direccion: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     direccion: {
@@ -65,4 +65,9 @@ Direcciones.belongsTo(Ciudades, {
 Direcciones.belongsTo(Paises, {
     foreignKey: 'id_pais',
     as: 'pais' // Alias para la relación con la tabla de países
+});
+
+Direcciones.belongsTo(TipoDireccion, {
+    foreignKey: 'id_tipo_direccion',
+    as: 'tipo_direccion' // Alias para la relación con la tabla de países
 });

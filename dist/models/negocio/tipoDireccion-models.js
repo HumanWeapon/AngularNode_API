@@ -41,7 +41,7 @@ exports.TipoDireccion = connection_1.default.define('tipoDireccion', {
         allowNull: false
     }
 }, {
-    tableName: 'tbl_me_tipo_direcciones_contactos',
+    tableName: 'tbl_me_tipo_direccion',
     schema: 'mipyme',
     timestamps: false
 });
