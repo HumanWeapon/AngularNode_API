@@ -69,3 +69,27 @@ export const getTipoDirecciones = async (req: Request, res: Response) => {
         }); 
     }
 }
+//Obtiene todas las ciudades activas
+export const getCiudades = async (req: Request, res: Response) => {
+    try {
+        const query = `
+        SELECT A.id_ciudad, A.ciudad, A.id_pais, B.pais
+		FROM mipyme.tbl_me_ciudades as A
+		LEFT JOIN 
+			(
+				SELECT id_pais , pais
+				FROM mipyme.tbl_me_paises
+				WHERE estado = 1
+			) AS B
+		ON A.id_pais = B.id_pais
+		WHERE A.estado = 1
+        `;
+        const [results, metadata] = await db.query(query);
+        res.json(results);
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        }); 
+    }
+}

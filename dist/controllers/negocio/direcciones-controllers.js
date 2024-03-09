@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTipoDirecciones = exports.getdirecciones = void 0;
+exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
 const connection_1 = __importDefault(require("../../db/connection"));
 //Obtiene las direcciones
 const getdirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -86,3 +86,29 @@ const getTipoDirecciones = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.getTipoDirecciones = getTipoDirecciones;
+//Obtiene todas las ciudades activas
+const getCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const query = `
+        SELECT A.id_ciudad, A.ciudad, A.id_pais, B.pais
+		FROM mipyme.tbl_me_ciudades as A
+		LEFT JOIN 
+			(
+				SELECT id_pais , pais
+				FROM mipyme.tbl_me_paises
+				WHERE estado = 1
+			) AS B
+		ON A.id_pais = B.id_pais
+		WHERE A.estado = 1
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
+});
+exports.getCiudades = getCiudades;
