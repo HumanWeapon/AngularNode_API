@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import db from '../../db/connection';
 
-//Obtiene todas las Empresas
+//Obtiene las direcciones
 export const getdirecciones = async (req: Request, res: Response) => {
     try {
         const query = `
@@ -42,6 +42,23 @@ export const getdirecciones = async (req: Request, res: Response) => {
                 WHERE estado = 1
             ) AS TIPO
         ON DIRECCIONES.id_tipo_direccion = TIPO.id_tipo_direccion
+        `;
+        const [results, metadata] = await db.query(query);
+        res.json(results);
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        }); 
+    }
+}
+//Obtiene todos los tipo de dirección activos
+export const getTipoDirecciones = async (req: Request, res: Response) => {
+    try {
+        const query = `
+        SELECT id_tipo_direccion, tipo_direccion 
+		FROM mipyme.tbl_me_tipo_direccion
+		WHERE estado = 1
         `;
         const [results, metadata] = await db.query(query);
         res.json(results);

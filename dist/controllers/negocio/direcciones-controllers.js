@@ -12,9 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getdirecciones = void 0;
+exports.getTipoDirecciones = exports.getdirecciones = void 0;
 const connection_1 = __importDefault(require("../../db/connection"));
-//Obtiene todas las Empresas
+//Obtiene las direcciones
 const getdirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = `
@@ -67,3 +67,22 @@ const getdirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getdirecciones = getdirecciones;
+//Obtiene todos los tipo de dirección activos
+const getTipoDirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const query = `
+        SELECT id_tipo_direccion, tipo_direccion 
+		FROM mipyme.tbl_me_tipo_direccion
+		WHERE estado = 1
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
+});
+exports.getTipoDirecciones = getTipoDirecciones;
