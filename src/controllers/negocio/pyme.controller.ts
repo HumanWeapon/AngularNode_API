@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { Pyme } from '../../models/negocio/pyme-models';
 import jwt from 'jsonwebtoken';
 import { tipoEmpresa } from '../../models/negocio/tipoEmpresa-models';
+import db from '../../db/connection';
 
 export const loginPyme = async (req: Request, res: Response) => {
     const { nombre_pyme, rtn } = req.body;
@@ -274,3 +275,19 @@ export const activatePyme = async (req: Request, res: Response) => {
             res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
         }
     }
+//Obtiene el id del rol PYME
+export const getRolPyme = async (req: Request, res: Response) => {
+    try {
+        const query = `
+        SELECT id_rol, rol FROM mipyme.tbl_ms_roles
+        WHERE ROL = 'PYME'
+        `;
+        const [results, metadata] = await db.query(query);
+        res.json(results);
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        }); 
+    }
+}

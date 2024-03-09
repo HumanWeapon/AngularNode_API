@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.pymesAllTipoEmpresa = exports.activatePyme = exports.inactivatePyme = exports.updatePyme = exports.deletePyme = exports.postPyme = exports.getPyme = exports.getAllPymes = exports.loginPyme = void 0;
+exports.getRolPyme = exports.pymesAllTipoEmpresa = exports.activatePyme = exports.inactivatePyme = exports.updatePyme = exports.deletePyme = exports.postPyme = exports.getPyme = exports.getAllPymes = exports.loginPyme = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const pyme_models_1 = require("../../models/negocio/pyme-models");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const tipoEmpresa_models_1 = require("../../models/negocio/tipoEmpresa-models");
+const connection_1 = __importDefault(require("../../db/connection"));
 const loginPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nombre_pyme, rtn } = req.body;
     try {
@@ -267,3 +268,21 @@ const pymesAllTipoEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.pymesAllTipoEmpresa = pymesAllTipoEmpresa;
+//Obtiene el id del rol PYME
+const getRolPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const query = `
+        SELECT id_rol, rol FROM mipyme.tbl_ms_roles
+        WHERE ROL = 'PYME'
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
+});
+exports.getRolPyme = getRolPyme;

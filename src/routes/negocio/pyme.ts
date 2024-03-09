@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { activatePyme, deletePyme, getAllPymes, getPyme, inactivatePyme, loginPyme, postPyme, pymesAllTipoEmpresa, updatePyme } from '../../controllers/negocio/pyme.controller';
+import { activatePyme, deletePyme, getAllPymes, getPyme, getRolPyme, inactivatePyme, loginPyme, postPyme, pymesAllTipoEmpresa, updatePyme } from '../../controllers/negocio/pyme.controller';
 import validarToken from '../validarToken';
 
 
@@ -14,5 +14,7 @@ routerPyme.post('/postPyme', validarToken,postPyme);//Inserta un nuevo Pyme en l
 routerPyme.post('/inactivatePyme',validarToken, inactivatePyme);//Inactiva una Pyme en la DB
 routerPyme.post('/activatePyme',validarToken, activatePyme);//Activa una Pyme en la DB
 routerPyme.get('/pymesAllTipoEmpresa',validarToken, pymesAllTipoEmpresa);//Activa un usuario en la DB
+routerPyme.get('/getRolPyme',validarToken, getRolPyme);//Obtiene el id del rol PYME
+
 
 export default routerPyme; 

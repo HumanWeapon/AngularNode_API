@@ -16,4 +16,5 @@ routerPyme.post('/postPyme', validarToken_1.default, pyme_controller_1.postPyme)
 routerPyme.post('/inactivatePyme', validarToken_1.default, pyme_controller_1.inactivatePyme); //Inactiva una Pyme en la DB
 routerPyme.post('/activatePyme', validarToken_1.default, pyme_controller_1.activatePyme); //Activa una Pyme en la DB
 routerPyme.get('/pymesAllTipoEmpresa', validarToken_1.default, pyme_controller_1.pymesAllTipoEmpresa); //Activa un usuario en la DB
+routerPyme.get('/getRolPyme', validarToken_1.default, pyme_controller_1.getRolPyme); //Obtiene el id del rol PYME
 exports.default = routerPyme;
