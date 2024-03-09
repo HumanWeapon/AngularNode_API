@@ -8,30 +8,56 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateDirecContactos = exports.inactivateDirecContactos = exports.updateDirecContactos = exports.deleteDirecContactos = exports.postDirecContactos = exports.getDirecContactos = exports.getAllDirecContactos = void 0;
-const direccionesContacto_model_1 = require("../../models/negocio/direccionesContacto-model");
-//Obtiene todas las Empresas
-const getAllDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const _direcontactos = yield direccionesContacto_model_1.Direcciones.findAll();
-    res.json(_direcontactos);
-});
-exports.getAllDirecContactos = getAllDirecContactos;
-//Obtiene una Empresa por ID
-const getDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_contacto } = req.body;
+exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
+const connection_1 = __importDefault(require("../../db/connection"));
+//Obtiene las direcciones
+const getdirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findAll({
-            where: { id_contacto: id_contacto }
-        });
-        if (_direcontactos) {
-            res.json(_direcontactos);
-        }
-        else {
-            res.status(404).json({
-                msg: `el ID de la Direccion Contacto no existe: ${id_contacto}`
-            });
-        }
+        const query = `
+        SELECT 
+            DIRECCIONES.id_direccion,
+            DIRECCIONES.id_tipo_direccion,
+            DIRECCIONES.direccion,
+            TIPO.tipo_direccion,
+            DIRECCIONES.id_ciudad,
+            CIUDAD.ciudad,
+            CIUDAD.id_pais,
+            CIUDAD.pais,
+            DIRECCIONES.descripcion,
+            DIRECCIONES.creado_por,
+            DIRECCIONES.fecha_creacion,
+            DIRECCIONES.modificado_por,
+            DIRECCIONES.fecha_modificacion,
+            DIRECCIONES.estado
+        FROM mipyme.tbl_me_direcciones AS DIRECCIONES
+        LEFT JOIN 
+            (
+                SELECT A.id_ciudad, A.ciudad, A.id_pais, B.pais
+                FROM mipyme.tbl_me_ciudades as A
+                LEFT JOIN 
+                    (
+                        SELECT id_pais , pais
+                        FROM mipyme.tbl_me_paises
+                        WHERE estado = 1
+                    ) AS B
+                ON A.id_pais = B.id_pais
+                WHERE A.estado = 1
+            ) AS CIUDAD
+        ON DIRECCIONES.id_ciudad = CIUDAD.id_ciudad
+        LEFT JOIN 
+            (
+                SELECT id_tipo_direccion, tipo_direccion 
+                FROM mipyme.tbl_me_tipo_direccion
+                WHERE estado = 1
+            ) AS TIPO
+        ON DIRECCIONES.id_tipo_direccion = TIPO.id_tipo_direccion
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
     }
     catch (error) {
         res.status(400).json({
@@ -40,33 +66,17 @@ const getDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
     }
 });
-exports.getDirecContactos = getDirecContactos;
-// Inserta una nueva Empresa en la base de datos
-const postDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_contacto, id_tipo_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+exports.getdirecciones = getdirecciones;
+//Obtiene todos los tipo de dirección activos
+const getTipoDirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findOne({
-            where: { direccion: direccion }
-        });
-        if (_direcontactos) {
-            return res.status(400).json({
-                msg: 'Direccion Contacto ya registrada en la base de datos: ' + direccion
-            });
-        }
-        else {
-            const _direcontactos = yield direccionesContacto_model_1.Direcciones.create({
-                id_contacto: id_contacto,
-                id_tipo_direccion: id_tipo_direccion,
-                direccion: direccion.toUpperCase(),
-                descripcion: descripcion.toUpperCase(),
-                creado_por: creado_por.toUpperCase(),
-                fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por.toUpperCase(),
-                fecha_modificacion: fecha_modificacion,
-                estado: estado
-            });
-            res.json(_direcontactos);
-        }
+        const query = `
+        SELECT id_tipo_direccion, tipo_direccion 
+		FROM mipyme.tbl_me_tipo_direccion
+		WHERE estado = 1
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
     }
     catch (error) {
         res.status(400).json({
@@ -75,115 +85,30 @@ const postDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
     }
 });
-exports.postDirecContactos = postDirecContactos;
-// Elimina la Pyme de la base de datos
-const deleteDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_direccion } = req.body; // Obtén el ID desde los parámetros de la URL
+exports.getTipoDirecciones = getTipoDirecciones;
+//Obtiene todas las ciudades activas
+const getCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findOne({
-            where: { id_direccion: id_direccion }
-        });
-        if (_direcontactos) {
-            yield _direcontactos.destroy();
-            res.json(_direcontactos);
-        }
-        else {
-            res.status(404).json({
-                msg: 'No se encontró una Direccion Contacto con el ID ' + id_direccion,
-            });
-        }
+        const query = `
+        SELECT A.id_ciudad, (A.ciudad||' | '||B.pais) AS CIUDAD
+        FROM mipyme.tbl_me_ciudades as A
+        LEFT JOIN 
+            (
+                SELECT id_pais , pais
+                FROM mipyme.tbl_me_paises
+                WHERE estado = 1
+            ) AS B
+        ON A.id_pais = B.id_pais
+        WHERE A.estado = 1
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
     }
     catch (error) {
-        console.error('Error al eliminar la Direccion Contacto:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al eliminar la Direccion Contacto',
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
         });
     }
 });
-exports.deleteDirecContactos = deleteDirecContactos;
-//actualiza el Telefono en la base de datos
-const updateDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_direccion, id_contacto, id_tipo_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    try {
-        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findOne({
-            where: { id_direccion: id_direccion }
-        });
-        if (!_direcontactos) {
-            return res.status(404).json({
-                msg: 'Direccion Contacto con el ID: ' + id_direccion + ' no existe en la base de datos'
-            });
-        }
-        else {
-            const direcontactos = yield _direcontactos.update({
-                id_direccion: id_direccion,
-                id_contacto: id_contacto,
-                id_tipo_direccion: id_tipo_direccion,
-                direccion: direccion.toUpperCase(),
-                descripcion: descripcion.toUpperCase(),
-                creado_por: creado_por.toUpperCase(),
-                fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por.toUpperCase(),
-                fecha_modificacion: fecha_modificacion,
-                estado: estado
-            });
-            res.json(direcontactos);
-        }
-    }
-    catch (error) {
-        console.error('Error al actualizar la direccion del contacto:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al actualizar la direccion del contacto',
-        });
-    }
-});
-exports.updateDirecContactos = updateDirecContactos;
-//Inactiva el usuario de la DBA
-const inactivateDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { direccion } = req.body;
-    try {
-        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findOne({
-            where: { direccion: direccion }
-        });
-        if (!_direcontactos) {
-            return res.status(404).json({
-                msg: "La Direccion Contacto no existe: " + direccion
-            });
-        }
-        yield _direcontactos.update({
-            estado: 2
-        });
-        res.json(_direcontactos);
-    }
-    catch (error) {
-        console.error('Error al inactivar la direccion del contacto:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al inactivar la direccion del contacto',
-        });
-    }
-});
-exports.inactivateDirecContactos = inactivateDirecContactos;
-//Activa el usuario de la DBA
-const activateDirecContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { direccion } = req.body;
-    try {
-        const _direcontactos = yield direccionesContacto_model_1.Direcciones.findOne({
-            where: { direccion: direccion }
-        });
-        if (!_direcontactos) {
-            return res.status(404).json({
-                msg: "La Direccion Contacto no existe: " + direccion
-            });
-        }
-        yield _direcontactos.update({
-            estado: 1
-        });
-        res.json(_direcontactos);
-    }
-    catch (error) {
-        console.error('Error al activar la direccion del contacto:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al inactivar la direccion del contacto',
-        });
-    }
-});
-exports.activateDirecContactos = activateDirecContactos;
+exports.getCiudades = getCiudades;
