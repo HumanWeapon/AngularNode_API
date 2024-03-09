@@ -20,8 +20,9 @@ const getdirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const query = `
         SELECT 
             DIRECCIONES.id_direccion,
+            DIRECCIONES.id_tipo_direccion,
             DIRECCIONES.direccion,
-            DIRECCIONES.url,
+            TIPO.tipo_direccion,
             DIRECCIONES.id_ciudad,
             CIUDAD.ciudad,
             CIUDAD.id_pais,
@@ -47,6 +48,13 @@ const getdirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 WHERE A.estado = 1
             ) AS CIUDAD
         ON DIRECCIONES.id_ciudad = CIUDAD.id_ciudad
+        LEFT JOIN 
+            (
+                SELECT id_tipo_direccion, tipo_direccion 
+                FROM mipyme.tbl_me_tipo_direccion
+                WHERE estado = 1
+            ) AS TIPO
+        ON DIRECCIONES.id_tipo_direccion = TIPO.id_tipo_direccion
         `;
         const [results, metadata] = yield connection_1.default.query(query);
         res.json(results);

@@ -7,8 +7,9 @@ export const getdirecciones = async (req: Request, res: Response) => {
         const query = `
         SELECT 
             DIRECCIONES.id_direccion,
+            DIRECCIONES.id_tipo_direccion,
             DIRECCIONES.direccion,
-            DIRECCIONES.url,
+            TIPO.tipo_direccion,
             DIRECCIONES.id_ciudad,
             CIUDAD.ciudad,
             CIUDAD.id_pais,
@@ -34,6 +35,13 @@ export const getdirecciones = async (req: Request, res: Response) => {
                 WHERE A.estado = 1
             ) AS CIUDAD
         ON DIRECCIONES.id_ciudad = CIUDAD.id_ciudad
+        LEFT JOIN 
+            (
+                SELECT id_tipo_direccion, tipo_direccion 
+                FROM mipyme.tbl_me_tipo_direccion
+                WHERE estado = 1
+            ) AS TIPO
+        ON DIRECCIONES.id_tipo_direccion = TIPO.id_tipo_direccion
         `;
         const [results, metadata] = await db.query(query);
         res.json(results);
