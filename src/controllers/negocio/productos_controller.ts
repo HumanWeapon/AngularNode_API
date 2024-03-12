@@ -244,14 +244,6 @@ export const updateProducto = async (req: Request, res: Response) => {
         });
     }
 
-    const validar_producto = await Productos.findOne({
-        where: {producto: producto}
-    });
-    if(validar_producto){
-        return res.status(404).json({
-            msg: "Ya existe un producto con ese nombre"
-        });
-    }else{
         await produc.update({
             id_producto: id_producto,
             id_categoria:id_categoria,
@@ -265,7 +257,6 @@ export const updateProducto = async (req: Request, res: Response) => {
             
         });
         res.json(produc);
-    }
 
 } catch (error) {
     console.error('Error al actualizar el producto:', error);
@@ -324,6 +315,5 @@ try {
     res.status(500).json({
         msg: 'Hubo un error al activar el producto',
     });
+ }
 }
-}
-

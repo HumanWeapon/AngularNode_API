@@ -50,7 +50,7 @@ const postTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
         if (_tipreq) {
             return res.status(400).json({
-                msg: 'Tipo de requisito ya registrado en la base de datos: '
+                msg: `Tipo de requisito ya registrado en la base de datos: ${tipo_requisito}`
             });
         }
         else {
