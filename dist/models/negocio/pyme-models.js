@@ -21,10 +21,6 @@ exports.Pyme = connection_1.default.define('pyme', {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
-    descripcion: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
     creado_por: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
@@ -43,6 +39,10 @@ exports.Pyme = connection_1.default.define('pyme', {
     },
     estado: {
         type: sequelize_1.DataTypes.NUMBER,
+        allowNull: false
+    },
+    fecha_ultima_conexion: {
+        type: sequelize_1.DataTypes.DATE,
         allowNull: false
     },
     id_rol: {

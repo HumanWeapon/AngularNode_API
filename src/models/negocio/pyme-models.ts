@@ -17,10 +17,7 @@ export const Pyme: any = dataBase.define('pyme', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    descripcion: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+  
     creado_por: {
         type: DataTypes.STRING,
         allowNull: false
@@ -39,6 +36,10 @@ export const Pyme: any = dataBase.define('pyme', {
     },
     estado: {
         type: DataTypes.NUMBER,
+        allowNull: false
+    },
+    fecha_ultima_conexion: {
+        type: DataTypes.DATE,
         allowNull: false
     },
     id_rol: {

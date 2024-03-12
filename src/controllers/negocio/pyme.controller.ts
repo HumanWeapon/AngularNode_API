@@ -111,7 +111,7 @@ try {
 // Inserta una nueva Pyme en la base de datos
 export const postPyme = async (req: Request, res: Response) => {
 
-    const { nombre_pyme, rtn, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_rol}  = req.body;
+    const { nombre_pyme, rtn,  creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, fecha_ultima_conexion, id_rol}  = req.body;
 
     try{
         const _pyme = await Pyme.findOne({
@@ -121,12 +121,12 @@ export const postPyme = async (req: Request, res: Response) => {
             const newPyme = await Pyme.create({
                 nombre_pyme: nombre_pyme.toUpperCase(),
                 rtn: rtn,
-                descripcion: descripcion.toUpperCase(),
                 creado_por: creado_por.toUpperCase(),
                 fecha_creacion: Date.now(),
                 modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: Date.now(),
                 estado: estado,
+                fecha_ultima_conexion: Date.now(),
                 id_rol: id_rol
             })
             res.json(newPyme)
@@ -169,7 +169,7 @@ export const deletePyme = async (req: Request, res: Response) => {
 export const updatePyme = async (req: Request, res: Response) => {
 
     try{
-    const { id_pyme, nombre_pyme, id_tipo_empresa, categoria, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_pyme, nombre_pyme, rtn,  creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, fecha_ultima_conexion } = req.body;
 
     const _pyme = await Pyme.findOne({
         where: {id_pyme: id_pyme}
@@ -184,14 +184,13 @@ export const updatePyme = async (req: Request, res: Response) => {
 
         id_pyme:id_pyme,
         nombre_pyme: nombre_pyme.toUpperCase(),
-        id_tipo_empresa:id_tipo_empresa,
-        categoria: categoria.toUpperCase(),
-        descripcion: descripcion.toUpperCase(),
+        rtn: rtn,
         creado_por: creado_por.toUpperCase(),
         fecha_creacion: fecha_creacion,
         modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
-        estado: estado
+        estado: estado,
+        fecha_ultima_conexion: fecha_ultima_conexion
         
     });
     res.json(_pyme);
