@@ -9,53 +9,33 @@ export const loginPyme = async (req: Request, res: Response) => {
     const { nombre_pyme, rtn } = req.body;
 
     try {
-        // Busca el usuario en la base de datos
+        // Busca la pyme en la base de datos
         const pyme: any = await Pyme.findOne({
             where: { nombre_pyme: nombre_pyme }
         });
 
         if (!pyme) {
             return res.status(400).json({
-                msg: 'Pyme/RTN inválidos.'
+                msg: 'Pyme no encontrada.'
             });
         }
 
-        // Compara la contraseña proporcionada con la contraseña almacenada en forma de hash
-        const passwordValid = await bcrypt.compare(rtn, pyme.passwordHash);
-
-        if (!passwordValid) {
-            // Si la contraseña es incorrecta, aumenta el contador de intentos fallidos
-            pyme.intentos_fallidos = (pyme.intentos_fallidos || 0) + 1;
-            await pyme.save();
-
-            if (pyme.intentos_fallidos >= 3) {
-                // Si el usuario ha alcanzado 3 intentos fallidos, bloquea el usuario
-                pyme.estado = 3;
-                await pyme.save();
-            }
-
+        // Compara el RTN proporcionado con el almacenado en la base de datos
+        if (pyme.rtn !== rtn) {
             return res.status(400).json({
-                msg: 'Pyme/RTN inválidos.',
-                requestData: req.body  // Agregar más información si es necesario
-              });
-              
-        }else{
-            // Si el inicio de sesión es exitoso, restablece los intentos fallidos
-            pyme.intentos_fallidos = 0;
-            await pyme.save();
-        }
-
-        if(pyme.fecha_ultima_conexion == null){
-            return res.json(pyme.fecha_ultima_conexion);
-        }
-
-        // Validar estado del usuario
-        if (pyme.estado != 1) {
-            return res.status(400).json({
-                msg: 'Pyme Inactiva',
+                msg: 'RTN inválido.',
+                requestData: req.body 
             });
         }
-        // Genera el token
+
+        // Si el RTN coincide, verifica el estado de la pyme
+        if (pyme.estado !== 1) {
+            return res.status(400).json({
+                msg: 'Pyme inactiva.'
+            });
+        }
+
+        // Genera el token de autenticación
         const token = jwt.sign({
             pyme: pyme
         }, process.env.SECRET_KEY || 'Lamers005*');
@@ -71,11 +51,10 @@ export const loginPyme = async (req: Request, res: Response) => {
         } else {
             res.status(500).json({
                 msg: 'Error en el servidor',
-                error: 'Error desconocido' // Otra manejo de errores si no es una instancia de Error
+                error: 'Error desconocido'
             });
         }
     }
-    
 }
 
 //Obtiene todas las Pymes
