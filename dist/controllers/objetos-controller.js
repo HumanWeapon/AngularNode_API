@@ -223,10 +223,10 @@ const objetosJSON = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                     'categoria', 
                     CASE 
                         WHEN objeto IN ('TIPO DIRECCION', 'CIUDADES', 'PAISES', 'DIRECCIONES') THEN 'DIRECCIONES'
-                        WHEN objeto IN ('TIPO CONTACTO', 'CONTACTOS', 'TELEFONOS') THEN 'CONTACTO'
-                        WHEN objeto IN ('CATEGORIAS', 'PRODUCTOS') THEN 'PRODUCTO'
-                        WHEN objeto IN ('TIPO EMPRESA', 'TIPO REQUISITOS', 'REQUISITOS') THEN 'EMPRESA'
-                        ELSE 'Otra categoría'
+                        WHEN objeto IN ('TIPO CONTACTO', 'CONTACTO', 'TELEFONOS', 'TIPO TELEFONO') THEN 'CONTACTOS'
+                        WHEN objeto IN ('CATEGORIA PRODUCTOS', 'PRODUCTOS') THEN 'PRODUCTO'
+                        WHEN objeto IN ('TIPO EMPRESA', 'TIPO REQUISITO', 'REQUISITOS') THEN 'EMPRESA'
+                        ELSE 'OTROS'
                     END,
                     'atributes', (
                         SELECT json_agg(
@@ -256,9 +256,9 @@ const objetosJSON = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         GROUP BY 
             CASE 
                 WHEN objeto IN ('TIPO DIRECCION', 'CIUDADES', 'PAISES', 'DIRECCIONES') THEN 'DIRECCIONES'
-                WHEN objeto IN ('TIPO CONTACTO', 'CONTACTOS', 'TELEFONOS') THEN 'CONTACTO'
-                WHEN objeto IN ('CATEGORIAS', 'PRODUCTOS') THEN 'PRODUCTO'
-                WHEN objeto IN ('TIPO EMPRESA', 'TIPO REQUISITOS', 'REQUISITOS') THEN 'EMPRESA'
+                WHEN objeto IN ('TIPO CONTACTO', 'CONTACTO', 'TELEFONOS', 'TIPO TELEFONO') THEN 'CONTACTOS'
+                WHEN objeto IN ('CATEGORIA PRODUCTOS', 'PRODUCTOS') THEN 'PRODUCTO'
+                WHEN objeto IN ('TIPO EMPRESA', 'TIPO REQUISITO', 'REQUISITOS') THEN 'EMPRESA'
                 ELSE 'OTROS'
             END
         `;
