@@ -44,7 +44,7 @@ export const postTipo_Requisito = async (req: Request, res: Response) => {
     
         if (_tipreq){
             return res.status(400).json({
-                msg: 'Tipo de requisito ya registrado en la base de datos: '
+                msg: `Tipo de requisito ya registrado en la base de datos: ${tipo_requisito}`
             })
         }else{
             const newTRE = await Tipo_Requisito.create({                

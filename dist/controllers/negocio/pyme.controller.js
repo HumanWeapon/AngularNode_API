@@ -115,7 +115,7 @@ const getPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getPyme = getPyme;
 // Inserta una nueva Pyme en la base de datos
 const postPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nombre_pyme, rtn, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_rol } = req.body;
+    const { nombre_pyme, rtn, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, fecha_ultima_conexion, id_rol } = req.body;
     try {
         const _pyme = yield pyme_models_1.Pyme.findOne({
             where: { nombre_pyme: nombre_pyme }
@@ -123,12 +123,12 @@ const postPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const newPyme = yield pyme_models_1.Pyme.create({
             nombre_pyme: nombre_pyme.toUpperCase(),
             rtn: rtn,
-            descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
             fecha_creacion: Date.now(),
             modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: Date.now(),
             estado: estado,
+            fecha_ultima_conexion: Date.now(),
             id_rol: id_rol
         });
         res.json(newPyme);
@@ -169,7 +169,7 @@ exports.deletePyme = deletePyme;
 //actualiza el Telefono en la base de datos
 const updatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id_pyme, nombre_pyme, id_tipo_empresa, categoria, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+        const { id_pyme, nombre_pyme, rtn, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, fecha_ultima_conexion } = req.body;
         const _pyme = yield pyme_models_1.Pyme.findOne({
             where: { id_pyme: id_pyme }
         });
@@ -181,14 +181,13 @@ const updatePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         yield _pyme.update({
             id_pyme: id_pyme,
             nombre_pyme: nombre_pyme.toUpperCase(),
-            id_tipo_empresa: id_tipo_empresa,
-            categoria: categoria.toUpperCase(),
-            descripcion: descripcion.toUpperCase(),
+            rtn: rtn,
             creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
             modificado_por: modificado_por.toUpperCase(),
             fecha_modificacion: fecha_modificacion,
-            estado: estado
+            estado: estado,
+            fecha_ultima_conexion: fecha_ultima_conexion
         });
         res.json(_pyme);
     }

@@ -47,34 +47,37 @@ const getObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getObjeto = getObjeto;
 //Inserta un objeto en la base de datos
 const postObjeto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { objeto, descripcion, tipo_objeto, estado_objeto, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
+    const { objeto, descripcion, tipo_objeto, url, icono, creado_por, modificado_por, fecha_modificacion, fecha_creacion, estado_objeto } = req.body;
     try {
-        const _objeto = yield objetos_models_1.Objetos.findOne({
-            where: { objeto: objeto }
-        });
+        const _objeto = yield objetos_models_1.Objetos.findOne({ where: { objeto: objeto } });
         if (_objeto) {
             return res.status(400).json({
                 msg: 'Objeto ya registrado en la base de datos: ' + objeto
             });
         }
         else {
-            const newRol = yield objetos_models_1.Objetos.create({
+            const nuevoObjeto = yield objetos_models_1.Objetos.create({
                 objeto: objeto.toUpperCase(),
-                descripcion: descripcion.toUpperCase(),
                 tipo_objeto: tipo_objeto.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
                 creado_por: creado_por.toUpperCase(),
+                url: null,
+                icono: null,
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
                 estado_objeto: estado_objeto
             });
-            res.json(newRol);
+            return res.status(200).json({
+                msg: 'Objeto creado exitosamente',
+                objeto: nuevoObjeto // Devuelve el nuevo objeto creado
+            });
         }
     }
     catch (error) {
-        res.status(400).json({
+        return res.status(500).json({
             msg: 'Contactate con el administrador',
-            error
+            error: error
         });
     }
 });

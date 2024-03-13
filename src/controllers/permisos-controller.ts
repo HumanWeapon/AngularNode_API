@@ -45,67 +45,78 @@ try {
 
 //Inserta un nuevo permiso 
 export const postPermiso = async (req: Request, res: Response) => {
-    const {
-        id_permisos,
-        id_rol,
-        id_objeto,
-        permiso_insercion,
-        permiso_eliminacion,
-        permiso_actualizacion,
-        permiso_consultar,
-        creado_por,
-        fecha_creacion,
-        modificado_por,
-        fecha_modificacion
-    } = req.body;
-
     try {
+        const {
+            id_permisos,
+            id_rol,
+            id_objeto,
+            permiso_insercion,
+            permiso_eliminacion,
+            permiso_actualizacion,
+            permiso_consultar,
+            creado_por,
+            fecha_creacion,
+            modificado_por,
+            fecha_modificacion,
+            estado_permiso
+        } = req.body;
+        console.log('ID del permiso:', id_permisos); // Imprimir el ID del permiso en la consola
+        console.log('ID del rol:', id_rol); // Imprimir el ID del rol en la consola
+        console.log('ID del objeto:', id_objeto); // Imprimir el ID del objeto en la consola
+
         // Verifica si el permiso ya existe
         const existingPermiso = await Permisos.findOne({
-            where: {
-                id_permisos: id_permisos,
-        
-            }
+            where: { id_permisos }
         });
 
         if (existingPermiso) {
             return res.status(400).json({
                 msg: 'El permiso ya está registrado en la base de datos.'
             });
-        } else {
-            // Verifica si el rol y el objeto existen en las tablas relacionadas
-            const existingRol = await Roles.findByPk(id_rol);
-            const existingObjeto = await Objetos.findByPk(id_objeto);
-
-            if (!existingRol || !existingObjeto) {
-                return res.status(400).json({
-                    msg: 'El rol u objeto especificados no existen en la base de datos.'
-                });
-            }
-
-            // Crea el nuevo permiso
-            const newPermiso = await Permisos.create({                               
-                id_rol: id_rol,
-                id_objeto: id_objeto,
-                permiso_insercion: permiso_insercion,
-                permiso_eliminacion: permiso_eliminacion,
-                permiso_actualizacion: permiso_actualizacion,
-                permiso_consultar: permiso_consultar,
-                creado_por: creado_por.toUpperCase(),
-                fecha_creacion: fecha_creacion,
-                modificado_por: modificado_por.toUpperCase(),
-                fecha_modificacion: fecha_modificacion
-            });
-
-            return res.json(newPermiso);
         }
+
+        
+        // Verifica si el rol y el objeto existen en las tablas relacionadas
+        const existingRol = await Roles.findOne(id_rol);
+        const existingObjeto = await Objetos.findOne(id_objeto);
+
+        if (!existingRol) {
+            return res.status(400).json({
+                msg: 'El rol especificado no existe en la base de datos.'
+            });
+        }
+        
+        if (!existingObjeto) {
+            return res.status(400).json({
+                msg: 'El objeto especificado no existe en la base de datos.'
+            });
+        }
+
+        // Crea el nuevo permiso
+        const newPermiso = await Permisos.create({
+            id_permisos,
+            id_rol,
+            id_objeto,
+            permiso_insercion,
+            permiso_eliminacion,
+            permiso_actualizacion,
+            permiso_consultar,
+            creado_por: creado_por.toUpperCase(),
+            fecha_creacion,
+            modificado_por: modificado_por.toUpperCase(),
+            fecha_modificacion,
+            estado_permiso
+        });
+
+        return res.json(newPermiso);
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             msg: 'Ha ocurrido un error interno, contacta al administrador.',
-            error
+            error: error // Devuelve el mensaje de error para una mejor depuración
         });
     }
 };
+
 
 //Elimina un permiso de la base de datos
 export const deletePermiso = async (req: Request, res: Response) => {
@@ -136,7 +147,7 @@ export const deletePermiso = async (req: Request, res: Response) => {
 //actualiza el permiso en la base de datos
 export const updatePermisos = async (req: Request, res: Response) => {
    
-        const { id_permisos, id_rol, id_objeto, permiso_insercion, permiso_eliminacion, permiso_actualizacion, permiso_consultar, modificado_por, fecha_modificacion  } = req.body;
+        const { id_permisos, estado_permiso, id_rol, id_objeto, permiso_insercion, permiso_eliminacion, permiso_actualizacion, permiso_consultar, modificado_por, fecha_modificacion  } = req.body;
         try {
     const _permiso = await Permisos.findOne({
         where: {id_permisos: id_permisos}
@@ -156,7 +167,8 @@ export const updatePermisos = async (req: Request, res: Response) => {
         permiso_actualizacion: permiso_actualizacion,
         permiso_consultar: permiso_consultar,        
         modificado_por: modificado_por.toUpperCase(),
-        fecha_modificacion: fecha_modificacion
+        fecha_modificacion: fecha_modificacion,
+        estado_permiso: estado_permiso
     });
     res.json(_permiso);
     } catch (error) {
@@ -182,7 +194,7 @@ export const inactivatePermiso = async (req: Request, res: Response) => {
             });
         }
         await _permiso.update({
-            estado: 2
+            estado_permiso: 2
         });
         res.json(_permiso);
     } catch (error) {
@@ -200,7 +212,7 @@ export const activatePermiso = async (req: Request, res: Response) => {
         const { id_permisos } = req.body;
         try {
         const _permiso= await Permisos.findOne({
-            where: {id_permisos:id_permisos}
+            where: {id_permisos: id_permisos}
         });
         if(!_permiso){
             return res.status(404).json({
@@ -209,7 +221,7 @@ export const activatePermiso = async (req: Request, res: Response) => {
         }
     
         await _permiso.update({
-            estado: 1
+            estado_permiso: 1
         });
         res.json(_permiso);
     } catch (error) {
