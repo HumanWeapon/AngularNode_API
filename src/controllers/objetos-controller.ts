@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import { Objetos } from '../models/objetos-models';
-import jwt from 'jsonwebtoken';
+import db from '../db/connection';
 
 
 //Obtiene todos los objetos de la base de datos
@@ -206,5 +206,45 @@ export const getAllObjetosMenu = async (req: Request, res: Response) => {
             msg: 'Contacte al administrador'
         });
     }
-
 }
+
+export const objetosJSON = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT 
+            json_agg(json_build_object(
+                'objeto', objeto,
+                'atributes', (
+                    SELECT json_agg(json_build_object(
+                        'id_objeto', id_objeto,
+                        'descripcion', descripcion,
+                        'tipo_objeto', tipo_objeto,
+                        'url', url,
+                        'icono', icono,
+                        'creado_por', creado_por,
+                        'fecha_creacion', fecha_creacion,
+                        'modificado_por', modificado_por,
+                        'fecha_modificacion', fecha_modificacion,
+                        'estado_objeto', estado_objeto
+                    ))
+                    FROM mipyme.tbl_ms_objetos as sub
+                    WHERE sub.objeto = main.objeto
+                )
+            )) AS resultado
+        FROM 
+            mipyme.tbl_ms_objetos as main
+        WHERE estado_objeto = 1
+            AND tipo_objeto = 'MANTENIMIENTO'
+        GROUP BY 
+            objeto
+        `;
+
+        const [results, metadata] = await db.query(query);
+
+        res.json(results);
+    } catch (error) {
+        console.error('Error al consultar productos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+};

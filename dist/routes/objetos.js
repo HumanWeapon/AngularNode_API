@@ -15,4 +15,5 @@ routerObjetos.post('/updateObjetos', validarToken_1.default, objetos_controller_
 routerObjetos.post('/inactivateObjeto', validarToken_1.default, objetos_controller_1.inactivateObjecto); //Inactiva una Pyme en la DB
 routerObjetos.post('/activateObjeto', validarToken_1.default, objetos_controller_1.activateObjeto); //Activa una Pyme en la DB
 routerObjetos.post('/getAllObjetosMenu', validarToken_1.default, objetos_controller_1.getAllObjetosMenu); //Activa una Pyme en la DB
+routerObjetos.get('/objetosJSON', validarToken_1.default, objetos_controller_1.objetosJSON); //consulta todos los objetos en la base de datos
 exports.default = routerObjetos;

@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllObjetosMenu = exports.activateObjeto = exports.inactivateObjecto = exports.updateObjetos = exports.deleteObjeto = exports.postObjeto = exports.getObjeto = exports.getAllObjetos = void 0;
+exports.objetosJSON = exports.getAllObjetosMenu = exports.activateObjeto = exports.inactivateObjecto = exports.updateObjetos = exports.deleteObjeto = exports.postObjeto = exports.getObjeto = exports.getAllObjetos = void 0;
 const objetos_models_1 = require("../models/objetos-models");
+const connection_1 = __importDefault(require("../db/connection"));
 //Obtiene todos los objetos de la base de datos
 const getAllObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const _objetos = yield objetos_models_1.Objetos.findAll();
@@ -206,3 +210,43 @@ const getAllObjetosMenu = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.getAllObjetosMenu = getAllObjetosMenu;
+const objetosJSON = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT 
+            json_agg(json_build_object(
+                'objeto', objeto,
+                'atributes', (
+                    SELECT json_agg(json_build_object(
+                        'id_objeto', id_objeto,
+                        'descripcion', descripcion,
+                        'tipo_objeto', tipo_objeto,
+                        'url', url,
+                        'icono', icono,
+                        'creado_por', creado_por,
+                        'fecha_creacion', fecha_creacion,
+                        'modificado_por', modificado_por,
+                        'fecha_modificacion', fecha_modificacion,
+                        'estado_objeto', estado_objeto
+                    ))
+                    FROM mipyme.tbl_ms_objetos as sub
+                    WHERE sub.objeto = main.objeto
+                )
+            )) AS resultado
+        FROM 
+            mipyme.tbl_ms_objetos as main
+        WHERE estado_objeto = 1
+            AND tipo_objeto = 'MANTENIMIENTO'
+        GROUP BY 
+            objeto
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        console.error('Error al consultar productos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.objetosJSON = objetosJSON;
