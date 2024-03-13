@@ -215,11 +215,19 @@ export const objetosJSON = async (req: Request, res: Response) => {
         SELECT 
             json_agg(
                 json_build_object(
-                    'objeto', objeto,
+                    'categoria', 
+                    CASE 
+                        WHEN objeto IN ('TIPO DIRECCION', 'CIUDADES', 'PAISES', 'DIRECCIONES') THEN 'DIRECCIONES'
+                        WHEN objeto IN ('TIPO CONTACTO', 'CONTACTOS', 'TELEFONOS') THEN 'CONTACTO'
+                        WHEN objeto IN ('CATEGORIAS', 'PRODUCTOS') THEN 'PRODUCTO'
+                        WHEN objeto IN ('TIPO EMPRESA', 'TIPO REQUISITOS', 'REQUISITOS') THEN 'EMPRESA'
+                        ELSE 'Otra categoría'
+                    END,
                     'atributes', (
                         SELECT json_agg(
                             json_build_object(
                                 'id_objeto', id_objeto,
+                                'objeto', objeto,
                                 'descripcion', descripcion,
                                 'tipo_objeto', tipo_objeto,
                                 'url', url,
@@ -241,7 +249,13 @@ export const objetosJSON = async (req: Request, res: Response) => {
         WHERE estado_objeto = 1
             AND tipo_objeto = 'MANTENIMIENTO'
         GROUP BY 
-            objeto
+            CASE 
+                WHEN objeto IN ('TIPO DIRECCION', 'CIUDADES', 'PAISES', 'DIRECCIONES') THEN 'DIRECCIONES'
+                WHEN objeto IN ('TIPO CONTACTO', 'CONTACTOS', 'TELEFONOS') THEN 'CONTACTO'
+                WHEN objeto IN ('CATEGORIAS', 'PRODUCTOS') THEN 'PRODUCTO'
+                WHEN objeto IN ('TIPO EMPRESA', 'TIPO REQUISITOS', 'REQUISITOS') THEN 'EMPRESA'
+                ELSE 'OTROS'
+            END
         `;
 
         const [results, metadata] = await db.query(query);
