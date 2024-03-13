@@ -213,25 +213,29 @@ export const objetosJSON = async (req: Request, res: Response) => {
     try {
         const query = `
         SELECT 
-            json_agg(json_build_object(
-                'objeto', objeto,
-                'atributes', (
-                    SELECT json_agg(json_build_object(
-                        'id_objeto', id_objeto,
-                        'descripcion', descripcion,
-                        'tipo_objeto', tipo_objeto,
-                        'url', url,
-                        'icono', icono,
-                        'creado_por', creado_por,
-                        'fecha_creacion', fecha_creacion,
-                        'modificado_por', modificado_por,
-                        'fecha_modificacion', fecha_modificacion,
-                        'estado_objeto', estado_objeto
-                    ))
-                    FROM mipyme.tbl_ms_objetos as sub
-                    WHERE sub.objeto = main.objeto
+            json_agg(
+                json_build_object(
+                    'objeto', objeto,
+                    'atributes', (
+                        SELECT json_agg(
+                            json_build_object(
+                                'id_objeto', id_objeto,
+                                'descripcion', descripcion,
+                                'tipo_objeto', tipo_objeto,
+                                'url', url,
+                                'icono', icono,
+                                'creado_por', creado_por,
+                                'fecha_creacion', fecha_creacion,
+                                'modificado_por', modificado_por,
+                                'fecha_modificacion', fecha_modificacion,
+                                'estado_objeto', estado_objeto
+                            )
+                        )
+                        FROM mipyme.tbl_ms_objetos as sub
+                        WHERE sub.objeto = main.objeto
+                    )
                 )
-            )) AS resultado
+            ) AS resultado
         FROM 
             mipyme.tbl_ms_objetos as main
         WHERE estado_objeto = 1
