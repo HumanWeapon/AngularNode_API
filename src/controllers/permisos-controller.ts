@@ -60,13 +60,10 @@ export const postPermiso = async (req: Request, res: Response) => {
             fecha_modificacion,
             estado_permiso
         } = req.body;
-        console.log('ID del permiso:', id_permisos); // Imprimir el ID del permiso en la consola
-        console.log('ID del rol:', id_rol); // Imprimir el ID del rol en la consola
-        console.log('ID del objeto:', id_objeto); // Imprimir el ID del objeto en la consola
 
         // Verifica si el permiso ya existe
         const existingPermiso = await Permisos.findOne({
-            where: { id_permisos }
+            where: { id_permisos: id_permisos }
         });
 
         if (existingPermiso) {
