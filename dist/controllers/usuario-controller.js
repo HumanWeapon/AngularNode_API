@@ -140,7 +140,7 @@ const getCorreoElectronicoPorUsuario = (req, res) => __awaiter(void 0, void 0, v
 exports.getCorreoElectronicoPorUsuario = getCorreoElectronicoPorUsuario;
 //Inserta un usuario en la base de datos
 const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { creado_por, fecha_creacion, modificado_por, fecha_modificacion, usuario, nombre_usuario, correo_electronico, contrasena, id_rol, fecha_ultima_conexion, fecha_vencimiento, intentos_fallidos, estado_usuario } = req.body;
+    const { creado_por, modificado_por, usuario, nombre_usuario, correo_electronico, contrasena, id_rol, fecha_vencimiento, intentos_fallidos, estado_usuario } = req.body;
     const hashedPassword = yield bcrypt_1.default.hash(contrasena, 10);
     try {
         const user = yield usuario_models_1.User.findOne({
@@ -153,10 +153,6 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         else {
             const newUser = yield usuario_models_1.User.create({
-                creado_por: creado_por.toUpperCase(),
-                fecha_creacion: Date.now(),
-                modificado_por: modificado_por.toUpperCase(),
-                fecha_modificacion: Date.now(),
                 usuario: usuario.toUpperCase(),
                 nombre_usuario: nombre_usuario.toUpperCase(),
                 correo_electronico: correo_electronico.toUpperCase(),
@@ -164,7 +160,12 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 id_rol: id_rol,
                 fecha_ultima_conexion: null,
                 fecha_vencimiento: fecha_vencimiento,
-                intentos_fallidos: intentos_fallidos
+                intentos_fallidos: intentos_fallidos,
+                creado_por: creado_por.toUpperCase(),
+                fecha_creacion: Date.now(),
+                modificado_por: modificado_por.toUpperCase(),
+                fecha_modificacion: Date.now(),
+                estado_usuario: estado_usuario
             });
             return res.json(newUser); // Devolver el nuevo usuario creado como respuesta
         }
