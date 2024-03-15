@@ -8,7 +8,7 @@ const validarToken_1 = __importDefault(require("./validarToken"));
 const permisos_controller_1 = require("../controllers/permisos-controller");
 const routerPermisos = (0, express_1.Router)();
 routerPermisos.get('/getAllPermisos', validarToken_1.default, permisos_controller_1.getAllPermisos); //Muestra todos los Permisos registrados en la base de datos
-routerPermisos.get('/objetosSinRol', validarToken_1.default, permisos_controller_1.objetosSinRol); //Muestra todos los Permisos registrados en la base de datos
+routerPermisos.get('/objetosSinRol/:id', validarToken_1.default, permisos_controller_1.objetosSinRol); //Muestra todos los Permisos registrados en la base de datos
 routerPermisos.get('/getPermiso', validarToken_1.default, permisos_controller_1.getPermiso); //Muestra un Permiso seleccionado
 routerPermisos.post('/postPermiso', validarToken_1.default, permisos_controller_1.postPermiso); // Inserta Permisos en la base de datos
 routerPermisos.delete('/deletePermiso', validarToken_1.default, permisos_controller_1.deletePermiso); // Elimina Permiso en la base de datos
