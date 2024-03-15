@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validarToken from '.././validarToken';
-import { activateCiudad, deleteCiudad, getAllCiudades, getCiudad, getCiudades, inactivateCiudad, postCiudad, updateCiudad } from '../../controllers/negocio/ciudades-controller';
+import { activateCiudad, ciudadesAllPaises, deleteCiudad, getAllCiudades, getCiudad, getCiudades, inactivateCiudad, postCiudad, updateCiudad } from '../../controllers/negocio/ciudades-controller';
 
 const routerCiudades = Router()
 
@@ -12,6 +12,7 @@ routerCiudades.delete('/deleteCiudad',validarToken, deleteCiudad); //Elimina una
 routerCiudades.post('/updateCiudad',validarToken, updateCiudad); // actualiza una ciudad en la base de datos
 routerCiudades.post('/inactivateCiudad',validarToken, inactivateCiudad);//Inactiva una Ciudad en la DB
 routerCiudades.post('/activateCiudad',validarToken, activateCiudad);//Activa una Ciudad en la DB
+routerCiudades.get('/ciudadesAllPaises',validarToken, ciudadesAllPaises);//Activa un usuario en la DB
 
 
 export default routerCiudades;

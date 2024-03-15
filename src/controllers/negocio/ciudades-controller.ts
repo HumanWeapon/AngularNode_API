@@ -47,7 +47,7 @@ try {
 //Inserta una ciudad en la base de datos
 export const postCiudad = async (req: Request, res: Response) => {
 
-    const { ciudad, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { ciudad, id_pais, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
     try{
         const _ciudad = await Ciudades.findOne({
@@ -66,6 +66,7 @@ export const postCiudad = async (req: Request, res: Response) => {
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
+                id_pais:id_pais,
                 estado: estado
             })
             res.json(newCuidad)
@@ -77,11 +78,25 @@ export const postCiudad = async (req: Request, res: Response) => {
             error
         }); 
     }
-    /*// Generamos token
-    const token = jwt.sign({
-        usuario: usuario
-    }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);*/
+}
+
+// Realiza una consulta INNER JOIN entre las tablas Usuario y Roles
+export const ciudadesAllPaises = async (req: Request, res: Response) => {
+    try {
+        const ciudad = await Ciudades.findAll({
+            include: [
+                {
+                    model: Paises,
+                    as: 'pais' // Usa el mismo alias que en la definición de la asociación
+                },
+            ],
+        });
+        
+        res.json(ciudad);
+    } catch (error) {
+        console.error('Error al obtener Ciudades de Paises', error);
+        res.status(500).json({ error: 'Error al obtener preguntas de usuario' });
+    }
 }
 
 //Elimina una ciudad de la base de datos
