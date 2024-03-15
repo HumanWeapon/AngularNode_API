@@ -3,7 +3,7 @@ import { Permisos } from '../models/permisos-models';
 import { Roles } from '../models/roles-models';
 import { Objetos } from '../models/objetos-models';
 import { Sequelize } from 'sequelize';
-
+import db from '../db/connection';
 
 //Obtiene todos los permisos de la base de datos
 export const getAllPermisos = async (req: Request, res: Response) => {
@@ -266,3 +266,47 @@ export const permisosRolesObjetos = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Error al obtener parámetros de permisos' });
     }
 }
+
+
+export const objetosSinRol = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT
+             OBJETOS.id_objeto
+            ,OBJETOS.objeto
+            ,OBJETOS.tipo_objeto
+            ,(OBJETOS.objeto||' | '||OBJETOS.tipo_objeto)AS NOMBRE_OBJETO
+            ,PERMISOS.id_permisos
+            ,ROLES.id_rol
+            ,ROLES.rol
+        FROM mipyme.tbl_ms_objetos AS OBJETOS
+        LEFT JOIN 
+            (
+                SELECT * FROM mipyme.tbl_ms_permisos
+                WHERE estado_permiso = 1
+                    AND id_rol = ${id}
+            ) AS PERMISOS
+        ON OBJETOS.id_objeto = PERMISOS.id_objeto
+        LEFT JOIN 
+            (
+                SELECT * 
+                FROM mipyme.tbl_ms_roles
+                WHERE estado_rol = 1
+            ) AS ROLES
+        ON PERMISOS.id_rol = ROLES.id_rol
+        WHERE OBJETOS.estado_objeto = 1
+            AND PERMISOS.id_permisos IS NULL
+        ORDER BY OBJETO = 'BUSCAR PRODUCTOS' DESC, OBJETO = 'DASHBOARD' DESC, OBJETO = 'PYMES' DESC, 
+            OBJETO = 'EMPRESAS' DESC, OBJETO = 'SEGURIDAD' DESC, OBJETO = 'ADMINISTRACION' DESC, OBJETO = 'MANTENIMIENTO' DESC,
+            tipo_objeto ASC
+        `;
+
+        const [results, metadata] = await db.query(query);
+
+        res.json(results);
+    } catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+};

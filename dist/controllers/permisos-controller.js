@@ -8,12 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.permisosRolesObjetos = exports.activatePermiso = exports.inactivatePermiso = exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
+exports.objetosSinRol = exports.permisosRolesObjetos = exports.activatePermiso = exports.inactivatePermiso = exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
 const permisos_models_1 = require("../models/permisos-models");
 const roles_models_1 = require("../models/roles-models");
 const objetos_models_1 = require("../models/objetos-models");
 const sequelize_1 = require("sequelize");
+const connection_1 = __importDefault(require("../db/connection"));
 //Obtiene todos los permisos de la base de datos
 const getAllPermisos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -248,3 +252,45 @@ const permisosRolesObjetos = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.permisosRolesObjetos = permisosRolesObjetos;
+const objetosSinRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT
+             OBJETOS.id_objeto
+            ,OBJETOS.objeto
+            ,OBJETOS.tipo_objeto
+            ,(OBJETOS.objeto||' | '||OBJETOS.tipo_objeto)AS NOMBRE_OBJETO
+            ,PERMISOS.id_permisos
+            ,ROLES.id_rol
+            ,ROLES.rol
+        FROM mipyme.tbl_ms_objetos AS OBJETOS
+        LEFT JOIN 
+            (
+                SELECT * FROM mipyme.tbl_ms_permisos
+                WHERE estado_permiso = 1
+                    AND id_rol = ${id}
+            ) AS PERMISOS
+        ON OBJETOS.id_objeto = PERMISOS.id_objeto
+        LEFT JOIN 
+            (
+                SELECT * 
+                FROM mipyme.tbl_ms_roles
+                WHERE estado_rol = 1
+            ) AS ROLES
+        ON PERMISOS.id_rol = ROLES.id_rol
+        WHERE OBJETOS.estado_objeto = 1
+            AND PERMISOS.id_permisos IS NULL
+        ORDER BY OBJETO = 'BUSCAR PRODUCTOS' DESC, OBJETO = 'DASHBOARD' DESC, OBJETO = 'PYMES' DESC, 
+            OBJETO = 'EMPRESAS' DESC, OBJETO = 'SEGURIDAD' DESC, OBJETO = 'ADMINISTRACION' DESC, OBJETO = 'MANTENIMIENTO' DESC,
+            tipo_objeto ASC
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.objetosSinRol = objetosSinRol;
