@@ -58,10 +58,9 @@ exports.getPermiso = getPermiso;
 //Inserta un nuevo permiso 
 const postPermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id_permisos, id_rol, id_objeto, permiso_insercion, permiso_eliminacion, permiso_actualizacion, permiso_consultar, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado_permiso } = req.body;
+        const { id_rol, id_objeto, permiso_insercion, permiso_eliminacion, permiso_actualizacion, permiso_consultar, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado_permiso } = req.body;
         // Crea el nuevo permiso
         const newPermiso = yield permisos_models_1.Permisos.create({
-            id_permisos: id_permisos,
             id_rol: id_rol,
             id_objeto: id_objeto,
             permiso_insercion: permiso_insercion,

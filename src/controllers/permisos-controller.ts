@@ -47,7 +47,6 @@ try {
 export const postPermiso = async (req: Request, res: Response) => {
     try {
         const {
-            id_permisos,
             id_rol,
             id_objeto,
             permiso_insercion,
@@ -63,7 +62,6 @@ export const postPermiso = async (req: Request, res: Response) => {
 
         // Crea el nuevo permiso
         const newPermiso = await Permisos.create({
-            id_permisos: id_permisos,
             id_rol: id_rol,
             id_objeto: id_objeto,
             permiso_insercion: permiso_insercion,
