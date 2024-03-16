@@ -51,7 +51,7 @@ const getPais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getPais = getPais;
 // Inserta una nueva Empresa en la base de datos
 const postPais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { pais, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { pais, descripcion, cod_pais, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _pais = yield paises_models_1.Paises.findOne({
             where: { pais: pais }
@@ -59,6 +59,7 @@ const postPais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const paises = yield paises_models_1.Paises.create({
             pais: pais.toUpperCase(),
             descripcion: descripcion.toUpperCase(),
+            cod_pais: cod_pais.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
             fecha_creacion: Date.now(),
             modificado_por: modificado_por.toUpperCase(),

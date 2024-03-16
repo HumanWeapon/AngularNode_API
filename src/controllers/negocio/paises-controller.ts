@@ -45,7 +45,7 @@ try {
 // Inserta una nueva Empresa en la base de datos
 export const postPais = async (req: Request, res: Response) => {
 
-    const {  pais, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado} = req.body;
+    const {  pais, descripcion, cod_pais, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado} = req.body;
 
     try{
         const _pais = await Paises.findOne({
@@ -55,6 +55,7 @@ export const postPais = async (req: Request, res: Response) => {
             const paises = await Paises.create({
                 pais: pais.toUpperCase(),
                 descripcion: descripcion.toUpperCase(),
+                cod_pais: cod_pais.toUpperCase(),
                 creado_por: creado_por.toUpperCase(),
                 fecha_creacion: Date.now(),
                 modificado_por: modificado_por.toUpperCase(),
