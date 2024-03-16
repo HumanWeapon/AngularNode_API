@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.objetosSinRol = exports.permisosRolesObjetos = exports.activatePermiso = exports.inactivatePermiso = exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
 const permisos_models_1 = require("../models/permisos-models");
-const roles_models_1 = require("../models/roles-models");
 const objetos_models_1 = require("../models/objetos-models");
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
@@ -60,42 +59,20 @@ exports.getPermiso = getPermiso;
 const postPermiso = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id_permisos, id_rol, id_objeto, permiso_insercion, permiso_eliminacion, permiso_actualizacion, permiso_consultar, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado_permiso } = req.body;
-        // Verifica si el permiso ya existe
-        const existingPermiso = yield permisos_models_1.Permisos.findOne({
-            where: { id_permisos: id_permisos }
-        });
-        if (existingPermiso) {
-            return res.status(400).json({
-                msg: 'El permiso ya está registrado en la base de datos.'
-            });
-        }
-        // Verifica si el rol y el objeto existen en las tablas relacionadas
-        const existingRol = yield roles_models_1.Roles.findOne(id_rol);
-        const existingObjeto = yield objetos_models_1.Objetos.findOne(id_objeto);
-        if (!existingRol) {
-            return res.status(400).json({
-                msg: 'El rol especificado no existe en la base de datos.'
-            });
-        }
-        if (!existingObjeto) {
-            return res.status(400).json({
-                msg: 'El objeto especificado no existe en la base de datos.'
-            });
-        }
         // Crea el nuevo permiso
         const newPermiso = yield permisos_models_1.Permisos.create({
-            id_permisos,
-            id_rol,
-            id_objeto,
-            permiso_insercion,
-            permiso_eliminacion,
-            permiso_actualizacion,
-            permiso_consultar,
+            id_permisos: id_permisos,
+            id_rol: id_rol,
+            id_objeto: id_objeto,
+            permiso_insercion: permiso_insercion,
+            permiso_eliminacion: permiso_eliminacion,
+            permiso_actualizacion: permiso_actualizacion,
+            permiso_consultar: permiso_consultar,
             creado_por: creado_por.toUpperCase(),
-            fecha_creacion,
+            fecha_creacion: fecha_creacion,
             modificado_por: modificado_por.toUpperCase(),
-            fecha_modificacion,
-            estado_permiso
+            fecha_modificacion: fecha_modificacion,
+            estado_permiso: estado_permiso
         });
         return res.json(newPermiso);
     }

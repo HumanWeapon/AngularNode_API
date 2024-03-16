@@ -61,48 +61,20 @@ export const postPermiso = async (req: Request, res: Response) => {
             estado_permiso
         } = req.body;
 
-        // Verifica si el permiso ya existe
-        const existingPermiso = await Permisos.findOne({
-            where: { id_permisos: id_permisos }
-        });
-
-        if (existingPermiso) {
-            return res.status(400).json({
-                msg: 'El permiso ya está registrado en la base de datos.'
-            });
-        }
-
-        
-        // Verifica si el rol y el objeto existen en las tablas relacionadas
-        const existingRol = await Roles.findOne(id_rol);
-        const existingObjeto = await Objetos.findOne(id_objeto);
-
-        if (!existingRol) {
-            return res.status(400).json({
-                msg: 'El rol especificado no existe en la base de datos.'
-            });
-        }
-        
-        if (!existingObjeto) {
-            return res.status(400).json({
-                msg: 'El objeto especificado no existe en la base de datos.'
-            });
-        }
-
         // Crea el nuevo permiso
         const newPermiso = await Permisos.create({
-            id_permisos,
-            id_rol,
-            id_objeto,
-            permiso_insercion,
-            permiso_eliminacion,
-            permiso_actualizacion,
-            permiso_consultar,
+            id_permisos: id_permisos,
+            id_rol: id_rol,
+            id_objeto: id_objeto,
+            permiso_insercion: permiso_insercion,
+            permiso_eliminacion: permiso_eliminacion,
+            permiso_actualizacion: permiso_actualizacion,
+            permiso_consultar: permiso_consultar,
             creado_por: creado_por.toUpperCase(),
-            fecha_creacion,
+            fecha_creacion: fecha_creacion,
             modificado_por: modificado_por.toUpperCase(),
-            fecha_modificacion,
-            estado_permiso
+            fecha_modificacion: fecha_modificacion,
+            estado_permiso: estado_permiso
         });
 
         return res.json(newPermiso);
