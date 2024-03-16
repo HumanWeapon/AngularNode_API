@@ -46,7 +46,7 @@ export const postTipoDireccion = async (req: Request, res: Response) => {
     
         if (_direc){
             return res.status(400).json({
-                msg: 'dirección ya registrada en la base de datos: '+ tipo_direccion
+                msg: 'Dirección ya registrada en la base de datos: '+ tipo_direccion
             })
         }else{
             const newTD = await TipoDireccion.create({

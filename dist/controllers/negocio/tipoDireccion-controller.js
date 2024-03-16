@@ -50,7 +50,7 @@ const postTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
         if (_direc) {
             return res.status(400).json({
-                msg: 'dirección ya registrada en la base de datos: ' + tipo_direccion
+                msg: 'Dirección ya registrada en la base de datos: ' + tipo_direccion
             });
         }
         else {
