@@ -276,7 +276,7 @@ export const objetosSinRol = async (req: Request, res: Response) => {
              OBJETOS.id_objeto
             ,OBJETOS.objeto
             ,OBJETOS.tipo_objeto
-            ,(OBJETOS.objeto||' | '||OBJETOS.tipo_objeto)AS NOMBRE_OBJETO
+            ,(OBJETOS.tipo_objeto||' | '||OBJETOS.objeto)AS NOMBRE_OBJETO
             ,PERMISOS.id_permisos
             ,ROLES.id_rol
             ,ROLES.rol

@@ -260,7 +260,7 @@ const objetosSinRol = (req, res) => __awaiter(void 0, void 0, void 0, function* 
              OBJETOS.id_objeto
             ,OBJETOS.objeto
             ,OBJETOS.tipo_objeto
-            ,(OBJETOS.objeto||' | '||OBJETOS.tipo_objeto)AS NOMBRE_OBJETO
+            ,(OBJETOS.tipo_objeto||' | '||OBJETOS.objeto)AS NOMBRE_OBJETO
             ,PERMISOS.id_permisos
             ,ROLES.id_rol
             ,ROLES.rol
