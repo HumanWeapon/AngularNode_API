@@ -51,6 +51,12 @@ export const postPais = async (req: Request, res: Response) => {
         const _pais = await Paises.findOne({
             where: {pais: pais}
         })
+
+        if (_pais){
+            return res.status(400).json({
+                msg: 'Pais ya existe en la base de datos: '+ pais
+            })
+        }else{
     
             const paises = await Paises.create({
                 pais: pais.toUpperCase(),
@@ -62,8 +68,8 @@ export const postPais = async (req: Request, res: Response) => {
                 fecha_modificacion: Date.now(),
                 estado: estado
             })
-            res.json(paises)
-        //hola
+            return res.json(paises);
+        }    
     }
     catch (error){
         res.status(400).json({

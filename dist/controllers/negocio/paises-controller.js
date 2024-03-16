@@ -56,18 +56,24 @@ const postPais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const _pais = yield paises_models_1.Paises.findOne({
             where: { pais: pais }
         });
-        const paises = yield paises_models_1.Paises.create({
-            pais: pais.toUpperCase(),
-            descripcion: descripcion.toUpperCase(),
-            cod_pais: cod_pais.toUpperCase(),
-            creado_por: creado_por.toUpperCase(),
-            fecha_creacion: Date.now(),
-            modificado_por: modificado_por.toUpperCase(),
-            fecha_modificacion: Date.now(),
-            estado: estado
-        });
-        res.json(paises);
-        //hola
+        if (_pais) {
+            return res.status(400).json({
+                msg: 'Pais ya existe en la base de datos: ' + pais
+            });
+        }
+        else {
+            const paises = yield paises_models_1.Paises.create({
+                pais: pais.toUpperCase(),
+                descripcion: descripcion.toUpperCase(),
+                cod_pais: cod_pais.toUpperCase(),
+                creado_por: creado_por.toUpperCase(),
+                fecha_creacion: Date.now(),
+                modificado_por: modificado_por.toUpperCase(),
+                fecha_modificacion: Date.now(),
+                estado: estado
+            });
+            return res.json(paises);
+        }
     }
     catch (error) {
         res.status(400).json({
