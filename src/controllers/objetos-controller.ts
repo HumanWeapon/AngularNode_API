@@ -250,7 +250,7 @@ export const objetosJSON = async (req: Request, res: Response) => {
     LEFT JOIN (SELECT * FROM mipyme.tbl_ms_permisos WHERE estado_permiso = 1 AND id_rol = ${id_rol}) AS permisos 
     ON main.id_objeto = permisos.id_objeto -- Left join con la tabla de permisos
     WHERE estado_objeto = 1
-        AND tipo_objeto = ${submenu}
+        AND tipo_objeto = '${submenu}'
         AND permisos.id_permisos IS NOT NULL -- Aquí es donde deberías verificar si el join tuvo éxito, utilizando una columna válida de la tabla permisos
     GROUP BY 
         CASE 
