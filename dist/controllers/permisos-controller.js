@@ -197,7 +197,7 @@ const permisosRolesObjetos = (req, res) => __awaiter(void 0, void 0, void 0, fun
     const { id_rol, tipo_objeto } = req.body; // Suponiendo que aquí recibes el id_rol del usuario logeado
     try {
         const _permiso = yield permisos_models_1.Permisos.findAll({
-            where: { id_rol: id_rol },
+            where: { id_rol: id_rol, estado_permiso: 1 },
             include: [
                 {
                     model: objetos_models_1.Objetos,

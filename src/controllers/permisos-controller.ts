@@ -206,7 +206,7 @@ export const permisosRolesObjetos = async (req: Request, res: Response) => {
 
     try {
         const _permiso = await Permisos.findAll({
-            where: { id_rol: id_rol }, // Filtrar por el id_rol del usuario logeado
+            where: { id_rol: id_rol, estado_permiso: 1 }, // Filtrar por el id_rol del usuario logeado
             include: [              
                 {
                     model: Objetos,
