@@ -209,53 +209,57 @@ export const getAllObjetosMenu = async (req: Request, res: Response) => {
 }
 
 export const objetosJSON = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id_rol, submenu } = req.params;
     try {
         const query = `
         SELECT 
-            json_agg(
-                json_build_object(
-                    'categoria', 
-                    CASE 
-                        WHEN objeto IN ('TIPO DIRECCION', 'CIUDADES', 'PAISES', 'DIRECCIONES') THEN 'DIRECCIONES'
-                        WHEN objeto IN ('TIPO CONTACTO', 'CONTACTO', 'TELEFONOS', 'TIPO TELEFONO') THEN 'CONTACTOS'
-                        WHEN objeto IN ('CATEGORIA PRODUCTOS', 'PRODUCTOS') THEN 'PRODUCTOS'
-                        WHEN objeto IN ('TIPO EMPRESA', 'TIPO REQUISITO', 'REQUISITOS') THEN 'EMPRESAS'
-                        ELSE 'OTROS'
-                    END,
-                    'atributes', (
-                        SELECT json_agg(
-                            json_build_object(
-                                'id_objeto', id_objeto,
-                                'objeto', objeto,
-                                'descripcion', descripcion,
-                                'tipo_objeto', tipo_objeto,
-                                'url', url,
-                                'icono', icono,
-                                'creado_por', creado_por,
-                                'fecha_creacion', fecha_creacion,
-                                'modificado_por', modificado_por,
-                                'fecha_modificacion', fecha_modificacion,
-                                'estado_objeto', estado_objeto
-                            )
+        json_agg(
+            json_build_object(
+                'categoria', 
+                CASE 
+                    WHEN objeto IN ('TIPO DIRECCION', 'CIUDADES', 'PAISES', 'DIRECCIONES') THEN 'DIRECCIONES'
+                    WHEN objeto IN ('TIPO CONTACTO', 'CONTACTO', 'TELEFONOS', 'TIPO TELEFONO') THEN 'CONTACTOS'
+                    WHEN objeto IN ('CATEGORIA PRODUCTOS', 'PRODUCTOS') THEN 'PRODUCTOS'
+                    WHEN objeto IN ('TIPO EMPRESA', 'TIPO REQUISITO', 'REQUISITOS') THEN 'EMPRESAS'
+                    ELSE 'OTROS'
+                END,
+                'atributes', (
+                    SELECT json_agg(
+                        json_build_object(
+                            'id_objeto', id_objeto,
+                            'objeto', objeto,
+                            'descripcion', descripcion,
+                            'tipo_objeto', tipo_objeto,
+                            'url', url,
+                            'icono', icono,
+                            'creado_por', creado_por,
+                            'fecha_creacion', fecha_creacion,
+                            'modificado_por', modificado_por,
+                            'fecha_modificacion', fecha_modificacion,
+                            'estado_objeto', estado_objeto,
+                            'permisos', CASE WHEN EXISTS (SELECT 1 FROM mipyme.tbl_ms_permisos p WHERE p.id_objeto = sub.id_objeto) THEN true ELSE false END -- Verifica si existen permisos para este objeto
                         )
-                        FROM mipyme.tbl_ms_objetos as sub
-                        WHERE sub.objeto = main.objeto
                     )
+                    FROM mipyme.tbl_ms_objetos as sub
+                    WHERE sub.objeto = main.objeto
                 )
-            ) AS resultado
-        FROM 
-            mipyme.tbl_ms_objetos as main
-        WHERE estado_objeto = 1
-            AND tipo_objeto = 'MANTENIMIENTO'
-        GROUP BY 
-            CASE 
-                WHEN objeto IN ('TIPO DIRECCION', 'CIUDADES', 'PAISES', 'DIRECCIONES') THEN 'DIRECCIONES'
-                WHEN objeto IN ('TIPO CONTACTO', 'CONTACTO', 'TELEFONOS', 'TIPO TELEFONO') THEN 'CONTACTOS'
-                WHEN objeto IN ('CATEGORIA PRODUCTOS', 'PRODUCTOS') THEN 'PRODUCTOS'
-                WHEN objeto IN ('TIPO EMPRESA', 'TIPO REQUISITO', 'REQUISITOS') THEN 'EMPRESAS'
-                ELSE 'OTROS'
-            END
+            )
+        ) AS resultado
+    FROM 
+        mipyme.tbl_ms_objetos as main
+    LEFT JOIN (SELECT * FROM mipyme.tbl_ms_permisos WHERE estado_permiso = 1 AND id_rol = ${submenu}) AS permisos 
+    ON main.id_objeto = permisos.id_objeto -- Left join con la tabla de permisos
+    WHERE estado_objeto = 1
+        AND tipo_objeto = ${id_rol}
+        AND permisos.id_permisos IS NOT NULL -- Aquí es donde deberías verificar si el join tuvo éxito, utilizando una columna válida de la tabla permisos
+    GROUP BY 
+        CASE 
+            WHEN objeto IN ('TIPO DIRECCION', 'CIUDADES', 'PAISES', 'DIRECCIONES') THEN 'DIRECCIONES'
+            WHEN objeto IN ('TIPO CONTACTO', 'CONTACTO', 'TELEFONOS', 'TIPO TELEFONO') THEN 'CONTACTOS'
+            WHEN objeto IN ('CATEGORIA PRODUCTOS', 'PRODUCTOS') THEN 'PRODUCTOS'
+            WHEN objeto IN ('TIPO EMPRESA', 'TIPO REQUISITO', 'REQUISITOS') THEN 'EMPRESAS'
+            ELSE 'OTROS'
+        END    
         `;
 
         const [results, metadata] = await db.query(query);
