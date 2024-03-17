@@ -12,7 +12,7 @@ routerObjetos.post('/updateObjetos',validarToken, updateObjetos); // actualiza u
 routerObjetos.post('/inactivateObjeto',validarToken, inactivateObjecto);//Inactiva una Pyme en la DB
 routerObjetos.post('/activateObjeto',validarToken, activateObjeto);//Activa una Pyme en la DB
 routerObjetos.post('/getAllObjetosMenu',validarToken, getAllObjetosMenu);//Activa una Pyme en la DB
-routerObjetos.get('/objetosJSON',validarToken, objetosJSON);//consulta todos los objetos en la base de datos
+routerObjetos.get('/objetosJSON/:id_rol/:submenu',validarToken, objetosJSON);//consulta todos los objetos en la base de datos
 
 
 
