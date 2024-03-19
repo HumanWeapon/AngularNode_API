@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.eliminarOperacionEmpresaContacto = exports.agregarOperacionEmpresaContacto = exports.consultarContactosActivosporId = exports.consultarContactosNoRegistradosPorId = void 0;
+exports.eliminarOperacionEmpresaContacto = exports.agregarOperacionEmpresaContacto = exports.ReporteContactos = exports.consultarContactosActivosporId = exports.consultarContactosNoRegistradosPorId = void 0;
 const connection_1 = __importDefault(require("../../../db/connection"));
 const Empresas_Contactos_1 = require("../../../models/negocio/Operaciones/Empresas_Contactos");
 //obtiene los contactos registrados y no registrados de una empresa
@@ -98,6 +98,43 @@ const consultarContactosActivosporId = (req, res) => __awaiter(void 0, void 0, v
     }
 });
 exports.consultarContactosActivosporId = consultarContactosActivosporId;
+//obtiene los contactos registrados de una empresa
+const ReporteContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const query = `
+        SELECT 
+            A.id_contacto,
+            A.id_empresa,
+            C.nombre_empresa,
+            A.id_tipo_contacto,
+            B.tipo_contacto,
+            (A.primer_nombre||' '||A.segundo_nombre||' '||A.primer_apellido||' '||A.segundo_apellido) AS nombre_completo,
+            A.descripcion,
+            A.creado_por,
+            A.fecha_creacion,
+            A.modificado_por,
+            A.fecha_modificacion,
+            A.estado
+        FROM mipyme.tbl_me_contactos AS A
+        LEFT JOIN 
+        (
+            SELECT * 
+            FROM mipyme.tbl_me_tipo_contacto
+        ) AS B
+        ON A.id_tipo_contacto = B.id_tipo_contacto
+        LEFT JOIN (SELECT id_empresa, nombre_empresa
+        FROM mipyme.tbl_me_empresas) AS C
+        ON A.id_empresa = C.id_empresa
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.ReporteContactos = ReporteContactos;
 // Agregar un nuevo registro
 const agregarOperacionEmpresaContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

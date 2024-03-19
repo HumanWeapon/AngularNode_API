@@ -88,6 +88,44 @@ export const consultarContactosActivosporId = async (req: Request, res: Response
     }
 };
 
+//obtiene los contactos registrados de una empresa
+export const ReporteContactos = async (req: Request, res: Response) => {
+    try {
+        const query = `
+        SELECT 
+            A.id_contacto,
+            A.id_empresa,
+            C.nombre_empresa,
+            A.id_tipo_contacto,
+            B.tipo_contacto,
+            (A.primer_nombre||' '||A.segundo_nombre||' '||A.primer_apellido||' '||A.segundo_apellido) AS nombre_completo,
+            A.descripcion,
+            A.creado_por,
+            A.fecha_creacion,
+            A.modificado_por,
+            A.fecha_modificacion,
+            A.estado
+        FROM mipyme.tbl_me_contactos AS A
+        LEFT JOIN 
+        (
+            SELECT * 
+            FROM mipyme.tbl_me_tipo_contacto
+        ) AS B
+        ON A.id_tipo_contacto = B.id_tipo_contacto
+        LEFT JOIN (SELECT id_empresa, nombre_empresa
+        FROM mipyme.tbl_me_empresas) AS C
+        ON A.id_empresa = C.id_empresa
+        `;
+
+        const [results, metadata] = await db.query(query);
+
+        res.json(results);
+    } catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+};
+
 // Agregar un nuevo registro
 export const agregarOperacionEmpresaContacto = async (req: Request, res: Response) => {
     try {
