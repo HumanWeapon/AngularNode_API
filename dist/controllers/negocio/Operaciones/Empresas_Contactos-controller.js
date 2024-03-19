@@ -71,7 +71,8 @@ const consultarContactosActivosporId = (req, res) => __awaiter(void 0, void 0, v
             (A.primer_nombre||' '||A.segundo_nombre||' '||A.primer_apellido||' '||A.segundo_apellido) AS nombre_completo,
             A.descripcion,
             A.creado_por,
-            A.fecha_creacion
+            A.fecha_creacion,
+            A.estado
         FROM mipyme.tbl_me_contactos AS A
         LEFT JOIN 
         (
