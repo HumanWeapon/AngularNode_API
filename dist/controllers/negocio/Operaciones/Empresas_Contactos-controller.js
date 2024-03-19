@@ -64,35 +64,24 @@ const consultarContactosActivosporId = (req, res) => __awaiter(void 0, void 0, v
     try {
         const query = `
         SELECT 
-            OPERACIONES.id_emp_contactos,
-            OPERACIONES.id_empresa,
-            OPERACIONES.id_contacto,
-            (CONTACTOS.primer_nombre||' '||CONTACTOS.segundo_nombre||' '||CONTACTOS.primer_apellido||' '||CONTACTOS.segundo_apellido) AS nombre_completo,
-            CONTACTOS.tipo_contacto,
-            OPERACIONES.descripcion,
-            OPERACIONES.creado_por,
-            OPERACIONES.fecha_creacion,
-            OPERACIONES.modificado_por,
-            OPERACIONES.fecha_modificacion,
-            OPERACIONES.estado
-        FROM mipyme.tbl_op_empresas_contactos AS OPERACIONES
+            A.id_contacto,
+            A.id_empresa,
+            A.id_tipo_contacto,
+            B.tipo_contacto,
+            (A.primer_nombre||' '||A.segundo_nombre||' '||A.primer_apellido||' '||A.segundo_apellido) AS nombre_completo,
+            A.descripcion,
+            A.creado_por,
+            A.fecha_creacion
+        FROM mipyme.tbl_me_contactos AS A
         LEFT JOIN 
-            (
-                SELECT * 
-                FROM mipyme.tbl_me_contactos AS A
-                LEFT JOIN 
-                (
-                    SELECT * 
-                    FROM mipyme.tbl_me_tipo_contacto 
-                    WHERE estado = 1
-                ) AS B
-                ON A.id_tipo_contacto = B.id_tipo_contacto
-                WHERE A.estado = 1
-            ) AS CONTACTOS
-            
-        ON OPERACIONES.id_contacto = CONTACTOS.id_contacto
-        WHERE OPERACIONES.estado = 1
-            AND OPERACIONES.id_empresa = ${id}
+        (
+            SELECT * 
+            FROM mipyme.tbl_me_tipo_contacto 
+            WHERE estado = 1
+        ) AS B
+        ON A.id_tipo_contacto = B.id_tipo_contacto
+        WHERE A.estado = 1
+            and A.tipo_empresa = ${id}
         `;
         const [results, metadata] = yield connection_1.default.query(query);
         res.json(results);
