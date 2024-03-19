@@ -81,7 +81,7 @@ const consultarContactosActivosporId = (req, res) => __awaiter(void 0, void 0, v
         ) AS B
         ON A.id_tipo_contacto = B.id_tipo_contacto
         WHERE A.estado = 1
-            and A.tipo_empresa = ${id}
+            and A.id_empresa = ${id}
         `;
         const [results, metadata] = yield connection_1.default.query(query);
         res.json(results);

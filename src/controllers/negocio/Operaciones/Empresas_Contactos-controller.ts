@@ -70,7 +70,7 @@ export const consultarContactosActivosporId = async (req: Request, res: Response
         ) AS B
         ON A.id_tipo_contacto = B.id_tipo_contacto
         WHERE A.estado = 1
-            and A.tipo_empresa = ${id}
+            and A.id_empresa = ${id}
         `;
 
         const [results, metadata] = await db.query(query);
