@@ -170,10 +170,10 @@ const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.updateContacto = updateContacto;
 //Inactiva el usuario de la DBA
 const inactivateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { primer_nombre } = req.body;
+    const { id_contacto, primer_nombre } = req.body;
     try {
         const _contacto = yield contacto_models_1.Contacto.findOne({
-            where: { primer_nombre: primer_nombre }
+            where: { id_contacto: id_contacto }
         });
         if (!_contacto) {
             return res.status(404).json({
@@ -195,10 +195,10 @@ const inactivateContacto = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.inactivateContacto = inactivateContacto;
 //Activa el usuario de la DBA
 const activateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { primer_nombre } = req.body;
+    const { id_contacto, primer_nombre } = req.body;
     try {
         const _contacto = yield contacto_models_1.Contacto.findOne({
-            where: { primer_nombre: primer_nombre }
+            where: { id_contacto: id_contacto }
         });
         if (!_contacto) {
             return res.status(404).json({

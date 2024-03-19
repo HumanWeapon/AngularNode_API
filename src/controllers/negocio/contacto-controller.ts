@@ -170,10 +170,10 @@ export const updateContacto = async (req: Request, res: Response) => {
 //Inactiva el usuario de la DBA
 export const inactivateContacto = async (req: Request, res: Response) => {
 
-    const { primer_nombre } = req.body;
+    const { id_contacto, primer_nombre } = req.body;
     try {
     const _contacto = await Contacto.findOne({
-        where: {primer_nombre: primer_nombre}
+        where: {id_contacto: id_contacto}
     });
     if(!_contacto){
         return res.status(404).json({
@@ -198,10 +198,10 @@ export const inactivateContacto = async (req: Request, res: Response) => {
 //Activa el usuario de la DBA
     export const activateContacto = async (req: Request, res: Response) => {
 
-        const { primer_nombre } = req.body;
+        const { id_contacto, primer_nombre } = req.body;
         try {
         const _contacto = await Contacto.findOne({
-            where: {primer_nombre: primer_nombre}
+            where: {id_contacto: id_contacto}
         });
         if(!_contacto){
             return res.status(404).json({
