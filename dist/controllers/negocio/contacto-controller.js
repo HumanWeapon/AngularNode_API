@@ -67,11 +67,12 @@ const getContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getContacto = getContacto;
 //Inserta un contacto en la base de datos
 const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_tipo_contacto, id_empresa, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         // Crea el contacto
         const contac = yield contacto_models_1.Contacto.create({
             id_tipo_contacto: id_tipo_contacto,
+            id_empresa: id_empresa,
             primer_nombre: primer_nombre.toUpperCase(),
             segundo_nombre: segundo_nombre.toUpperCase(),
             primer_apellido: primer_apellido.toUpperCase(),
@@ -133,7 +134,7 @@ const deleteContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.deleteContacto = deleteContacto;
 //actualiza el contacto en la base de datos
 const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_contacto, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_contacto, id_empresa, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _contacto = yield contacto_models_1.Contacto.findOne({
             where: { id_contacto: id_contacto }
@@ -145,6 +146,7 @@ const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         yield _contacto.update({
             id_tipo_contacto: id_tipo_contacto,
+            id_empresa: id_empresa,
             primer_nombre: primer_nombre.toUpperCase(),
             segundo_nombre: segundo_nombre.toUpperCase(),
             primer_apellido: primer_apellido.toUpperCase(),
@@ -216,6 +218,3 @@ const activateContacto = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.activateContacto = activateContacto;
-/*                                          FRANKLIN ALEXANDER MURILLO CRUZ
-                                                CUENTA: 20151021932
- */ 

@@ -60,12 +60,13 @@ try {
 }
 //Inserta un contacto en la base de datos
 export const postContacto = async (req: Request, res: Response) => {
-    const { id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_tipo_contacto,id_empresa, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
     try {
         // Crea el contacto
         const contac = await Contacto.create({
             id_tipo_contacto: id_tipo_contacto,
+            id_empresa: id_empresa,
             primer_nombre: primer_nombre.toUpperCase(),
             segundo_nombre: segundo_nombre.toUpperCase(),
             primer_apellido: primer_apellido.toUpperCase(),
@@ -130,7 +131,7 @@ export const deleteContacto = async (req: Request, res: Response) => {
 //actualiza el contacto en la base de datos
 export const updateContacto = async (req: Request, res: Response) => {
    
-    const { id_contacto, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
+    const { id_contacto, id_empresa, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
     try {
     const _contacto = await Contacto.findOne({
         where: {id_contacto: id_contacto}
@@ -143,6 +144,7 @@ export const updateContacto = async (req: Request, res: Response) => {
 
     await _contacto.update({
         id_tipo_contacto: id_tipo_contacto,
+        id_empresa: id_empresa,
         primer_nombre: primer_nombre.toUpperCase(),
         segundo_nombre: segundo_nombre.toUpperCase(),
         primer_apellido: primer_apellido.toUpperCase(),
@@ -218,11 +220,4 @@ export const inactivateContacto = async (req: Request, res: Response) => {
             msg: 'Hubo un error al activar el contacto',
         });
     }
-
 }
-
-
-
-/*                                          FRANKLIN ALEXANDER MURILLO CRUZ
-                                                CUENTA: 20151021932
- */

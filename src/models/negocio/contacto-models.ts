@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
 import { TipoContacto } from './tipoContacto-models';
+import { Empresas } from './empresas-model';
 
 export const Contacto: any = dataBase.define('contacto', {
     id_contacto: {
@@ -9,6 +10,9 @@ export const Contacto: any = dataBase.define('contacto', {
         autoIncrement: true
     },
     id_tipo_contacto: {
+        type: DataTypes.INTEGER,
+    },
+    id_empresa: {
         type: DataTypes.INTEGER,
     },
     primer_nombre: {
@@ -61,24 +65,7 @@ Contacto.belongsTo(TipoContacto, {
     foreignKey: 'id_tipo_contacto',
     as: 'tipo_contacto' // Alias para la relación
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*                                          FRANKLIN ALEXANDER MURILLO CRUZ
-                                                CUENTA: 20151021932
- */
+Contacto.belongsTo(Empresas, {
+    foreignKey: 'id_empresa',
+    as: 'empresa' // Alias para la relación con Empresa
+});
