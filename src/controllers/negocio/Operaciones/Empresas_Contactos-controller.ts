@@ -73,11 +73,10 @@ export const consultarContactosActivosporId = async (req: Request, res: Response
         (
             SELECT * 
             FROM mipyme.tbl_me_tipo_contacto 
-            WHERE estado = 1
         ) AS B
         ON A.id_tipo_contacto = B.id_tipo_contacto
-        WHERE A.estado = 1
-            and A.id_empresa = ${id}
+        WHERE 
+            A.id_empresa = ${id}
         `;
 
         const [results, metadata] = await db.query(query);
