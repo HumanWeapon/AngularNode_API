@@ -20,19 +20,7 @@ exports.Contacto = connection_1.default.define('contacto', {
     id_empresa: {
         type: sequelize_1.DataTypes.INTEGER,
     },
-    primer_nombre: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
-    segundo_nombre: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
-    primer_apellido: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
-    segundo_apellido: {
+    nombre_completo: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },

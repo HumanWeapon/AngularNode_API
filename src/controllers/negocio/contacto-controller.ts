@@ -60,17 +60,14 @@ try {
 }
 //Inserta un contacto en la base de datos
 export const postContacto = async (req: Request, res: Response) => {
-    const { id_tipo_contacto,id_empresa, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_tipo_contacto,id_empresa, nombre_completo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
     try {
         // Crea el contacto
         const contac = await Contacto.create({
             id_tipo_contacto: id_tipo_contacto,
             id_empresa: id_empresa,
-            primer_nombre: primer_nombre.toUpperCase(),
-            segundo_nombre: segundo_nombre.toUpperCase(),
-            primer_apellido: primer_apellido.toUpperCase(),
-            segundo_apellido: segundo_apellido.toUpperCase(),
+            nombre_completo: nombre_completo.toUpperCase(),
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
@@ -81,7 +78,7 @@ export const postContacto = async (req: Request, res: Response) => {
 
         // Consulta el contacto recién creado con su tipo de contacto asociado
         const contactoConTipo = await Contacto.findOne({
-            where : {primer_nombre: contac.primer_nombre, segundo_nombre: contac.segundo_nombre, primer_apellido: contac.primer_apellido, segundo_apellido: contac.segundo_apellido},
+            where : {nombre_completo: contac.nombre_completo},
             include: {
                 model: TipoContacto,
                 as: 'tipo_contacto',
@@ -131,10 +128,10 @@ export const deleteContacto = async (req: Request, res: Response) => {
 //actualiza el contacto en la base de datos
 export const updateContacto = async (req: Request, res: Response) => {
    
-    const { id_contacto, id_empresa, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
+    const { id_contacto, id_empresa, id_tipo_contacto, nombre_completo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
     try {
     const _contacto = await Contacto.findOne({
-        where: {id_contacto: id_contacto}
+        where: {nombre_completo: nombre_completo}
     });
     if(!_contacto){
         return res.status(404).json({
@@ -145,10 +142,7 @@ export const updateContacto = async (req: Request, res: Response) => {
     await _contacto.update({
         id_tipo_contacto: id_tipo_contacto,
         id_empresa: id_empresa,
-        primer_nombre: primer_nombre.toUpperCase(),
-        segundo_nombre: segundo_nombre.toUpperCase(),
-        primer_apellido: primer_apellido.toUpperCase(),
-        segundo_apellido: segundo_apellido.toUpperCase(),
+        nombre_completo: nombre_completo.toUpperCase(),
         descripcion: descripcion.toUpperCase(),
         creado_por: creado_por.toUpperCase(),
         fecha_creacion: fecha_creacion,
@@ -170,14 +164,14 @@ export const updateContacto = async (req: Request, res: Response) => {
 //Inactiva el usuario de la DBA
 export const inactivateContacto = async (req: Request, res: Response) => {
 
-    const { id_contacto, primer_nombre } = req.body;
+    const { id_contacto, nombre_completo } = req.body;
     try {
     const _contacto = await Contacto.findOne({
         where: {id_contacto: id_contacto}
     });
     if(!_contacto){
         return res.status(404).json({
-            msg: "El Contacto no existe: "+ primer_nombre
+            msg: "El Contacto no existe: "+ nombre_completo
         });
     }
 
@@ -198,14 +192,14 @@ export const inactivateContacto = async (req: Request, res: Response) => {
 //Activa el usuario de la DBA
     export const activateContacto = async (req: Request, res: Response) => {
 
-        const { id_contacto, primer_nombre } = req.body;
+        const { id_contacto, nombre_completo } = req.body;
         try {
         const _contacto = await Contacto.findOne({
             where: {id_contacto: id_contacto}
         });
         if(!_contacto){
             return res.status(404).json({
-                msg: "El Contacto no existe: "+ primer_nombre
+                msg: "El Contacto no existe: "+ nombre_completo
             });
         }
 

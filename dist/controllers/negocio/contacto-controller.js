@@ -67,16 +67,13 @@ const getContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getContacto = getContacto;
 //Inserta un contacto en la base de datos
 const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_tipo_contacto, id_empresa, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_tipo_contacto, id_empresa, nombre_completo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         // Crea el contacto
         const contac = yield contacto_models_1.Contacto.create({
             id_tipo_contacto: id_tipo_contacto,
             id_empresa: id_empresa,
-            primer_nombre: primer_nombre.toUpperCase(),
-            segundo_nombre: segundo_nombre.toUpperCase(),
-            primer_apellido: primer_apellido.toUpperCase(),
-            segundo_apellido: segundo_apellido.toUpperCase(),
+            nombre_completo: nombre_completo.toUpperCase(),
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
@@ -86,7 +83,7 @@ const postContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
         // Consulta el contacto recién creado con su tipo de contacto asociado
         const contactoConTipo = yield contacto_models_1.Contacto.findOne({
-            where: { primer_nombre: contac.primer_nombre, segundo_nombre: contac.segundo_nombre, primer_apellido: contac.primer_apellido, segundo_apellido: contac.segundo_apellido },
+            where: { nombre_completo: contac.nombre_completo },
             include: {
                 model: tipoContacto_models_1.TipoContacto,
                 as: 'tipo_contacto',
@@ -134,10 +131,10 @@ const deleteContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.deleteContacto = deleteContacto;
 //actualiza el contacto en la base de datos
 const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_contacto, id_empresa, id_tipo_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_contacto, id_empresa, id_tipo_contacto, nombre_completo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _contacto = yield contacto_models_1.Contacto.findOne({
-            where: { id_contacto: id_contacto }
+            where: { nombre_completo: nombre_completo }
         });
         if (!_contacto) {
             return res.status(404).json({
@@ -147,10 +144,7 @@ const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
         yield _contacto.update({
             id_tipo_contacto: id_tipo_contacto,
             id_empresa: id_empresa,
-            primer_nombre: primer_nombre.toUpperCase(),
-            segundo_nombre: segundo_nombre.toUpperCase(),
-            primer_apellido: primer_apellido.toUpperCase(),
-            segundo_apellido: segundo_apellido.toUpperCase(),
+            nombre_completo: nombre_completo.toUpperCase(),
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
@@ -170,14 +164,14 @@ const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.updateContacto = updateContacto;
 //Inactiva el usuario de la DBA
 const inactivateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_contacto, primer_nombre } = req.body;
+    const { id_contacto, nombre_completo } = req.body;
     try {
         const _contacto = yield contacto_models_1.Contacto.findOne({
             where: { id_contacto: id_contacto }
         });
         if (!_contacto) {
             return res.status(404).json({
-                msg: "El Contacto no existe: " + primer_nombre
+                msg: "El Contacto no existe: " + nombre_completo
             });
         }
         yield _contacto.update({
@@ -195,14 +189,14 @@ const inactivateContacto = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.inactivateContacto = inactivateContacto;
 //Activa el usuario de la DBA
 const activateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_contacto, primer_nombre } = req.body;
+    const { id_contacto, nombre_completo } = req.body;
     try {
         const _contacto = yield contacto_models_1.Contacto.findOne({
             where: { id_contacto: id_contacto }
         });
         if (!_contacto) {
             return res.status(404).json({
-                msg: "El Contacto no existe: " + primer_nombre
+                msg: "El Contacto no existe: " + nombre_completo
             });
         }
         yield _contacto.update({

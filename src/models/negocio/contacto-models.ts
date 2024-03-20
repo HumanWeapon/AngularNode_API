@@ -15,19 +15,7 @@ export const Contacto: any = dataBase.define('contacto', {
     id_empresa: {
         type: DataTypes.INTEGER,
     },
-    primer_nombre: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    segundo_nombre: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    primer_apellido: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    segundo_apellido: {
+    nombre_completo: {
         type: DataTypes.STRING,
         allowNull: false
     },
