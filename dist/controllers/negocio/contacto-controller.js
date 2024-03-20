@@ -134,7 +134,7 @@ const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const { id_contacto, id_empresa, id_tipo_contacto, nombre_completo, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _contacto = yield contacto_models_1.Contacto.findOne({
-            where: { nombre_completo: nombre_completo }
+            where: { id_contacto: id_contacto }
         });
         if (!_contacto) {
             return res.status(404).json({
