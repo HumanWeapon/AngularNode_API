@@ -18,6 +18,18 @@ exports.Direcciones = connection_1.default.define('direccionesContacto', {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
+    id_empresa: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
+    },
+    id_ciudad: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
+    },
+    id_pais: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
+    },
     direccion: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
@@ -44,10 +56,6 @@ exports.Direcciones = connection_1.default.define('direccionesContacto', {
     },
     estado: {
         type: sequelize_1.DataTypes.NUMBER,
-        allowNull: false
-    },
-    id_ciudad: {
-        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     }
 }, {

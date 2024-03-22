@@ -10,4 +10,5 @@ const routerDireccionContacto = (0, express_1.Router)();
 routerDireccionContacto.get('/getdirecciones', validarToken_1.default, direcciones_controllers_1.getdirecciones); //Obtiene las direcciones
 routerDireccionContacto.get('/getTipoDirecciones', validarToken_1.default, direcciones_controllers_1.getTipoDirecciones); //Obtiene todos los tipo de dirección activos
 routerDireccionContacto.get('/getCiudades', validarToken_1.default, direcciones_controllers_1.getCiudades); //Obtiene todos los tipo de dirección activos
+routerDireccionContacto.get('/getDireccionesEmoresaporID/:id', validarToken_1.default, direcciones_controllers_1.getDireccionesEmoresaporID); //Obtiene todos los tipo de dirección activos
 exports.default = routerDireccionContacto;

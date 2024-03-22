@@ -15,6 +15,18 @@ export const Direcciones: any = dataBase.define('direccionesContacto', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    id_empresa: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    id_ciudad: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    id_pais: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     direccion: {
         type: DataTypes.STRING,
         allowNull: false
@@ -42,12 +54,8 @@ export const Direcciones: any = dataBase.define('direccionesContacto', {
     estado: {
         type: DataTypes.NUMBER,
         allowNull: false
-    },
-    id_ciudad: {
-        type: DataTypes.INTEGER,
-        allowNull: false
     }
-    }, 
+}, 
     {
     tableName: 'tbl_me_direcciones',
     schema: 'mipyme',
