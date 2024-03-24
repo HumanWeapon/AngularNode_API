@@ -100,7 +100,7 @@ export const getCiudades = async (req: Request, res: Response) => {
     }
 }
 //Obtiene las direcciones asociadas a la empresa por ID
-export const getDireccionesEmoresaporID = async (req: Request, res: Response) => {
+export const getDireccionesEmpresaporID = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         const query = `
