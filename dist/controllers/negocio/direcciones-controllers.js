@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateTipoDireccion = exports.inactivateTipoDireccion = exports.getDireccionesEmpresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
+exports.activateDireccion = exports.inactivateDirecion = exports.getDireccionesEmpresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
 const connection_1 = __importDefault(require("../../db/connection"));
 const direccionesContacto_model_1 = require("../../models/negocio/direccionesContacto-model");
 //Obtiene las direcciones
@@ -172,7 +172,7 @@ const getDireccionesEmpresaporID = (req, res) => __awaiter(void 0, void 0, void 
 });
 exports.getDireccionesEmpresaporID = getDireccionesEmpresaporID;
 //Inactiva la direccion de la DBA
-const inactivateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const inactivateDirecion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_direccion } = req.body;
     try {
         const _direc = yield direccionesContacto_model_1.Direcciones.findOne({
@@ -195,9 +195,9 @@ const inactivateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, 
         });
     }
 });
-exports.inactivateTipoDireccion = inactivateTipoDireccion;
+exports.inactivateDirecion = inactivateDirecion;
 //Activa la direccion de la DBA
-const activateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const activateDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_direccion } = req.body;
     try {
         const _direc = yield direccionesContacto_model_1.Direcciones.findOne({
@@ -220,4 +220,4 @@ const activateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, fu
         });
     }
 });
-exports.activateTipoDireccion = activateTipoDireccion;
+exports.activateDireccion = activateDireccion;

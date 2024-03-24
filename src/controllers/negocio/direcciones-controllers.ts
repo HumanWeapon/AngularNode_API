@@ -151,7 +151,7 @@ export const getDireccionesEmpresaporID = async (req: Request, res: Response) =>
     }
 }
 //Inactiva la direccion de la DBA
-export const inactivateTipoDireccion = async (req: Request, res: Response) => {
+export const inactivateDirecion = async (req: Request, res: Response) => {
    
     const { id_direccion } = req.body;
     try {
@@ -177,7 +177,7 @@ export const inactivateTipoDireccion = async (req: Request, res: Response) => {
 }
 
 //Activa la direccion de la DBA
-export const activateTipoDireccion = async (req: Request, res: Response) => {
+export const activateDireccion = async (req: Request, res: Response) => {
         
     const { id_direccion } = req.body;
     try {
