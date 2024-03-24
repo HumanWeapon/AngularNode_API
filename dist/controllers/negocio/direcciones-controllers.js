@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDireccionesEmoresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
+exports.getDireccionesEmpresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
 const connection_1 = __importDefault(require("../../db/connection"));
 //Obtiene las direcciones
 const getdirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -119,7 +119,7 @@ const getCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.getCiudades = getCiudades;
 //Obtiene las direcciones asociadas a la empresa por ID
-const getDireccionesEmoresaporID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getDireccionesEmpresaporID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
         const query = `
@@ -169,4 +169,4 @@ const getDireccionesEmoresaporID = (req, res) => __awaiter(void 0, void 0, void 
         });
     }
 });
-exports.getDireccionesEmoresaporID = getDireccionesEmoresaporID;
+exports.getDireccionesEmpresaporID = getDireccionesEmpresaporID;
