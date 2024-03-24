@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import db from '../../db/connection';
+import { Direcciones } from '../../models/negocio/direccionesContacto-model';
 
 //Obtiene las direcciones
 export const getdirecciones = async (req: Request, res: Response) => {
@@ -147,5 +148,57 @@ export const getDireccionesEmpresaporID = async (req: Request, res: Response) =>
             msg: 'Contactate con el administrador',
             error
         }); 
+    }
+}
+//Inactiva la direccion de la DBA
+export const inactivateTipoDireccion = async (req: Request, res: Response) => {
+   
+    const { id_direccion } = req.body;
+    try {
+        const _direc = await Direcciones.findOne({
+            where: {id_direccion: id_direccion}
+        });
+        if(!_direc){
+            return res.status(404).json({
+                msg: "Direccion no encontrada: id-"+ id_direccion
+            });
+        }
+
+        await _direc.update({
+            estado: 2
+        });
+        res.json(_direc);
+    } catch (error) {
+        console.error('Error al inactivar la direccion:', error);
+        res.status(500).json({
+            msg: 'Contactate con el administrador',
+        });
+    }
+}
+
+//Activa la direccion de la DBA
+export const activateTipoDireccion = async (req: Request, res: Response) => {
+        
+    const { id_direccion } = req.body;
+    try {
+        const _direc = await Direcciones.findOne({
+            where: {id_direccion: id_direccion}
+        });
+    if(!_direc){
+        return res.status(404).json({
+            msg: "Direccion no encontrada: id-"+ id_direccion
+        });
+    }
+
+    await _direc.update({
+        estado: 1
+    });
+    res.json(_direc);
+
+    } catch (error) {
+        console.error('Error al activar la direccion:', error);
+        res.status(500).json({
+            msg: 'Contactate con el administrador',
+        });
     }
 }

@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDireccionesEmpresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
+exports.activateTipoDireccion = exports.inactivateTipoDireccion = exports.getDireccionesEmpresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
 const connection_1 = __importDefault(require("../../db/connection"));
+const direccionesContacto_model_1 = require("../../models/negocio/direccionesContacto-model");
 //Obtiene las direcciones
 const getdirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -170,3 +171,53 @@ const getDireccionesEmpresaporID = (req, res) => __awaiter(void 0, void 0, void 
     }
 });
 exports.getDireccionesEmpresaporID = getDireccionesEmpresaporID;
+//Inactiva la direccion de la DBA
+const inactivateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_direccion } = req.body;
+    try {
+        const _direc = yield direccionesContacto_model_1.Direcciones.findOne({
+            where: { id_direccion: id_direccion }
+        });
+        if (!_direc) {
+            return res.status(404).json({
+                msg: "Direccion no encontrada: id-" + id_direccion
+            });
+        }
+        yield _direc.update({
+            estado: 2
+        });
+        res.json(_direc);
+    }
+    catch (error) {
+        console.error('Error al inactivar la direccion:', error);
+        res.status(500).json({
+            msg: 'Contactate con el administrador',
+        });
+    }
+});
+exports.inactivateTipoDireccion = inactivateTipoDireccion;
+//Activa la direccion de la DBA
+const activateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_direccion } = req.body;
+    try {
+        const _direc = yield direccionesContacto_model_1.Direcciones.findOne({
+            where: { id_direccion: id_direccion }
+        });
+        if (!_direc) {
+            return res.status(404).json({
+                msg: "Direccion no encontrada: id-" + id_direccion
+            });
+        }
+        yield _direc.update({
+            estado: 1
+        });
+        res.json(_direc);
+    }
+    catch (error) {
+        console.error('Error al activar la direccion:', error);
+        res.status(500).json({
+            msg: 'Contactate con el administrador',
+        });
+    }
+});
+exports.activateTipoDireccion = activateTipoDireccion;

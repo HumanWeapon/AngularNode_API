@@ -139,25 +139,25 @@ export const inactivateTipoDireccion = async (req: Request, res: Response) => {
    
     const { tipo_direccion } = req.body;
     try {
-    const _direc = await TipoDireccion.findOne({
-        where: {tipo_direccion: tipo_direccion}
-    });
-    if(!_direc){
-        return res.status(404).json({
-            msg: "El tipo de Direccion no existe: "+ tipo_direccion
+        const _direc = await TipoDireccion.findOne({
+            where: {tipo_direccion: tipo_direccion}
+        });
+        if(!_direc){
+            return res.status(404).json({
+                msg: "El tipo de Direccion no existe: "+ tipo_direccion
+            });
+        }
+
+        await _direc.update({
+            estado: 2
+        });
+        res.json(_direc);
+    } catch (error) {
+        console.error('Error al inactivar el tipo de direccion:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al inactivar el tipo de direccion',
         });
     }
-
-    await _direc.update({
-        estado: 2
-    });
-    res.json(_direc);
-} catch (error) {
-    console.error('Error al inactivar el tipo de direccion:', error);
-    res.status(500).json({
-        msg: 'Hubo un error al inactivar el tipo de direccion',
-    });
-}
 }
 
 //Activa el usuario de la DBA
