@@ -42,7 +42,7 @@ export const getContactoTelefono = async (req: Request, res: Response) => {
 //Inserta un contacto en la base de datos
 export const postContactoTelefono = async (req: Request, res: Response) => {
 
-    const { id_contacto, telefono, extencion,  descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_contacto, id_pais, telefono, cod_area,  descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
     try{
         const _contactoT = await ContactoTelefono.findOne({
@@ -56,8 +56,9 @@ export const postContactoTelefono = async (req: Request, res: Response) => {
         }else{
             const newConT = await ContactoTelefono.create({
                 id_contacto: id_contacto,
+                id_pais: id_pais,
                 telefono: telefono,
-                extencion: extencion,
+                cod_area: cod_area,
                 descripcion: descripcion.toUpperCase(),
                 creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
@@ -71,14 +72,15 @@ export const postContactoTelefono = async (req: Request, res: Response) => {
                     TELEFONOS.id_telefono,
                     CONTACTOS.NOMBRE,
                     TELEFONOS.telefono,
-                    TELEFONOS.extencion, 
+                    TELEFONOS.cod_area, 
                     TELEFONOS.descripcion, 
                     TELEFONOS.creado_por, 
                     TELEFONOS.fecha_creacion, 
                     TELEFONOS.modificado_por, 
                     TELEFONOS.fecha_modificacion, 
                     TELEFONOS.estado, 
-                    TELEFONOS.id_contacto
+                    TELEFONOS.id_contacto,
+                    TELEFONOS.id_pais
                 FROM mipyme.tbl_me_telefonos AS TELEFONOS
                 LEFT JOIN 
                     (
@@ -130,7 +132,7 @@ export const deleteContactoTelefono = async (req: Request, res: Response) => {
 //actualiza el telefono en la base de datos
 export const updateContactoTelefono = async (req: Request, res: Response) => {
     
-    const { id_telefono, id_contacto, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
+    const { id_telefono, id_contacto, id_pais, telefono, cod_area, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado  } = req.body;
     try {
         const _contactoT = await ContactoTelefono.findOne({
             where: {id_telefono: id_telefono}
@@ -144,7 +146,8 @@ export const updateContactoTelefono = async (req: Request, res: Response) => {
         await _contactoT.update({
             id_telefono: id_telefono,
             id_contacto: id_contacto,
-            extencion: extencion,
+            id_pais: id_pais,
+            cod_area: cod_area,
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
@@ -157,14 +160,15 @@ export const updateContactoTelefono = async (req: Request, res: Response) => {
             TELEFONOS.id_telefono, 
             TELEFONOS.telefono, 
             (CONTACTOS.primer_nombre||' '||CONTACTOS.segundo_nombre||' '||CONTACTOS.primer_apellido||' '||CONTACTOS.segundo_apellido) AS CONTACTO,
-            TELEFONOS.extencion, 
+            TELEFONOS.cod_area, 
             TELEFONOS.descripcion, 
             TELEFONOS.creado_por, 
             TELEFONOS.fecha_creacion, 
             TELEFONOS.modificado_por, 
             TELEFONOS.fecha_modificacion, 
             TELEFONOS.estado, 
-            TELEFONOS.id_contacto
+            TELEFONOS.id_contacto,
+            TELEFONOS.id_pais
         FROM mipyme.tbl_me_telefonos AS TELEFONOS
         LEFT JOIN 
             (
@@ -257,7 +261,8 @@ export const telefonosconcontacto = async (req: Request, res: Response) => {
             TELEFONOS.modificado_por, 
             TELEFONOS.fecha_modificacion, 
             TELEFONOS.estado, 
-            TELEFONOS.id_contacto
+            TELEFONOS.id_contacto,
+            TELEFONOS.id_pais
         FROM mipyme.tbl_me_telefonos AS TELEFONOS
         LEFT JOIN 
             (
@@ -293,7 +298,8 @@ export const telefonosdeContactosPorId = async (req: Request, res: Response) => 
             TELEFONOS.modificado_por, 
             TELEFONOS.fecha_modificacion, 
             TELEFONOS.estado, 
-            TELEFONOS.id_contacto
+            TELEFONOS.id_contacto,
+            TELEFONOS.id_pais
         FROM mipyme.tbl_me_telefonos AS TELEFONOS
         LEFT JOIN 
             (

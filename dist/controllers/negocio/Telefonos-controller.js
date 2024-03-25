@@ -55,7 +55,7 @@ const getContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, func
 exports.getContactoTelefono = getContactoTelefono;
 //Inserta un contacto en la base de datos
 const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_contacto, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_contacto, id_pais, telefono, cod_area, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _contactoT = yield telefonos_models_1.ContactoTelefono.findOne({
             where: { telefono: telefono }
@@ -68,8 +68,9 @@ const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, fun
         else {
             const newConT = yield telefonos_models_1.ContactoTelefono.create({
                 id_contacto: id_contacto,
+                id_pais: id_pais,
                 telefono: telefono,
-                extencion: extencion,
+                cod_area: cod_area,
                 descripcion: descripcion.toUpperCase(),
                 creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
@@ -82,14 +83,15 @@ const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, fun
                     TELEFONOS.id_telefono,
                     CONTACTOS.NOMBRE,
                     TELEFONOS.telefono,
-                    TELEFONOS.extencion, 
+                    TELEFONOS.cod_area, 
                     TELEFONOS.descripcion, 
                     TELEFONOS.creado_por, 
                     TELEFONOS.fecha_creacion, 
                     TELEFONOS.modificado_por, 
                     TELEFONOS.fecha_modificacion, 
                     TELEFONOS.estado, 
-                    TELEFONOS.id_contacto
+                    TELEFONOS.id_contacto,
+                    TELEFONOS.id_pais
                 FROM mipyme.tbl_me_telefonos AS TELEFONOS
                 LEFT JOIN 
                     (
@@ -139,7 +141,7 @@ const deleteContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
 exports.deleteContactoTelefono = deleteContactoTelefono;
 //actualiza el telefono en la base de datos
 const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_telefono, id_contacto, telefono, extencion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_telefono, id_contacto, id_pais, telefono, cod_area, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _contactoT = yield telefonos_models_1.ContactoTelefono.findOne({
             where: { id_telefono: id_telefono }
@@ -152,7 +154,8 @@ const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
         yield _contactoT.update({
             id_telefono: id_telefono,
             id_contacto: id_contacto,
-            extencion: extencion,
+            id_pais: id_pais,
+            cod_area: cod_area,
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
             fecha_creacion: fecha_creacion,
@@ -165,14 +168,15 @@ const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
             TELEFONOS.id_telefono, 
             TELEFONOS.telefono, 
             (CONTACTOS.primer_nombre||' '||CONTACTOS.segundo_nombre||' '||CONTACTOS.primer_apellido||' '||CONTACTOS.segundo_apellido) AS CONTACTO,
-            TELEFONOS.extencion, 
+            TELEFONOS.cod_area, 
             TELEFONOS.descripcion, 
             TELEFONOS.creado_por, 
             TELEFONOS.fecha_creacion, 
             TELEFONOS.modificado_por, 
             TELEFONOS.fecha_modificacion, 
             TELEFONOS.estado, 
-            TELEFONOS.id_contacto
+            TELEFONOS.id_contacto,
+            TELEFONOS.id_pais
         FROM mipyme.tbl_me_telefonos AS TELEFONOS
         LEFT JOIN 
             (
@@ -260,7 +264,8 @@ const telefonosconcontacto = (req, res) => __awaiter(void 0, void 0, void 0, fun
             TELEFONOS.modificado_por, 
             TELEFONOS.fecha_modificacion, 
             TELEFONOS.estado, 
-            TELEFONOS.id_contacto
+            TELEFONOS.id_contacto,
+            TELEFONOS.id_pais
         FROM mipyme.tbl_me_telefonos AS TELEFONOS
         LEFT JOIN 
             (
@@ -295,7 +300,8 @@ const telefonosdeContactosPorId = (req, res) => __awaiter(void 0, void 0, void 0
             TELEFONOS.modificado_por, 
             TELEFONOS.fecha_modificacion, 
             TELEFONOS.estado, 
-            TELEFONOS.id_contacto
+            TELEFONOS.id_contacto,
+            TELEFONOS.id_pais
         FROM mipyme.tbl_me_telefonos AS TELEFONOS
         LEFT JOIN 
             (
