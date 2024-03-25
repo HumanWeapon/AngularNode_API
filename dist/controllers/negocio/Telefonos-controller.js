@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getcontactosActivos = exports.telefonosdeContactosPorId = exports.telefonosconcontacto = exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
+exports.getcontactosActivos = exports.telefonosdeContactosPorId = exports.telefonosconcontacto = exports.telefonosAllContactos = exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
 const telefonos_models_1 = require("../../models/negocio/telefonos-models");
 const connection_1 = __importDefault(require("../../db/connection"));
+const contacto_models_1 = require("../../models/negocio/contacto-models");
 //Obtiene todos los contactos de la base de datos
 const getAllContactosTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -250,6 +251,25 @@ const activateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.activateContactoTelefono = activateContactoTelefono;
+// Realiza una consulta INNER JOIN entre las tablas Usuario y Roles
+const telefonosAllContactos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const telefono = yield telefonos_models_1.ContactoTelefono.findAll({
+            include: [
+                {
+                    model: contacto_models_1.Contacto,
+                    as: 'contacto' // Usa el mismo alias que en la definición de la asociación
+                },
+            ],
+        });
+        res.json(telefono);
+    }
+    catch (error) {
+        console.error('Error al obtener el telefono del contacto:', error);
+        res.status(500).json({ error: 'Error al obtener telefonos del Contacto' });
+    }
+});
+exports.telefonosAllContactos = telefonosAllContactos;
 const telefonosconcontacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = `

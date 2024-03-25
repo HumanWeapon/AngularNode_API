@@ -16,6 +16,7 @@ routerContactoTelefono.delete('/deleteContactoTelefono', validarToken_1.default,
 routerContactoTelefono.post('/updateContactoTelefono', validarToken_1.default, Telefonos_controller_1.updateContactoTelefono); // actualiza un contacto en la base de datos
 routerContactoTelefono.post('/inactivateContactoTelefono', validarToken_1.default, Telefonos_controller_1.inactivateContactoTelefono); //Inactiva una Pyme en la DB
 routerContactoTelefono.post('/activateContactoTelefono', validarToken_1.default, Telefonos_controller_1.activateContactoTelefono); //Activa una Pyme en la DB
+routerContactoTelefono.get('/telefonosAllContactos', validarToken_1.default, Telefonos_controller_1.telefonosAllContactos); //Trae los telefonos de los contactos
 exports.default = routerContactoTelefono;
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932

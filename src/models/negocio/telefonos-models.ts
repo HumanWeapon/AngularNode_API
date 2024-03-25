@@ -2,6 +2,8 @@ import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
 import { tipoTelefono } from './tipo_telefono-models';
 import { Paises } from './paises-models'; // Asegúrate de que la importación sea correcta
+import { Contacto } from './contacto-models'; // Asegúrate de que la importación sea correcta
+
 
 export const ContactoTelefono: any = dataBase.define('contactoTelefono', {
     id_telefono: {
@@ -60,6 +62,12 @@ ContactoTelefono.belongsTo(Paises, {
     foreignKey: 'id_pais',
     targetKey: 'id_pais',
     as: 'paises' // Alias para la relación
+});
+
+ContactoTelefono.belongsTo(Contacto, {
+    foreignKey: 'id_contacto',
+    targetKey: 'id_contacto',
+    as: 'contacto' // Alias para la relación
 });
 
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ

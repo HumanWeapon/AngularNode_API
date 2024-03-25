@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import { ContactoTelefono } from '../../models/negocio/telefonos-models';
 import db from '../../db/connection';
+import { Contacto } from '../../models/negocio/contacto-models';
 
 
 //Obtiene todos los contactos de la base de datos
@@ -245,6 +246,25 @@ export const activateContactoTelefono = async (req: Request, res: Response) => {
         msg: 'Hubo un error al activar el contacto telefono',
     });
 }
+}
+
+// Realiza una consulta INNER JOIN entre las tablas Usuario y Roles
+export const telefonosAllContactos = async (req: Request, res: Response) => {
+    try {
+        const telefono = await ContactoTelefono.findAll({
+            include: [
+                {
+                    model: Contacto,
+                    as: 'contacto' // Usa el mismo alias que en la definición de la asociación
+                },
+            ],
+        });
+        
+        res.json(telefono);
+    } catch (error) {
+        console.error('Error al obtener el telefono del contacto:', error);
+        res.status(500).json({ error: 'Error al obtener telefonos del Contacto' });
+    }
 }
 
 export const telefonosconcontacto = async (req: Request, res: Response) => {

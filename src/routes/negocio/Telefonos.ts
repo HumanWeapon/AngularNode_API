@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validarToken from '../validarToken';
-import { deleteContactoTelefono, getAllContactosTelefono, getContactoTelefono, postContactoTelefono, updateContactoTelefono, inactivateContactoTelefono, activateContactoTelefono, telefonosdeContactosPorId, telefonosconcontacto} from '../../controllers/negocio/Telefonos-controller';
+import { deleteContactoTelefono, getAllContactosTelefono, getContactoTelefono, postContactoTelefono, updateContactoTelefono, inactivateContactoTelefono, activateContactoTelefono, telefonosdeContactosPorId, telefonosconcontacto, telefonosAllContactos} from '../../controllers/negocio/Telefonos-controller';
 
 const routerContactoTelefono = Router()
 
@@ -13,6 +13,7 @@ routerContactoTelefono.delete('/deleteContactoTelefono',validarToken, deleteCont
 routerContactoTelefono.post('/updateContactoTelefono',validarToken, updateContactoTelefono); // actualiza un contacto en la base de datos
 routerContactoTelefono.post('/inactivateContactoTelefono',validarToken,inactivateContactoTelefono );//Inactiva una Pyme en la DB
 routerContactoTelefono.post('/activateContactoTelefono',validarToken, activateContactoTelefono );//Activa una Pyme en la DB
+routerContactoTelefono.get('/telefonosAllContactos',validarToken, telefonosAllContactos );//Trae los telefonos de los contactos
 
 export default routerContactoTelefono;
 

@@ -7,6 +7,7 @@ exports.ContactoTelefono = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../../db/connection"));
 const paises_models_1 = require("./paises-models"); // Asegúrate de que la importación sea correcta
+const contacto_models_1 = require("./contacto-models"); // Asegúrate de que la importación sea correcta
 exports.ContactoTelefono = connection_1.default.define('contactoTelefono', {
     id_telefono: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -62,6 +63,11 @@ exports.ContactoTelefono.belongsTo(paises_models_1.Paises, {
     foreignKey: 'id_pais',
     targetKey: 'id_pais',
     as: 'paises' // Alias para la relación
+});
+exports.ContactoTelefono.belongsTo(contacto_models_1.Contacto, {
+    foreignKey: 'id_contacto',
+    targetKey: 'id_contacto',
+    as: 'contacto' // Alias para la relación
 });
 /*                                          FRANKLIN ALEXANDER MURILLO CRUZ
                                                 CUENTA: 20151021932
