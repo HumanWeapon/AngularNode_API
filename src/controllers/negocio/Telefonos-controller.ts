@@ -2,6 +2,7 @@ import {Request, Response} from 'express';
 import { ContactoTelefono } from '../../models/negocio/telefonos-models';
 import db from '../../db/connection';
 import { Contacto } from '../../models/negocio/contacto-models';
+import { Paises } from '../../models/negocio/paises-models';
 
 
 //Obtiene todos los contactos de la base de datos
@@ -267,6 +268,28 @@ export const telefonosAllContactos = async (req: Request, res: Response) => {
     }
 }
 
+export const telefonosAllContactosPaises = async (req: Request, res: Response) => {
+    try {
+        const telefonosConContactosYPaises = await ContactoTelefono.findAll({
+            include: [
+                {
+                    model: Contacto,
+                    as: 'contacto'
+                },
+                {
+                    model: Paises, // Agrega el modelo de Pais
+                    as: 'paises' // Usa el mismo alias que en la definición de la asociación en el modelo
+                }
+            ],
+        });
+        
+        res.json(telefonosConContactosYPaises);
+    } catch (error) {
+        console.error('Error al obtener el teléfono del contacto:', error);
+        res.status(500).json({ error: 'Error al obtener teléfonos del Contacto' });
+    }
+}
+
 /*export const telefonosconcontacto = async (req: Request, res: Response) => {
     try {
         const query = `
@@ -316,6 +339,10 @@ export const telefonosdeContactosPorId = async (req: Request, res: Response) => 
                     model: Contacto,
                     as: 'contacto'
                 },
+                {
+                    model: Paises,
+                    as: 'paises' // Incluir la relación con la tabla de países
+                }
             ],
         });
 

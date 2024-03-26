@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getcontactosActivos = exports.telefonosdeContactosPorId = exports.telefonosAllContactos = exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
+exports.getcontactosActivos = exports.telefonosdeContactosPorId = exports.telefonosAllContactosPaises = exports.telefonosAllContactos = exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
 const telefonos_models_1 = require("../../models/negocio/telefonos-models");
 const connection_1 = __importDefault(require("../../db/connection"));
 const contacto_models_1 = require("../../models/negocio/contacto-models");
+const paises_models_1 = require("../../models/negocio/paises-models");
 //Obtiene todos los contactos de la base de datos
 const getAllContactosTelefono = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -270,6 +271,28 @@ const telefonosAllContactos = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.telefonosAllContactos = telefonosAllContactos;
+const telefonosAllContactosPaises = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const telefonosConContactosYPaises = yield telefonos_models_1.ContactoTelefono.findAll({
+            include: [
+                {
+                    model: contacto_models_1.Contacto,
+                    as: 'contacto'
+                },
+                {
+                    model: paises_models_1.Paises,
+                    as: 'paises' // Usa el mismo alias que en la definición de la asociación en el modelo
+                }
+            ],
+        });
+        res.json(telefonosConContactosYPaises);
+    }
+    catch (error) {
+        console.error('Error al obtener el teléfono del contacto:', error);
+        res.status(500).json({ error: 'Error al obtener teléfonos del Contacto' });
+    }
+});
+exports.telefonosAllContactosPaises = telefonosAllContactosPaises;
 /*export const telefonosconcontacto = async (req: Request, res: Response) => {
     try {
         const query = `
@@ -317,6 +340,10 @@ const telefonosdeContactosPorId = (req, res) => __awaiter(void 0, void 0, void 0
                     model: contacto_models_1.Contacto,
                     as: 'contacto'
                 },
+                {
+                    model: paises_models_1.Paises,
+                    as: 'paises' // Incluir la relación con la tabla de países
+                }
             ],
         });
         res.json(telefonos); // Enviar los teléfonos encontrados como respuesta
