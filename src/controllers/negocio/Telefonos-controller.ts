@@ -267,7 +267,7 @@ export const telefonosAllContactos = async (req: Request, res: Response) => {
     }
 }
 
-export const telefonosconcontacto = async (req: Request, res: Response) => {
+/*export const telefonosconcontacto = async (req: Request, res: Response) => {
     try {
         const query = `
         SELECT 
@@ -300,11 +300,34 @@ export const telefonosconcontacto = async (req: Request, res: Response) => {
         console.error('Error al consultar telefonos:', error);
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
-};
-
+};*/
 
 export const telefonosdeContactosPorId = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id_contacto } = req.query; // Obtener el id_contacto de los parámetros de consulta
+
+    try {
+        // Buscar los teléfonos asociados al id_contacto
+        const telefonos = await ContactoTelefono.findAll({
+            where: {
+                id_contacto: id_contacto // Filtrar por id_contacto
+            },
+            include: [
+                {
+                    model: Contacto,
+                    as: 'contacto'
+                },
+            ],
+        });
+
+        res.json(telefonos); // Enviar los teléfonos encontrados como respuesta
+    } catch (error) {
+        console.error('Error al obtener los teléfonos del contacto:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
+/*export const telefonosdeContactosPorId = async (req: Request, res: Response) => {
+    const { id_contacto } = req.params;
     try {
         const query = `
         SELECT 
@@ -329,7 +352,7 @@ export const telefonosdeContactosPorId = async (req: Request, res: Response) => 
             ) AS CONTACTOS
         ON 
         TELEFONOS.id_contacto = CONTACTOS.id_contacto
-        WHERE TELEFONOS.id_contacto = ${id}
+        WHERE TELEFONOS.id_contacto = ${id_contacto}
             AND TELEFONOS.estado = 1
         `;
 
@@ -340,7 +363,7 @@ export const telefonosdeContactosPorId = async (req: Request, res: Response) => 
         console.error('Error al consultar telefonos:', error);
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
-};
+};*/
 
 export const getcontactosActivos = async (req: Request, res: Response) => {
     try {
@@ -358,6 +381,7 @@ export const getcontactosActivos = async (req: Request, res: Response) => {
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 };
+
 
 
 
