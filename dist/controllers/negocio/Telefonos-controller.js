@@ -305,7 +305,7 @@ exports.telefonosAllContactos = telefonosAllContactos;
     }
 };*/
 const telefonosdeContactosPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_contacto } = req.query; // Obtener el id_contacto de los parámetros de consulta
+    const { id_contacto } = req.body; // Obtener el id_contacto de los parámetros de consulta
     try {
         // Buscar los teléfonos asociados al id_contacto
         const telefonos = yield telefonos_models_1.ContactoTelefono.findAll({

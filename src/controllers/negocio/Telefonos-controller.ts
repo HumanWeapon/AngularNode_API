@@ -303,7 +303,7 @@ export const telefonosAllContactos = async (req: Request, res: Response) => {
 };*/
 
 export const telefonosdeContactosPorId = async (req: Request, res: Response) => {
-    const { id_contacto } = req.query; // Obtener el id_contacto de los parámetros de consulta
+    const { id_contacto } = req.body; // Obtener el id_contacto de los parámetros de consulta
 
     try {
         // Buscar los teléfonos asociados al id_contacto

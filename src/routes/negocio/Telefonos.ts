@@ -6,7 +6,7 @@ const routerContactoTelefono = Router()
 
 routerContactoTelefono.get('/getAllContactosTelefono',validarToken, getAllContactosTelefono);//consulta todas los contactos en la base de datos
 //routerContactoTelefono.get('/telefonosconcontacto',validarToken, telefonosconcontacto);//consulta todas los telefonos con el contacto activo de la DBA.
-routerContactoTelefono.get('/telefonosdeContactosPorId',validarToken, telefonosdeContactosPorId);//consulta todas los contactos en la base de datos
+routerContactoTelefono.post('/telefonosdeContactosPorId',validarToken, telefonosdeContactosPorId);//consulta todas los contactos en la base de datos
 routerContactoTelefono.post('/getContactoTelefono',validarToken, getContactoTelefono);//consulta un contactos  en la base de datos
 routerContactoTelefono.post('/postContactoTelefono',validarToken, postContactoTelefono); // Inserta un contactos  en la base de datos
 routerContactoTelefono.delete('/deleteContactoTelefono',validarToken, deleteContactoTelefono); //Elimina un contactos en la base de datos
