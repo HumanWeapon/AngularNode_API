@@ -1,13 +1,13 @@
 import {Router} from 'express';
 import validarToken from '.././validarToken';
-import { activateTipoDireccion, deleteTipoDireccion, getAllTipoDirecciones, getTipoDireccion, inactivateTipoDireccion, postTipoDireccion, updateTipoDireccion } from '../../controllers/negocio/tipoDireccion-controller';
+import { activateTipoDireccion, deleteTipoDireccion, getAllTipoDirecciones, getTipoDireccion, getTipoDirecciones, inactivateTipoDireccion, postTipoDireccion, updateTipoDireccion } from '../../controllers/negocio/tipoDireccion-controller';
 import routerTipoEmpresa from './tipoEmpresa';
 
 const routerTipoDireccion = Router()
 
 routerTipoDireccion.get('/getAllTipoDirecciones',validarToken, getAllTipoDirecciones);//consulta todas las direcciónes en la base de datos
 routerTipoDireccion.get('/getTipoDireccion',validarToken, getTipoDireccion);//consulta una dirección en la base de datos
-routerTipoDireccion.get('/getTipoDirecciones',validarToken, getTipoDireccion);//consulta una dirección en la base de datos
+routerTipoDireccion.get('/getTipoDirecciones',validarToken, getTipoDirecciones);//consulta una dirección en la base de datos
 routerTipoDireccion.post('/postTipoDireccion',validarToken, postTipoDireccion); // Inserta una dirección en la base de datos
 routerTipoDireccion.delete('/deleteTipoDireccion',validarToken, deleteTipoDireccion); //Elimina una dirección en la base de datos
 routerTipoDireccion.post('/updateTipoDireccion',validarToken, updateTipoDireccion); // actualiza una dirección en la base de datos
