@@ -157,6 +157,7 @@ const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
             id_telefono: id_telefono,
             id_contacto: id_contacto,
             id_pais: id_pais,
+            telefono: telefono,
             cod_area: cod_area,
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
@@ -165,34 +166,7 @@ const updateContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, f
             fecha_modificacion: fecha_modificacion,
             estado: estado
         });
-        const query = `
-        SELECT 
-            TELEFONOS.id_telefono, 
-            TELEFONOS.telefono, 
-            (CONTACTOS.primer_nombre||' '||CONTACTOS.segundo_nombre||' '||CONTACTOS.primer_apellido||' '||CONTACTOS.segundo_apellido) AS CONTACTO,
-            TELEFONOS.cod_area, 
-            TELEFONOS.descripcion, 
-            TELEFONOS.creado_por, 
-            TELEFONOS.fecha_creacion, 
-            TELEFONOS.modificado_por, 
-            TELEFONOS.fecha_modificacion, 
-            TELEFONOS.estado, 
-            TELEFONOS.id_contacto,
-            TELEFONOS.id_pais
-        FROM mipyme.tbl_me_telefonos AS TELEFONOS
-        LEFT JOIN 
-            (
-                SELECT id_contacto, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, estado
-                FROM mipyme.tbl_me_contactos
-                WHERE estado = 1
-            ) AS CONTACTOS
-        ON 
-        TELEFONOS.id_contacto = CONTACTOS.id_contacto
-        WHERE TELEFONOS.id_contacto = ${_contactoT.id_contacto}
-            AND TELEFONOS.estado = 1
-        `;
-        const [results, metadata] = yield connection_1.default.query(query);
-        res.json(results[0]);
+        res.json(_contactoT);
     }
     catch (error) {
         console.error('Error al actualizar el contacto telefono:', error);
