@@ -201,3 +201,22 @@ export const activateDireccion = async (req: Request, res: Response) => {
         });
     }
 }
+// Inserta una nueva dirección en la DBA
+export const postDireccion = async (req: Request, res: Response) => {
+    const { id_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad } = req.params;
+    try {
+        const query = `
+        INSERT INTO mipyme.tbl_me_direcciones(
+            id_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad)
+            VALUES (${direccion}, ${descripcion}, ${creado_por}, ${fecha_creacion}, ${modificado_por}, ${fecha_modificacion}, ${estado}, ${id_tipo_direccion}, ${id_empresa}, ${id_pais}, ${id_ciudad});
+        `;
+        const [results, metadata] = await db.query(query);
+        res.json(results);
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        }); 
+    }
+}
+    

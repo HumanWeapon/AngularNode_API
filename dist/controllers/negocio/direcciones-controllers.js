@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateDireccion = exports.inactivateDirecion = exports.getDireccionesEmpresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
+exports.postDireccion = exports.activateDireccion = exports.inactivateDirecion = exports.getDireccionesEmpresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
 const connection_1 = __importDefault(require("../../db/connection"));
 const direccionesContacto_model_1 = require("../../models/negocio/direccionesContacto-model");
 //Obtiene las direcciones
@@ -220,3 +220,23 @@ const activateDireccion = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.activateDireccion = activateDireccion;
+// Inserta una nueva dirección en la DBA
+const postDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad } = req.params;
+    try {
+        const query = `
+        INSERT INTO mipyme.tbl_me_direcciones(
+            id_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad)
+            VALUES (${direccion}, ${descripcion}, ${creado_por}, ${fecha_creacion}, ${modificado_por}, ${fecha_modificacion}, ${estado}, ${id_tipo_direccion}, ${id_empresa}, ${id_pais}, ${id_ciudad});
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
+});
+exports.postDireccion = postDireccion;

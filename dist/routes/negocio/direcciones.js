@@ -13,4 +13,5 @@ routerDireccionContacto.get('/getCiudades', validarToken_1.default, direcciones_
 routerDireccionContacto.get('/getDireccionesEmpresaporID/:id', validarToken_1.default, direcciones_controllers_1.getDireccionesEmpresaporID); //Obtiene las direcciones registradas por empresa
 routerDireccionContacto.post('/inactivateDirecion', validarToken_1.default, direcciones_controllers_1.inactivateDirecion); //inactiva las direcciones de la dba
 routerDireccionContacto.post('/activateDireccion', validarToken_1.default, direcciones_controllers_1.activateDireccion); //activa las direcciones de la dba
+routerDireccionContacto.post('/postDireccion', validarToken_1.default, direcciones_controllers_1.postDireccion); // Inserta una nueva dirección en la DBA
 exports.default = routerDireccionContacto;
