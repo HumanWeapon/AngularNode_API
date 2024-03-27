@@ -247,15 +247,15 @@ exports.postDireccion = postDireccion;
 // Actualiza una dirección existente en la DBA por su ID
 const putDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const direccionId = req.params.id; // Obtener el ID de la dirección de los parámetros de la solicitud
-    const { direccion, descripcion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad, id_direccion } = req.body;
+    const { direccion, descripcion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad } = req.body;
     try {
         const query = `
             UPDATE mipyme.tbl_me_direcciones
             SET direccion = ?, descripcion = ?, modificado_por = ?, fecha_modificacion = ?, estado = ?, id_tipo_direccion = ?, id_empresa = ?, id_pais = ?, id_ciudad = ?
-            WHERE id_direccion = ?
+            WHERE id_direccion = ?;
         `;
         const results = yield connection_1.default.query(query, {
-            replacements: [direccion, descripcion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad, id_direccion],
+            replacements: [direccion, descripcion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad, direccionId],
             type: sequelize_1.QueryTypes.UPDATE
         });
         res.json(results);
