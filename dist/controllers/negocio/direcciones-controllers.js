@@ -222,7 +222,7 @@ const activateDireccion = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.activateDireccion = activateDireccion;
 // Inserta una nueva dirección en la DBA
 const postDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad } = req.params;
+    const { id_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad } = req.body;
     try {
         const query = `
         INSERT INTO mipyme.tbl_me_direcciones(
