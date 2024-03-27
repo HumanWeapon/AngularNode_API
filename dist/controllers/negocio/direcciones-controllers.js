@@ -246,7 +246,7 @@ const postDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.postDireccion = postDireccion;
 // Actualiza una dirección existente en la DBA por su ID
 const putDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const direccionId = req.params.id; // Obtener el ID de la dirección de los parámetros de la solicitud
+    const id = req.params.id; // Obtener el ID de la dirección de los parámetros de la solicitud
     const { direccion, descripcion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad } = req.body;
     try {
         const query = `
@@ -255,7 +255,7 @@ const putDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             WHERE id_direccion = ?;
         `;
         const results = yield connection_1.default.query(query, {
-            replacements: [direccion, descripcion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad, direccionId],
+            replacements: [direccion, descripcion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad, id],
             type: sequelize_1.QueryTypes.UPDATE
         });
         res.json(results);

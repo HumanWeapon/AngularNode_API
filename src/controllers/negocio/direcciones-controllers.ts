@@ -225,7 +225,7 @@ export const postDireccion = async (req: Request, res: Response) => {
 }
 // Actualiza una dirección existente en la DBA por su ID
 export const putDireccion = async (req: Request, res: Response) => {
-    const direccionId = req.params.id; // Obtener el ID de la dirección de los parámetros de la solicitud
+    const id = req.params.id; // Obtener el ID de la dirección de los parámetros de la solicitud
     const { direccion, descripcion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad } = req.body;
     try {
         const query = `
@@ -234,7 +234,7 @@ export const putDireccion = async (req: Request, res: Response) => {
             WHERE id_direccion = ?;
         `;
         const results = await db.query(query, {
-            replacements: [direccion, descripcion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad, direccionId],
+            replacements: [direccion, descripcion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad, id],
             type: QueryTypes.UPDATE
         });
         res.json(results);
