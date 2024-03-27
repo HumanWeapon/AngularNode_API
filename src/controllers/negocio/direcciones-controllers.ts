@@ -245,5 +245,3 @@ export const putDireccion = async (req: Request, res: Response) => {
         }); 
     }
 }
-
-
