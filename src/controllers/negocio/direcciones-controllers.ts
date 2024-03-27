@@ -86,7 +86,6 @@ export const getCiudades = async (req: Request, res: Response) => {
             (
                 SELECT id_pais , pais
                 FROM mipyme.tbl_me_paises
-                WHERE estado = 1
             ) AS B
         ON A.id_pais = B.id_pais
         WHERE A.estado = 1

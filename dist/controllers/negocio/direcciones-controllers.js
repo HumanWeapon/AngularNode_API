@@ -103,7 +103,6 @@ const getCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             (
                 SELECT id_pais , pais
                 FROM mipyme.tbl_me_paises
-                WHERE estado = 1
             ) AS B
         ON A.id_pais = B.id_pais
         WHERE A.estado = 1

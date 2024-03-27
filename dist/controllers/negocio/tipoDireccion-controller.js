@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateTipoDireccion = exports.inactivateTipoDireccion = exports.updateTipoDireccion = exports.deleteTipoDireccion = exports.postTipoDireccion = exports.getTipoDireccion = exports.getAllTipoDirecciones = void 0;
+exports.getTipoDirecciones = exports.activateTipoDireccion = exports.inactivateTipoDireccion = exports.updateTipoDireccion = exports.deleteTipoDireccion = exports.postTipoDireccion = exports.getTipoDireccion = exports.getAllTipoDirecciones = void 0;
 const tipoDireccion_models_1 = require("../../models/negocio/tipoDireccion-models");
+const connection_1 = __importDefault(require("../../db/connection"));
 //Obtiene todos las direcciones de la base de datos
 const getAllTipoDirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const _direc = yield tipoDireccion_models_1.TipoDireccion.findAll();
@@ -186,6 +190,21 @@ const activateTipoDireccion = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.activateTipoDireccion = activateTipoDireccion;
-/*                                          FRANKLIN ALEXANDER MURILLO CRUZ
-                                                CUENTA: 20151021932
- */ 
+//Obtiene todas las ciudades activas
+const getTipoDirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const query = `
+        SELECT id_tipo_direccion, tipo_direccion FROM mipyme.tbl_me_tipo_direccion
+        WHERE estado = 1
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
+});
+exports.getTipoDirecciones = getTipoDirecciones;

@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import { TipoDireccion } from '../../models/negocio/tipoDireccion-models';
 import jwt from 'jsonwebtoken';
+import db from '../../db/connection'
 
 
 //Obtiene todos las direcciones de la base de datos
@@ -186,20 +187,19 @@ export const activateTipoDireccion = async (req: Request, res: Response) => {
     });
 }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*                                          FRANKLIN ALEXANDER MURILLO CRUZ
-                                                CUENTA: 20151021932
- */
+//Obtiene todas las ciudades activas
+export const getTipoDirecciones = async (req: Request, res: Response) => {
+    try {
+        const query = `
+        SELECT id_tipo_direccion, tipo_direccion FROM mipyme.tbl_me_tipo_direccion
+        WHERE estado = 1
+        `;
+        const [results, metadata] = await db.query(query);
+        res.json(results);
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        }); 
+    }
+}
