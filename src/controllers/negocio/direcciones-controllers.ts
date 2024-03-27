@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import db from '../../db/connection';
 import { Direcciones } from '../../models/negocio/direccionesContacto-model';
+import { QueryTypes } from 'sequelize';
 
 //Obtiene las direcciones
 export const getdirecciones = async (req: Request, res: Response) => {
@@ -203,14 +204,17 @@ export const activateDireccion = async (req: Request, res: Response) => {
 }
 // Inserta una nueva dirección en la DBA
 export const postDireccion = async (req: Request, res: Response) => {
-    const { id_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad } = req.body;
+    const { direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad } = req.body;
     try {
         const query = `
-        INSERT INTO mipyme.tbl_me_direcciones(
-            id_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad)
-            VALUES (${direccion}, ${descripcion}, ${creado_por}, ${fecha_creacion}, ${modificado_por}, ${fecha_modificacion}, ${estado}, ${id_tipo_direccion}, ${id_empresa}, ${id_pais}, ${id_ciudad});
+            INSERT INTO mipyme.tbl_me_direcciones(
+                direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `;
-        const [results, metadata] = await db.query(query);
+        const results = await db.query(query, {
+            replacements: [direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad],
+            type: QueryTypes.INSERT
+        });
         res.json(results);
     } catch (error) {
         res.status(400).json({
@@ -219,3 +223,4 @@ export const postDireccion = async (req: Request, res: Response) => {
         }); 
     }
 }
+

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postDireccion = exports.activateDireccion = exports.inactivateDirecion = exports.getDireccionesEmpresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
 const connection_1 = __importDefault(require("../../db/connection"));
 const direccionesContacto_model_1 = require("../../models/negocio/direccionesContacto-model");
+const sequelize_1 = require("sequelize");
 //Obtiene las direcciones
 const getdirecciones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -222,14 +223,17 @@ const activateDireccion = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.activateDireccion = activateDireccion;
 // Inserta una nueva dirección en la DBA
 const postDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad } = req.body;
+    const { direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad } = req.body;
     try {
         const query = `
-        INSERT INTO mipyme.tbl_me_direcciones(
-            id_direccion, direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad)
-            VALUES (${direccion}, ${descripcion}, ${creado_por}, ${fecha_creacion}, ${modificado_por}, ${fecha_modificacion}, ${estado}, ${id_tipo_direccion}, ${id_empresa}, ${id_pais}, ${id_ciudad});
+            INSERT INTO mipyme.tbl_me_direcciones(
+                direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `;
-        const [results, metadata] = yield connection_1.default.query(query);
+        const results = yield connection_1.default.query(query, {
+            replacements: [direccion, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad],
+            type: sequelize_1.QueryTypes.INSERT
+        });
         res.json(results);
     }
     catch (error) {
