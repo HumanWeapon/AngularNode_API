@@ -14,4 +14,5 @@ routerDireccionContacto.get('/getDireccionesEmpresaporID/:id', validarToken_1.de
 routerDireccionContacto.post('/inactivateDirecion', validarToken_1.default, direcciones_controllers_1.inactivateDirecion); //inactiva las direcciones de la dba
 routerDireccionContacto.post('/activateDireccion', validarToken_1.default, direcciones_controllers_1.activateDireccion); //activa las direcciones de la dba
 routerDireccionContacto.post('/postDireccion', validarToken_1.default, direcciones_controllers_1.postDireccion); // Inserta una nueva dirección en la DBA
+routerDireccionContacto.put('/updateDireccion/:id', validarToken_1.default, direcciones_controllers_1.putDireccion); // Nueva ruta para actualizar dirección por ID
 exports.default = routerDireccionContacto;

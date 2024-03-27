@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postDireccion = exports.activateDireccion = exports.inactivateDirecion = exports.getDireccionesEmpresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
+exports.putDireccion = exports.postDireccion = exports.activateDireccion = exports.inactivateDirecion = exports.getDireccionesEmpresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
 const connection_1 = __importDefault(require("../../db/connection"));
 const direccionesContacto_model_1 = require("../../models/negocio/direccionesContacto-model");
 const sequelize_1 = require("sequelize");
@@ -244,3 +244,26 @@ const postDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.postDireccion = postDireccion;
+// Actualiza una dirección existente en la DBA por su ID
+const putDireccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const direccionId = req.params.id; // Obtener el ID de la dirección de los parámetros de la solicitud
+    const { direccion, descripcion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad } = req.body;
+    try {
+        const query = `
+            UPDATE mipyme.tbl_me_direcciones
+            SET direccion = ?, descripcion = ?, modificado_por = ?, fecha_modificacion = ?, estado = ?, id_tipo_direccion = ?, id_empresa = ?, id_pais = ?, id_ciudad = ?
+            WHERE id_direccion = ?;`;
+        const results = yield connection_1.default.query(query, {
+            replacements: [direccion, descripcion, modificado_por, fecha_modificacion, estado, id_tipo_direccion, id_empresa, id_pais, id_ciudad, direccionId],
+            type: sequelize_1.QueryTypes.UPDATE
+        });
+        res.json(results);
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Error al actualizar la dirección',
+            error
+        });
+    }
+});
+exports.putDireccion = putDireccion;

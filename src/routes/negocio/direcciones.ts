@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validarToken from '../validarToken';
-import { activateDireccion, getCiudades, getDireccionesEmpresaporID, getTipoDirecciones, getdirecciones, inactivateDirecion, postDireccion } from '../../controllers/negocio/direcciones-controllers';
+import { activateDireccion, getCiudades, getDireccionesEmpresaporID, getTipoDirecciones, getdirecciones, inactivateDirecion, postDireccion, putDireccion } from '../../controllers/negocio/direcciones-controllers';
 
 
 const routerDireccionContacto = Router()
@@ -12,6 +12,6 @@ routerDireccionContacto.get('/getDireccionesEmpresaporID/:id',validarToken , get
 routerDireccionContacto.post('/inactivateDirecion',validarToken , inactivateDirecion); //inactiva las direcciones de la dba
 routerDireccionContacto.post('/activateDireccion',validarToken , activateDireccion); //activa las direcciones de la dba
 routerDireccionContacto.post('/postDireccion',validarToken , postDireccion); // Inserta una nueva dirección en la DBA
-
+routerDireccionContacto.put('/updateDireccion/:id', validarToken, putDireccion); // Nueva ruta para actualizar dirección por ID
 
 export default routerDireccionContacto;
