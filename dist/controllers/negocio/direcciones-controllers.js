@@ -97,7 +97,7 @@ exports.getTipoDirecciones = getTipoDirecciones;
 const getCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = `
-        SELECT A.id_ciudad, (A.ciudad||' | '||B.pais) AS CIUDAD
+        SELECT A.id_ciudad, (B.pais||' | '||A.ciudad) AS CIUDAD
         FROM mipyme.tbl_me_ciudades as A
         LEFT JOIN 
             (

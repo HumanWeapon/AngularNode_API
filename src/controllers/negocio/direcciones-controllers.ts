@@ -80,7 +80,7 @@ export const getTipoDirecciones = async (req: Request, res: Response) => {
 export const getCiudades = async (req: Request, res: Response) => {
     try {
         const query = `
-        SELECT A.id_ciudad, (A.ciudad||' | '||B.pais) AS CIUDAD
+        SELECT A.id_ciudad, (B.pais||' | '||A.ciudad) AS CIUDAD
         FROM mipyme.tbl_me_ciudades as A
         LEFT JOIN 
             (
