@@ -272,7 +272,7 @@ export const getRolPyme = async (req: Request, res: Response) => {
 }
 // Obtiene una  pyme por el nombre de la pyme
 export const getOnePyme = async (req: Request, res: Response) => {
-    const { nombre_pyme } = req.body;
+    const id = req.params.id; // Obtener el ID de la dirección de los parámetros de la solicitud
     try {
         const query = `
             SELECT *
@@ -280,7 +280,7 @@ export const getOnePyme = async (req: Request, res: Response) => {
             WHERE nombre_pyme = ?
         `;
         const results = await db.query(query, {
-            replacements: [nombre_pyme],
+            replacements: [id],
             type: QueryTypes.SELECT
         });
         if (results.length === 0) {

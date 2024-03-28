@@ -270,7 +270,7 @@ const getRolPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.getRolPyme = getRolPyme;
 // Obtiene una  pyme por el nombre de la pyme
 const getOnePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nombre_pyme } = req.body;
+    const id = req.params.id; // Obtener el ID de la dirección de los parámetros de la solicitud
     try {
         const query = `
             SELECT *
@@ -278,7 +278,7 @@ const getOnePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             WHERE nombre_pyme = ?
         `;
         const results = yield connection_1.default.query(query, {
-            replacements: [nombre_pyme],
+            replacements: [id],
             type: sequelize_1.QueryTypes.SELECT
         });
         if (results.length === 0) {
