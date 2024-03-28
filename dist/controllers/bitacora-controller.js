@@ -17,7 +17,7 @@ const objetos_models_1 = require("../models/objetos-models");
 const getAllBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const bitacora = yield bitacora_model_1.Bitacora.findAll({
-            attributes: ['fecha', 'id_usuario', 'id_objeto', 'accion', 'descripcion'],
+            attributes: ['fecha', 'id_usuario', 'id_objeto', 'campo_original', 'nuevo_campo', 'accion',],
             include: [
                 {
                     model: usuario_models_1.User,
@@ -38,14 +38,15 @@ const getAllBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getAllBitacora = getAllBitacora;
 const PostBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { fecha, id_usuario, id_objeto, accion, descripcion } = req.body;
+    const { fecha, id_usuario, id_objeto, accion, campo_original, nuevo_campo } = req.body;
     try {
         yield bitacora_model_1.Bitacora.create({
             fecha: fecha,
             id_usuario: id_usuario,
             id_objeto: id_objeto,
+            campo_original: campo_original.toUpperCase(),
+            nuevo_campo: nuevo_campo.toUpperCase(),
             accion: accion.toUpperCase(),
-            descripcion: descripcion.toUpperCase(),
         });
         res.json({
             msg: 'El evento se ha registrado exitosamente',

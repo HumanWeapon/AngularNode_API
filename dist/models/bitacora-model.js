@@ -26,11 +26,15 @@ exports.Bitacora = connection_1.default.define('bitacora', {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
-    accion: {
+    campo_original: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
-    descripcion: {
+    nuevo_campo: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
+    accion: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     }

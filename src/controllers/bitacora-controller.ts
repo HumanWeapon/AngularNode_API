@@ -7,7 +7,7 @@ import { Objetos } from "../models/objetos-models";
 export const getAllBitacora = async (req: Request, res: Response) => {
     try {
         const bitacora = await Bitacora.findAll({
-            attributes: ['fecha', 'id_usuario', 'id_objeto', 'accion', 'descripcion'],
+            attributes: ['fecha', 'id_usuario', 'id_objeto', 'campo_original', 'nuevo_campo', 'accion', ],
             include: [
                 {
                     model: User,
@@ -28,15 +28,16 @@ export const getAllBitacora = async (req: Request, res: Response) => {
 
 export const PostBitacora = async (req: Request, res: Response) => {
 
-    const { fecha, id_usuario, id_objeto, accion, descripcion } = req.body;
+    const { fecha, id_usuario, id_objeto, accion, campo_original, nuevo_campo } = req.body;
 
     try{
         await Bitacora.create({
             fecha: fecha,
             id_usuario: id_usuario, 
             id_objeto: id_objeto,
+            campo_original: campo_original.toUpperCase(),
+            nuevo_campo: nuevo_campo.toUpperCase(),
             accion: accion.toUpperCase(),
-            descripcion: descripcion.toUpperCase(),
         })
         res.json({
             msg: 'El evento se ha registrado exitosamente',

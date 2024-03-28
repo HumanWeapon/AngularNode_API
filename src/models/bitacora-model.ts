@@ -21,11 +21,15 @@ export const Bitacora: any = dataBase.define('bitacora', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    accion: {
+    campo_original: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    descripcion: {
+    nuevo_campo: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    accion: {
         type: DataTypes.STRING,
         allowNull: false
     }
