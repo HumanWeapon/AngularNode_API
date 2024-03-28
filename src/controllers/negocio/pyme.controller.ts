@@ -4,6 +4,7 @@ import { Pyme } from '../../models/negocio/pyme-models';
 import jwt from 'jsonwebtoken';
 import { tipoEmpresa } from '../../models/negocio/tipoEmpresa-models';
 import db from '../../db/connection';
+import { QueryTypes } from 'sequelize';
 
 export const loginPyme = async (req: Request, res: Response) => {
     const { nombre_pyme, rtn } = req.body;
@@ -267,5 +268,27 @@ export const getRolPyme = async (req: Request, res: Response) => {
             msg: 'Contactate con el administrador',
             error
         }); 
+    }
+}
+// Obtiene una  pyme por el nombre de la pyme
+export const getOnePyme = async (req: Request, res: Response) => {
+    const { nombre_pyme } = req.body;
+    try {
+        const query = `
+            SELECT *
+            FROM mipyme.tbl_me_pyme
+            WHERE nombre_pyme = ?
+        `;
+        const results = await db.query(query, {
+            replacements: [nombre_pyme],
+            type: QueryTypes.SELECT
+        });
+        if (results.length === 0) {
+            return res.status(404).json({ msg: 'No se encontró ninguna PYME con ese nombre' });
+        }
+        res.json(results[0]); // Devuelve solo el primer resultado
+    } catch (error) {
+        console.error('Error al obtener la PYME:', error);
+        res.status(500).json({ msg: 'Error al obtener la PYME' });
     }
 }

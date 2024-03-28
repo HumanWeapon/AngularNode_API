@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRolPyme = exports.pymesAllTipoEmpresa = exports.activatePyme = exports.inactivatePyme = exports.updatePyme = exports.deletePyme = exports.postPyme = exports.getPyme = exports.getAllPymes = exports.loginPyme = void 0;
+exports.getOnePyme = exports.getRolPyme = exports.pymesAllTipoEmpresa = exports.activatePyme = exports.inactivatePyme = exports.updatePyme = exports.deletePyme = exports.postPyme = exports.getPyme = exports.getAllPymes = exports.loginPyme = void 0;
 const pyme_models_1 = require("../../models/negocio/pyme-models");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const tipoEmpresa_models_1 = require("../../models/negocio/tipoEmpresa-models");
 const connection_1 = __importDefault(require("../../db/connection"));
+const sequelize_1 = require("sequelize");
 const loginPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nombre_pyme, rtn } = req.body;
     try {
@@ -267,3 +268,27 @@ const getRolPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getRolPyme = getRolPyme;
+// Obtiene una  pyme por el nombre de la pyme
+const getOnePyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { nombre_pyme } = req.body;
+    try {
+        const query = `
+            SELECT *
+            FROM mipyme.tbl_me_pyme
+            WHERE nombre_pyme = ?
+        `;
+        const results = yield connection_1.default.query(query, {
+            replacements: [nombre_pyme],
+            type: sequelize_1.QueryTypes.SELECT
+        });
+        if (results.length === 0) {
+            return res.status(404).json({ msg: 'No se encontró ninguna PYME con ese nombre' });
+        }
+        res.json(results[0]); // Devuelve solo el primer resultado
+    }
+    catch (error) {
+        console.error('Error al obtener la PYME:', error);
+        res.status(500).json({ msg: 'Error al obtener la PYME' });
+    }
+});
+exports.getOnePyme = getOnePyme;
