@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validarToken from '.././validarToken';
-import { getAllProductos, getProductos, postProducto, deleteProducto, updateProducto, inactivateProducto, activateProducto, getAllOpProductos, getOpProductos, getAllProductosActivos, getProductosSearch } from '../../controllers/negocio/productos_controller';
+import { getAllProductos, getProductos, postProducto, deleteProducto, updateProducto, inactivateProducto, activateProducto, getAllOpProductos, getOpProductos, getAllProductosActivos } from '../../controllers/negocio/productos_controller';
 
 const routerProductos = Router()
 
@@ -14,7 +14,6 @@ routerProductos.delete('/deleteProducto',validarToken, deleteProducto); //Elimin
 routerProductos.post('/updateProducto',validarToken, updateProducto); // actualiza un producto en la base de datos
 routerProductos.post('/inactivateProducto',validarToken, inactivateProducto);//Inactiva un producto en la DB
 routerProductos.post('/activateProducto',validarToken, activateProducto);//Activa un producto en la DB
-routerProductos.get('/getProductosSearch',validarToken, getProductosSearch);//consulta todos los productos en la base de datos
 
 
 export default routerProductos;
