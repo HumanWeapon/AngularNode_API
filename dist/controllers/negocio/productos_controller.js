@@ -8,16 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductosSearch = exports.activateProducto = exports.inactivateProducto = exports.updateProducto = exports.deleteProducto = exports.postProducto = exports.getProductos = exports.getAllProductos = exports.getOpProductos = exports.getAllProductosActivos = exports.getAllOpProductos = void 0;
+exports.activateProducto = exports.inactivateProducto = exports.updateProducto = exports.deleteProducto = exports.postProducto = exports.getProductos = exports.getAllProductos = exports.getOpProductos = exports.getAllProductosActivos = exports.getAllOpProductos = void 0;
 const productos_models_1 = require("../../models/negocio/productos-models");
 const paises_models_1 = require("../../models/negocio/paises-models");
 const contacto_models_1 = require("../../models/negocio/contacto-models");
 const categoria_models_1 = require("../../models/negocio/categoria-models");
-const connection_1 = __importDefault(require("../../db/connection"));
 const getAllOpProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const opproductos = yield productos_models_1.Productos.findAll({
@@ -311,32 +307,3 @@ const activateProducto = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.activateProducto = activateProducto;
-//Obtiene los productos presentados en el objeto BUSCAR PRODUCTOS
-const getProductosSearch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const query = `
-        SELECT distinct
-            ROW_NUMBER() OVER(ORDER BY PRODUCTO.producto) AS numero_registro,
-            PRODUCTO.id_producto,
-            PRODUCTO.id_categoria,
-            MAX(CATEGORIA.categoria) AS categoria,
-            PRODUCTO.producto,
-            MAX(PRODUCTO.descripcion) AS descripcion
-        FROM mipyme.tbl_me_productos PRODUCTO
-        LEFT JOIN (SELECT id_categoria, categoria FROM mipyme.tbl_me_categoria_productos WHERE estado = 1) CATEGORIA ON PRODUCTO.id_categoria = CATEGORIA.id_categoria
-        LEFT JOIN (SELECT id_empresa, id_producto FROM mipyme.tbl_op_empresas_productos WHERE estado = 1) EMPRESAS ON PRODUCTO.id_producto = EMPRESAS.id_producto
-        WHERE PRODUCTO.ESTADO = 1
-            AND EMPRESAS.id_empresa IS NOT NULL
-        GROUP BY 
-            PRODUCTO.id_producto, PRODUCTO.producto
-        ORDER BY PRODUCTO.producto ASC
-        `;
-        const [results, metadata] = yield connection_1.default.query(query);
-        res.json(results);
-    }
-    catch (error) {
-        console.error('Error al consultar productos:', error);
-        res.status(500).json({ msg: 'Error interno del servidor' });
-    }
-});
-exports.getProductosSearch = getProductosSearch;
