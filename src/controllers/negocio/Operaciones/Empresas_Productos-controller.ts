@@ -113,10 +113,27 @@ export const eliminarOperacionEmpresaProducto = async (req: Request, res: Respon
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 };
+
 //Obtiene los productos presentados en el objeto BUSCAR PRODUCTOS
 export const getProductosSearch = async (req: Request, res: Response) => {
-    let categoria = req.params.categoria as string | null;
-    let pais = req.params.pais as string | null;
+    const { categoria, pais } = req.query; // Leer los parámetros de consulta
+
+    let categoriaCondition = '';
+    let paisCondition = '';
+    
+    if (categoria) {
+        categoriaCondition = `AND CATEGORIA.categoria = '${categoria}'`;
+    } else {
+        categoriaCondition = `AND CATEGORIA.categoria IS NOT NULL`;
+    }
+
+    if (pais) {
+        paisCondition = `AND DIRECCION.pais = '${pais}'`;
+        console.log(paisCondition);
+    } else {
+        paisCondition = `AND DIRECCION.pais IS NOT NULL`;
+        console.log(paisCondition);
+    }
 
     try {
         const query = `
@@ -143,21 +160,18 @@ export const getProductosSearch = async (req: Request, res: Response) => {
                     LEFT JOIN mipyme.tbl_me_paises PAIS ON DIRECCION.id_pais = PAIS.id_pais
                     WHERE DIRECCION.estado = 1
                         AND CIUDAD.estado = 1
-                        AND pais.estado = 1	
+                        AND pais.estado = 1    
                 ) DIRECCION ON EMPRESAS.id_empresa = DIRECCION.id_empresa
             WHERE PRODUCTO.ESTADO = 1
                 AND EMPRESAS.id_empresa IS NOT NULL
-				AND CATEGORIA.categoria = COALESCE(:categoria, CATEGORIA.categoria)
-				AND DIRECCION.pais = COALESCE(:pais, DIRECCION.pais)
+                ${categoriaCondition}
+                ${paisCondition}
             GROUP BY 
                 PRODUCTO.id_producto, PRODUCTO.producto
             ORDER BY PRODUCTO.producto ASC
         `;
 
-        // Pasar los valores como parámetros
-        const replacements = { categoria, pais };
-
-        const [results, metadata] = await db.query(query, { replacements });
+        const [results, metadata] = await db.query(query);
 
         res.json(results);
     } catch (error) {

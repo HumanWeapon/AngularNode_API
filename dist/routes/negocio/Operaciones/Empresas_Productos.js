@@ -12,5 +12,5 @@ empresasProductos.get('/consultarOperacionesEmpresasProductos', validarToken_1.d
 empresasProductos.get('/consultarOperacionEmpresaProductoPorId/:id', validarToken_1.default, Empresas_Productos_controller_1.consultarOperacionEmpresaProductoPorId);
 empresasProductos.get('/consultarProductosNoRegistradosPorId/:id', validarToken_1.default, Empresas_Productos_controller_1.consultarProductosNoRegistradosPorId);
 empresasProductos.delete('/eliminarOperacionEmpresaProducto/:id', validarToken_1.default, Empresas_Productos_controller_1.eliminarOperacionEmpresaProducto);
-empresasProductos.get('/getProductosSearch/:categoria/:pais', validarToken_1.default, Empresas_Productos_controller_1.getProductosSearch);
+empresasProductos.get('/getProductosSearch/:categoria?/:pais?', validarToken_1.default, Empresas_Productos_controller_1.getProductosSearch);
 exports.default = empresasProductos;

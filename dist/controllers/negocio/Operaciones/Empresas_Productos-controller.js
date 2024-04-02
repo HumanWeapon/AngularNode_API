@@ -129,8 +129,23 @@ const eliminarOperacionEmpresaProducto = (req, res) => __awaiter(void 0, void 0,
 exports.eliminarOperacionEmpresaProducto = eliminarOperacionEmpresaProducto;
 //Obtiene los productos presentados en el objeto BUSCAR PRODUCTOS
 const getProductosSearch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let categoria = req.params.categoria;
-    let pais = req.params.pais;
+    const { categoria, pais } = req.query; // Leer los parámetros de consulta
+    let categoriaCondition = '';
+    let paisCondition = '';
+    if (categoria) {
+        categoriaCondition = `AND CATEGORIA.categoria = '${categoria}'`;
+    }
+    else {
+        categoriaCondition = `AND CATEGORIA.categoria IS NOT NULL`;
+    }
+    if (pais) {
+        paisCondition = `AND DIRECCION.pais = '${pais}'`;
+        console.log(paisCondition);
+    }
+    else {
+        paisCondition = `AND DIRECCION.pais IS NOT NULL`;
+        console.log(paisCondition);
+    }
     try {
         const query = `
             SELECT DISTINCT
@@ -156,19 +171,17 @@ const getProductosSearch = (req, res) => __awaiter(void 0, void 0, void 0, funct
                     LEFT JOIN mipyme.tbl_me_paises PAIS ON DIRECCION.id_pais = PAIS.id_pais
                     WHERE DIRECCION.estado = 1
                         AND CIUDAD.estado = 1
-                        AND pais.estado = 1	
+                        AND pais.estado = 1    
                 ) DIRECCION ON EMPRESAS.id_empresa = DIRECCION.id_empresa
             WHERE PRODUCTO.ESTADO = 1
                 AND EMPRESAS.id_empresa IS NOT NULL
-				AND CATEGORIA.categoria = COALESCE(:categoria, CATEGORIA.categoria)
-				AND DIRECCION.pais = COALESCE(:pais, DIRECCION.pais)
+                ${categoriaCondition}
+                ${paisCondition}
             GROUP BY 
                 PRODUCTO.id_producto, PRODUCTO.producto
             ORDER BY PRODUCTO.producto ASC
         `;
-        // Pasar los valores como parámetros
-        const replacements = { categoria, pais };
-        const [results, metadata] = yield connection_1.default.query(query, { replacements });
+        const [results, metadata] = yield connection_1.default.query(query);
         res.json(results);
     }
     catch (error) {
