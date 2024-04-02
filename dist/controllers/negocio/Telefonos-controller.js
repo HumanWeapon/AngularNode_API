@@ -64,48 +64,23 @@ const postContactoTelefono = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
         if (_contactoT) {
             return res.status(400).json({
-                msg: 'Telefono ya existe: ' + telefono
+                msg: 'Telefono ya registrado en la Base de Datos: ' + telefono
             });
         }
         else {
-            const newConT = yield telefonos_models_1.ContactoTelefono.create({
+            const _contactoT = yield telefonos_models_1.ContactoTelefono.create({
                 id_contacto: id_contacto,
                 id_pais: id_pais,
                 telefono: telefono,
                 cod_area: cod_area,
                 descripcion: descripcion.toUpperCase(),
                 creado_por: creado_por.toUpperCase(),
-                fecha_creacion: fecha_creacion,
+                fecha_creacion: Date.now(),
                 modificado_por: modificado_por.toUpperCase(),
-                fecha_modificacion: fecha_modificacion,
+                fecha_modificacion: Date.now(),
                 estado: estado
             });
-            const query = `
-                SELECT 
-                    TELEFONOS.id_telefono,
-                    CONTACTOS.NOMBRE,
-                    TELEFONOS.telefono,
-                    TELEFONOS.cod_area, 
-                    TELEFONOS.descripcion, 
-                    TELEFONOS.creado_por, 
-                    TELEFONOS.fecha_creacion, 
-                    TELEFONOS.modificado_por, 
-                    TELEFONOS.fecha_modificacion, 
-                    TELEFONOS.estado, 
-                    TELEFONOS.id_contacto,
-                    TELEFONOS.id_pais
-                FROM mipyme.tbl_me_telefonos AS TELEFONOS
-                LEFT JOIN 
-                    (
-                        SELECT id_contacto, estado, (primer_nombre||' '||segundo_nombre||' '||primer_apellido||' '||segundo_apellido) AS NOMBRE 
-                        FROM mipyme.tbl_me_contactos
-                        WHERE estado = 1
-                    ) AS CONTACTOS
-                ON TELEFONOS.id_contacto = CONTACTOS.id_contacto
-                WHERE TELEFONOS.id_telefono = ${newConT.id_telefono}
-            `;
-            const [results, metadata] = yield connection_1.default.query(query);
-            res.json(results[0]);
+            return res.json(_contactoT);
         }
     }
     catch (error) {
