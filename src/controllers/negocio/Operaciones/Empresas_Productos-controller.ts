@@ -120,19 +120,20 @@ export const getProductosSearch = async (req: Request, res: Response) => {
 
     let categoriaCondition = '';
     let paisCondition = '';
-    
+    const params = [];
+
     if (categoria) {
-        categoriaCondition = `AND CATEGORIA.categoria = '${categoria}'`;
+        categoriaCondition = 'AND CATEGORIA.categoria = ?';
+        params.push(categoria);
     } else {
-        categoriaCondition = `AND CATEGORIA.categoria IS NOT NULL`;
+        categoriaCondition = 'AND CATEGORIA.categoria IS NOT NULL';
     }
 
     if (pais) {
-        paisCondition = `AND DIRECCION.pais = '${pais}'`;
-        console.log(paisCondition);
+        paisCondition = 'AND DIRECCION.pais = ?';
+        params.push(pais);
     } else {
-        paisCondition = `AND DIRECCION.pais IS NOT NULL`;
-        console.log(paisCondition);
+        paisCondition = 'AND DIRECCION.pais IS NOT NULL';
     }
 
     try {
@@ -170,12 +171,17 @@ export const getProductosSearch = async (req: Request, res: Response) => {
                 PRODUCTO.id_producto, PRODUCTO.producto
             ORDER BY PRODUCTO.producto ASC
         `;
-
-        const [results, metadata] = await db.query(query);
-
+    
+        // Crear un array con los parámetros en el orden correcto
+        const params = [];
+        if (categoria) params.push(categoria);
+        if (pais) params.push(pais);
+    
+        const [results, metadata] = await db.query(query, { replacements: params });
+    
         res.json(results);
     } catch (error) {
         console.error('Error al consultar productos:', error);
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
-};
+}    
