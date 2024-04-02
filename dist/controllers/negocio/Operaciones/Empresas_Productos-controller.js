@@ -160,8 +160,8 @@ const getProductosSearch = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 ) DIRECCION ON EMPRESAS.id_empresa = DIRECCION.id_empresa
             WHERE PRODUCTO.ESTADO = 1
                 AND EMPRESAS.id_empresa IS NOT NULL
-                AND (CATEGORIA.categoria = :categoria OR :categoria IS NULL)
-                AND (DIRECCION.pais = :pais OR :pais IS NULL)
+				AND CATEGORIA.categoria = COALESCE(:categoria, CATEGORIA.categoria)
+				AND DIRECCION.pais = COALESCE(:pais, DIRECCION.pais)
             GROUP BY 
                 PRODUCTO.id_producto, PRODUCTO.producto
             ORDER BY PRODUCTO.producto ASC
