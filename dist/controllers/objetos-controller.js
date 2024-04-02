@@ -225,7 +225,7 @@ const objetosJSON = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                     WHEN objeto IN ('TIPO DIRECCION', 'CIUDADES', 'PAISES', 'DIRECCIONES') THEN 'DIRECCIONES'
                     WHEN objeto IN ('TIPO CONTACTO', 'CONTACTO', 'TELEFONOS', 'TIPO TELEFONO') THEN 'CONTACTOS'
                     WHEN objeto IN ('CATEGORIA PRODUCTOS', 'PRODUCTOS') THEN 'PRODUCTOS'
-                    WHEN objeto IN ('TIPO EMPRESA', 'TIPO REQUISITO', 'REQUISITOS') THEN 'EMPRESAS'
+                    WHEN objeto IN ('TIPO EMPRESA', 'REQUISITOS DE EXPORTACION') THEN 'EMPRESAS'
                     ELSE 'OTROS'
                 END,
                 'atributes', (
