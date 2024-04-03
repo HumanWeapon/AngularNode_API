@@ -167,7 +167,17 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 fecha_modificacion: Date.now(),
                 estado_usuario: estado_usuario
             });
-            return res.json(newUser); // Devolver el nuevo usuario creado como respuesta
+            //return res.json(newUser); // Devolver el nuevo usuario creado como respuesta
+            const getuser = yield usuario_models_1.User.findOne({
+                where: { usuario: newUser.usuario },
+                include: [
+                    {
+                        model: roles_models_1.Roles,
+                        as: 'roles' // Usa el mismo alias que en la definición de la asociación
+                    },
+                ],
+            });
+            res.json(getuser);
         }
     }
     catch (error) {

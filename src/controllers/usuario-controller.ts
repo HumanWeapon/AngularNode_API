@@ -164,7 +164,17 @@ export const postUsuario = async (req: Request, res: Response) => {
                 fecha_modificacion: Date.now(),
                 estado_usuario: estado_usuario
             })
-            return res.json(newUser); // Devolver el nuevo usuario creado como respuesta
+            //return res.json(newUser); // Devolver el nuevo usuario creado como respuesta
+            const getuser = await User.findOne({
+                where: {usuario: newUser.usuario},
+                include: [
+                    {
+                        model: Roles,
+                        as: 'roles' // Usa el mismo alias que en la definición de la asociación
+                    },
+                ],
+            });
+            res.json(getuser);
         }
     }
     catch (error){
