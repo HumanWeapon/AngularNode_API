@@ -45,6 +45,18 @@ export const Pyme: any = dataBase.define('pyme', {
     id_rol: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    nombre_contacto: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    correo_contacto: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    telefono_contacto: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
     }, 
     {

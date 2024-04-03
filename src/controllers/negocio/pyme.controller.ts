@@ -91,7 +91,7 @@ try {
 // Inserta una nueva Pyme en la base de datos
 export const postPyme = async (req: Request, res: Response) => {
 
-    const { nombre_pyme, rtn,  creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, fecha_ultima_conexion, id_rol}  = req.body;
+    const { nombre_pyme, rtn,  creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, fecha_ultima_conexion, id_rol, nombre_contacto, correo_contacto, telefono_contacto}  = req.body;
 
     try{
         const _pyme = await Pyme.findOne({
@@ -107,7 +107,10 @@ export const postPyme = async (req: Request, res: Response) => {
                 fecha_modificacion: Date.now(),
                 estado: estado,
                 fecha_ultima_conexion: Date.now(),
-                id_rol: id_rol
+                id_rol: id_rol,
+                nombre_contacto: nombre_contacto.toUpperCase(),
+                correo_contacto: correo_contacto.toUpperCase(),
+                telefono_contacto: telefono_contacto
             })
             res.json(newPyme)
         
@@ -149,7 +152,7 @@ export const deletePyme = async (req: Request, res: Response) => {
 export const updatePyme = async (req: Request, res: Response) => {
 
     try{
-    const { id_pyme, nombre_pyme, rtn,  creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, fecha_ultima_conexion } = req.body;
+    const { id_pyme, nombre_pyme, rtn,  creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, fecha_ultima_conexion, nombre_contacto, correo_contacto, telefono_contacto } = req.body;
 
     const _pyme = await Pyme.findOne({
         where: {id_pyme: id_pyme}
@@ -170,7 +173,11 @@ export const updatePyme = async (req: Request, res: Response) => {
         modificado_por: modificado_por.toUpperCase(),
         fecha_modificacion: fecha_modificacion,
         estado: estado,
-        fecha_ultima_conexion: fecha_ultima_conexion
+        fecha_ultima_conexion: fecha_ultima_conexion,
+        nombre_contacto: nombre_contacto.toUpperCase(),
+        correo_contacto: correo_contacto.toUpperCase(),
+        telefono_contacto: telefono_contacto
+        
         
     });
     res.json(_pyme);
