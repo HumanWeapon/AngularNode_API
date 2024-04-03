@@ -129,25 +129,66 @@ const eliminarOperacionEmpresaProducto = (req, res) => __awaiter(void 0, void 0,
 exports.eliminarOperacionEmpresaProducto = eliminarOperacionEmpresaProducto;
 //Obtiene los productos presentados en el objeto BUSCAR PRODUCTOS
 const getProductosSearch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { categoria, pais } = req.query; // Leer los parámetros de consulta
+    let categoriaCondition = '';
+    let paisCondition = '';
+    const params = [];
+    if (categoria) {
+        categoriaCondition = 'AND CATEGORIA.categoria = ?';
+        params.push(categoria);
+    }
+    else {
+        categoriaCondition = 'AND CATEGORIA.categoria IS NOT NULL';
+    }
+    if (pais) {
+        paisCondition = 'AND DIRECCION.pais = ?';
+        params.push(pais);
+    }
+    else {
+        paisCondition = 'AND DIRECCION.pais IS NOT NULL';
+    }
     try {
         const query = `
-        SELECT distinct
-            ROW_NUMBER() OVER(ORDER BY PRODUCTO.producto) AS numero_registro,
-            PRODUCTO.id_producto,
-            PRODUCTO.id_categoria,
-            MAX(CATEGORIA.categoria) AS categoria,
-            PRODUCTO.producto,
-            MAX(PRODUCTO.descripcion) AS descripcion
-        FROM mipyme.tbl_me_productos PRODUCTO
-        LEFT JOIN (SELECT id_categoria, categoria FROM mipyme.tbl_me_categoria_productos WHERE estado = 1) CATEGORIA ON PRODUCTO.id_categoria = CATEGORIA.id_categoria
-        LEFT JOIN (SELECT id_empresa, id_producto FROM mipyme.tbl_op_empresas_productos WHERE estado = 1) EMPRESAS ON PRODUCTO.id_producto = EMPRESAS.id_producto
-        WHERE PRODUCTO.ESTADO = 1
-            AND EMPRESAS.id_empresa IS NOT NULL
-        GROUP BY 
-            PRODUCTO.id_producto, PRODUCTO.producto
-        ORDER BY PRODUCTO.producto ASC
+            SELECT DISTINCT
+                ROW_NUMBER() OVER(ORDER BY PRODUCTO.producto) AS numero_registro,
+                PRODUCTO.id_producto,
+                PRODUCTO.producto,
+                PRODUCTO.id_categoria,
+                MAX(CATEGORIA.categoria) AS categoria,
+                MAX(PRODUCTO.descripcion) AS descripcion,
+                MAX(DIRECCION.pais) AS pais,
+                MAX(DIRECCION.ciudad) AS ciudad
+            FROM mipyme.tbl_me_productos PRODUCTO
+            LEFT JOIN (SELECT id_categoria, categoria FROM mipyme.tbl_me_categoria_productos WHERE estado = 1) CATEGORIA ON PRODUCTO.id_categoria = CATEGORIA.id_categoria
+            LEFT JOIN (SELECT id_empresa, id_producto FROM mipyme.tbl_op_empresas_productos WHERE estado = 1) EMPRESAS ON PRODUCTO.id_producto = EMPRESAS.id_producto
+            LEFT JOIN 
+                (
+                    SELECT 
+                        DIRECCION.id_empresa,
+                        CIUDAD.ciudad,
+                        PAIS.pais
+                    FROM mipyme.tbl_me_direcciones DIRECCION
+                    LEFT JOIN mipyme.tbl_me_ciudades CIUDAD ON DIRECCION.id_ciudad = CIUDAD.id_ciudad
+                    LEFT JOIN mipyme.tbl_me_paises PAIS ON DIRECCION.id_pais = PAIS.id_pais
+                    WHERE DIRECCION.estado = 1
+                        AND CIUDAD.estado = 1
+                        AND pais.estado = 1    
+                ) DIRECCION ON EMPRESAS.id_empresa = DIRECCION.id_empresa
+            WHERE PRODUCTO.ESTADO = 1
+                AND EMPRESAS.id_empresa IS NOT NULL
+                ${categoriaCondition}
+                ${paisCondition}
+            GROUP BY 
+                PRODUCTO.id_producto, PRODUCTO.producto
+            ORDER BY PRODUCTO.producto ASC
         `;
-        const [results, metadata] = yield connection_1.default.query(query);
+        // Crear un array con los parámetros en el orden correcto
+        const params = [];
+        if (categoria)
+            params.push(categoria);
+        if (pais)
+            params.push(pais);
+        const [results, metadata] = yield connection_1.default.query(query, { replacements: params });
         res.json(results);
     }
     catch (error) {

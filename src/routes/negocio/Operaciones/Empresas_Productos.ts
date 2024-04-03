@@ -10,6 +10,8 @@ empresasProductos.get('/consultarOperacionesEmpresasProductos', validarToken, co
 empresasProductos.get('/consultarOperacionEmpresaProductoPorId/:id', validarToken, consultarOperacionEmpresaProductoPorId);
 empresasProductos.get('/consultarProductosNoRegistradosPorId/:id', validarToken, consultarProductosNoRegistradosPorId);
 empresasProductos.delete('/eliminarOperacionEmpresaProducto/:id', validarToken, eliminarOperacionEmpresaProducto);
-empresasProductos.get('/getProductosSearch',validarToken, getProductosSearch);//consulta todos los productos en la base de datos
+empresasProductos.get('/getProductosSearch/:categoria?/:pais?', validarToken, getProductosSearch);
+
+
 
 export default empresasProductos;
