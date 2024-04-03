@@ -82,7 +82,15 @@ export const postEmpresa = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             })
-            res.json(empresa)
+            //res.json(empresa)
+            const empresas = await Empresas.findOne({
+                where: {nombre_empresa: empresa.nombre_empresa},
+                include: {
+                    model: tipoEmpresa,
+                    as: 'tipoEmpresa' // Usar el alias definido en la asociación
+                }
+            });
+            res.json(empresas);
         
     }
 }

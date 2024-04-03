@@ -94,7 +94,15 @@ const postEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 fecha_modificacion: fecha_modificacion,
                 estado: estado
             });
-            res.json(empresa);
+            //res.json(empresa)
+            const empresas = yield empresas_model_1.Empresas.findOne({
+                where: { nombre_empresa: empresa.nombre_empresa },
+                include: {
+                    model: tipoEmpresa_models_1.tipoEmpresa,
+                    as: 'tipoEmpresa' // Usar el alias definido en la asociación
+                }
+            });
+            res.json(empresas);
         }
     }
     catch (error) {
