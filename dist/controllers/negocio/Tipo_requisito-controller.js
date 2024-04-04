@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.requisitosAllPaisesEmpresas = exports.activateRequisito = exports.inactivateRequisito = exports.updateTipo_Requisito = exports.deleteTipo_Requisito = exports.postTipo_Requisito = exports.getTipo_Requisito = exports.getAllTipo_Requisito = void 0;
+exports.requisitosdeEmpresaPorId = exports.requisitosAllPaisesEmpresas = exports.activateRequisito = exports.inactivateRequisito = exports.updateTipo_Requisito = exports.deleteTipo_Requisito = exports.postTipo_Requisito = exports.getTipo_Requisito = exports.getAllTipo_Requisito = void 0;
 const Tipo_requisito_models_1 = require("../../models/negocio/Tipo_requisito-models");
 const paises_models_1 = require("../../models/negocio/paises-models");
 const empresas_model_1 = require("../../models/negocio/empresas-model");
@@ -204,3 +204,30 @@ const requisitosAllPaisesEmpresas = (req, res) => __awaiter(void 0, void 0, void
     }
 });
 exports.requisitosAllPaisesEmpresas = requisitosAllPaisesEmpresas;
+const requisitosdeEmpresaPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_empresa } = req.body; // Obtener el id_contacto de los parámetros de consulta
+    try {
+        // Buscar los requisitos asociados al id_tipo_requisito
+        const requisitos = yield Tipo_requisito_models_1.Tipo_Requisito.findAll({
+            where: {
+                id_empresa: id_empresa // Filtrar por id_tipo_requisito
+            },
+            include: [
+                {
+                    model: empresas_model_1.Empresas,
+                    as: 'empresas'
+                },
+                {
+                    model: paises_models_1.Paises,
+                    as: 'paises' // Incluir la relación con la tabla de países
+                }
+            ],
+        });
+        res.json(requisitos); // Enviar los teléfonos encontrados como respuesta
+    }
+    catch (error) {
+        console.error('Error al obtener los teléfonos del contacto:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+});
+exports.requisitosdeEmpresaPorId = requisitosdeEmpresaPorId;

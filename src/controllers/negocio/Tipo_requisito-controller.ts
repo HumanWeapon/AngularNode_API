@@ -203,3 +203,31 @@ export const requisitosAllPaisesEmpresas = async (req: Request, res: Response) =
     }
 }
 
+export const requisitosdeEmpresaPorId = async (req: Request, res: Response) => {
+    const { id_empresa } = req.body; // Obtener el id_contacto de los parámetros de consulta
+
+    try {
+        // Buscar los requisitos asociados al id_tipo_requisito
+        const requisitos = await Tipo_Requisito.findAll({
+            where: {
+                id_empresa: id_empresa // Filtrar por id_tipo_requisito
+            },
+            include: [
+                {
+                    model: Empresas,
+                    as: 'empresas'
+                },
+                {
+                    model: Paises,
+                    as: 'paises' // Incluir la relación con la tabla de países
+                }
+            ],
+        });
+
+        res.json(requisitos); // Enviar los teléfonos encontrados como respuesta
+    } catch (error) {
+        console.error('Error al obtener los teléfonos del contacto:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
