@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import { Tipo_Requisito } from '../../models/negocio/Tipo_requisito-models';
 import { where } from 'sequelize';
+import db from '../../db/connection';
 import { Paises } from '../../models/negocio/paises-models';
 import { Empresas } from '../../models/negocio/empresas-model';
 
@@ -203,31 +204,42 @@ export const requisitosAllPaisesEmpresas = async (req: Request, res: Response) =
     }
 }
 
-export const requisitosdeEmpresaPorId = async (req: Request, res: Response) => {
-    const { id_empresa } = req.body; // Obtener el id_contacto de los parámetros de consulta
-
+//obtiene los contactos registrados de una empresa
+export const consultarRequisitosActivosporId = async (req: Request, res: Response) => {
+    const { id } = req.params;
     try {
-        // Buscar los requisitos asociados al id_tipo_requisito
-        const requisitos = await Tipo_Requisito.findAll({
-            where: {
-                id_empresa: id_empresa // Filtrar por id_tipo_requisito
-            },
-            include: [
-                {
-                    model: Empresas,
-                    as: 'empresas'
-                },
-                {
-                    model: Paises,
-                    as: 'paises' // Incluir la relación con la tabla de países
-                }
-            ],
-        });
+        const query = `
+        SELECT 
+            A.id_tipo_requisito,
+            A.tipo_requisito,
+            A.id_pais,
+            A.id_empresa,
+            B.nombre_pais,
+            A.descripcion,
+            A.creado_por,
+            A.fecha_creacion,
+            A.modificado_por,
+            A.fecha_modificacion,
+            A.estado
+        FROM mipyme.tbl_me_tipo_requisito AS A
+        LEFT JOIN 
+        (
+            SELECT * 
+            FROM mipyme.tbl_me_paises 
+        ) AS B
+        ON A.id_pais = B.id_pais
+        WHERE 
+            A.id_empresa = ${id}
+        `;
 
-        res.json(requisitos); // Enviar los teléfonos encontrados como respuesta
+        const [results, metadata] = await db.query(query);
+
+        res.json(results);
     } catch (error) {
-        console.error('Error al obtener los teléfonos del contacto:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
     }
-}
+};
+
+
 

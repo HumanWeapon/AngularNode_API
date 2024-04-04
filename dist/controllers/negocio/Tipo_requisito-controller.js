@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.requisitosdeEmpresaPorId = exports.requisitosAllPaisesEmpresas = exports.activateRequisito = exports.inactivateRequisito = exports.updateTipo_Requisito = exports.deleteTipo_Requisito = exports.postTipo_Requisito = exports.getTipo_Requisito = exports.getAllTipo_Requisito = void 0;
+exports.consultarRequisitosActivosporId = exports.requisitosAllPaisesEmpresas = exports.activateRequisito = exports.inactivateRequisito = exports.updateTipo_Requisito = exports.deleteTipo_Requisito = exports.postTipo_Requisito = exports.getTipo_Requisito = exports.getAllTipo_Requisito = void 0;
 const Tipo_requisito_models_1 = require("../../models/negocio/Tipo_requisito-models");
+const connection_1 = __importDefault(require("../../db/connection"));
 const paises_models_1 = require("../../models/negocio/paises-models");
 const empresas_model_1 = require("../../models/negocio/empresas-model");
 //Obtiene todos los tipos de requisito de la base de datos
@@ -204,30 +208,39 @@ const requisitosAllPaisesEmpresas = (req, res) => __awaiter(void 0, void 0, void
     }
 });
 exports.requisitosAllPaisesEmpresas = requisitosAllPaisesEmpresas;
-const requisitosdeEmpresaPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_empresa } = req.body; // Obtener el id_contacto de los parámetros de consulta
+//obtiene los contactos registrados de una empresa
+const consultarRequisitosActivosporId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
     try {
-        // Buscar los requisitos asociados al id_tipo_requisito
-        const requisitos = yield Tipo_requisito_models_1.Tipo_Requisito.findAll({
-            where: {
-                id_empresa: id_empresa // Filtrar por id_tipo_requisito
-            },
-            include: [
-                {
-                    model: empresas_model_1.Empresas,
-                    as: 'empresas'
-                },
-                {
-                    model: paises_models_1.Paises,
-                    as: 'paises' // Incluir la relación con la tabla de países
-                }
-            ],
-        });
-        res.json(requisitos); // Enviar los teléfonos encontrados como respuesta
+        const query = `
+        SELECT 
+            A.id_tipo_requisito,
+            A.tipo_requisito,
+            A.id_pais,
+            A.id_empresa,
+            B.nombre_pais,
+            A.descripcion,
+            A.creado_por,
+            A.fecha_creacion,
+            A.modificado_por,
+            A.fecha_modificacion,
+            A.estado
+        FROM mipyme.tbl_me_tipo_requisito AS A
+        LEFT JOIN 
+        (
+            SELECT * 
+            FROM mipyme.tbl_me_paises 
+        ) AS B
+        ON A.id_pais = B.id_pais
+        WHERE 
+            A.id_empresa = ${id}
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
     }
     catch (error) {
-        console.error('Error al obtener los teléfonos del contacto:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
     }
 });
-exports.requisitosdeEmpresaPorId = requisitosdeEmpresaPorId;
+exports.consultarRequisitosActivosporId = consultarRequisitosActivosporId;

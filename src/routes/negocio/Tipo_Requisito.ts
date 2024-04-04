@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validarToken from '../validarToken';
-import { activateRequisito, deleteTipo_Requisito, getAllTipo_Requisito, inactivateRequisito, postTipo_Requisito, requisitosAllPaisesEmpresas, requisitosdeEmpresaPorId, updateTipo_Requisito } from '../../controllers/negocio/Tipo_requisito-controller';
+import { activateRequisito, consultarRequisitosActivosporId, deleteTipo_Requisito, getAllTipo_Requisito, inactivateRequisito, postTipo_Requisito, requisitosAllPaisesEmpresas, updateTipo_Requisito } from '../../controllers/negocio/Tipo_requisito-controller';
 import { getTipo_Requisito } from '../../controllers/negocio/Tipo_requisito-controller';
 
 
@@ -14,7 +14,7 @@ routerTipo_Requisito.post('/updateTipoRequisito',validarToken, updateTipo_Requis
 routerTipo_Requisito.post('/inactivateRequisito',validarToken, inactivateRequisito);//Inactiva una Pyme en la DB
 routerTipo_Requisito.post('/activateRequisito',validarToken, activateRequisito);//Activa una Pyme en la DB
 routerTipo_Requisito.get('/requisitosAllPaisesEmpresas',validarToken, requisitosAllPaisesEmpresas);//Trae los telefonos y el Pais de los contactos
-routerTipo_Requisito.post('/requisitosdeEmpresaPorId',validarToken, requisitosdeEmpresaPorId);//Trae los telefonos y el Pais de los contactos
+routerTipo_Requisito.get('/consultarRequisitosActivosporId/:id', validarToken, consultarRequisitosActivosporId);
 
 
 export default routerTipo_Requisito;
