@@ -48,6 +48,18 @@ exports.Pyme = connection_1.default.define('pyme', {
     id_rol: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
+    },
+    nombre_contacto: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
+    correo_contacto: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
+    telefono_contacto: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     }
 }, {
     tableName: 'tbl_me_pyme',
