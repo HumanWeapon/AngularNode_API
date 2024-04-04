@@ -1,6 +1,8 @@
 import {Request, Response} from 'express';
 import { Tipo_Requisito } from '../../models/negocio/Tipo_requisito-models';
 import { where } from 'sequelize';
+import { Paises } from '../../models/negocio/paises-models';
+import { Empresas } from '../../models/negocio/empresas-model';
 
 //Obtiene todos los tipos de requisito de la base de datos
 export const getAllTipo_Requisito = async (req: Request, res: Response) => {
@@ -177,3 +179,27 @@ export const activateRequisito = async (req: Request, res: Response) => {
     });
 }
 }
+
+// Realiza una consulta INNER JOIN entre las tablas Usuario y Roles
+export const requisitosAllPaisesEmpresas = async (req: Request, res: Response) => {
+    try {
+        const requisitosAllPaisEmpresa = await Tipo_Requisito.findAll({
+            include: [
+                {
+                    model: Empresas,
+                    as: 'empresas'
+                },
+                {
+                    model: Paises, // Agrega el modelo de Pais
+                    as: 'paises' // Usa el mismo alias que en la definición de la asociación en el modelo
+                }
+            ],
+        });
+        
+        res.json(requisitosAllPaisEmpresa);
+    } catch (error) {
+        console.error('Error al obtener el Requisito de la Empresa:', error);
+        res.status(500).json({ error: 'Error al obtener Requisitos de la Empresa' });
+    }
+}
+

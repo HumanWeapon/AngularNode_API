@@ -15,4 +15,5 @@ routerTipo_Requisito.delete('/deleteTipo_Requisito', validarToken_1.default, Tip
 routerTipo_Requisito.post('/updateTipoRequisito', validarToken_1.default, Tipo_requisito_controller_1.updateTipo_Requisito); // actualiza permiso en la base de datos
 routerTipo_Requisito.post('/inactivateRequisito', validarToken_1.default, Tipo_requisito_controller_1.inactivateRequisito); //Inactiva una Pyme en la DB
 routerTipo_Requisito.post('/activateRequisito', validarToken_1.default, Tipo_requisito_controller_1.activateRequisito); //Activa una Pyme en la DB
+routerTipo_Requisito.get('/requisitosAllPaisesEmpresas', validarToken_1.default, Tipo_requisito_controller_1.requisitosAllPaisesEmpresas); //Trae los telefonos y el Pais de los contactos
 exports.default = routerTipo_Requisito;

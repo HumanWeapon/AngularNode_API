@@ -9,8 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateRequisito = exports.inactivateRequisito = exports.updateTipo_Requisito = exports.deleteTipo_Requisito = exports.postTipo_Requisito = exports.getTipo_Requisito = exports.getAllTipo_Requisito = void 0;
+exports.requisitosAllPaisesEmpresas = exports.activateRequisito = exports.inactivateRequisito = exports.updateTipo_Requisito = exports.deleteTipo_Requisito = exports.postTipo_Requisito = exports.getTipo_Requisito = exports.getAllTipo_Requisito = void 0;
 const Tipo_requisito_models_1 = require("../../models/negocio/Tipo_requisito-models");
+const paises_models_1 = require("../../models/negocio/paises-models");
+const empresas_model_1 = require("../../models/negocio/empresas-model");
 //Obtiene todos los tipos de requisito de la base de datos
 const getAllTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const t_requisito = yield Tipo_requisito_models_1.Tipo_Requisito.findAll();
@@ -179,3 +181,26 @@ const activateRequisito = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.activateRequisito = activateRequisito;
+// Realiza una consulta INNER JOIN entre las tablas Usuario y Roles
+const requisitosAllPaisesEmpresas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const requisitosAllPaisEmpresa = yield Tipo_requisito_models_1.Tipo_Requisito.findAll({
+            include: [
+                {
+                    model: empresas_model_1.Empresas,
+                    as: 'empresas'
+                },
+                {
+                    model: paises_models_1.Paises,
+                    as: 'paises' // Usa el mismo alias que en la definición de la asociación en el modelo
+                }
+            ],
+        });
+        res.json(requisitosAllPaisEmpresa);
+    }
+    catch (error) {
+        console.error('Error al obtener el Requisito de la Empresa:', error);
+        res.status(500).json({ error: 'Error al obtener Requisitos de la Empresa' });
+    }
+});
+exports.requisitosAllPaisesEmpresas = requisitosAllPaisesEmpresas;
