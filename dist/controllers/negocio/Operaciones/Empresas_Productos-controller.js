@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPaisesPorProducto = exports.getProductosSearch = exports.eliminarOperacionEmpresaProducto = exports.consultarProductosNoRegistradosPorId = exports.consultarOperacionEmpresaProductoPorId = exports.agregarOperacionEmpresaProducto = exports.consultarOperacionesEmpresasProductos = void 0;
+exports.getPaisesEmpresasPorPais = exports.getPaisesPorProducto = exports.getProductosSearch = exports.eliminarOperacionEmpresaProducto = exports.consultarProductosNoRegistradosPorId = exports.consultarOperacionEmpresaProductoPorId = exports.agregarOperacionEmpresaProducto = exports.consultarOperacionesEmpresasProductos = void 0;
 const Empresas_Productos_1 = require("../../../models/negocio/Operaciones/Empresas_Productos");
 const productos_models_1 = require("../../../models/negocio/productos-models");
 const categoria_models_1 = require("../../../models/negocio/categoria-models");
@@ -231,3 +231,39 @@ const getPaisesPorProducto = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getPaisesPorProducto = getPaisesPorProducto;
+//OBTIENE LOS PAÍSES DE LAS EMPRESAS REGISTRADAS
+const getPaisesEmpresasPorPais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_pais } = req.params; // Leer los parámetros de consulta
+    try {
+        const query = `
+        --PARA OBTENER LAS EMPRESAS POR PAIS
+        SELECT DISTINCT
+            EMPRESA.id_empresa,
+            EMPRESA.nombre_empresa,
+            DIRECCION.id_pais,
+            PAIS.pais
+        FROM mipyme.tbl_me_empresas EMPRESA
+        LEFT JOIN mipyme.tbl_me_direcciones DIRECCION ON EMPRESA.id_empresa = DIRECCION.id_empresa
+        LEFT JOIN mipyme.tbl_me_paises PAIS ON DIRECCION.id_pais = PAIS.id_pais
+            WHERE PAIS.pais IS NOT NULL
+                AND DIRECCION.estado = 1
+                AND EMPRESA.estado = 1
+                AND PAIS.id_pais = ?
+        `;
+        const params = [id_pais]; // Parámetros de consulta
+        const [results, metadata] = yield connection_1.default.query(query, { replacements: params });
+        // Verificar si hay resultados
+        if (results && results.length > 0) {
+            res.json(results);
+        }
+        else {
+            // Si no hay resultados, enviar un array vacío
+            res.json([]);
+        }
+    }
+    catch (error) {
+        console.error('Error contacte al administrador:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.getPaisesEmpresasPorPais = getPaisesEmpresasPorPais;

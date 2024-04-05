@@ -187,7 +187,6 @@ export const getProductosSearch = async (req: Request, res: Response) => {
 }    
 
 //OBTIENE LOS PAÍSES DE LAS EMPRESAS REGISTRADAS
-
 export const getPaisesPorProducto = async (req: Request, res: Response) => {
     const { id_producto } = req.params; // Leer los parámetros de consulta
 
@@ -207,6 +206,43 @@ export const getPaisesPorProducto = async (req: Request, res: Response) => {
             AND PRODUCTO.id_producto = ?`;
 
         const params = [id_producto]; // Parámetros de consulta
+
+        const [results, metadata] = await db.query(query, { replacements: params });
+        
+        // Verificar si hay resultados
+        if (results && results.length > 0) {
+            res.json(results);
+        } else {
+            // Si no hay resultados, enviar un array vacío
+            res.json([]);
+        }
+    } catch (error) {
+        console.error('Error contacte al administrador:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+}
+//OBTIENE LOS PAÍSES DE LAS EMPRESAS REGISTRADAS
+export const getPaisesEmpresasPorPais = async (req: Request, res: Response) => {
+    const { id_pais } = req.params; // Leer los parámetros de consulta
+
+    try {
+        const query = `
+        --PARA OBTENER LAS EMPRESAS POR PAIS
+        SELECT DISTINCT
+            EMPRESA.id_empresa,
+            EMPRESA.nombre_empresa,
+            DIRECCION.id_pais,
+            PAIS.pais
+        FROM mipyme.tbl_me_empresas EMPRESA
+        LEFT JOIN mipyme.tbl_me_direcciones DIRECCION ON EMPRESA.id_empresa = DIRECCION.id_empresa
+        LEFT JOIN mipyme.tbl_me_paises PAIS ON DIRECCION.id_pais = PAIS.id_pais
+            WHERE PAIS.pais IS NOT NULL
+                AND DIRECCION.estado = 1
+                AND EMPRESA.estado = 1
+                AND PAIS.id_pais = ?
+        `;
+
+        const params = [id_pais]; // Parámetros de consulta
 
         const [results, metadata] = await db.query(query, { replacements: params });
         
