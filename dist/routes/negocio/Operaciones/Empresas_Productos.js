@@ -13,4 +13,5 @@ empresasProductos.get('/consultarOperacionEmpresaProductoPorId/:id', validarToke
 empresasProductos.get('/consultarProductosNoRegistradosPorId/:id', validarToken_1.default, Empresas_Productos_controller_1.consultarProductosNoRegistradosPorId);
 empresasProductos.delete('/eliminarOperacionEmpresaProducto/:id', validarToken_1.default, Empresas_Productos_controller_1.eliminarOperacionEmpresaProducto);
 empresasProductos.get('/getProductosSearch/:categoria?/:pais?', validarToken_1.default, Empresas_Productos_controller_1.getProductosSearch);
+empresasProductos.get('/getPaisesPorProducto/:id_producto', validarToken_1.default, Empresas_Productos_controller_1.getPaisesPorProducto);
 exports.default = empresasProductos;

@@ -185,3 +185,40 @@ export const getProductosSearch = async (req: Request, res: Response) => {
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 }    
+
+//OBTIENE LOS PAÍSES DE LAS EMPRESAS REGISTRADAS
+
+export const getPaisesPorProducto = async (req: Request, res: Response) => {
+    const { id_producto } = req.params; // Leer los parámetros de consulta
+
+    try {
+        const query = `
+        --PARA OBTENER LOS PAÍSES DE LAS EMPRESAS REGISTRADAS
+        SELECT DISTINCT
+            PAIS.id_pais,
+            PAIS.pais
+        FROM mipyme.tbl_me_paises PAIS
+        LEFT JOIN mipyme.tbl_me_direcciones DIRECCION ON PAIS.id_pais = DIRECCION.id_pais
+        LEFT JOIN mipyme.tbl_op_empresas_productos PRODUCTO ON DIRECCION.id_empresa = PRODUCTO.id_empresa
+        WHERE DIRECCION.direccion IS NOT NULL
+            AND PAIS.estado = 1
+            AND DIRECCION.estado = 1
+            AND PRODUCTO.estado = 1
+            AND PRODUCTO.id_producto = ?`;
+
+        const params = [id_producto]; // Parámetros de consulta
+
+        const [results, metadata] = await db.query(query, { replacements: params });
+        
+        // Verificar si hay resultados
+        if (results && results.length > 0) {
+            res.json(results);
+        } else {
+            // Si no hay resultados, enviar un array vacío
+            res.json([]);
+        }
+    } catch (error) {
+        console.error('Error contacte al administrador:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+}

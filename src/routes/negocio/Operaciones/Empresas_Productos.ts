@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { agregarOperacionEmpresaProducto, consultarOperacionEmpresaProductoPorId, consultarOperacionesEmpresasProductos, consultarProductosNoRegistradosPorId, eliminarOperacionEmpresaProducto, getProductosSearch } from '../../../controllers/negocio/Operaciones/Empresas_Productos-controller';
+import { agregarOperacionEmpresaProducto, consultarOperacionEmpresaProductoPorId, consultarOperacionesEmpresasProductos, consultarProductosNoRegistradosPorId, eliminarOperacionEmpresaProducto, getPaisesPorProducto, getProductosSearch } from '../../../controllers/negocio/Operaciones/Empresas_Productos-controller';
 import validarToken from '../../validarToken';
 
 
@@ -11,6 +11,7 @@ empresasProductos.get('/consultarOperacionEmpresaProductoPorId/:id', validarToke
 empresasProductos.get('/consultarProductosNoRegistradosPorId/:id', validarToken, consultarProductosNoRegistradosPorId);
 empresasProductos.delete('/eliminarOperacionEmpresaProducto/:id', validarToken, eliminarOperacionEmpresaProducto);
 empresasProductos.get('/getProductosSearch/:categoria?/:pais?', validarToken, getProductosSearch);
+empresasProductos.get('/getPaisesPorProducto/:id_producto', validarToken, getPaisesPorProducto);
 
 
 

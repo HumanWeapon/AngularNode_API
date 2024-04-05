@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductosSearch = exports.eliminarOperacionEmpresaProducto = exports.consultarProductosNoRegistradosPorId = exports.consultarOperacionEmpresaProductoPorId = exports.agregarOperacionEmpresaProducto = exports.consultarOperacionesEmpresasProductos = void 0;
+exports.getPaisesPorProducto = exports.getProductosSearch = exports.eliminarOperacionEmpresaProducto = exports.consultarProductosNoRegistradosPorId = exports.consultarOperacionEmpresaProductoPorId = exports.agregarOperacionEmpresaProducto = exports.consultarOperacionesEmpresasProductos = void 0;
 const Empresas_Productos_1 = require("../../../models/negocio/Operaciones/Empresas_Productos");
 const productos_models_1 = require("../../../models/negocio/productos-models");
 const categoria_models_1 = require("../../../models/negocio/categoria-models");
@@ -197,3 +197,37 @@ const getProductosSearch = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.getProductosSearch = getProductosSearch;
+//OBTIENE LOS PAÍSES DE LAS EMPRESAS REGISTRADAS
+const getPaisesPorProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_producto } = req.params; // Leer los parámetros de consulta
+    try {
+        const query = `
+        --PARA OBTENER LOS PAÍSES DE LAS EMPRESAS REGISTRADAS
+        SELECT DISTINCT
+            PAIS.id_pais,
+            PAIS.pais
+        FROM mipyme.tbl_me_paises PAIS
+        LEFT JOIN mipyme.tbl_me_direcciones DIRECCION ON PAIS.id_pais = DIRECCION.id_pais
+        LEFT JOIN mipyme.tbl_op_empresas_productos PRODUCTO ON DIRECCION.id_empresa = PRODUCTO.id_empresa
+        WHERE DIRECCION.direccion IS NOT NULL
+            AND PAIS.estado = 1
+            AND DIRECCION.estado = 1
+            AND PRODUCTO.estado = 1
+            AND PRODUCTO.id_producto = ?`;
+        const params = [id_producto]; // Parámetros de consulta
+        const [results, metadata] = yield connection_1.default.query(query, { replacements: params });
+        // Verificar si hay resultados
+        if (results && results.length > 0) {
+            res.json(results);
+        }
+        else {
+            // Si no hay resultados, enviar un array vacío
+            res.json([]);
+        }
+    }
+    catch (error) {
+        console.error('Error contacte al administrador:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.getPaisesPorProducto = getPaisesPorProducto;
