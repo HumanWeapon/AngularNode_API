@@ -233,7 +233,7 @@ const getPaisesPorProducto = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.getPaisesPorProducto = getPaisesPorProducto;
 //OBTIENE LOS PAÍSES DE LAS EMPRESAS REGISTRADAS
 const getPaisesEmpresasPorPais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_pais } = req.params; // Leer los parámetros de consulta
+    const { id_pais, id_producto } = req.params; // Leer los parámetros de consulta
     try {
         const query = `
         --PARA OBTENER LAS EMPRESAS POR PAIS
@@ -241,16 +241,20 @@ const getPaisesEmpresasPorPais = (req, res) => __awaiter(void 0, void 0, void 0,
             EMPRESA.id_empresa,
             EMPRESA.nombre_empresa,
             DIRECCION.id_pais,
-            PAIS.pais
+            PAIS.pais,
+            PRODUCTO.id_producto
         FROM mipyme.tbl_me_empresas EMPRESA
         LEFT JOIN mipyme.tbl_me_direcciones DIRECCION ON EMPRESA.id_empresa = DIRECCION.id_empresa
         LEFT JOIN mipyme.tbl_me_paises PAIS ON DIRECCION.id_pais = PAIS.id_pais
+        LEFT JOIN mipyme.tbl_op_empresas_productos PRODUCTO ON EMPRESA.id_empresa = PRODUCTO.id_empresa
             WHERE PAIS.pais IS NOT NULL
                 AND DIRECCION.estado = 1
                 AND EMPRESA.estado = 1
+                AND PRODUCTO.estado = 1
                 AND PAIS.id_pais = ?
+                AND PRODUCTO.id_producto = ?
         `;
-        const params = [id_pais]; // Parámetros de consulta
+        const params = [id_pais, id_producto]; // Parámetros de consulta
         const [results, metadata] = yield connection_1.default.query(query, { replacements: params });
         // Verificar si hay resultados
         if (results && results.length > 0) {
