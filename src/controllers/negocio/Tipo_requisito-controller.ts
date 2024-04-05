@@ -204,42 +204,48 @@ export const requisitosAllPaisesEmpresas = async (req: Request, res: Response) =
     }
 }
 
-//obtiene los contactos registrados de una empresa
-export const consultarRequisitosActivosporId = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    try {
-        const query = `
-        SELECT 
-            A.id_tipo_requisito,
-            A.tipo_requisito,
-            A.id_pais,
-            A.id_empresa,
-            B.nombre_pais,
-            A.descripcion,
-            A.creado_por,
-            A.fecha_creacion,
-            A.modificado_por,
-            A.fecha_modificacion,
-            A.estado
-        FROM mipyme.tbl_me_tipo_requisito AS A
-        LEFT JOIN 
-        (
-            SELECT * 
-            FROM mipyme.tbl_me_paises 
-        ) AS B
-        ON A.id_pais = B.id_pais
-        WHERE 
-            A.id_empresa = ${id}
-        `;
+//obtiene los requisitos registrados de una empresa por el id de la empresa
+export const consultarRequisitosPorIdEmpresa = async (req: Request, res: Response) => {
+        const { id } = req.params;
+        try {
+            const query = `
+            SELECT 
+                TR.id_tipo_requisito,
+                TR.tipo_requisito,
+                TR.descripcion,
+                TR.creado_por,
+                TR.fecha_creacion,
+                TR.modificado_por,
+                TR.fecha_modificacion,
+                TR.estado,
+                P.id_pais,
+                P.pais,
+                P.descripcion AS descripcion_pais,
+                P.creado_por AS creado_por_pais,
+                P.fecha_creacion AS fecha_creacion_pais,
+                P.modificado_por AS modificado_por_pais,
+                P.fecha_modificacion AS fecha_modificacion_pais,
+                P.estado AS estado_pais,
+                P.cod_pais
+            FROM 
+                mipyme.tbl_me_tipo_requisito AS TR
+            LEFT JOIN 
+                mipyme.tbl_me_paises AS P ON TR.id_pais = P.id_pais
+            WHERE 
+                TR.id_empresa = ${id};
+            `;
+    
+            const [results, metadata] = await db.query(query);
+    
+            res.json(results);
+        } catch (error) {
+            console.error('Error al consultar requisitos y país:', error);
+            res.status(500).json({ msg: 'Error interno del servidor' });
+        }
+    };
+    
 
-        const [results, metadata] = await db.query(query);
 
-        res.json(results);
-    } catch (error) {
-        console.error('Error al consultar contactos:', error);
-        res.status(500).json({ msg: 'Error interno del servidor' });
-    }
-};
 
 
 

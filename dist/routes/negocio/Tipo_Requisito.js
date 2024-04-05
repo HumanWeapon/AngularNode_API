@@ -16,5 +16,5 @@ routerTipo_Requisito.post('/updateTipoRequisito', validarToken_1.default, Tipo_r
 routerTipo_Requisito.post('/inactivateRequisito', validarToken_1.default, Tipo_requisito_controller_1.inactivateRequisito); //Inactiva una Pyme en la DB
 routerTipo_Requisito.post('/activateRequisito', validarToken_1.default, Tipo_requisito_controller_1.activateRequisito); //Activa una Pyme en la DB
 routerTipo_Requisito.get('/requisitosAllPaisesEmpresas', validarToken_1.default, Tipo_requisito_controller_1.requisitosAllPaisesEmpresas); //Trae los telefonos y el Pais de los contactos
-routerTipo_Requisito.get('/consultarRequisitosActivosporId/:id', validarToken_1.default, Tipo_requisito_controller_1.consultarRequisitosActivosporId);
+routerTipo_Requisito.get('/consultarRequisitosporIdEmpresa/:id', validarToken_1.default, Tipo_requisito_controller_1.consultarRequisitosPorIdEmpresa);
 exports.default = routerTipo_Requisito;
