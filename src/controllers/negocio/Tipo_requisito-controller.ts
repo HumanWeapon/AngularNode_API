@@ -38,7 +38,7 @@ try {
 //Inserta un tipo_requisito en la base de datos
 export const postTipo_Requisito = async (req: Request, res: Response) => {
 
-    const { tipo_requisito, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { tipo_requisito, id_pais, id_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
 
     try{
         const _tipreq = await Tipo_Requisito.findOne({
@@ -52,6 +52,8 @@ export const postTipo_Requisito = async (req: Request, res: Response) => {
         }else{
             const newTRE = await Tipo_Requisito.create({                
                 tipo_requisito: tipo_requisito,
+                id_pais: id_pais.toUpperCase(),
+                id_empresa: id_empresa.toUpperCase(),
                 descripcion: descripcion.toUpperCase(),                
                 creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,

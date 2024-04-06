@@ -49,7 +49,7 @@ const getTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.getTipo_Requisito = getTipo_Requisito;
 //Inserta un tipo_requisito en la base de datos
 const postTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { tipo_requisito, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { tipo_requisito, id_pais, id_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
         const _tipreq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
             where: { tipo_requisito: tipo_requisito }
@@ -62,6 +62,8 @@ const postTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, funct
         else {
             const newTRE = yield Tipo_requisito_models_1.Tipo_Requisito.create({
                 tipo_requisito: tipo_requisito,
+                id_pais: id_pais.toUpperCase(),
+                id_empresa: id_empresa.toUpperCase(),
                 descripcion: descripcion.toUpperCase(),
                 creado_por: creado_por.toUpperCase(),
                 fecha_creacion: fecha_creacion,
