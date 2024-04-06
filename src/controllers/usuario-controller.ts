@@ -362,7 +362,7 @@ export const usuariosAllParametros = async (req: Request, res: Response) => {
         }
 
         const token = jwt.sign({ userId: user.id_usuario }, config.jwtSecretReset, { expiresIn: '10m' });
-        verificationLink = `http://localhost:4200/resetPassword${token}`;
+        verificationLink = `http://localhost:4200/reset-password/${token}`;
 
         user.resetToken = token;
         await user.save();
