@@ -356,7 +356,9 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 to: user.correo_electronico,
                 subject: "Recuperacion de Contraseña ✔ Utilidad MiPyme",
                 html: `
-                <b>Por favor da click en el enlace para poder recuperar tu contraseña:</b>
+                <b>Hola ${user.nombre_usuario},</b>
+                <br>
+                <p>Por favor haz clic en el siguiente enlace para restablecer tu contraseña:</p>
                 <a href="${verificationLink}">${verificationLink}</a>
                 `
             });

@@ -344,7 +344,7 @@ export const usuariosAllParametros = async (req: Request, res: Response) => {
     }
 }
   
-  export const forgotPassword = async (req: Request, res: Response) => {
+export const forgotPassword = async (req: Request, res: Response) => {
     const { correo_electronico } = req.body;
 
     if (!correo_electronico) {
@@ -373,7 +373,9 @@ export const usuariosAllParametros = async (req: Request, res: Response) => {
                 to: user.correo_electronico,
                 subject: "Recuperacion de Contraseña ✔ Utilidad MiPyme",
                 html: `
-                <b>Por favor da click en el enlace para poder recuperar tu contraseña:</b>
+                <b>Hola ${user.nombre_usuario},</b>
+                <br>
+                <p>Por favor haz clic en el siguiente enlace para restablecer tu contraseña:</p>
                 <a href="${verificationLink}">${verificationLink}</a>
                 `
             });
@@ -389,6 +391,7 @@ export const usuariosAllParametros = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Error al generar el token de restablecimiento' });
     }
 }
+
 
 
 
