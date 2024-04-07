@@ -209,13 +209,14 @@ const permisosRolesObjetos = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 [
                     sequelize_1.Sequelize.literal(`CASE 
                         WHEN "objetos"."id_objeto" = 25 THEN 1 
-                        WHEN "objetos"."id_objeto" = 23 THEN 2 
-                        WHEN "objetos"."id_objeto" = 22 THEN 3 
-                        WHEN "objetos"."id_objeto" = 9 THEN 4 
-                        WHEN "objetos"."id_objeto" = 26 THEN 5 
-                        WHEN "objetos"."id_objeto" = 7 THEN 6 
-                        WHEN "objetos"."id_objeto" = 29 THEN 7 
-                        ELSE 8 
+                        WHEN "objetos"."id_objeto" = 46 THEN 2
+                        WHEN "objetos"."id_objeto" = 23 THEN 3
+                        WHEN "objetos"."id_objeto" = 22 THEN 4 
+                        WHEN "objetos"."id_objeto" = 9 THEN 5
+                        WHEN "objetos"."id_objeto" = 26 THEN 6
+                        WHEN "objetos"."id_objeto" = 7 THEN 7 
+                        WHEN "objetos"."id_objeto" = 29 THEN 8 
+                        ELSE 9 
                         END`)
                 ]
             ],
