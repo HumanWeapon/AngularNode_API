@@ -75,16 +75,16 @@ exports.getAllPymes = getAllPymes;
 //Obtiene una Pyme por ID
 const getPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { getpyme } = req.body;
+        const { nombre_pyme } = req.body;
         const _pyme = yield pyme_models_1.Pyme.findOne({
-            where: { getpyme: getpyme }
+            where: { nombre_pyme: nombre_pyme }
         });
         if (_pyme) {
             res.json(_pyme);
         }
         else {
             res.status(404).json({
-                msg: `La Pyme: ${getpyme}`
+                msg: `No Existe La Pyme: ${nombre_pyme}`
             });
         }
     }
