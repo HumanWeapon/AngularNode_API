@@ -66,17 +66,17 @@ export const getAllPymes = async (req: Request, res: Response) => {
 
 //Obtiene una Pyme por ID
 export const getPyme = async (req: Request, res: Response) => {
-    const { id_pyme } = req.body;
 try {
+    const { getpyme } = req.body;
     const _pyme = await Pyme.findOne({
-        where: {id_pyme: id_pyme}
+        where: {getpyme: getpyme}
     });
     if(_pyme){
         res.json(_pyme)
     }
     else{
         res.status(404).json({
-            msg: `el ID de la pregunta no existe: ${id_pyme}`
+            msg: `La Pyme: ${getpyme}`
         })
     }
 
