@@ -8,14 +8,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postHistorialB = exports.gethistorial_busqueda_PYME = exports.getAllHistorialB = void 0;
 const historial_busqueda_1 = require("../../models/negocio/historial_busqueda");
+const connection_1 = __importDefault(require("../../db/connection"));
 //Consulta todos los registros del historial de búsqueda
 const getAllHistorialB = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const HistB = yield historial_busqueda_1.Historial_Busqueda.findAll();
-        res.json(HistB);
+        const query = `
+        SELECT 
+            HISTORIAL.id_historial,
+            HISTORIAL.id_pyme,
+            PYME.nombre_pyme,
+            HISTORIAL.id_producto,
+            PRODUCTO.producto,
+            HISTORIAL.id_pais,
+            PAIS.pais,
+            HISTORIAL.id_empresa,
+            EMPRESA.nombre_empresa
+        FROM mipyme.tbl_me_historial_busqueda HISTORIAL
+        LEFT JOIN mipyme.tbl_me_pyme PYME ON HISTORIAL.id_pyme = PYME.id_pyme
+        LEFT JOIN mipyme.tbl_me_productos PRODUCTO ON HISTORIAL.id_producto = PRODUCTO.id_producto
+        LEFT JOIN mipyme.tbl_me_paises PAIS ON HISTORIAL.id_pais = PAIS.id_pais
+        LEFT JOIN mipyme.tbl_me_empresas EMPRESA ON HISTORIAL.id_empresa = EMPRESA.id_empresa
+        ORDER BY id_historial DESC
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
     }
     catch (error) {
         res.status(400).json({

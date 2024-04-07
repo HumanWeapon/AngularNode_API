@@ -1,12 +1,31 @@
 import {Request, Response} from 'express';
 import { Historial_Busqueda } from '../../models/negocio/historial_busqueda';
+import db from '../../db/connection'
 
 
 //Consulta todos los registros del historial de búsqueda
 export const getAllHistorialB = async (req: Request, res: Response) => {
     try {
-        const HistB = await Historial_Busqueda.findAll();
-        res.json(HistB)
+        const query = `
+        SELECT 
+            HISTORIAL.id_historial,
+            HISTORIAL.id_pyme,
+            PYME.nombre_pyme,
+            HISTORIAL.id_producto,
+            PRODUCTO.producto,
+            HISTORIAL.id_pais,
+            PAIS.pais,
+            HISTORIAL.id_empresa,
+            EMPRESA.nombre_empresa
+        FROM mipyme.tbl_me_historial_busqueda HISTORIAL
+        LEFT JOIN mipyme.tbl_me_pyme PYME ON HISTORIAL.id_pyme = PYME.id_pyme
+        LEFT JOIN mipyme.tbl_me_productos PRODUCTO ON HISTORIAL.id_producto = PRODUCTO.id_producto
+        LEFT JOIN mipyme.tbl_me_paises PAIS ON HISTORIAL.id_pais = PAIS.id_pais
+        LEFT JOIN mipyme.tbl_me_empresas EMPRESA ON HISTORIAL.id_empresa = EMPRESA.id_empresa
+        ORDER BY id_historial DESC
+        `;
+        const [results, metadata] = await db.query(query);
+        res.json(results);
     }
     catch (error){
         res.status(400).json({
