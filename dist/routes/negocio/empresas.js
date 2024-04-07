@@ -15,4 +15,5 @@ routerEmpresa.post('/updateEmpresa', validarToken_1.default, empresas_controller
 routerEmpresa.post('/inactivateEmpresa', validarToken_1.default, empresas_controller_1.inactivateEmpresa); //Inactiva una Pyme en la DB
 routerEmpresa.post('/activateEmpresa', validarToken_1.default, empresas_controller_1.activateEmpresa); //Activa una Pyme en la DB
 routerEmpresa.post('/getEmpresasPymes', validarToken_1.default, empresas_controller_1.getEmpresasPymes); //Activa una Pyme en la DB
+routerEmpresa.get('/getEmpresaSearch/:id_empresa', validarToken_1.default, empresas_controller_1.getEmpresaSearch); //Activa una Pyme en la DB
 exports.default = routerEmpresa;

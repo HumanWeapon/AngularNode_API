@@ -8,10 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateEmpresa = exports.inactivateEmpresa = exports.updateEmpresa = exports.deleteEmpresa = exports.postEmpresa = exports.getEmpresa = exports.getEmpresasPymes = exports.getAllEmpresas = void 0;
+exports.getEmpresaSearch = exports.activateEmpresa = exports.inactivateEmpresa = exports.updateEmpresa = exports.deleteEmpresa = exports.postEmpresa = exports.getEmpresa = exports.getEmpresasPymes = exports.getAllEmpresas = void 0;
 const empresas_model_1 = require("../../models/negocio/empresas-model");
 const tipoEmpresa_models_1 = require("../../models/negocio/tipoEmpresa-models");
+const connection_1 = __importDefault(require("../../db/connection"));
 // Obtiene todas las Empresas con el tipo de empresa
 const getAllEmpresas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -230,3 +234,31 @@ const activateEmpresa = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.activateEmpresa = activateEmpresa;
+//OBTIENE LAS EMPRESAS PARA MOSTRARLAS EN EL SEARCH
+const getEmpresaSearch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_empresa } = req.params; // Leer los parámetros de consulta
+    try {
+        const query = `
+        SELECT
+        *
+        FROM mipyme.tbl_me_empresas EMPRESA
+        WHERE EMPRESA.id_empresa = ?
+            AND EMPRESA.estado = 1
+        `;
+        const params = [id_empresa]; // Parámetros de consulta
+        const [results, metadata] = yield connection_1.default.query(query, { replacements: params });
+        // Verificar si hay resultados
+        if (results && results.length > 0) {
+            res.json(results);
+        }
+        else {
+            // Si no hay resultados, enviar un array vacío
+            res.json([]);
+        }
+    }
+    catch (error) {
+        console.error('Error contacte al administrador:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.getEmpresaSearch = getEmpresaSearch;

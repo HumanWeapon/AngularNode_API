@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validarToken from '../validarToken';
-import { activateEmpresa, deleteEmpresa, getAllEmpresas, getEmpresa, getEmpresasPymes, inactivateEmpresa, postEmpresa, updateEmpresa } from '../../controllers/negocio/empresas-controller';
+import { activateEmpresa, deleteEmpresa, getAllEmpresas, getEmpresa, getEmpresaSearch, getEmpresasPymes, inactivateEmpresa, postEmpresa, updateEmpresa } from '../../controllers/negocio/empresas-controller';
 
 
 const routerEmpresa = Router()
@@ -13,5 +13,7 @@ routerEmpresa.post('/updateEmpresa', validarToken,updateEmpresa);//Actualiza la 
 routerEmpresa.post('/inactivateEmpresa',validarToken, inactivateEmpresa);//Inactiva una Pyme en la DB
 routerEmpresa.post('/activateEmpresa',validarToken, activateEmpresa);//Activa una Pyme en la DB
 routerEmpresa.post('/getEmpresasPymes',validarToken, getEmpresasPymes);//Activa una Pyme en la DB
+routerEmpresa.get('/getEmpresaSearch/:id_empresa',validarToken, getEmpresaSearch);//Activa una Pyme en la DB
+
 
 export default routerEmpresa;

@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import { Empresas } from '../../models/negocio/empresas-model';
 import { tipoEmpresa } from '../../models/negocio/tipoEmpresa-models';
+import db from '../../db/connection'
 
 // Obtiene todas las Empresas con el tipo de empresa
 export const getAllEmpresas = async (req: Request, res: Response) => {
@@ -198,27 +199,56 @@ try {
 //Activa la empresa
 export const activateEmpresa = async (req: Request, res: Response) => {
     const { id_empresa } = req.body;
-try {
-    const empresa = await Empresas.findOne({
-        where: {id_empresa: id_empresa}
-    });
-    if(!empresa){
-        return res.status(404).json({
-            msg: "La Empresa no existe"
+    try {
+        const empresa = await Empresas.findOne({
+            where: {id_empresa: id_empresa}
+        });
+        if(!empresa){
+            return res.status(404).json({
+                msg: "La Empresa no existe"
+            });
+        }
+
+        await empresa.update({
+            estado: 1
+        });
+        res.json('Empresa activada');
+
+
+    } catch (error) {
+        console.error('Error al activar la empres:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al activar la empresa',
+
         });
     }
-
-    await empresa.update({
-        estado: 1
-    });
-    res.json('Empresa activada');
-
-
-} catch (error) {
-    console.error('Error al activar la empres:', error);
-    res.status(500).json({
-        msg: 'Hubo un error al activar la empresa',
-
-    });
 }
+//OBTIENE LAS EMPRESAS PARA MOSTRARLAS EN EL SEARCH
+export const getEmpresaSearch = async (req: Request, res: Response) => {
+    const { id_empresa } = req.params; // Leer los parámetros de consulta
+
+    try {
+        const query = `
+        SELECT
+        *
+        FROM mipyme.tbl_me_empresas EMPRESA
+        WHERE EMPRESA.id_empresa = ?
+            AND EMPRESA.estado = 1
+        `;
+
+        const params = [id_empresa]; // Parámetros de consulta
+
+        const [results, metadata] = await db.query(query, { replacements: params });
+        
+        // Verificar si hay resultados
+        if (results && results.length > 0) {
+            res.json(results);
+        } else {
+            // Si no hay resultados, enviar un array vacío
+            res.json([]);
+        }
+    } catch (error) {
+        console.error('Error contacte al administrador:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
 }
