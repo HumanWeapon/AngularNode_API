@@ -65,6 +65,7 @@ export const gethistorial_busqueda_PYME = async (req: Request, res: Response) =>
         if (results.length === 0) {
             return res.status(404).json({ msg: 'No hay registro de búsquedas de producto' });
         }
+        res.json(results);
     }
     catch (error){
         res.status(400).json({
