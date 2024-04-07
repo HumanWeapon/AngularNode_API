@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateHistorialB = exports.inactivateHistorialB = exports.updateHistorialB = exports.deleteHistorialB = exports.postHistorialB = exports.getHistorialB = exports.getAllHistorialB = void 0;
+exports.postHistorialB = exports.gethistorial_busqueda_PYME = exports.getAllHistorialB = void 0;
 const historial_busqueda_1 = require("../../models/negocio/historial_busqueda");
-//Obtiene todos los registros de la base de datos
+//Consulta todos los registros del historial de búsqueda
 const getAllHistorialB = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const HistB = yield historial_busqueda_1.Historial_Busqueda.findAll();
@@ -25,21 +25,14 @@ const getAllHistorialB = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getAllHistorialB = getAllHistorialB;
-//Obtiene un historial por ID
-const getHistorialB = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_historial } = req.body;
+//Consulta todos los registros del historial de búsqueda para una PYME por el id_pyme
+const gethistorial_busqueda_PYME = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_pyme } = req.params;
     try {
-        const _HistB = yield historial_busqueda_1.Historial_Busqueda.findAll({
-            where: { id_historial: id_historial }
+        const HistB = yield historial_busqueda_1.Historial_Busqueda.findAll({
+            where: { id_pyme: id_pyme }
         });
-        if (_HistB) {
-            res.json(_HistB);
-        }
-        else {
-            res.status(404).json({
-                msg: `el ID del Pais no existe: ${id_historial}`
-            });
-        }
+        res.json(HistB);
     }
     catch (error) {
         res.status(400).json({
@@ -48,145 +41,28 @@ const getHistorialB = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
-exports.getHistorialB = getHistorialB;
-// Inserta una nuevo registro en la base de datos
+exports.gethistorial_busqueda_PYME = gethistorial_busqueda_PYME;
+//Inserta una nuevo registro en la Base de Datos
 const postHistorialB = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_historial, id_pyme, id_producto, id_pais, id_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { id_pyme, id_producto, id_pais, id_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
     try {
-        const _HistB = yield historial_busqueda_1.Historial_Busqueda.findOne({
-            where: { id_historial: id_historial },
-        });
-        if (_HistB) {
-            return res.status(400).json({
-                msg: 'Registro ya existe en la base de datos: ' + id_historial
-            });
-        }
-        else {
-            const HistB = yield historial_busqueda_1.Historial_Busqueda.create({
-                descripcion: descripcion.toUpperCase(),
-                creado_por: creado_por.toUpperCase(),
-                fecha_creacion: Date.now(),
-                modificado_por: modificado_por.toUpperCase(),
-                fecha_modificacion: Date.now(),
-                estado: estado
-            });
-            return res.json(HistB);
-        }
-    }
-    catch (error) {
-        res.status(400).json({
-            msg: 'Contactate con el administrador',
-            error
-        });
-    }
-});
-exports.postHistorialB = postHistorialB;
-// Elimina el Pais de la base de datos
-const deleteHistorialB = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_historial } = req.body; // Obtén el ID desde los parámetros de la URL
-    try {
-        const _HistB = yield historial_busqueda_1.Historial_Busqueda.findOne({
-            where: { id_historial: id_historial }
-        });
-        if (_HistB) {
-            yield _HistB.destroy();
-            res.json(_HistB);
-        }
-        else {
-            res.status(404).json({
-                msg: 'No se encontró registro con el ID ' + id_historial,
-            });
-        }
-    }
-    catch (error) {
-        console.error('Error al eliminar el registro:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al eliminar el registro',
-        });
-    }
-});
-exports.deleteHistorialB = deleteHistorialB;
-//actualiza el Telefono en la base de datos
-const updateHistorialB = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_historial, id_pyme, id_producto, id_pais, id_empresa, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
-    try {
-        const _HistB = yield historial_busqueda_1.Historial_Busqueda.findOne({
-            where: { id_historial: id_historial }
-        });
-        if (!_HistB) {
-            return res.status(404).json({
-                msg: 'Registro con el ID: ' + id_historial + ' no existe en la base de datos'
-            });
-        }
-        yield _HistB.update({
+        const HistB = yield historial_busqueda_1.Historial_Busqueda.create({
             id_pyme: id_pyme,
             id_producto: id_producto,
             id_pais: id_pais,
             id_empresa: id_empresa,
             descripcion: descripcion.toUpperCase(),
             creado_por: creado_por.toUpperCase(),
-            fecha_creacion: fecha_creacion,
+            fecha_creacion: Date.now(),
             modificado_por: modificado_por.toUpperCase(),
-            fecha_modificacion: fecha_modificacion,
+            fecha_modificacion: Date.now(),
             estado: estado
         });
-        res.json(_HistB);
+        return res.json(HistB);
     }
     catch (error) {
-        console.error('Error al actualizar el registro:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al actualizar el registro',
-        });
+        console.error('Error contacte al administrador:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
     }
 });
-exports.updateHistorialB = updateHistorialB;
-//Inactiva el registro de la DBA
-const inactivateHistorialB = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_historial } = req.body;
-    try {
-        const HistB = yield historial_busqueda_1.Historial_Busqueda.findOne({
-            where: { id_historial: id_historial }
-        });
-        if (!HistB) {
-            return res.status(404).json({
-                msg: "El registro no existe: " + id_historial
-            });
-        }
-        yield HistB.update({
-            estado: 2
-        });
-        res.json(HistB);
-    }
-    catch (error) {
-        console.error('Error al inactivar el registro:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al inactivar el registro',
-        });
-    }
-});
-exports.inactivateHistorialB = inactivateHistorialB;
-//Activa el registro  de la DBA
-const activateHistorialB = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_historial } = req.body;
-    try {
-        const HistB = yield historial_busqueda_1.Historial_Busqueda.findOne({
-            where: { id_historial: id_historial }
-        });
-        if (!HistB) {
-            return res.status(404).json({
-                msg: "El registro no existe: " + id_historial
-            });
-        }
-        yield HistB.update({
-            estado: 1
-        });
-        res.json(HistB);
-    }
-    catch (error) {
-        console.error('Error al activar el registro:', error);
-        res.status(500).json({
-            msg: 'Hubo un error al activar el registro',
-        });
-    }
-});
-exports.activateHistorialB = activateHistorialB;
+exports.postHistorialB = postHistorialB;

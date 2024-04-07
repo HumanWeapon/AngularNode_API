@@ -1,16 +1,12 @@
 import {Router} from 'express';
 import validarToken from '.././validarToken';
-import { activateHistorialB, deleteHistorialB, getAllHistorialB, getHistorialB, inactivateHistorialB, postHistorialB, updateHistorialB } from '../../controllers/negocio/historial_busqueda';
+import { getAllHistorialB, gethistorial_busqueda_PYME, postHistorialB } from '../../controllers/negocio/historial_busqueda';
 
 
 const routerHistB = Router()
 
-routerHistB.get('/getAllHistorialB',validarToken, getAllHistorialB);//Consulta todos los parametros en la base de datos
-routerHistB.post('/getHistorialB',validarToken, getHistorialB);//Consulta solo un elemento en la base de datos
-routerHistB.post('/postHistorialB', validarToken, postHistorialB);//Inserta una nuevo Pais en la Base de Datos
-routerHistB.delete('/deleteHistorialB',validarToken, deleteHistorialB);//Elimina el Pais de la Base de Datos
-routerHistB.post('/updateHistorialB', validarToken, updateHistorialB);//Actualiza el Pais en la Base de Datos
-routerHistB.post('/inactivateHistorialB',validarToken, inactivateHistorialB);//Inactiva un Pais en la DB
-routerHistB.post('/activateHistorialB',validarToken, activateHistorialB);//Activa un Pais en la DB
+routerHistB.get('/getAllHistorialB',validarToken, getAllHistorialB);//Consulta todos los registros del historial de búsqueda
+routerHistB.get('/gethistorial_busqueda_PYME/:id_pyme',validarToken, gethistorial_busqueda_PYME);//Consulta todos los registros del historial de búsqueda para una PYME por el id_pyme
+routerHistB.post('/postHistorialB', validarToken, postHistorialB);//Inserta una nuevo registro en la Base de Datos
 
 export default routerHistB;
