@@ -17,7 +17,8 @@ export const getAllHistorialB = async (req: Request, res: Response) => {
             HISTORIAL.id_pais,
             PAIS.pais,
             HISTORIAL.id_empresa,
-            EMPRESA.nombre_empresa
+            EMPRESA.nombre_empresa,
+            HISTORIAL.fecha_creacion
         FROM mipyme.tbl_me_historial_busqueda HISTORIAL
         LEFT JOIN mipyme.tbl_me_pyme PYME ON HISTORIAL.id_pyme = PYME.id_pyme
         LEFT JOIN mipyme.tbl_me_productos PRODUCTO ON HISTORIAL.id_producto = PRODUCTO.id_producto
@@ -49,7 +50,8 @@ export const gethistorial_busqueda_PYME = async (req: Request, res: Response) =>
             HISTORIAL.id_pais,
             PAIS.pais,
             HISTORIAL.id_empresa,
-            EMPRESA.nombre_empresa
+            EMPRESA.nombre_empresa,
+            HISTORIAL.fecha_creacion
         FROM mipyme.tbl_me_historial_busqueda HISTORIAL
         LEFT JOIN mipyme.tbl_me_pyme PYME ON HISTORIAL.id_pyme = PYME.id_pyme
         LEFT JOIN mipyme.tbl_me_productos PRODUCTO ON HISTORIAL.id_producto = PRODUCTO.id_producto
