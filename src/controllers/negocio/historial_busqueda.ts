@@ -106,12 +106,12 @@ export const getTop10Busquedas = async (req: Request, res: Response) => {
     try {
         const query = `
         SELECT 
-            PRODUCTO.producto,
-            COUNT(HISTORIAL.id_historial) AS veces_buscado
+            PRODUCTO.producto AS "name",
+            COUNT(HISTORIAL.id_historial) AS "value"
         FROM mipyme.tbl_me_historial_busqueda HISTORIAL
         LEFT JOIN mipyme.tbl_me_productos PRODUCTO ON HISTORIAL.id_producto = PRODUCTO.id_producto
         GROUP BY PRODUCTO.producto
-        ORDER BY veces_buscado DESC
+        ORDER BY "value" DESC
         LIMIT 10
         `;
         const [results, metadata] = await db.query(query);
