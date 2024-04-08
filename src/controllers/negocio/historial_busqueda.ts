@@ -101,3 +101,26 @@ export const postHistorialB = async (req: Request, res: Response) => {
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 }
+//Consulta el top 10 de productos más buscados
+export const getTop10Busquedas = async (req: Request, res: Response) => {
+    try {
+        const query = `
+        SELECT 
+            PRODUCTO.producto,
+            COUNT(HISTORIAL.id_historial) AS veces_buscado
+        FROM mipyme.tbl_me_historial_busqueda HISTORIAL
+        LEFT JOIN mipyme.tbl_me_productos PRODUCTO ON HISTORIAL.id_producto = PRODUCTO.id_producto
+        GROUP BY PRODUCTO.producto
+        ORDER BY veces_buscado DESC
+        LIMIT 10
+        `;
+        const [results, metadata] = await db.query(query);
+        res.json(results);
+    }
+    catch (error){
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        }); 
+    }
+}

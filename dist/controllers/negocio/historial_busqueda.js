@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postHistorialB = exports.gethistorial_busqueda_PYME = exports.getAllHistorialB = void 0;
+exports.getTop10Busquedas = exports.postHistorialB = exports.gethistorial_busqueda_PYME = exports.getAllHistorialB = void 0;
 const historial_busqueda_1 = require("../../models/negocio/historial_busqueda");
 const connection_1 = __importDefault(require("../../db/connection"));
 const sequelize_1 = require("sequelize");
@@ -114,3 +114,27 @@ const postHistorialB = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.postHistorialB = postHistorialB;
+//Consulta el top 10 de productos más buscados
+const getTop10Busquedas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const query = `
+        SELECT 
+            PRODUCTO.producto,
+            COUNT(HISTORIAL.id_historial) AS veces_buscado
+        FROM mipyme.tbl_me_historial_busqueda HISTORIAL
+        LEFT JOIN mipyme.tbl_me_productos PRODUCTO ON HISTORIAL.id_producto = PRODUCTO.id_producto
+        GROUP BY PRODUCTO.producto
+        ORDER BY veces_buscado DESC
+        LIMIT 10
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
+});
+exports.getTop10Busquedas = getTop10Busquedas;
