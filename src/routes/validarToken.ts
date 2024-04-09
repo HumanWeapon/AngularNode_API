@@ -46,5 +46,4 @@ const validarTokenpyme = ( req: Request, res: Response, next: NextFunction) => {
     }
     
 }
-
 export { validarToken, validarTokenpyme };
