@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {validarToken} from '../validarToken';
+import validarToken from '../validarToken';
 import { deleteContactoTelefono, getAllContactosTelefono, getContactoTelefono, postContactoTelefono, updateContactoTelefono, inactivateContactoTelefono, activateContactoTelefono, telefonosdeContactosPorId, telefonosAllContactos, telefonosAllContactosPaises} from '../../controllers/negocio/Telefonos-controller';
 
 const routerContactoTelefono = Router()

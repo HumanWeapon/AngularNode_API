@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {validarToken} from './validarToken';
+import validarToken from './validarToken';
 import { updatePregunta, deletePregunta, postPregunta, getAllPreguntas, getPregunta, activatePregunta, inactivatePregunta } from '../controllers/preguntas-controller';
 
 const routerPreguntas = Router()

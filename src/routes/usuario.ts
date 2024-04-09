@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {updateUsuario, activateUsuario, inactivateUsuario,  postUsuario, getAllUsuarios, getUsuario, loginUser, cambiarContrasena, usuariosAllRoles, usuariosAllParametros, getCorreoElectronicoPorUsuario, forgotPassword, resetPassword } from '../controllers/usuario-controller';
-import {validarToken} from './validarToken';
+import validarToken from './validarToken';
 
 const routerUser = Router()
 

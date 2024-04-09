@@ -1,7 +1,8 @@
 import {Request, Response, NextFunction} from 'express'
 import jwt from 'jsonwebtoken';
 
-const validarToken = ( req: Request, res: Response, next: NextFunction) => {
+
+const validarTokenpyme = ( req: Request, res: Response, next: NextFunction) => {
     console.log('Validar Token')
     const headerToken = req.headers['authorization'];
 
@@ -9,10 +10,9 @@ const validarToken = ( req: Request, res: Response, next: NextFunction) => {
         //Tiene Token
         try {
             const bearerToken = headerToken.slice(7);
-            jwt.verify(bearerToken, process.env.SECRET_KEY|| 'Lamers005*');
+            jwt.verify(bearerToken, process.env.SECERT_KEY_PYME || 'Lamers006*')
             next();
         } catch (error) {
-            
             res.status(401).json({
                 msg: 'Token no valido'
             })
@@ -24,5 +24,4 @@ const validarToken = ( req: Request, res: Response, next: NextFunction) => {
     }
     
 }
-
-export default validarToken ;
+export default validarTokenpyme ;

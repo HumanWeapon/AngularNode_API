@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {validarToken} from '../validarToken';
+import validarToken from '../validarToken';
 import { activateEmpresa, deleteEmpresa, getAllEmpresas, getEmpresa, getEmpresaSearch, getEmpresasPymes, inactivateEmpresa, postEmpresa, updateEmpresa } from '../../controllers/negocio/empresas-controller';
 
 

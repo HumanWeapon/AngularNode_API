@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {validarToken} from '../../validarToken';
+import validarToken from '../../validarToken';
 import {  } from '../../../controllers/negocio/Operaciones/Empresas_Productos-controller';
 import { ReporteContactos, agregarOperacionEmpresaContacto, consultarContactosActivosporId, consultarContactosNoRegistradosPorId, eliminarOperacionEmpresaContacto } from '../../../controllers/negocio/Operaciones/Empresas_Contactos-controller';
 

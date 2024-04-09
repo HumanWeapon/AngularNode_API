@@ -1,6 +1,6 @@
 // Elaborado Por Breydy Flores
 import {Router} from 'express';
-import {validarToken} from '.././validarToken';
+import validarToken from '.././validarToken';
 import { activateCategoria, deleteCategoria, getAllCategorias, getAllProductosByCategoria, getCategoria, inactivateCategoria, postCategoria, updateCategoria } from '../../controllers/negocio/categoria-controller';
 
 const routerCategoria = Router()

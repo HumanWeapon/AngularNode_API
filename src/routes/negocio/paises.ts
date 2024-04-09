@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {validarToken} from '.././validarToken';
+import validarToken from '.././validarToken';
 import { activatePais, deletePais, getAllPaises, getPais, inactivatePais, postPais, updatePais } from '../../controllers/negocio/paises-controller';
 
 

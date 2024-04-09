@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {validarToken} from './validarToken';
+import validarToken from './validarToken';
 import { activateObjeto, deleteObjeto, getAllObjetos, getAllObjetosMenu, getObjeto, inactivateObjecto, objetosJSON, postObjeto, updateObjetos } from '../controllers/objetos-controller';
 
 const routerObjetos = Router()

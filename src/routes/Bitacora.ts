@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {validarToken} from './validarToken';
+import validarToken from './validarToken';
 import { DeleteBitacora, PostBitacora, getAllBitacora } from '../controllers/bitacora-controller';
 
 

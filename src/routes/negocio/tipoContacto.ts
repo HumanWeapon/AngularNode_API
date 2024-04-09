@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {validarToken} from '.././validarToken';
+import validarToken from '.././validarToken';
 import { activateTipoContacto, deleteTipoContacto, getAllTipoContactos, getAllTipoContactosActivos, getTipoContacto, inactivateTipoContacto, postTipoContacto, updateTipoContacto } from '../../controllers/negocio/tipoContacto-controller';
 import routertipoTelefono from './tipotelefono';
 

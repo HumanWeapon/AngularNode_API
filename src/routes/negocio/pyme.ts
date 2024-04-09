@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import { activatePyme, deletePyme, getAllPymes, getOnePyme, getPyme, getRolPyme, inactivatePyme, loginPyme, postPyme, pymesAllTipoEmpresa, updatePyme } from '../../controllers/negocio/pyme.controller';
-import {validarToken, validarTokenpyme} from '../validarToken';
+import validarToken from '../validarToken';
 
 const routerPyme = Router()
 
