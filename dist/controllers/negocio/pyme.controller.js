@@ -46,7 +46,7 @@ const loginPyme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         // Genera el token de autenticación
         const token = jsonwebtoken_1.default.sign({
             pyme: pyme
-        }, process.env.SECERT_KEY || 'Lamers005*');
+        }, process.env.SECRET_KEY || 'Lamers005*');
         res.json(token);
     }
     catch (error) {
