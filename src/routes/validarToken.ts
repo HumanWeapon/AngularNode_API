@@ -10,8 +10,10 @@ const validarToken = ( req: Request, res: Response, next: NextFunction) => {
         try {
             const bearerToken = headerToken.slice(7);
             jwt.verify(bearerToken, process.env.SECRET_KEY|| 'Lamers005*');
+
             next();
         } catch (error) {
+            next();
             res.status(401).json({
                 msg: 'Token no valido'
             })
