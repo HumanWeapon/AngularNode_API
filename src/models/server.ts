@@ -31,6 +31,7 @@ import routerDireccionContacto from '../routes/negocio/direcciones';
 import empresasProductos from '../routes/negocio/Operaciones/Empresas_Productos';
 import empresasContatos from '../routes/negocio/Operaciones/Emprersas_Contactos';
 import routerHistB from '../routes/negocio/historial_busqueda';
+import routerconsultaspyme from '../routes/consultas-pyme';
 
 class Server{
     private app: Application;
@@ -77,6 +78,8 @@ class Server{
         this.app.use('/api/empresas_productos',empresasProductos);
         this.app.use('/api/empresas_contactos',empresasContatos);
         this.app.use('/api/historial_busqueda',routerHistB);
+        this.app.use('/api/consultas_pyme',routerconsultaspyme);
+
     }
     midlewares(){
 
