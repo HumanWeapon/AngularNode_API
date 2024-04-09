@@ -8,17 +8,17 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const validarToken = (req, res, next) => {
     console.log('Validar Token');
     const headerToken = req.headers['authorization'];
-    if (headerToken !== undefined && headerToken.startsWith('Bearer ')) {
-        // Tiene Token
+    if (headerToken != undefined && headerToken.startsWith('Bearer ')) {
+        //Tiene Token
         try {
             const bearerToken = headerToken.slice(7);
             jsonwebtoken_1.default.verify(bearerToken, process.env.SECRET_KEY || 'Lamers005*');
             next();
         }
         catch (error) {
-            // Si el token no es válido, ejecuta validarTokenpyme
-            validarTokenpyme(req, res, next);
-            return;
+            res.status(401).json({
+                msg: 'Token no valido'
+            });
         }
     }
     else {
@@ -29,10 +29,10 @@ const validarToken = (req, res, next) => {
 };
 exports.validarToken = validarToken;
 const validarTokenpyme = (req, res, next) => {
-    console.log('Validar Token PYME');
+    console.log('Validar Token');
     const headerToken = req.headers['authorization'];
-    if (headerToken !== undefined && headerToken.startsWith('Bearer ')) {
-        // Tiene Token
+    if (headerToken != undefined && headerToken.startsWith('Bearer ')) {
+        //Tiene Token
         try {
             const bearerToken = headerToken.slice(7);
             jsonwebtoken_1.default.verify(bearerToken, process.env.SECERT_KEY_PYME || 'Lamers006*');
