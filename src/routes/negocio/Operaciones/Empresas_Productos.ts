@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { agregarOperacionEmpresaProducto, consultarOperacionEmpresaProductoPorId, consultarOperacionesEmpresasProductos, consultarProductosNoRegistradosPorId, eliminarOperacionEmpresaProducto, getPaisesEmpresasPorPais, getPaisesPorProducto, getProductosSearch } from '../../../controllers/negocio/Operaciones/Empresas_Productos-controller';
-import validarToken from '../../validarToken';
+import {validarToken} from '../../validarToken';
 
 
 const empresasProductos = Router();

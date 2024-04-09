@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import validarToken from '.././validarToken';
+import {validarToken} from '.././validarToken';
 import { getAllProductos, getProductos, postProducto, deleteProducto, updateProducto, inactivateProducto, activateProducto, getAllOpProductos, getOpProductos, getAllProductosActivos } from '../../controllers/negocio/productos_controller';
 
 const routerProductos = Router()

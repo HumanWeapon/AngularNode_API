@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import validarToken from '.././validarToken';
+import {validarToken} from '.././validarToken';
 import { getAllHistorialB, getTop10Busquedas, gethistorial_busqueda_PYME, postHistorialB } from '../../controllers/negocio/historial_busqueda';
 
 

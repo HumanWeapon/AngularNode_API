@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import validarToken from '.././validarToken';
+import {validarToken} from '.././validarToken';
 import { activateTipoEmpresa, deleteTipoEmpresa, getAllTipoEmpresa, getTipoEmpresa, inactivateTipoEmpresa, postTipoEmpresa, updateTipoEmpresa } from '../../controllers/negocio/tipoEmpresa-controller';
 
 const routerTipoEmpresa = Router()

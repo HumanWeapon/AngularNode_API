@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import validarToken from '../validarToken';
+import {validarToken} from '../validarToken';
 import { activateDireccion, getCiudades, getDireccionesEmpresaporID, getTipoDirecciones, getdirecciones, inactivateDirecion, postDireccion, putDireccion } from '../../controllers/negocio/direcciones-controllers';
 
 

@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import validarToken from './validarToken';
+import {validarToken} from './validarToken';
 import { updateParametro, deleteParametro, postParametro, getAllParametros, getParametro, inactivateParametro, activateParametro } from '../controllers/parametros-controller';
 
 const routerParametros = Router()

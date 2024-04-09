@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import validarToken from './validarToken';
+import {validarToken} from './validarToken';
 import { activateRol, deleteRol, getAllRoles, getRol, inactivateRol, postRol, updateRoles } from '../controllers/roles-controller';
 
 const routerRoles = Router()

@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import validarToken from '.././validarToken';
+import {validarToken} from '.././validarToken';
 import { activateTipoDireccion, deleteTipoDireccion, getAllTipoDirecciones, getTipoDireccion, getTipoDirecciones, inactivateTipoDireccion, postTipoDireccion, updateTipoDireccion } from '../../controllers/negocio/tipoDireccion-controller';
 import routerTipoEmpresa from './tipoEmpresa';
 

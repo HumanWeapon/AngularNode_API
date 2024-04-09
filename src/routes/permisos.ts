@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import validarToken from './validarToken';
+import {validarToken} from './validarToken';
 import { activatePermiso, deletePermiso, getAllPermisos, getPermiso, inactivatePermiso, objetosSinRol, permisosRolesObjetos, postPermiso, updatePermisos } from '../controllers/permisos-controller';
 
 const routerPermisos = Router()

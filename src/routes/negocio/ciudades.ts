@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import validarToken from '.././validarToken';
+import {validarToken} from '.././validarToken';
 import { activateCiudad, ciudadesAllPaises, deleteCiudad, getAllCiudades, getCiudad, getCiudades, inactivateCiudad, postCiudad, updateCiudad } from '../../controllers/negocio/ciudades-controller';
 
 const routerCiudades = Router()

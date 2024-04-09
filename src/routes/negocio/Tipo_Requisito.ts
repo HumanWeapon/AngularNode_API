@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import validarToken from '../validarToken';
+import {validarToken} from '../validarToken';
 import { activateRequisito, consultarRequisitosPorIdEmpresa, deleteTipo_Requisito, getAllTipo_Requisito, inactivateRequisito, postTipo_Requisito, requisitosAllPaisesEmpresas, updateTipo_Requisito } from '../../controllers/negocio/Tipo_requisito-controller';
 import { getTipo_Requisito } from '../../controllers/negocio/Tipo_requisito-controller';
 

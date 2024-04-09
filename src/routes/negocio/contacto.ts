@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import validarToken from '.././validarToken';
+import {validarToken} from '.././validarToken';
 import { deleteContacto, getAllContactos, getContacto, postContacto, updateContacto, activateContacto, inactivateContacto, getAllContactosconTipoContacto } from '../../controllers/negocio/contacto-controller';
 import { getcontactosActivos } from '../../controllers/negocio/Telefonos-controller';
 
