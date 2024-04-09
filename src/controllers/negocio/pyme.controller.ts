@@ -39,7 +39,7 @@ export const loginPyme = async (req: Request, res: Response) => {
         // Genera el token de autenticación
         const token = jwt.sign({
             pyme: pyme
-        }, process.env.SECERT_KEY_PYME || 'Lamers006*');
+        }, process.env.SECERT_KEY || 'Lamers005*');
             
         res.json(token);
     } catch (error) {
