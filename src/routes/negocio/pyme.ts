@@ -13,7 +13,7 @@ routerPyme.post('/postPyme', validarTokenpyme, postPyme);//Inserta un nuevo Pyme
 routerPyme.post('/inactivatePyme',validarTokenpyme, inactivatePyme);//Inactiva una Pyme en la DB
 routerPyme.post('/activatePyme',validarTokenpyme, activatePyme);//Activa una Pyme en la DB
 routerPyme.get('/pymesAllTipoEmpresa',validarTokenpyme, pymesAllTipoEmpresa);//Activa un usuario en la DB
-routerPyme.get('/getRolPyme', validarTokenpyme, getRolPyme);//Obtiene el id del rol PYME
-routerPyme.get('/getOnePyme/:id',validarTokenpyme, getOnePyme);//Obtiene la PYME por el nombre
+routerPyme.get('/getRolPyme', getRolPyme);//Obtiene el id del rol PYME
+routerPyme.get('/getOnePyme/:id',validarToken, getOnePyme);//Obtiene la PYME por el nombre
 
 export default routerPyme; 
