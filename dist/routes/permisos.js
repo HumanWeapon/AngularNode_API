@@ -12,5 +12,5 @@ routerPermisos.delete('/deletePermiso', validarToken_1.validarToken, permisos_co
 routerPermisos.post('/updatePermisos', validarToken_1.validarToken, permisos_controller_1.updatePermisos); // actualiza permiso en la base de datos
 routerPermisos.post('/inactivatePermiso', validarToken_1.validarToken, permisos_controller_1.inactivatePermiso); //Inactiva una Pyme en la DB
 routerPermisos.post('/activatePermiso', validarToken_1.validarToken, permisos_controller_1.activatePermiso); //Activa una Pyme en la DB
-routerPermisos.post('/permisosRolesObjetos', validarToken_1.validarToken, validarToken_1.validarTokenpyme, permisos_controller_1.permisosRolesObjetos); //Activa una Pyme en la DB
+routerPermisos.post('/permisosRolesObjetos', validarToken_1.validarToken, permisos_controller_1.permisosRolesObjetos); //Activa una Pyme en la DB
 exports.default = routerPermisos;

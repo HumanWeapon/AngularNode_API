@@ -10,7 +10,7 @@ empresasProductos.get('/consultarOperacionesEmpresasProductos', validarToken, co
 empresasProductos.get('/consultarOperacionEmpresaProductoPorId/:id', validarToken, consultarOperacionEmpresaProductoPorId);
 empresasProductos.get('/consultarProductosNoRegistradosPorId/:id', validarToken, consultarProductosNoRegistradosPorId);
 empresasProductos.delete('/eliminarOperacionEmpresaProducto/:id', validarToken, eliminarOperacionEmpresaProducto);
-empresasProductos.get('/getProductosSearch/:categoria?/:pais?', validarToken, validarTokenpyme, getProductosSearch);
+empresasProductos.get('/getProductosSearch/:categoria?/:pais?', validarToken, getProductosSearch);
 empresasProductos.get('/getPaisesPorProducto/:id_producto', validarToken, getPaisesPorProducto);
 empresasProductos.get('/getPaisesEmpresasPorPais/:id_pais/:id_producto', validarToken, getPaisesEmpresasPorPais);
 
