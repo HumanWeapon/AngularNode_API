@@ -58,7 +58,7 @@ export const postParametro = async (req: Request, res: Response) => {
                 fecha_modificacion: fecha_modificacion,
                 creado_por: creado_por.toUpperCase(),
                 modificado_por: modificado_por.toUpperCase(),                
-            })
+            });
             const _parametro2 = await Parametros.findone({
                 where: { parametro: param.parametro }
             });
