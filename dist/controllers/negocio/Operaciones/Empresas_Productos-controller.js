@@ -231,12 +231,12 @@ const getPaisesPorProducto = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getPaisesPorProducto = getPaisesPorProducto;
-//OBTIENE LOS PAÍSES DE LAS EMPRESAS REGISTRADAS
+//OBTIENE LAS EMPRESAS POR PAIS Y POR PRODUCTO
 const getPaisesEmpresasPorPais = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_pais, id_producto } = req.params; // Leer los parámetros de consulta
     try {
         const query = `
-        --PARA OBTENER LAS EMPRESAS POR PAIS
+        --PARA OBTENER LAS EMPRESAS POR PAIS Y POR PRODUCTO
         SELECT DISTINCT
             EMPRESA.id_empresa,
             EMPRESA.nombre_empresa,

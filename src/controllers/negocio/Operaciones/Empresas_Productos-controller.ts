@@ -221,13 +221,13 @@ export const getPaisesPorProducto = async (req: Request, res: Response) => {
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 }
-//OBTIENE LOS PAÍSES DE LAS EMPRESAS REGISTRADAS
+//OBTIENE LAS EMPRESAS POR PAIS Y POR PRODUCTO
 export const getPaisesEmpresasPorPais = async (req: Request, res: Response) => {
     const { id_pais, id_producto } = req.params; // Leer los parámetros de consulta
 
     try {
         const query = `
-        --PARA OBTENER LAS EMPRESAS POR PAIS
+        --PARA OBTENER LAS EMPRESAS POR PAIS Y POR PRODUCTO
         SELECT DISTINCT
             EMPRESA.id_empresa,
             EMPRESA.nombre_empresa,

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.putDireccion = exports.postDireccion = exports.activateDireccion = exports.inactivateDirecion = exports.getDireccionesEmpresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
+exports.putDireccion = exports.postDireccion = exports.activateDireccion = exports.inactivateDirecion = exports.getDireccionesEmpresaporActivasID = exports.getDireccionesEmpresaporID = exports.getCiudades = exports.getTipoDirecciones = exports.getdirecciones = void 0;
 const connection_1 = __importDefault(require("../../db/connection"));
 const direccionesContacto_model_1 = require("../../models/negocio/direccionesContacto-model");
 const sequelize_1 = require("sequelize");
@@ -119,7 +119,7 @@ const getCiudades = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getCiudades = getCiudades;
-//Obtiene las direcciones asociadas a la empresa por ID
+//Obtiene las direcciones asociadas a la empresa por ID muestra activas e inactivas
 const getDireccionesEmpresaporID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
@@ -171,6 +171,59 @@ const getDireccionesEmpresaporID = (req, res) => __awaiter(void 0, void 0, void 
     }
 });
 exports.getDireccionesEmpresaporID = getDireccionesEmpresaporID;
+//Obtiene las direcciones activas asociadas a la empresa por ID
+const getDireccionesEmpresaporActivasID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT 
+            DIRECCIONES.id_direccion,
+            DIRECCIONES.direccion,
+            DIRECCIONES.id_tipo_direccion,
+            TIPO_DIRECCION.tipo_direccion,
+            DIRECCIONES.id_ciudad,
+            CIUDAD.ciudad,
+            DIRECCIONES.id_pais, 
+            PAIS.pais,
+            DIRECCIONES.descripcion,
+            DIRECCIONES.creado_por,
+            DIRECCIONES.fecha_creacion,
+            DIRECCIONES.modificado_por,
+            DIRECCIONES.fecha_modificacion,
+            DIRECCIONES.estado
+        FROM mipyme.tbl_me_direcciones AS DIRECCIONES
+        LEFT JOIN 
+            (
+                SELECT id_ciudad, ciudad
+                FROM mipyme.tbl_me_ciudades
+            ) AS CIUDAD
+        ON DIRECCIONES.id_ciudad = CIUDAD.id_ciudad
+        LEFT JOIN 
+            (
+                SELECT id_pais , pais
+                FROM mipyme.tbl_me_paises
+            ) AS PAIS
+        ON DIRECCIONES.id_pais = PAIS.id_pais
+        LEFT JOIN 
+            (
+                SELECT id_tipo_direccion, tipo_direccion 
+                FROM mipyme.tbl_me_tipo_direccion
+            ) AS TIPO_DIRECCION
+        ON DIRECCIONES.id_tipo_direccion = TIPO_DIRECCION.id_tipo_direccion
+        WHERE DIRECCIONES.id_empresa = ${id}
+            AND DIRECCIONES.estado = 1
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Contactate con el administrador',
+            error
+        });
+    }
+});
+exports.getDireccionesEmpresaporActivasID = getDireccionesEmpresaporActivasID;
 //Inactiva la direccion de la DBA
 const inactivateDirecion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_direccion } = req.body;
