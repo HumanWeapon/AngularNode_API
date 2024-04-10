@@ -10,7 +10,6 @@ routerDireccionContacto.get('/getTipoDirecciones',validarToken , getTipoDireccio
 routerDireccionContacto.get('/getCiudades',validarToken , getCiudades); //Obtiene todos los tipo de dirección activos
 routerDireccionContacto.get('/getDireccionesEmpresaporID/:id',validarToken , getDireccionesEmpresaporID); //Obtiene las direcciones registradas por empresa
 routerDireccionContacto.get('/getDireccionesEmpresaporActivasID/:id',validarToken , getDireccionesEmpresaporActivasID); //Obtiene las direcciones registradas por empresa
-
 routerDireccionContacto.post('/inactivateDirecion',validarToken , inactivateDirecion); //inactiva las direcciones de la dba
 routerDireccionContacto.post('/activateDireccion',validarToken , activateDireccion); //activa las direcciones de la dba
 routerDireccionContacto.post('/postDireccion',validarToken , postDireccion); // Inserta una nueva dirección en la DBA

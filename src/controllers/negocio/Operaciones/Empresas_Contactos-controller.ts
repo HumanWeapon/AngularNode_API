@@ -48,7 +48,7 @@ export const consultarContactosNoRegistradosPorId = async (req: Request, res: Re
 
 
 //obtiene los contactos registrados de una empresa
-export const consultarContactosActivosporId = async (req: Request, res: Response) => {
+export const consultarContactosporId = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         const query = `
@@ -83,7 +83,43 @@ export const consultarContactosActivosporId = async (req: Request, res: Response
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 };
+//obtiene los contactos activos registrados de una empresa
+export const consultarContactosActivosporId = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT 
+            A.id_contacto,
+            A.id_empresa,
+            A.id_tipo_contacto,
+            B.tipo_contacto,
+            A.nombre_completo,
+            A.descripcion,
+            A.creado_por,
+            A.fecha_creacion,
+            A.modificado_por,
+            A.fecha_modificacion,
+            A.estado
+        FROM mipyme.tbl_me_contactos AS A
+        LEFT JOIN 
+        (
+            SELECT * 
+            FROM mipyme.tbl_me_tipo_contacto 
+        ) AS B
+        ON A.id_tipo_contacto = B.id_tipo_contacto
+        WHERE 
+            A.id_empresa = ${id}
+            AND A.estado = 1
+        `;
 
+        const [results, metadata] = await db.query(query);
+
+        res.json(results);
+    } catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+};
 //obtiene los contactos registrados de una empresa
 export const ReporteContactos = async (req: Request, res: Response) => {
     try {

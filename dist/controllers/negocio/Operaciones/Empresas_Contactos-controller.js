@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.eliminarOperacionEmpresaContacto = exports.agregarOperacionEmpresaContacto = exports.ReporteContactos = exports.consultarContactosActivosporId = exports.consultarContactosNoRegistradosPorId = void 0;
+exports.eliminarOperacionEmpresaContacto = exports.agregarOperacionEmpresaContacto = exports.ReporteContactos = exports.consultarContactosActivosporId = exports.consultarContactosporId = exports.consultarContactosNoRegistradosPorId = void 0;
 const connection_1 = __importDefault(require("../../../db/connection"));
 const Empresas_Contactos_1 = require("../../../models/negocio/Operaciones/Empresas_Contactos");
 //obtiene los contactos registrados y no registrados de una empresa
@@ -59,6 +59,42 @@ const consultarContactosNoRegistradosPorId = (req, res) => __awaiter(void 0, voi
 });
 exports.consultarContactosNoRegistradosPorId = consultarContactosNoRegistradosPorId;
 //obtiene los contactos registrados de una empresa
+const consultarContactosporId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT 
+            A.id_contacto,
+            A.id_empresa,
+            A.id_tipo_contacto,
+            B.tipo_contacto,
+            A.nombre_completo,
+            A.descripcion,
+            A.creado_por,
+            A.fecha_creacion,
+            A.modificado_por,
+            A.fecha_modificacion,
+            A.estado
+        FROM mipyme.tbl_me_contactos AS A
+        LEFT JOIN 
+        (
+            SELECT * 
+            FROM mipyme.tbl_me_tipo_contacto 
+        ) AS B
+        ON A.id_tipo_contacto = B.id_tipo_contacto
+        WHERE 
+            A.id_empresa = ${id}
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.consultarContactosporId = consultarContactosporId;
+//obtiene los contactos activos registrados de una empresa
 const consultarContactosActivosporId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
@@ -84,6 +120,7 @@ const consultarContactosActivosporId = (req, res) => __awaiter(void 0, void 0, v
         ON A.id_tipo_contacto = B.id_tipo_contacto
         WHERE 
             A.id_empresa = ${id}
+            AND A.estado = 1
         `;
         const [results, metadata] = yield connection_1.default.query(query);
         res.json(results);

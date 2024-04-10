@@ -161,7 +161,7 @@ export const updateContacto = async (req: Request, res: Response) => {
 }
 }
 
-//Inactiva el usuario de la DBA
+//Inactiva el contacto de la DBA
 export const inactivateContacto = async (req: Request, res: Response) => {
 
     const { id_contacto, nombre_completo } = req.body;
@@ -189,7 +189,7 @@ export const inactivateContacto = async (req: Request, res: Response) => {
 
 }
 
-//Activa el usuario de la DBA
+//Activa el contacto de la DBA
     export const activateContacto = async (req: Request, res: Response) => {
 
         const { id_contacto, nombre_completo } = req.body;

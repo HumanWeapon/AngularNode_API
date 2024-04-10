@@ -162,7 +162,7 @@ const updateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.updateContacto = updateContacto;
-//Inactiva el usuario de la DBA
+//Inactiva el contacto de la DBA
 const inactivateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_contacto, nombre_completo } = req.body;
     try {
@@ -187,7 +187,7 @@ const inactivateContacto = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.inactivateContacto = inactivateContacto;
-//Activa el usuario de la DBA
+//Activa el contacto de la DBA
 const activateContacto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_contacto, nombre_completo } = req.body;
     try {
