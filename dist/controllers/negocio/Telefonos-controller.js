@@ -316,7 +316,7 @@ const telefonosActivosdeContactosPorId = (req, res) => __awaiter(void 0, void 0,
                     model: contacto_models_1.Contacto,
                     as: 'contacto',
                     where: {
-                        estado: 'activo' // Filtrar por estado activo del contacto
+                        estado: '1' // Filtrar por estado activo del contacto
                     }
                 },
                 {

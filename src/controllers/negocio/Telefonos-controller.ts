@@ -313,7 +313,7 @@ export const telefonosActivosdeContactosPorId = async (req: Request, res: Respon
                     model: Contacto,
                     as: 'contacto',
                     where: {
-                        estado: 'activo' // Filtrar por estado activo del contacto
+                        estado: '1' // Filtrar por estado activo del contacto
                     }
                 },
                 {
