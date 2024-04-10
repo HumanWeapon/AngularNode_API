@@ -62,7 +62,7 @@ export const postParametro = async (req: Request, res: Response) => {
             const _parametro = await Parametros.findone({
                 where: { parametro: Parametros.parametro }
             });
-            res.json(_parametro) 
+            res.json(_parametro)
         }
     }
     catch (error){
