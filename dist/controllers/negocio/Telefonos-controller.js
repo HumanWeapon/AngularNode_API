@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getcontactosActivos = exports.telefonosdeContactosPorId = exports.telefonosAllContactosPaises = exports.telefonosAllContactos = exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
+exports.getcontactosActivos = exports.telefonosActivosdeContactosPorId = exports.telefonosdeContactosPorId = exports.telefonosAllContactosPaises = exports.telefonosAllContactos = exports.activateContactoTelefono = exports.inactivateContactoTelefono = exports.updateContactoTelefono = exports.deleteContactoTelefono = exports.postContactoTelefono = exports.getContactoTelefono = exports.getAllContactosTelefono = void 0;
 const telefonos_models_1 = require("../../models/negocio/telefonos-models");
 const connection_1 = __importDefault(require("../../db/connection"));
 const contacto_models_1 = require("../../models/negocio/contacto-models");
@@ -303,6 +303,36 @@ const telefonosdeContactosPorId = (req, res) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.telefonosdeContactosPorId = telefonosdeContactosPorId;
+const telefonosActivosdeContactosPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_contacto } = req.body; // Obtener el id_contacto de los parámetros de consulta
+    try {
+        // Buscar los teléfonos asociados al id_contacto
+        const telefonos = yield telefonos_models_1.ContactoTelefono.findAll({
+            where: {
+                id_contacto: id_contacto // Filtrar por id_contacto
+            },
+            include: [
+                {
+                    model: contacto_models_1.Contacto,
+                    as: 'contacto',
+                    where: {
+                        estado: 'activo' // Filtrar por estado activo del contacto
+                    }
+                },
+                {
+                    model: paises_models_1.Paises,
+                    as: 'paises' // Incluir la relación con la tabla de países
+                }
+            ],
+        });
+        res.json(telefonos); // Enviar los teléfonos encontrados como respuesta
+    }
+    catch (error) {
+        console.error('Error al obtener los teléfonos del contacto:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+});
+exports.telefonosActivosdeContactosPorId = telefonosActivosdeContactosPorId;
 /*export const telefonosdeContactosPorId = async (req: Request, res: Response) => {
     const { id_contacto } = req.params;
     try {

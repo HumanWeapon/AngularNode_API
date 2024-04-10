@@ -299,6 +299,36 @@ export const telefonosdeContactosPorId = async (req: Request, res: Response) => 
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 }
+export const telefonosActivosdeContactosPorId = async (req: Request, res: Response) => {
+    const { id_contacto } = req.body; // Obtener el id_contacto de los parámetros de consulta
+
+    try {
+        // Buscar los teléfonos asociados al id_contacto
+        const telefonos = await ContactoTelefono.findAll({
+            where: {
+                id_contacto: id_contacto // Filtrar por id_contacto
+            },
+            include: [
+                {
+                    model: Contacto,
+                    as: 'contacto',
+                    where: {
+                        estado: 'activo' // Filtrar por estado activo del contacto
+                    }
+                },
+                {
+                    model: Paises,
+                    as: 'paises' // Incluir la relación con la tabla de países
+                }
+            ],
+        });
+
+        res.json(telefonos); // Enviar los teléfonos encontrados como respuesta
+    } catch (error) {
+        console.error('Error al obtener los teléfonos del contacto:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
 
 /*export const telefonosdeContactosPorId = async (req: Request, res: Response) => {
     const { id_contacto } = req.params;

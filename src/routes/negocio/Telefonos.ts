@@ -1,12 +1,13 @@
 import {Router} from 'express';
 import validarToken from '../validarToken';
-import { deleteContactoTelefono, getAllContactosTelefono, getContactoTelefono, postContactoTelefono, updateContactoTelefono, inactivateContactoTelefono, activateContactoTelefono, telefonosdeContactosPorId, telefonosAllContactos, telefonosAllContactosPaises} from '../../controllers/negocio/Telefonos-controller';
+import { deleteContactoTelefono, getAllContactosTelefono, getContactoTelefono, postContactoTelefono, updateContactoTelefono, inactivateContactoTelefono, activateContactoTelefono, telefonosdeContactosPorId, telefonosAllContactos, telefonosAllContactosPaises, telefonosActivosdeContactosPorId} from '../../controllers/negocio/Telefonos-controller';
 
 const routerContactoTelefono = Router()
 
 routerContactoTelefono.get('/getAllContactosTelefono',validarToken, getAllContactosTelefono);//consulta todas los contactos en la base de datos
 //routerContactoTelefono.get('/telefonosconcontacto',validarToken, telefonosconcontacto);//consulta todas los telefonos con el contacto activo de la DBA.
 routerContactoTelefono.post('/telefonosdeContactosPorId',validarToken, telefonosdeContactosPorId);//consulta todas los contactos en la base de datos
+routerContactoTelefono.post('/telefonosActivosdeContactosPorId',validarToken, telefonosActivosdeContactosPorId);//consulta todas los contactos en la base de datos
 routerContactoTelefono.post('/getContactoTelefono',validarToken, getContactoTelefono);//consulta un contactos  en la base de datos
 routerContactoTelefono.post('/postContactoTelefono',validarToken, postContactoTelefono); // Inserta un contactos  en la base de datos
 routerContactoTelefono.delete('/deleteContactoTelefono',validarToken, deleteContactoTelefono); //Elimina un contactos en la base de datos
