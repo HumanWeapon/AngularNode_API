@@ -6,6 +6,7 @@ import { ReporteContactos, agregarOperacionEmpresaContacto, consultarContactosAc
 const empresasContatos = Router();
 
 empresasContatos.get('/consultarContactosNoRegistradosPorId/:id', validarToken, consultarContactosNoRegistradosPorId);
+empresasContatos.get('/consultarContactosporId/:id', validarToken, consultarContactosActivosporId);
 empresasContatos.get('/consultarContactosActivosporId/:id', validarToken, consultarContactosActivosporId);
 empresasContatos.get('/ReporteContactos', validarToken, ReporteContactos);
 empresasContatos.post('/agregarOperacionEmpresaContacto', validarToken, agregarOperacionEmpresaContacto);
