@@ -59,8 +59,9 @@ export const postParametro = async (req: Request, res: Response) => {
                 creado_por: creado_por.toUpperCase(),
                 modificado_por: modificado_por.toUpperCase(),                
             });
-            const _parametro2 = await Parametros.findone({
-                where: { parametro: param.parametro }
+
+            const _parametro2 = await Parametros.findOne({
+                where: {id_parametro: param.id_parametro}
             });
             res.json(_parametro2)
         }
