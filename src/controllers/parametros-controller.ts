@@ -61,7 +61,7 @@ export const postParametro = async (req: Request, res: Response) => {
             });
 
             const _parametro2 = await Parametros.findOne({
-                where: {id_parametro: param.id_parametro}
+                where: {parametro: param.parametro}
             });
             res.json(_parametro2)
         }
