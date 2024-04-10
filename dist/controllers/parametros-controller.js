@@ -54,7 +54,7 @@ const postParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
         }
         else {
-            yield parametros_models_1.Parametros.create({
+            const param = yield parametros_models_1.Parametros.create({
                 parametro: parametro.toUpperCase(),
                 valor: valor,
                 estado_parametro: estado_parametro,
@@ -64,7 +64,7 @@ const postParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 modificado_por: modificado_por.toUpperCase(),
             });
             const _parametro = yield parametros_models_1.Parametros.findone({
-                where: { parametro: parametros_models_1.Parametros.parametro }
+                where: { parametro: param.parametro }
             });
             res.json(_parametro);
         }

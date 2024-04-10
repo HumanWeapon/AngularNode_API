@@ -50,7 +50,7 @@ export const postParametro = async (req: Request, res: Response) => {
                 msg: 'Parametro ya registrado en la base de datos: '+ parametro
             })
         }else{
-            await Parametros.create({
+            const param = await Parametros.create({
                 parametro: parametro.toUpperCase(),
                 valor: valor,
                 estado_parametro: estado_parametro,
@@ -60,7 +60,7 @@ export const postParametro = async (req: Request, res: Response) => {
                 modificado_por: modificado_por.toUpperCase(),                
             })
             const _parametro = await Parametros.findone({
-                where: { parametro: Parametros.parametro }
+                where: { parametro: param.parametro }
             });
             res.json(_parametro)
         }
