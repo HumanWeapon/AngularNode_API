@@ -309,15 +309,12 @@ const telefonosActivosdeContactosPorId = (req, res) => __awaiter(void 0, void 0,
         // Buscar los teléfonos asociados al id_contacto
         const telefonos = yield telefonos_models_1.ContactoTelefono.findAll({
             where: {
-                id_contacto: id_contacto // Filtrar por id_contacto
+                id_contacto: id_contacto, estado: '1' // Filtrar por id_contacto
             },
             include: [
                 {
                     model: contacto_models_1.Contacto,
-                    as: 'contacto',
-                    where: {
-                        estado: '1' // Filtrar por estado activo del contacto
-                    }
+                    as: 'contacto'
                 },
                 {
                     model: paises_models_1.Paises,
