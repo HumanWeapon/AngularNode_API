@@ -63,9 +63,10 @@ const postParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 creado_por: creado_por.toUpperCase(),
                 modificado_por: modificado_por.toUpperCase(),
             });
-            res.json({
-                msg: 'El Parametro: ' + parametro + ' ha sido creada exitosamente',
+            const _parametro = yield parametros_models_1.Parametros.findone({
+                where: { parametro: parametros_models_1.Parametros.parametro }
             });
+            res.json(_parametro);
         }
     }
     catch (error) {

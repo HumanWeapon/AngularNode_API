@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import { Parametros } from '../models/parametros-models';
 import jwt from 'jsonwebtoken';
+import { where } from 'sequelize';
 
 
 //Obtiene todos los parametros de la base de datos
@@ -58,9 +59,10 @@ export const postParametro = async (req: Request, res: Response) => {
                 creado_por: creado_por.toUpperCase(),
                 modificado_por: modificado_por.toUpperCase(),                
             })
-            res.json({
-                msg: 'El Parametro: '+ parametro+  ' ha sido creada exitosamente',
-            })
+            const _parametro = await Parametros.findone({
+                where: { parametro: Parametros.parametro }
+            });
+            res.json(_parametro) 
         }
     }
     catch (error){
