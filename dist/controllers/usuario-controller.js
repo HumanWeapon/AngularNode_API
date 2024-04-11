@@ -58,12 +58,13 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.json(user.fecha_ultima_conexion);
         }
         //VALIDA SI EL USUARIO HA EXPIRADO
-        // Actualiza el estado de los usuarios vencidos
-        yield actualizarEstadoUsuariosVencidos();
         // Convertimos la cadena de fecha en formato ISO 8601 a un objeto Date
         const fechaVencimientoUsuario = new Date(user.fecha_vencimiento);
         // Comparamos las fechas
         if (fechaActual > fechaVencimientoUsuario) {
+            // Actualizar el estado de los usuarios cuya fecha de vencimiento haya pasado
+            user.estado_usuario = 4;
+            yield user.save();
             // La fecha de vencimiento del usuario es anterior o igual a la fecha actual, por lo que el usuario ha expirado
             return res.status(400).json({
                 msg: 'Tu usuario ha expirado, contacta con el administrador',
