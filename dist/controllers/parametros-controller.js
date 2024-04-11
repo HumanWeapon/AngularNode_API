@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateParametro = exports.inactivateParametro = exports.updateParametro = exports.deleteParametro = exports.postParametro = exports.getParametro = exports.getAllParametros = void 0;
+exports.activateParametro = exports.inactivateParametro = exports.updateParametro = exports.deleteParametro = exports.postParametro = exports.getParametro = exports.getParametroPreguntasdeSeguridad = exports.getAllParametros = void 0;
 const parametros_models_1 = require("../models/parametros-models");
 //Obtiene todos los parametros de la base de datos
 const getAllParametros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -17,6 +17,14 @@ const getAllParametros = (req, res) => __awaiter(void 0, void 0, void 0, functio
     res.json(_parametro);
 });
 exports.getAllParametros = getAllParametros;
+//Obtiene en los parámetros la cantidad de preguntas para registrar preguntas de seguridad
+const getParametroPreguntasdeSeguridad = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const _parametro = yield parametros_models_1.Parametros.findOne({
+        where: { parametro: 'PREGUNTAS_DE_SEGURIDAD' }
+    });
+    res.json(_parametro);
+});
+exports.getParametroPreguntasdeSeguridad = getParametroPreguntasdeSeguridad;
 //Obtiene un parametro de la base de datos
 const getParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_parametro } = req.body;

@@ -11,7 +11,13 @@ export const getAllParametros = async (req: Request, res: Response) => {
     res.json(_parametro)
 
 }
-
+//Obtiene en los parámetros la cantidad de preguntas para registrar preguntas de seguridad
+export const getParametroPreguntasdeSeguridad = async (req: Request, res: Response) => {
+    const _parametro = await Parametros.findOne({
+        where: {parametro: 'PREGUNTAS_DE_SEGURIDAD'}
+    });
+    res.json(_parametro)
+}
 //Obtiene un parametro de la base de datos
 export const getParametro = async (req: Request, res: Response) => {
     const { id_parametro } = req.body;
