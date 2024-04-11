@@ -56,8 +56,9 @@ export const loginUser = async (req: Request, res: Response) => {
             return res.json(user.fecha_ultima_conexion);
         }
         //VALIDA SI EL USUARIO HA EXPIRADO
-        
-        actualizarEstadoUsuariosVencidos(); //Actualiza el estado de los usuarios de la DBA
+        // Actualiza el estado de los usuarios vencidos
+        await actualizarEstadoUsuariosVencidos();
+
         // Convertimos la cadena de fecha en formato ISO 8601 a un objeto Date
         const fechaVencimientoUsuario = new Date(user.fecha_vencimiento);
         // Comparamos las fechas
@@ -437,69 +438,22 @@ export const resetPassword = async (req: Request, res: Response) => {
     }
 }
 
-
-//Nueva Contraseña
-/*export const newPassword = async (req: Request, res: Response) => {
-    const { newPassword } = req.body;
-    const resetToken = req.headers.reset as string;
-
-    if (!(resetToken && newPassword)) {
-        return res.status(400).json({ message: 'Todos los valores son requeridos' });
-    }
-
-    let user;
-    let jwtPayload;
-
-    try {
-        jwtPayload = jwt.verify(resetToken, config.jwtSecretReset);
-        user = await User.findOne({ where: { resetToken } });
-
-        if (!user) {
-            return res.status(401).json({ message: 'Token de reinicio inválido' });
-        }
-
-        user.contrasena = newPassword;
-        const validationOps = { validationError: { target: false, value: false } };
-        const errors = await validate(user, validationOps);
-
-        if (errors.length > 0) {
-            return res.status(400).json(errors);
-        }
-
-        // Hashear la nueva contraseña antes de guardarla
-        user.hashPassword();
-        await user.save();
-    } catch (error) {
-        console.error('Error al cambiar la contraseña:', error);
-
-        // Verificar el tipo de error y devolver un mensaje más específico
-        let errorMessage;
-           if (error instanceof JsonWebTokenError) {
-              errorMessage = 'El token de reinicio es inválido';
-           } else {
-               errorMessage = 'Ocurrió un error al cambiar la contraseña';
-}
-
-        return res.status(500).json({ message: errorMessage });
-    }
-
-    res.json({ message: 'Se cambió la contraseña correctamente' });
-}*/
 async function actualizarEstadoUsuariosVencidos(): Promise<void> {
     try {
-      // Actualizar el estado de los usuarios cuya fecha de vencimiento haya pasado
-      await User.update(
-        { estado_usuario: 3 }, // 3 es el estado para "Vencido"
-        {
-          where: {
-            estado_usuario: { [User.sequelize.Op.ne]: 3 }, // Evita actualizar usuarios que ya están vencidos
-            fecha_vencimiento: { [User.sequelize.Op.lte]: new Date() }, // Compara con la fecha actual
-          },
-        }
-      );
-      console.log('Actualización de usuarios vencidos ejecutada con éxito');
+        // Actualizar el estado de los usuarios cuya fecha de vencimiento haya pasado
+        const currentDate = new Date();
+        await User.update(
+            { estado_usuario: 3 }, // 3 es el estado para "Vencido"
+            {
+                where: {
+                    estado_usuario: { [User.sequelize.Op.ne]: 3 }, // Evita actualizar usuarios que ya están vencidos
+                    fecha_vencimiento: { [User.sequelize.Op.gt]: currentDate }, // Compara con la fecha actual
+                },
+            }
+        );
+        console.log('Actualización de usuarios vencidos ejecutada con éxito');
     } catch (error) {
-      console.error('Error al ejecutar la actualización de usuarios vencidos:', error);
+        console.error('Error al ejecutar la actualización de usuarios vencidos:', error);
     }
-  }
+}
   
