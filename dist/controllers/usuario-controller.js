@@ -58,6 +58,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.json(user.fecha_ultima_conexion);
         }
         //VALIDA SI EL USUARIO HA EXPIRADO
+        actualizarEstadoUsuariosVencidos(); //Actualiza el estado de los usuarios de la DBA
         // Convertimos la cadena de fecha en formato ISO 8601 a un objeto Date
         const fechaVencimientoUsuario = new Date(user.fecha_vencimiento);
         // Comparamos las fechas
@@ -459,3 +460,21 @@ exports.resetPassword = resetPassword;
 
     res.json({ message: 'Se cambió la contraseña correctamente' });
 }*/
+function actualizarEstadoUsuariosVencidos() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // Actualizar el estado de los usuarios cuya fecha de vencimiento haya pasado
+            yield usuario_models_1.User.update({ estado_usuario: 3 }, // 3 es el estado para "Vencido"
+            {
+                where: {
+                    estado_usuario: { [usuario_models_1.User.sequelize.Op.ne]: 3 },
+                    fecha_vencimiento: { [usuario_models_1.User.sequelize.Op.lte]: new Date() }, // Compara con la fecha actual
+                },
+            });
+            console.log('Actualización de usuarios vencidos ejecutada con éxito');
+        }
+        catch (error) {
+            console.error('Error al ejecutar la actualización de usuarios vencidos:', error);
+        }
+    });
+}
