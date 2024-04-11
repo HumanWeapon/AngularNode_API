@@ -422,7 +422,6 @@ function actualizarEstadoUsuariosVencidos() {
             yield usuario_models_1.User.update({ estado_usuario: 3 }, // 3 es el estado para "Vencido"
             {
                 where: {
-                    estado_usuario: { [usuario_models_1.User.sequelize.Op.ne]: 3 },
                     fecha_vencimiento: { [usuario_models_1.User.sequelize.Op.gt]: currentDate }, // Compara con la fecha actual
                 },
             });

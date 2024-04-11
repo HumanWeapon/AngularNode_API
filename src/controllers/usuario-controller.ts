@@ -446,7 +446,6 @@ async function actualizarEstadoUsuariosVencidos(): Promise<void> {
             { estado_usuario: 3 }, // 3 es el estado para "Vencido"
             {
                 where: {
-                    estado_usuario: { [User.sequelize.Op.ne]: 3 }, // Evita actualizar usuarios que ya están vencidos
                     fecha_vencimiento: { [User.sequelize.Op.gt]: currentDate }, // Compara con la fecha actual
                 },
             }
