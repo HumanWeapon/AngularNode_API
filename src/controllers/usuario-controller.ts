@@ -14,6 +14,8 @@ export const loginUser = async (req: Request, res: Response) => {
         usuario,
         contrasena
     } = req.body
+    // Suponiendo que 'user' es un objeto que contiene la propiedad 'fecha_vencimiento' con la fecha de vencimiento del usuario
+    const fechaActual = new Date();
     
     try {
         // Busca el usuario en la base de datos
@@ -53,7 +55,16 @@ export const loginUser = async (req: Request, res: Response) => {
         if(user.fecha_ultima_conexion == null){
             return res.json(user.fecha_ultima_conexion);
         }
-
+        //VALIDA SI EL USUARIO HA EXPIRADO
+        // Convertimos la cadena de fecha en formato ISO 8601 a un objeto Date
+        const fechaVencimientoUsuario = new Date(user.fecha_vencimiento);
+        // Comparamos las fechas
+        if (fechaActual > fechaVencimientoUsuario) {
+            // La fecha de vencimiento del usuario es anterior o igual a la fecha actual, por lo que el usuario ha expirado
+            return res.status(400).json({
+                msg: 'Tu usuario ha expirado, contacta con el administrador',
+            });
+        }
         // Validar estado del usuario
         if (user.estado_usuario != 1) {
             return res.status(400).json({
