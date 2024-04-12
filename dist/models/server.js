@@ -44,6 +44,7 @@ const Empresas_Productos_1 = __importDefault(require("../routes/negocio/Operacio
 const Emprersas_Contactos_1 = __importDefault(require("../routes/negocio/Operaciones/Emprersas_Contactos"));
 const historial_busqueda_1 = __importDefault(require("../routes/negocio/historial_busqueda"));
 const consultas_pyme_1 = __importDefault(require("../routes/consultas-pyme"));
+const backup_1 = __importDefault(require("../routes/backup"));
 class Server {
     constructor() {
         console.log('Estoy en el constructor');
@@ -87,6 +88,7 @@ class Server {
         this.app.use('/api/empresas_contactos', Emprersas_Contactos_1.default);
         this.app.use('/api/historial_busqueda', historial_busqueda_1.default);
         this.app.use('/api/consultas_pyme', consultas_pyme_1.default);
+        this.app.use('/api/generar_backup', backup_1.default);
     }
     midlewares() {
         this.app.use(express_1.default.urlencoded({ extended: true }));

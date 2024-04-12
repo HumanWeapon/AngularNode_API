@@ -1,10 +1,11 @@
 // backup.ts
 import express from 'express';
 import { realizarCopiaSeguridad } from '../controllers/backup-controller'; // Importa la función de controlador
+import validarToken from './validarToken';
 
-const router = express.Router();
+const backup = express.Router();
 
 // Define la ruta para realizar la copia de seguridad
-router.post('/', realizarCopiaSeguridad);
+backup.get('/generar', validarToken, realizarCopiaSeguridad);
 
-export default router;
+export default backup;
