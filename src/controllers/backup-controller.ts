@@ -11,10 +11,10 @@ export const realizarCopiaSeguridad = (req: Request, res: Response) => {
   // Construir el nombre del archivo usando la fecha actual
   const nombreArchivo = `CopiaPyme_${fechaActual.getFullYear()}-${fechaActual.getMonth() + 1}-${fechaActual.getDate()}.sql`;
   // Especificar la ruta completa donde se guardará el archivo de copia de seguridad
-  const rutaArchivo = path.join(__dirname, '..', 'backups', nombreArchivo);
+  const rutaArchivo = path.join(__dirname, '../../dist/', 'backups', nombreArchivo);
 
-  const comando = `PGPASSWORD=${PGPASSWORD} pg_dump -U ${PGUSER} -h ${PGHOST} -p ${PGPORT} ${PGDATABASE} > "${rutaArchivo}"`;
-
+  const comando = `pg_dump -U ${PGUSER} -h ${PGHOST} -p ${PGPORT} -w ${PGDATABASE} > "${rutaArchivo}"`;
+  
   exec(comando, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error al realizar copia de seguridad: ${error.message}`);
