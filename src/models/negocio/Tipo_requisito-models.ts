@@ -49,9 +49,3 @@ Tipo_Requisito.belongsTo(Paises, {
     targetKey: 'id_pais',
     as: 'paises' // Alias para la relación
 });
-
-Tipo_Requisito.belongsTo(Empresas, {
-    foreignKey: 'id_empresa',
-    targetKey: 'id_empresa',
-    as: 'empresas' // Alias para la relación
-});

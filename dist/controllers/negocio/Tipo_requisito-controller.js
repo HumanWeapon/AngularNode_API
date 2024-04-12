@@ -16,7 +16,6 @@ exports.consultarRequisitosPorIdEmpresa = exports.requisitosAllPaisesEmpresas = 
 const Tipo_requisito_models_1 = require("../../models/negocio/Tipo_requisito-models");
 const connection_1 = __importDefault(require("../../db/connection"));
 const paises_models_1 = require("../../models/negocio/paises-models");
-const empresas_model_1 = require("../../models/negocio/empresas-model");
 //Obtiene todos los tipos de requisito de la base de datos
 const getAllTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const t_requisito = yield Tipo_requisito_models_1.Tipo_Requisito.findAll();
@@ -192,10 +191,6 @@ const requisitosAllPaisesEmpresas = (req, res) => __awaiter(void 0, void 0, void
     try {
         const requisitosAllPaisEmpresa = yield Tipo_requisito_models_1.Tipo_Requisito.findAll({
             include: [
-                {
-                    model: empresas_model_1.Empresas,
-                    as: 'empresas'
-                },
                 {
                     model: paises_models_1.Paises,
                     as: 'paises' // Usa el mismo alias que en la definición de la asociación en el modelo

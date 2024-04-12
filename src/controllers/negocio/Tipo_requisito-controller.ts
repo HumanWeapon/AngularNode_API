@@ -189,10 +189,6 @@ export const requisitosAllPaisesEmpresas = async (req: Request, res: Response) =
         const requisitosAllPaisEmpresa = await Tipo_Requisito.findAll({
             include: [
                 {
-                    model: Empresas,
-                    as: 'empresas'
-                },
-                {
                     model: Paises, // Agrega el modelo de Pais
                     as: 'paises' // Usa el mismo alias que en la definición de la asociación en el modelo
                 }

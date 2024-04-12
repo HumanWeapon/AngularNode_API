@@ -7,7 +7,6 @@ exports.Tipo_Requisito = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../../db/connection"));
 const paises_models_1 = require("./paises-models"); // Asegúrate de que la importación sea correcta
-const empresas_model_1 = require("./empresas-model"); // Asegúrate de que la importación sea correcta
 exports.Tipo_Requisito = connection_1.default.define('tipo_requisito', {
     id_tipo_requisito: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -51,9 +50,4 @@ exports.Tipo_Requisito.belongsTo(paises_models_1.Paises, {
     foreignKey: 'id_pais',
     targetKey: 'id_pais',
     as: 'paises' // Alias para la relación
-});
-exports.Tipo_Requisito.belongsTo(empresas_model_1.Empresas, {
-    foreignKey: 'id_empresa',
-    targetKey: 'id_empresa',
-    as: 'empresas' // Alias para la relación
 });
