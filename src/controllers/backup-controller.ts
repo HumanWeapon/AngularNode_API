@@ -1,10 +1,19 @@
 import { Request, Response } from 'express';
 import { exec } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
 export const realizarCopiaSeguridad = (req: Request, res: Response) => {
   const { PGHOST, PGDATABASE, PGPASSWORD, PGPORT, PGUSER } = req.query;
 
-  const comando = `PGPASSWORD=${PGPASSWORD} pg_dump -U ${PGUSER} -h ${PGHOST} -p ${PGPORT} ${PGDATABASE} > copia.sql`;
+  // Obtener la fecha actual
+  const fechaActual = new Date();
+  // Construir el nombre del archivo usando la fecha actual
+  const nombreArchivo = `CopiaPyme_${fechaActual.getFullYear()}-${fechaActual.getMonth() + 1}-${fechaActual.getDate()}.sql`;
+  // Especificar la ruta completa donde se guardará el archivo de copia de seguridad
+  const rutaArchivo = path.join(__dirname, '..', 'backups', nombreArchivo);
+
+  const comando = `PGPASSWORD=${PGPASSWORD} pg_dump -U ${PGUSER} -h ${PGHOST} -p ${PGPORT} ${PGDATABASE} > "${rutaArchivo}"`;
 
   exec(comando, (error, stdout, stderr) => {
     if (error) {
@@ -16,6 +25,6 @@ export const realizarCopiaSeguridad = (req: Request, res: Response) => {
       return res.status(500).json({ error: 'Error al realizar copia de seguridad' });
     }
     console.log(`Copia de seguridad realizada correctamente: ${stdout}`);
-    res.status(200).json({ message: 'Copia de seguridad realizada correctamente' });
+    res.status(200).json({ message: 'Copia de seguridad realizada correctamente', fileName: nombreArchivo });
   });
 };
