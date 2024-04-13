@@ -6,7 +6,7 @@ dotenv.config();
 const server = new Server();
 
 
-
+/*
 
 // app.ts o index.ts
 import express from 'express';
@@ -25,3 +25,4 @@ app.use('/backup', backupRouter);
 app.listen(4200, () => {
   console.log('Servidor en funcionamiento en el puerto 4200');
 });
+*/
