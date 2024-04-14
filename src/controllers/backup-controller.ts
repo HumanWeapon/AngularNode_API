@@ -4,16 +4,21 @@ import fs from 'fs';
 import path from 'path';
 
 export const realizarCopiaSeguridad = (req: Request, res: Response) => {
-  const { PGHOST, PGDATABASE, PGPASSWORD, PGPORT, PGUSER } = req.query;
-
   // Obtener la fecha actual
   const fechaActual = new Date();
   // Construir el nombre del archivo usando la fecha actual
   const nombreArchivo = `CopiaPyme_${fechaActual.getFullYear()}-${fechaActual.getMonth() + 1}-${fechaActual.getDate()}.sql`;
   // Especificar la ruta completa donde se guardará el archivo de copia de seguridad
-  const rutaArchivo = path.join(__dirname, '../../dist/', 'backups', nombreArchivo);
+  const rutaArchivo = path.join(__dirname, '..', '..', 'dist', 'backups', nombreArchivo);
 
-  const comando = `pg_dump -U ${PGUSER} -h ${PGHOST} -p ${PGPORT} -w ${PGDATABASE} > "${rutaArchivo}"`;
+  const connectionString = `'postgresql://postgres:1Fd145Gdd24g1daGfccFdeaCFEdbFDDc@viad
+  
+  
+  
+  
+  `
+  const comando = `"C:\\Program Files\\PostgreSQL\\16\\bin\\pg_dump.exe" "${connectionString}" > "${rutaArchivo}"`;
+  
   
   exec(comando, (error, stdout, stderr) => {
     if (error) {
