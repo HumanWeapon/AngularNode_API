@@ -458,7 +458,9 @@ export const reestablecer = async (req: Request, res: Response) => {
         }
 
         // Establecer la contraseña predeterminada como el nombre de usuario
-        const newPassword = user.usuario;
+        const newPassword = 'PYME12345';
+
+        console.log('Contraseña a guardar:', newPassword); // Agregar este registro de depuración
 
         // Guardar la nueva contraseña en la base de datos
         user.contrasena = newPassword;
@@ -475,7 +477,7 @@ export const reestablecer = async (req: Request, res: Response) => {
                 <br>
                 <p>Se ha restablecido tu contraseña. A continuación, encontrarás tus nuevos detalles de inicio de sesión:</p>
                 <p>Correo Electrónico: ${user.correo_electronico}</p>
-                <p>Nueva Contraseña: ${newPassword}</p>
+                <p>Nueva Contraseña: PYME12345</p>
                 `
             });
         } catch (error) {
