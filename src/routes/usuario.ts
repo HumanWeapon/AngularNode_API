@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {updateUsuario, activateUsuario, inactivateUsuario,  postUsuario, getAllUsuarios, getUsuario, loginUser, cambiarContrasena, usuariosAllRoles, usuariosAllParametros, getCorreoElectronicoPorUsuario, forgotPassword, resetPassword } from '../controllers/usuario-controller';
+import {updateUsuario, activateUsuario, inactivateUsuario,  postUsuario, getAllUsuarios, getUsuario, loginUser, cambiarContrasena, usuariosAllRoles, usuariosAllParametros, getCorreoElectronicoPorUsuario, forgotPassword, resetPassword, reestablecer } from '../controllers/usuario-controller';
 import validarToken from './validarToken';
 
 const routerUser = Router()
@@ -15,8 +15,9 @@ routerUser.put('/cambiarContrasena', cambiarContrasena);//Activa un usuario en l
 routerUser.get('/usuariosAllRoles',validarToken, usuariosAllRoles);//Activa un usuario en la DB
 routerUser.post('/usuariosAllParametros',validarToken, usuariosAllParametros);//Activa un usuario en la DB
 routerUser.get('/getCorreoElectronicoPorUsuario',getCorreoElectronicoPorUsuario);//Activa un usuario en la DB
-routerUser.put('/forgot-password', forgotPassword);//Recuperacion Contraseña por Email
+routerUser.put('/forgot-password', forgotPassword);//Recuperacion Contraseña por Email envio de correo
 routerUser.put('/resetPassword',resetPassword);//Recuperacion Contraseña por Email
+routerUser.put('/reestablecer',reestablecer);//Recuperacion Contraseña Predeterminada
 
 
 export default routerUser;

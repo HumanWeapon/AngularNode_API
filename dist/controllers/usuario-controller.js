@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPassword = exports.forgotPassword = exports.usuariosAllParametros = exports.usuariosAllRoles = exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.postUsuario = exports.getCorreoElectronicoPorUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
+exports.reestablecer = exports.resetPassword = exports.forgotPassword = exports.usuariosAllParametros = exports.usuariosAllRoles = exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.postUsuario = exports.getCorreoElectronicoPorUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const usuario_models_1 = require("../models/usuario-models");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -415,6 +415,52 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.resetPassword = resetPassword;
+const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { correo_electronico } = req.body;
+    console.log('Correo Electrónico recibido:', correo_electronico); // Agregar este registro de depuración
+    if (!correo_electronico) {
+        return res.status(400).json({ message: 'El Correo Electrónico es Requerido!' });
+    }
+    let emailStatus = 'OK';
+    try {
+        const user = yield usuario_models_1.User.findOne({ where: { correo_electronico } });
+        console.log('Correo Electrónico recibido en el FindOne:', correo_electronico); // Agregar este registro de depuración
+        if (!user) {
+            return res.status(400).json({ message: 'Correo Electrónico no encontrado' });
+        }
+        // Establecer la contraseña predeterminada como el nombre de usuario
+        const newPassword = user.usuario;
+        // Guardar la nueva contraseña en la base de datos
+        user.contrasena = newPassword;
+        yield user.save();
+        // Envía el correo electrónico con la nueva contraseña
+        try {
+            yield mailer_1.transporter.sendMail({
+                from: '"Reestablecer Contraseña" <utilidadMiPyme>',
+                to: user.correo_electronico,
+                subject: "Reestablecer Contraseña ✔ Utilidad MiPyme",
+                html: `
+                <b>Hola ${user.nombre_usuario},</b>
+                <br>
+                <p>Se ha restablecido tu contraseña. A continuación, encontrarás tus nuevos detalles de inicio de sesión:</p>
+                <p>Correo Electrónico: ${user.correo_electronico}</p>
+                <p>Nueva Contraseña: ${newPassword}</p>
+                `
+            });
+        }
+        catch (error) {
+            console.error('Error al enviar el correo electrónico:', error);
+            return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
+        }
+        return res.json({ message: 'Se ha enviado la nueva contraseña a tu correo electrónico', userEmail: user.correo_electronico, info: emailStatus });
+    }
+    catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        emailStatus = 'error';
+        return res.status(500).json({ message: 'Error al restablecer la contraseña' });
+    }
+});
+exports.reestablecer = reestablecer;
 function actualizarEstadoUsuariosVencidos() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
