@@ -438,6 +438,63 @@ export const resetPassword = async (req: Request, res: Response) => {
     }
 }
 
+export const reestablecer = async (req: Request, res: Response) => {
+    const { correo_electronico } = req.body;
+
+    console.log('Correo Electrónico recibido:', correo_electronico); // Agregar este registro de depuración
+
+    if (!correo_electronico) {
+        return res.status(400).json({ message: 'El Correo Electrónico es Requerido!' });
+    }
+
+    let emailStatus = 'OK';
+
+    try {
+        const user = await User.findOne({ where: { correo_electronico } });
+        console.log('Correo Electrónico recibido en el FindOne:', correo_electronico); // Agregar este registro de depuración
+
+        if (!user) {
+            return res.status(400).json({ message: 'Correo Electrónico no encontrado' });
+        }
+
+        // Establecer la contraseña predeterminada como el nombre de usuario
+        const newPassword = 'PYME12345';
+
+        console.log('Contraseña a guardar:', newPassword); // Agregar este registro de depuración
+
+        // Guardar la nueva contraseña en la base de datos
+        user.contrasena = newPassword;
+        await user.save();
+
+        // Envía el correo electrónico con la nueva contraseña
+        try {
+            await transporter.sendMail({
+                from: '"Reestablecer Contraseña" <utilidadMiPyme>',
+                to: user.correo_electronico,
+                subject: "Reestablecer Contraseña ✔ Utilidad MiPyme",
+                html: `
+                <b>Hola ${user.nombre_usuario},</b>
+                <br>
+                <p>Se ha restablecido tu contraseña. A continuación, encontrarás tus nuevos detalles de inicio de sesión:</p>
+                <p>Correo Electrónico: ${user.correo_electronico}</p>
+                <p>Nueva Contraseña: PYME12345</p>
+                `
+            });
+        } catch (error) {
+            console.error('Error al enviar el correo electrónico:', error);
+            return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
+        }
+
+        return res.json({ message: 'Se ha enviado la nueva contraseña a tu correo electrónico', userEmail: user.correo_electronico, info: emailStatus });
+    } catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        emailStatus = 'error';
+        return res.status(500).json({ message: 'Error al restablecer la contraseña' });
+    }
+}
+
+
+
 async function actualizarEstadoUsuariosVencidos(): Promise<void> {
     try {
         // Actualizar el estado de los usuarios cuya fecha de vencimiento haya pasado

@@ -33,6 +33,7 @@ import empresasContatos from '../routes/negocio/Operaciones/Emprersas_Contactos'
 import routerHistB from '../routes/negocio/historial_busqueda';
 import routerconsultaspyme from '../routes/consultas-pyme';
 import backup from '../routes/backup';
+import restaurar from '../routes/restaurar';
 
 class Server{
     private app: Application;
@@ -81,6 +82,7 @@ class Server{
         this.app.use('/api/historial_busqueda',routerHistB);
         this.app.use('/api/consultas_pyme',routerconsultaspyme);
         this.app.use('/api/generar_backup',backup);
+        this.app.use('/api/restaurar',restaurar);
 
         
 
