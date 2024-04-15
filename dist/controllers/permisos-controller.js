@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.objetosSinRol = exports.permisosRolesObjetos = exports.activatePermiso = exports.inactivatePermiso = exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
+exports.permisosdeRoutes = exports.objetosSinRol = exports.permisosRolesObjetos = exports.activatePermiso = exports.inactivatePermiso = exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
 const permisos_models_1 = require("../models/permisos-models");
 const objetos_models_1 = require("../models/objetos-models");
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 //Obtiene todos los permisos de la base de datos
 const getAllPermisos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -271,3 +272,45 @@ const objetosSinRol = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.objetosSinRol = objetosSinRol;
+//consulta los permisos de los roles para poder acceder a las rutas.
+const permisosdeRoutes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_rol, id_objeto, id_usuario } = req.params;
+    try {
+        const query = `
+        SELECT * FROM mipyme.tbl_ms_permisos PERMISO
+        LEFT JOIN mipyme.tbl_ms_usuario USUARIO ON PERMISO.id_rol = USUARIO.id_rol
+        WHERE PERMISO.id_rol = ${id_rol} 
+            AND PERMISO.id_objeto = ${id_objeto}
+            AND USUARIO.id_usuario = ${id_usuario}
+            AND PERMISO.estado_permiso = 1
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        if (results.length) {
+            // Genera el token
+            const token = jsonwebtoken_1.default.sign({
+                id_objeto: id_rol,
+                id_permiso: id_objeto
+            }, process.env.SECRET_KEY || 'Lamers005*');
+            res.json(token);
+        }
+        else {
+            res.json('No cuentas con permisos');
+        }
+    }
+    catch (error) {
+        console.error('Error: ', error);
+        if (error instanceof Error) {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: error.message
+            });
+        }
+        else {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: 'Error desconocido' // Otra manejo de errores si no es una instancia de Error
+            });
+        }
+    }
+});
+exports.permisosdeRoutes = permisosdeRoutes;

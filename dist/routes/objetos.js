@@ -9,6 +9,7 @@ const objetos_controller_1 = require("../controllers/objetos-controller");
 const routerObjetos = (0, express_1.Router)();
 routerObjetos.get('/getAllObjetos', validarToken_1.default, objetos_controller_1.getAllObjetos); //consulta todos los objetos en la base de datos
 routerObjetos.get('/getObjeto', validarToken_1.default, objetos_controller_1.getObjeto); //consulta un objeto en la base de datos
+routerObjetos.get('/get_id_Objetos/:objeto', validarToken_1.default, objetos_controller_1.get_id_Objetos); //Obtiene el ID del objeto
 routerObjetos.post('/postObjeto', validarToken_1.default, objetos_controller_1.postObjeto); // Inserta un objeto en la base de datos
 routerObjetos.delete('/deleteObjeto', validarToken_1.default, objetos_controller_1.deleteObjeto); //Elimina un objeto en la base de datos
 routerObjetos.post('/updateObjetos', validarToken_1.default, objetos_controller_1.updateObjetos); // actualiza un objeto en la base de datos

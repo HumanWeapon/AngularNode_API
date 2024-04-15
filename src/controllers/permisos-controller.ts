@@ -4,6 +4,7 @@ import { Roles } from '../models/roles-models';
 import { Objetos } from '../models/objetos-models';
 import { Sequelize } from 'sequelize';
 import db from '../db/connection';
+import jwt, { JsonWebTokenError, JwtPayload } from 'jsonwebtoken';
 
 //Obtiene todos los permisos de la base de datos
 export const getAllPermisos = async (req: Request, res: Response) => {
@@ -281,3 +282,42 @@ export const objetosSinRol = async (req: Request, res: Response) => {
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 };
+//consulta los permisos de los roles para poder acceder a las rutas.
+export const permisosdeRoutes = async (req: Request, res: Response) => {
+    const { id_rol, id_objeto, id_usuario } = req.params;
+    try {
+        const query = `
+        SELECT * FROM mipyme.tbl_ms_permisos PERMISO
+        LEFT JOIN mipyme.tbl_ms_usuario USUARIO ON PERMISO.id_rol = USUARIO.id_rol
+        WHERE PERMISO.id_rol = ${id_rol} 
+            AND PERMISO.id_objeto = ${id_objeto}
+            AND USUARIO.id_usuario = ${id_usuario}
+            AND PERMISO.estado_permiso = 1
+        `;
+        const [results, metadata] = await db.query(query);
+        if(results.length){
+            // Genera el token
+            const token = jwt.sign({
+                id_objeto: id_rol,
+                id_permiso: id_objeto
+            }, process.env.SECRET_KEY || 'Lamers005*');
+                
+            res.json(token);
+        }else{
+            res.json('No cuentas con permisos')
+        }
+    } catch (error) {
+        console.error('Error: ', error);
+        if (error instanceof Error) {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: error.message
+            });
+        } else {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: 'Error desconocido' // Otra manejo de errores si no es una instancia de Error
+            });
+        }
+    }
+}

@@ -205,7 +205,6 @@ export const postUsuario = async (req: Request, res: Response) => {
 }
 //Destruye el usuario de la DBA
 
-
 //Inactiva el usuario de la DBA
 export const inactivateUsuario = async (req: Request, res: Response) => {
     const { usuario } = req.body;
@@ -406,9 +405,6 @@ export const forgotPassword = async (req: Request, res: Response) => {
     }
 }
 
-
-
-
 export const resetPassword = async (req: Request, res: Response) => {
     const { newPassword } = req.body;
     const resetToken = req.headers.reset as string;
@@ -492,8 +488,6 @@ export const reestablecer = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Error al restablecer la contraseña' });
     }
 }
-
-
 
 async function actualizarEstadoUsuariosVencidos(): Promise<void> {
     try {

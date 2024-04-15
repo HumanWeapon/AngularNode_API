@@ -270,3 +270,29 @@ export const objetosJSON = async (req: Request, res: Response) => {
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 };
+
+//consulta los permisos de los roles para poder acceder a las rutas.
+export const get_id_Objetos = async (req: Request, res: Response) => {
+    const { objeto } = req.params;
+    try {
+        const query = `
+        SELECT id_objeto, objeto FROM mipyme.tbl_ms_objetos
+        WHERE objeto = '${objeto}'
+        `;
+        const [results, metadata] = await db.query(query);
+        res.json(results);
+    } catch (error) {
+        console.error('Error: ', error);
+        if (error instanceof Error) {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: error.message
+            });
+        } else {
+            res.status(500).json({
+                msg: 'Error en el servidor',
+                error: 'Error desconocido' // Otra manejo de errores si no es una instancia de Error
+            });
+        }
+    }
+}
