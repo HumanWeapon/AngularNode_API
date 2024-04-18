@@ -434,6 +434,8 @@ export const resetPassword = async (req: Request, res: Response) => {
     }
 }
 
+import _bcrypt from 'bcrypt';
+
 export const reestablecer = async (req: Request, res: Response) => {
     const { correo_electronico } = req.body;
 
@@ -454,12 +456,13 @@ export const reestablecer = async (req: Request, res: Response) => {
         }
 
         // Establecer la nueva contraseña como el nombre de usuario
-        const newPassword = user.nombre_usuario;
+        const newPassword = user.usuario;
 
         console.log('Contraseña a guardar:', newPassword); // Agregar este registro de depuración
 
         // Guardar la nueva contraseña en la base de datos
-        user.contrasena = newPassword;
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.contrasena = hashedPassword;
         await user.save();
 
         // Envía el correo electrónico con la nueva contraseña
@@ -481,6 +484,8 @@ export const reestablecer = async (req: Request, res: Response) => {
             return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
         }
 
+        console.log('Contraseña guardada en la base de datos:', hashedPassword); // Agregar este registro de depuración
+
         return res.json({ message: 'Se ha enviado la nueva contraseña a tu correo electrónico', userEmail: user.correo_electronico, info: emailStatus });
     } catch (error) {
         console.error('Error al restablecer la contraseña:', error);
@@ -488,6 +493,7 @@ export const reestablecer = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Error al restablecer la contraseña' });
     }
 }
+
 
 
 async function actualizarEstadoUsuariosVencidos(): Promise<void> {

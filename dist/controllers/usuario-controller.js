@@ -429,10 +429,11 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             return res.status(400).json({ message: 'Correo Electrónico no encontrado' });
         }
         // Establecer la nueva contraseña como el nombre de usuario
-        const newPassword = user.nombre_usuario;
+        const newPassword = user.usuario;
         console.log('Contraseña a guardar:', newPassword); // Agregar este registro de depuración
         // Guardar la nueva contraseña en la base de datos
-        user.contrasena = newPassword;
+        const hashedPassword = yield bcrypt_1.default.hash(newPassword, 10);
+        user.contrasena = hashedPassword;
         yield user.save();
         // Envía el correo electrónico con la nueva contraseña
         try {
@@ -453,6 +454,7 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             console.error('Error al enviar el correo electrónico:', error);
             return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
         }
+        console.log('Contraseña guardada en la base de datos:', hashedPassword); // Agregar este registro de depuración
         return res.json({ message: 'Se ha enviado la nueva contraseña a tu correo electrónico', userEmail: user.correo_electronico, info: emailStatus });
     }
     catch (error) {
