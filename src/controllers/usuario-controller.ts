@@ -386,6 +386,10 @@ export const forgotPassword = async (req: Request, res: Response) => {
                 to: user.correo_electronico,
                 subject: "Recuperacion de Contraseña ✔ Utilidad MiPyme",
                 html: `
+                <div style="text-align: center;">
+                <h1 style="font-size: 24px; color: #333333;">MIPyme</h1>
+                </div>
+                <br>
                 <b>Hola ${user.nombre_usuario},</b>
                 <br>
                 <p>Por favor haz clic en el siguiente enlace para restablecer tu contraseña:</p>
@@ -472,13 +476,19 @@ export const reestablecer = async (req: Request, res: Response) => {
                 to: user.correo_electronico,
                 subject: "Reestablecer Contraseña ✔ Utilidad MiPyme",
                 html: `
+                <div style="text-align: center;">
+                <h1 style="font-size: 24px; color: #333333;">MIPyme</h1>
+                </div>
+                <br>
                 <b>Hola ${user.nombre_usuario},</b>
                 <br>
                 <p>Se ha restablecido tu contraseña. A continuación, encontrarás tus nuevos detalles de inicio de sesión:</p>
                 <p>Correo Electrónico: ${user.correo_electronico}</p>
                 <p>Nueva Contraseña: ${newPassword}</p>
+                <p>Te recomendamos cambiar tu contraseña de restablecimiento en tu perfil por una nueva. Puedes hacerlo ingresando a tu cuenta y navegando a la sección de perfil.</p>
                 `
             });
+            
         } catch (error) {
             console.error('Error al enviar el correo electrónico:', error);
             return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
