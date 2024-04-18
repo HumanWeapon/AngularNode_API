@@ -453,8 +453,8 @@ export const reestablecer = async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'Correo Electrónico no encontrado' });
         }
 
-        // Establecer la contraseña predeterminada como el nombre de usuario
-        const newPassword = 'PYME12345';
+        // Establecer la nueva contraseña como el nombre de usuario
+        const newPassword = user.nombre_usuario;
 
         console.log('Contraseña a guardar:', newPassword); // Agregar este registro de depuración
 
@@ -473,7 +473,7 @@ export const reestablecer = async (req: Request, res: Response) => {
                 <br>
                 <p>Se ha restablecido tu contraseña. A continuación, encontrarás tus nuevos detalles de inicio de sesión:</p>
                 <p>Correo Electrónico: ${user.correo_electronico}</p>
-                <p>Nueva Contraseña: PYME12345</p>
+                <p>Nueva Contraseña: ${newPassword}</p>
                 `
             });
         } catch (error) {
@@ -488,6 +488,7 @@ export const reestablecer = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Error al restablecer la contraseña' });
     }
 }
+
 
 async function actualizarEstadoUsuariosVencidos(): Promise<void> {
     try {

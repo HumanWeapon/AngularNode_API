@@ -428,8 +428,8 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         if (!user) {
             return res.status(400).json({ message: 'Correo Electrónico no encontrado' });
         }
-        // Establecer la contraseña predeterminada como el nombre de usuario
-        const newPassword = 'PYME12345';
+        // Establecer la nueva contraseña como el nombre de usuario
+        const newPassword = user.nombre_usuario;
         console.log('Contraseña a guardar:', newPassword); // Agregar este registro de depuración
         // Guardar la nueva contraseña en la base de datos
         user.contrasena = newPassword;
@@ -445,7 +445,7 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 <br>
                 <p>Se ha restablecido tu contraseña. A continuación, encontrarás tus nuevos detalles de inicio de sesión:</p>
                 <p>Correo Electrónico: ${user.correo_electronico}</p>
-                <p>Nueva Contraseña: PYME12345</p>
+                <p>Nueva Contraseña: ${newPassword}</p>
                 `
             });
         }
