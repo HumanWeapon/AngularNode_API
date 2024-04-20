@@ -362,7 +362,7 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
             return res.status(400).json({ message: 'Correo Electronico no encontrado' });
         }
         const token = jsonwebtoken_1.default.sign({ userId: user.id_usuario }, config_1.default.jwtSecretReset, { expiresIn: '10m' });
-        verificationLink = `http://localhost:4200/reset-password/${token}`;
+        verificationLink = `https://utilidadmipyme.netlify.app/reset-password/${token}`;
         user.resetToken = token;
         yield user.save();
         try {
