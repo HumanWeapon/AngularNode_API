@@ -387,6 +387,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
                 subject: "Recuperacion de Contraseña ✔ Utilidad MiPyme",
                 html: `
                 <div style="text-align: center;">
+                <img src="https://www.comercioexterior.org.ar/img/noticias/grandes/5663-1.png" alt="MIPyme" width="200">
                 <h1 style="font-size: 24px; color: #333333;">MIPyme</h1>
                 </div>
                 <br>
