@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activatePreguntaUsuario = exports.inactivatePreguntaUsuario = exports.preguntasRespuestas = exports.validarRespuestas = exports.updatePreguntaUsuario = exports.postPreguntaUsuario = exports.getPreguntasusuario = exports.getAllPreguntasUsuario = void 0;
+exports.activatePreguntaUsuario = exports.inactivatePreguntaUsuario = exports.preguntasRespuestas = exports.validarRespuestas = exports.updatePreguntaUsuario = exports.postPreguntaUsuario = exports.deletePreguntaUsuario = exports.getPreguntasusuario = exports.getAllPreguntasUsuario = void 0;
 const express_1 = __importDefault(require("express"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const preguntas_usuario_model_1 = require("../models/preguntas_usuario-model");
@@ -45,6 +45,35 @@ const getPreguntasusuario = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.getPreguntasusuario = getPreguntasusuario;
+const deletePreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_usuario } = req.params; // Obtén el ID desde los parámetros de la URL
+    try {
+        // Busca todas las preguntas del usuario en la base de datos
+        const preguntasUsuario = yield preguntas_usuario_model_1.PreguntasUsuario.findAll({
+            where: { id_usuario: id_usuario }
+        });
+        // Verifica si se encontraron preguntas del usuario
+        if (preguntasUsuario.length > 0) {
+            // Elimina todas las preguntas del usuario
+            yield preguntas_usuario_model_1.PreguntasUsuario.destroy({
+                where: { id_usuario: id_usuario }
+            });
+            res.json({ msg: 'Se eliminaron todas las preguntas del usuario' });
+        }
+        else {
+            res.status(404).json({
+                msg: 'No se encontraron preguntas para el usuario con el ID ' + id_usuario,
+            });
+        }
+    }
+    catch (error) {
+        console.error('Error al eliminar las preguntas del usuario:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al eliminar las preguntas del usuario',
+        });
+    }
+});
+exports.deletePreguntaUsuario = deletePreguntaUsuario;
 //Inserta una respuesta en la base de datos
 const postPreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_pregunta, id_usuario, respuesta, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;

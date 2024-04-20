@@ -15,4 +15,5 @@ routerPreguntasUsuario.post('/validarRespuestas', preguntas_usuario_controller_1
 routerPreguntasUsuario.post('/preguntasRespuestas', preguntas_usuario_controller_1.preguntasRespuestas); //
 routerPreguntasUsuario.post('/activatePreguntaUsuario', preguntas_usuario_controller_1.activatePreguntaUsuario); // elimina el registro con el usuario especificado
 routerPreguntasUsuario.post('/inactivatePreguntaUsuario', preguntas_usuario_controller_1.inactivatePreguntaUsuario); // elimina el registro con el usuario especificado
+routerPreguntasUsuario.delete('/deletePreguntaUsuario/:id_usuario', preguntas_usuario_controller_1.deletePreguntaUsuario); // elimina el registro con el usuario especificado
 exports.default = routerPreguntasUsuario;

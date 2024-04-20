@@ -32,6 +32,36 @@ export const getPreguntasusuario = async (req: Request, res: Response) => {
     }
 }
 
+export const deletePreguntaUsuario = async (req: Request, res: Response) => {
+    const { id_usuario } = req.params; // Obtén el ID desde los parámetros de la URL
+
+    try {
+        // Busca todas las preguntas del usuario en la base de datos
+        const preguntasUsuario = await PreguntasUsuario.findAll({
+            where: { id_usuario: id_usuario }
+        });
+
+        // Verifica si se encontraron preguntas del usuario
+        if (preguntasUsuario.length > 0) {
+            // Elimina todas las preguntas del usuario
+            await PreguntasUsuario.destroy({
+                where: { id_usuario: id_usuario }
+            });
+            res.json({ msg: 'Se eliminaron todas las preguntas del usuario' });
+        } else {
+            res.status(404).json({
+                msg: 'No se encontraron preguntas para el usuario con el ID ' + id_usuario,
+            });
+        }
+    } catch (error) {
+        console.error('Error al eliminar las preguntas del usuario:', error);
+        res.status(500).json({
+            msg: 'Hubo un error al eliminar las preguntas del usuario',
+        });
+    }
+};
+
+
 //Inserta una respuesta en la base de datos
 export const postPreguntaUsuario = async (req: Request, res: Response) => {
 

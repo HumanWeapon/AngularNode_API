@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validarToken from './validarToken';
-import { updatePreguntaUsuario, getAllPreguntasUsuario, getPreguntasusuario, postPreguntaUsuario, validarRespuestas, preguntasRespuestas, activatePreguntaUsuario, inactivatePreguntaUsuario } from '../controllers/preguntas_usuario-controller';
+import { updatePreguntaUsuario, getAllPreguntasUsuario, getPreguntasusuario, postPreguntaUsuario, validarRespuestas, preguntasRespuestas, activatePreguntaUsuario, inactivatePreguntaUsuario, deletePreguntaUsuario } from '../controllers/preguntas_usuario-controller';
 
 const routerPreguntasUsuario = Router()
 
@@ -12,5 +12,6 @@ routerPreguntasUsuario.post('/validarRespuestas', validarRespuestas);//Inserta u
 routerPreguntasUsuario.post('/preguntasRespuestas', preguntasRespuestas);//
 routerPreguntasUsuario.post('/activatePreguntaUsuario', activatePreguntaUsuario); // elimina el registro con el usuario especificado
 routerPreguntasUsuario.post('/inactivatePreguntaUsuario', inactivatePreguntaUsuario); // elimina el registro con el usuario especificado
+routerPreguntasUsuario.delete('/deletePreguntaUsuario/:id_usuario', deletePreguntaUsuario); // elimina el registro con el usuario especificado
 
 export default routerPreguntasUsuario;
