@@ -158,42 +158,47 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const { creado_por, modificado_por, usuario, nombre_usuario, correo_electronico, contrasena, id_rol, fecha_vencimiento, intentos_fallidos, estado_usuario } = req.body;
     const hashedPassword = yield bcrypt_1.default.hash(contrasena, 10);
     try {
-        const user = yield usuario_models_1.User.findOne({
-            where: { usuario: usuario }
-        });
-        if (user) {
+        // Verificar si el usuario ya existe
+        const existingUser = yield usuario_models_1.User.findOne({ where: { usuario: usuario } });
+        if (existingUser) {
             return res.status(400).json({
-                msg: 'Usuario ya existe en la base de datos: ' + usuario
+                msg: 'El usuario ya existe en la base de datos: ' + usuario
             });
         }
-        else {
-            const newUser = yield usuario_models_1.User.create({
-                usuario: usuario.toUpperCase(),
-                nombre_usuario: nombre_usuario.toUpperCase(),
-                correo_electronico: correo_electronico.toUpperCase(),
-                contrasena: hashedPassword,
-                id_rol: id_rol,
-                fecha_ultima_conexion: null,
-                fecha_vencimiento: fecha_vencimiento,
-                intentos_fallidos: intentos_fallidos,
-                creado_por: creado_por.toUpperCase(),
-                fecha_creacion: Date.now(),
-                modificado_por: modificado_por.toUpperCase(),
-                fecha_modificacion: Date.now(),
-                estado_usuario: estado_usuario
+        // Verificar si el correo electrónico ya está registrado
+        const existingEmail = yield usuario_models_1.User.findOne({ where: { correo_electronico: correo_electronico } });
+        if (existingEmail) {
+            return res.status(400).json({
+                msg: 'El correo electrónico ya está registrado en la base de datos: ' + correo_electronico
             });
-            //return res.json(newUser); // Devolver el nuevo usuario creado como respuesta
-            const getuser = yield usuario_models_1.User.findOne({
-                where: { usuario: newUser.usuario },
-                include: [
-                    {
-                        model: roles_models_1.Roles,
-                        as: 'roles' // Usa el mismo alias que en la definición de la asociación
-                    },
-                ],
-            });
-            res.json(getuser);
         }
+        // Si el usuario y el correo electrónico no están duplicados, crear el nuevo usuario
+        const newUser = yield usuario_models_1.User.create({
+            usuario: usuario.toUpperCase(),
+            nombre_usuario: nombre_usuario.toUpperCase(),
+            correo_electronico: correo_electronico.toUpperCase(),
+            contrasena: hashedPassword,
+            id_rol: id_rol,
+            fecha_ultima_conexion: null,
+            fecha_vencimiento: fecha_vencimiento,
+            intentos_fallidos: intentos_fallidos,
+            creado_por: creado_por.toUpperCase(),
+            fecha_creacion: Date.now(),
+            modificado_por: modificado_por.toUpperCase(),
+            fecha_modificacion: Date.now(),
+            estado_usuario: estado_usuario
+        });
+        // Obtener los detalles del usuario recién creado
+        const getuser = yield usuario_models_1.User.findOne({
+            where: { usuario: newUser.usuario },
+            include: [
+                {
+                    model: roles_models_1.Roles,
+                    as: 'roles' // Usa el mismo alias que en la definición de la asociación
+                },
+            ],
+        });
+        res.json(getuser);
     }
     catch (error) {
         res.status(400).json({
@@ -201,11 +206,6 @@ const postUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             error
         });
     }
-    /*// Generamos token
-    const token = jwt.sign({
-        usuario: usuario
-    }, process.env.SECRET_KEY || 'Lamers005*');
-    res.json(token);*/
 });
 exports.postUsuario = postUsuario;
 //Destruye el usuario de la DBA
