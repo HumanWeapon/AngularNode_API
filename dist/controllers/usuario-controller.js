@@ -361,7 +361,7 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!user) {
             return res.status(400).json({ message: 'Correo Electronico no encontrado' });
         }
-        const token = jsonwebtoken_1.default.sign({ userId: user.id_usuario }, config_1.default.jwtSecretReset, { expiresIn: '10m' });
+        const token = jsonwebtoken_1.default.sign({ userId: user.id_usuario }, config_1.default.jwtSecretReset, { expiresIn: '4m' });
         verificationLink = `https://utilidadmipyme.netlify.app/reset-password/${token}`;
         user.resetToken = token;
         yield user.save();
@@ -420,6 +420,17 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.resetPassword = resetPassword;
+// Función para generar una contraseña aleatoria
+const generarContraseñaAleatoria = () => {
+    const longitud = 12; // Longitud de la contraseña
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+';
+    let contraseña = '';
+    for (let i = 0; i < longitud; i++) {
+        const indice = Math.floor(Math.random() * caracteres.length);
+        contraseña += caracteres.charAt(indice);
+    }
+    return contraseña;
+};
 const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { correo_electronico } = req.body;
     console.log('Correo Electrónico recibido:', correo_electronico); // Agregar este registro de depuración
@@ -433,9 +444,9 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         if (!user) {
             return res.status(400).json({ message: 'Correo Electrónico no encontrado' });
         }
-        // Establecer la nueva contraseña como el nombre de usuario
-        const newPassword = user.usuario;
-        console.log('Contraseña a guardar:', newPassword); // Agregar este registro de depuración
+        // Generar la nueva contraseña aleatoria
+        const newPassword = generarContraseñaAleatoria();
+        console.log('Tu nueva Contraseña es: ' + newPassword);
         // Guardar la nueva contraseña en la base de datos
         const hashedPassword = yield bcrypt_1.default.hash(newPassword, 10);
         user.contrasena = hashedPassword;
