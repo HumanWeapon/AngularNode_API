@@ -439,7 +439,19 @@ export const resetPassword = async (req: Request, res: Response) => {
     }
 }
 
-import _bcrypt from 'bcrypt';
+// Función para generar una contraseña aleatoria
+const generarContraseñaAleatoria = (): string => {
+  const longitud = 12; // Longitud de la contraseña
+  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+';
+  let contraseña = '';
+
+  for (let i = 0; i < longitud; i++) {
+    const indice = Math.floor(Math.random() * caracteres.length);
+    contraseña += caracteres.charAt(indice);
+  }
+
+  return contraseña;
+};
 
 export const reestablecer = async (req: Request, res: Response) => {
     const { correo_electronico } = req.body;
@@ -460,9 +472,10 @@ export const reestablecer = async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'Correo Electrónico no encontrado' });
         }
 
-        // Establecer la nueva contraseña como el nombre de usuario
-        const newPassword = user.usuario;
+        // Generar la nueva contraseña aleatoria
+        const newPassword = generarContraseñaAleatoria();
 
+        console.log('Tu nueva Contraseña es: '+ newPassword)
         // Guardar la nueva contraseña en la base de datos
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         user.contrasena = hashedPassword;
@@ -503,7 +516,6 @@ export const reestablecer = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Error al restablecer la contraseña' });
     }
 }
-
 
 
 async function actualizarEstadoUsuariosVencidos(): Promise<void> {
