@@ -420,17 +420,6 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.resetPassword = resetPassword;
-// Función para generar una contraseña aleatoria
-const generarContraseñaAleatoria = () => {
-    const longitud = 12; // Longitud de la contraseña
-    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+';
-    let contraseña = '';
-    for (let i = 0; i < longitud; i++) {
-        const indice = Math.floor(Math.random() * caracteres.length);
-        contraseña += caracteres.charAt(indice);
-    }
-    return contraseña;
-};
 const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { correo_electronico } = req.body;
     console.log('Correo Electrónico recibido:', correo_electronico); // Agregar este registro de depuración
@@ -444,9 +433,8 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         if (!user) {
             return res.status(400).json({ message: 'Correo Electrónico no encontrado' });
         }
-        // Generar la nueva contraseña aleatoria
-        const newPassword = generarContraseñaAleatoria();
-        console.log('Tu nueva Contraseña es: ' + newPassword);
+        // Establecer la nueva contraseña como el nombre de usuario
+        const newPassword = user.usuario;
         // Guardar la nueva contraseña en la base de datos
         const hashedPassword = yield bcrypt_1.default.hash(newPassword, 10);
         user.contrasena = hashedPassword;
