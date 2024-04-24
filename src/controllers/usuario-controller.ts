@@ -437,7 +437,8 @@ export const resetPassword = async (req: Request, res: Response) => {
             }
         } catch (error) {
             if (error instanceof jwt.TokenExpiredError) {
-                return res.status(401).json({ message: 'El token de reinicio ha expirado' });
+                // Token expirado
+                return res.status(401).json({ message: 'El enlace o token ha expirado. Por favor, solicita un nuevo enlace de restablecimiento de contraseña.' });
             } else {
                 throw error;
             }
@@ -455,6 +456,7 @@ export const resetPassword = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Error al restablecer la contraseña' });
     }
 }
+
 
 
 // Función para generar una contraseña aleatoria
