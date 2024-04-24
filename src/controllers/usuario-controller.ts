@@ -453,7 +453,7 @@ export const resetPassword = async (req: Request, res: Response) => {
         return res.json({ message: 'Contraseña restablecida con éxito' });
     } catch (error) {
         console.error('Error al restablecer la contraseña:', error);
-        return res.status(500).json({ message: 'Error al restablecer la contraseña' });
+        //return res.status(500).json({ message: 'Error al restablecer la contraseña' });
     }
 }
 

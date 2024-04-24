@@ -430,7 +430,7 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (error) {
         console.error('Error al restablecer la contraseña:', error);
-        return res.status(500).json({ message: 'Error al restablecer la contraseña' });
+        //return res.status(500).json({ message: 'Error al restablecer la contraseña' });
     }
 });
 exports.resetPassword = resetPassword;
