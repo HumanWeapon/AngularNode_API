@@ -424,17 +424,30 @@ export const resetPassword = async (req: Request, res: Response) => {
         }
 
         let user;
-        let jwtPayload; 
 
-        jwtPayload = jwt.verify(resetToken, config.jwtSecretReset);
-        user = await User.findOne({ where: { resetToken } });
+        try {
+            // Verificar el token y obtener el payload
+            const jwtPayload = jwt.verify(resetToken, config.jwtSecretReset) as { userId: number };
 
-        if (!user) {
-            return res.status(401).json({ message: 'Token de reinicio inválido' });
+            // Buscar al usuario utilizando el userId del payload
+            user = await User.findOne({ where: { resetToken, id_usuario: jwtPayload.userId } });
+
+            if (!user) {
+                return res.status(401).json({ message: 'Token de reinicio inválido' });
+            }
+        } catch (error) {
+            if (error instanceof jwt.TokenExpiredError) {
+                return res.status(401).json({ message: 'El token de reinicio ha expirado' });
+            } else {
+                throw error;
+            }
         }
 
+        // Hash de la nueva contraseña
         const hashedPassword = await bcrypt.hash(newPassword, 10);
-        await user.update({ contrasena: hashedPassword, resetToken: resetToken });
+        
+        // Actualizar la contraseña y limpiar el resetToken
+        await user.update({ contrasena: hashedPassword, resetToken: null });
 
         return res.json({ message: 'Contraseña restablecida con éxito' });
     } catch (error) {
@@ -442,6 +455,7 @@ export const resetPassword = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Error al restablecer la contraseña' });
     }
 }
+
 
 // Función para generar una contraseña aleatoria
 const generarContraseñaAleatoria = (): string => {

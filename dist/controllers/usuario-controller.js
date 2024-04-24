@@ -404,14 +404,27 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             return res.status(400).json({ message: 'Token y nueva contraseña son requeridos' });
         }
         let user;
-        let jwtPayload;
-        jwtPayload = jsonwebtoken_1.default.verify(resetToken, config_1.default.jwtSecretReset);
-        user = yield usuario_models_1.User.findOne({ where: { resetToken } });
-        if (!user) {
-            return res.status(401).json({ message: 'Token de reinicio inválido' });
+        try {
+            // Verificar el token y obtener el payload
+            const jwtPayload = jsonwebtoken_1.default.verify(resetToken, config_1.default.jwtSecretReset);
+            // Buscar al usuario utilizando el userId del payload
+            user = yield usuario_models_1.User.findOne({ where: { resetToken, id_usuario: jwtPayload.userId } });
+            if (!user) {
+                return res.status(401).json({ message: 'Token de reinicio inválido' });
+            }
         }
+        catch (error) {
+            if (error instanceof jsonwebtoken_1.default.TokenExpiredError) {
+                return res.status(401).json({ message: 'El token de reinicio ha expirado' });
+            }
+            else {
+                throw error;
+            }
+        }
+        // Hash de la nueva contraseña
         const hashedPassword = yield bcrypt_1.default.hash(newPassword, 10);
-        yield user.update({ contrasena: hashedPassword, resetToken: resetToken });
+        // Actualizar la contraseña y limpiar el resetToken
+        yield user.update({ contrasena: hashedPassword, resetToken: null });
         return res.json({ message: 'Contraseña restablecida con éxito' });
     }
     catch (error) {
