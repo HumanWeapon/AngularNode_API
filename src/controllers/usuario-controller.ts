@@ -447,8 +447,8 @@ export const resetPassword = async (req: Request, res: Response) => {
         // Hash de la nueva contraseña
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         
-        // Actualizar la contraseña
-        await user.update({ contrasena: hashedPassword});
+        // Actualizar la contraseña y limpia el Token de Restablecimiento
+        await user.update({ contrasena: hashedPassword, resetToken: null});
 
         return res.json({ message: 'Contraseña restablecida con éxito' });
     } catch (error) {
