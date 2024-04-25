@@ -66,7 +66,7 @@ export const deletePreguntaUsuario = async (req: Request, res: Response) => {
 export const postPreguntaUsuario = async (req: Request, res: Response) => {
 
     const { id_pregunta, id_usuario, respuesta, creado_por, fecha_creacion, modificado_por, fecha_modificacion  } = req.body;
-    const hashedresponse = await bcrypt.hash(respuesta, 10);
+    const hashedresponse = await bcrypt.hash(respuesta.toUpperCase(), 10);
 
     try{
         const _pregunta = await PreguntasUsuario.findAndCountAll({

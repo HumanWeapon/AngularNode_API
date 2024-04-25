@@ -77,7 +77,7 @@ exports.deletePreguntaUsuario = deletePreguntaUsuario;
 //Inserta una respuesta en la base de datos
 const postPreguntaUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_pregunta, id_usuario, respuesta, creado_por, fecha_creacion, modificado_por, fecha_modificacion } = req.body;
-    const hashedresponse = yield bcrypt_1.default.hash(respuesta, 10);
+    const hashedresponse = yield bcrypt_1.default.hash(respuesta.toUpperCase(), 10);
     try {
         const _pregunta = yield preguntas_usuario_model_1.PreguntasUsuario.findAndCountAll({
             where: { id_usuario: id_usuario }
