@@ -17,7 +17,8 @@ export const getAllBitacora = async (req: Request, res: Response) => {
                     model: Objetos,
                     attributes: ['objeto']
                 }
-            ]
+            ],
+            order: [['fecha', 'ASC']] // Ordenar por fecha ascendente
         });
         res.json(bitacora);
     } catch (error) {
