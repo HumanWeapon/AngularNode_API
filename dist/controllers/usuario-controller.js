@@ -480,7 +480,7 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 <b>Hola ${user.nombre_usuario},</b>
                 <br>
                 <p>Se ha restablecido tu contraseña. A continuación, encontrarás tus nuevos detalles de inicio de sesión:</p>
-                <p>Correo Electrónico: ${user.correo_electronico}</p>
+                <p>Usuario ${user.usuario}</p>
                 <p>Nueva Contraseña: ${newPassword}</p>
                 <p>Te recomendamos cambiar tu contraseña de restablecimiento en tu perfil por una nueva. Puedes hacerlo ingresando a tu cuenta y navegando a la sección de perfil.</p>
                 `

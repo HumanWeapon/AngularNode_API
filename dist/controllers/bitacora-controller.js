@@ -27,7 +27,8 @@ const getAllBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function*
                     model: objetos_models_1.Objetos,
                     attributes: ['objeto']
                 }
-            ]
+            ],
+            order: [['fecha', 'ASC']] // Ordenar por fecha ascendente
         });
         res.json(bitacora);
     }
