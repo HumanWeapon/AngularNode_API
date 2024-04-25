@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validarToken from './validarToken';
-import { activatePermiso, deletePermiso, getAllPermisos, getPermiso, inactivatePermiso, objetosSinRol, permisosRolesObjetos, permisosdeRoutes, postPermiso, updatePermisos } from '../controllers/permisos-controller';
+import { activatePermiso, deletePermiso, getAllPermisos, getPermiso, getPermnisosObjetos, inactivatePermiso, objetosSinRol, permisosRolesObjetos, permisosdeRoutes, postPermiso, updatePermisos } from '../controllers/permisos-controller';
 
 const routerPermisos = Router()
 
@@ -14,7 +14,7 @@ routerPermisos.post('/updatePermisos',validarToken, updatePermisos); // actualiz
 routerPermisos.post('/inactivatePermiso',validarToken, inactivatePermiso);//Inactiva una Pyme en la DB
 routerPermisos.post('/activatePermiso',validarToken, activatePermiso);//Activa una Pyme en la DB
 routerPermisos.post('/permisosRolesObjetos',validarToken, permisosRolesObjetos);//Activa una Pyme en la DB
-routerPermisos.get('/getPermnisosObjetos/:id_rol/:id_objeto',validarToken, permisosRolesObjetos);//Activa una Pyme en la DB
+routerPermisos.get('/getPermnisosObjetos/:id_rol/:id_objeto',validarToken, getPermnisosObjetos);//Activa una Pyme en la DB
 
 
 export default routerPermisos;
