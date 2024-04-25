@@ -416,7 +416,7 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         catch (error) {
             if (error instanceof jsonwebtoken_1.default.TokenExpiredError) {
                 // Token expirado
-                return res.status(401).json({ message: 'El enlace o token ha expirado. Por favor, solicita un nuevo enlace de restablecimiento de contraseña.' });
+                return res.status(401).json({ message: 'El enlace para restablecer la contraseña a expirado' });
             }
             else {
                 throw error;
