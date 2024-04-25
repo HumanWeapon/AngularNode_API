@@ -321,3 +321,20 @@ export const permisosdeRoutes = async (req: Request, res: Response) => {
         }
     }
 }
+export const getPermnisosObjetos = async (req: Request, res: Response) => {
+    const { id_rol, id_objeto } = req.params;
+    try {
+        const query = `
+        SELECT * FROM mipyme.tbl_ms_permisos
+        WHERE id_rol = ${id_rol}
+            AND id_objeto = ${id_objeto}
+        `;
+
+        const [results, metadata] = await db.query(query);
+
+        res.json(results);
+    } catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+};

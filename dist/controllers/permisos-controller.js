@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.permisosdeRoutes = exports.objetosSinRol = exports.permisosRolesObjetos = exports.activatePermiso = exports.inactivatePermiso = exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
+exports.getPermnisosObjetos = exports.permisosdeRoutes = exports.objetosSinRol = exports.permisosRolesObjetos = exports.activatePermiso = exports.inactivatePermiso = exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
 const permisos_models_1 = require("../models/permisos-models");
 const objetos_models_1 = require("../models/objetos-models");
 const sequelize_1 = require("sequelize");
@@ -314,3 +314,20 @@ const permisosdeRoutes = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.permisosdeRoutes = permisosdeRoutes;
+const getPermnisosObjetos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_rol, id_objeto } = req.params;
+    try {
+        const query = `
+        SELECT * FROM mipyme.tbl_ms_permisos
+        WHERE id_rol = ${id_rol}
+            AND id_objeto = ${id_objeto}
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results);
+    }
+    catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.getPermnisosObjetos = getPermnisosObjetos;

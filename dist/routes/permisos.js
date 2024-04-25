@@ -17,4 +17,5 @@ routerPermisos.post('/updatePermisos', validarToken_1.default, permisos_controll
 routerPermisos.post('/inactivatePermiso', validarToken_1.default, permisos_controller_1.inactivatePermiso); //Inactiva una Pyme en la DB
 routerPermisos.post('/activatePermiso', validarToken_1.default, permisos_controller_1.activatePermiso); //Activa una Pyme en la DB
 routerPermisos.post('/permisosRolesObjetos', validarToken_1.default, permisos_controller_1.permisosRolesObjetos); //Activa una Pyme en la DB
+routerPermisos.get('/getPermnisosObjetos/:id_rol/:id_objeto', validarToken_1.default, permisos_controller_1.getPermnisosObjetos); //Activa una Pyme en la DB
 exports.default = routerPermisos;
