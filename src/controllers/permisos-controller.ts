@@ -332,7 +332,7 @@ export const getPermnisosObjetos = async (req: Request, res: Response) => {
 
         const [results, metadata] = await db.query(query);
 
-        res.json(results);
+        res.json(results[0]);
     } catch (error) {
         console.error('Error al consultar contactos:', error);
         res.status(500).json({ msg: 'Error interno del servidor' });

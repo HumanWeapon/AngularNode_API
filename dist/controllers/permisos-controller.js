@@ -323,7 +323,7 @@ const getPermnisosObjetos = (req, res) => __awaiter(void 0, void 0, void 0, func
             AND id_objeto = ${id_objeto}
         `;
         const [results, metadata] = yield connection_1.default.query(query);
-        res.json(results);
+        res.json(results[0]);
     }
     catch (error) {
         console.error('Error al consultar contactos:', error);
