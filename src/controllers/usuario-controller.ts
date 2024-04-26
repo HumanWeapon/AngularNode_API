@@ -399,10 +399,6 @@ export const forgotPassword = async (req: Request, res: Response) => {
                 `
             });
 
-            // Una vez que se ha enviado el correo electrónico, elimina el token
-            user.resetToken = null;
-            await user.save();
-
         } catch (error) {
             console.error('Error al enviar el correo electrónico:', error);
             return res.status(500).json({ message: 'Error al enviar el correo electrónico' });

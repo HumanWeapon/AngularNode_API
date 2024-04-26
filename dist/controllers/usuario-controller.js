@@ -380,9 +380,6 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 <a href="${verificationLink}">${verificationLink}</a>
                 `
             });
-            // Una vez que se ha enviado el correo electrónico, elimina el token
-            user.resetToken = null;
-            yield user.save();
         }
         catch (error) {
             console.error('Error al enviar el correo electrónico:', error);
