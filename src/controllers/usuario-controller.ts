@@ -433,7 +433,7 @@ export const resetPassword = async (req: Request, res: Response) => {
             user = await User.findOne({ where: { resetToken, id_usuario: jwtPayload.userId } });
 
             if (!user) {
-                return res.status(402).json({ message: 'Token de reinicio inválido' });
+                return res.status(402).json({ message: 'El enlace para restablecer la contraseña a expirado' });
             }
         } catch (error) {
             if (error instanceof jwt.TokenExpiredError) {

@@ -410,7 +410,7 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             // Buscar al usuario utilizando el userId del payload
             user = yield usuario_models_1.User.findOne({ where: { resetToken, id_usuario: jwtPayload.userId } });
             if (!user) {
-                return res.status(402).json({ message: 'Token de reinicio inválido' });
+                return res.status(402).json({ message: 'El enlace para restablecer la contraseña a expirado' });
             }
         }
         catch (error) {
