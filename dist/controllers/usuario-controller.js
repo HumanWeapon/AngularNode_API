@@ -423,7 +423,7 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         // Hash de la nueva contraseña
         const hashedPassword = yield bcrypt_1.default.hash(newPassword, 10);
         // Actualizar la contraseña y limpia el Token de Restablecimiento
-        yield user.update({ contrasena: hashedPassword, resetToken: null });
+        yield user.update({ contrasena: hashedPassword });
         return res.json({ message: 'Contraseña restablecida con éxito' });
     }
     catch (error) {
