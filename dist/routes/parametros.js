@@ -9,6 +9,7 @@ const parametros_controller_1 = require("../controllers/parametros-controller");
 const routerParametros = (0, express_1.Router)();
 routerParametros.get('/getAllParametros', validarToken_1.default, parametros_controller_1.getAllParametros); //Consulta todos los parametros en la base de datos
 routerParametros.get('/getParametroPreguntasdeSeguridad', parametros_controller_1.getParametroPreguntasdeSeguridad); //Obtiene en los parámetros la cantidad de preguntas para registrar preguntas de seguridad
+routerParametros.get('/getParametroPuertoCorreo', parametros_controller_1.getParametroPuertoCorreo); //Obtiene en los parámetros el puerto del Host para enviar correos
 routerParametros.get('/getParametro', validarToken_1.default, parametros_controller_1.getParametro); //Consulta un parametro en la base de datos
 routerParametros.post('/postParametro', validarToken_1.default, parametros_controller_1.postParametro); // inserta un parametro en la base de datos
 routerParametros.delete('/deleteParametro', validarToken_1.default, parametros_controller_1.deleteParametro); // elimina un parametro en la base de datos
