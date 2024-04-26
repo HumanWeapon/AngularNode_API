@@ -381,9 +381,6 @@ export const forgotPassword = async (req: Request, res: Response) => {
         const token = jwt.sign({ userId: user.id_usuario }, config.jwtSecretReset, { expiresIn: '4m' });
         verificationLink = `https://utilidadmipyme.netlify.app/reset-password/${token}`;
 
-        user.resetToken = token;
-        await user.save();
-
         try {
             await transporter.sendMail({
                 from: '"Recuperacion de Contraseña" <utilidadMiPyme>',
