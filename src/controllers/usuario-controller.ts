@@ -381,6 +381,9 @@ export const forgotPassword = async (req: Request, res: Response) => {
         const token = jwt.sign({ userId: user.id_usuario }, config.jwtSecretReset, { expiresIn: '4m' });
         verificationLink = `https://utilidadmipyme.netlify.app/reset-password/${token}`;
 
+        user.resetToken = token;
+        await user.save();
+
         try {
             await transporter.sendMail({
                 from: '"Recuperacion de Contraseña" <utilidadMiPyme>',
@@ -398,7 +401,6 @@ export const forgotPassword = async (req: Request, res: Response) => {
                 <a href="${verificationLink}">${verificationLink}</a>
                 `
             });
-
         } catch (error) {
             console.error('Error al enviar el correo electrónico:', error);
             return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
@@ -446,7 +448,7 @@ export const resetPassword = async (req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         
         // Actualizar la contraseña y limpia el Token de Restablecimiento
-        await user.update({ contrasena: hashedPassword});
+        await user.update({ contrasena: hashedPassword, resetToken: null});
 
         return res.json({ message: 'Contraseña restablecida con éxito' });
     } catch (error) {

@@ -363,6 +363,8 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         const token = jsonwebtoken_1.default.sign({ userId: user.id_usuario }, config_1.default.jwtSecretReset, { expiresIn: '4m' });
         verificationLink = `https://utilidadmipyme.netlify.app/reset-password/${token}`;
+        user.resetToken = token;
+        yield user.save();
         try {
             yield mailer_1.transporter.sendMail({
                 from: '"Recuperacion de Contraseña" <utilidadMiPyme>',
@@ -423,7 +425,7 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         // Hash de la nueva contraseña
         const hashedPassword = yield bcrypt_1.default.hash(newPassword, 10);
         // Actualizar la contraseña y limpia el Token de Restablecimiento
-        yield user.update({ contrasena: hashedPassword });
+        yield user.update({ contrasena: hashedPassword, resetToken: null });
         return res.json({ message: 'Contraseña restablecida con éxito' });
     }
     catch (error) {
