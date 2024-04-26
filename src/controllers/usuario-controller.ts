@@ -378,6 +378,11 @@ export const forgotPassword = async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'Correo Electronico no encontrado' });
         }
 
+        // Realizar la validación del resetToken
+        if (!user.resetToken) {
+            return res.status(504).json({ message: 'El token de restablecimiento ya no está disponible' });
+        }
+
         const token = jwt.sign({ userId: user.id_usuario }, config.jwtSecretReset, { expiresIn: '4m' });
         verificationLink = `https://utilidadmipyme.netlify.app/reset-password/${token}`;
 
@@ -413,6 +418,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Error al generar el token de restablecimiento' });
     }
 }
+
 
 export const resetPassword = async (req: Request, res: Response) => {
     const { newPassword } = req.body;
