@@ -7,7 +7,7 @@ import { Objetos } from "../models/objetos-models";
 export const getAllBitacora = async (req: Request, res: Response) => {
     try {
         const bitacora = await Bitacora.findAll({
-            attributes: ['fecha', 'id_usuario', 'id_objeto', 'campo_original', 'nuevo_campo', 'accion', ],
+            attributes: ['id_bitacora', 'fecha', 'id_usuario', 'id_objeto', 'campo_original', 'nuevo_campo', 'accion', ],
             include: [
                 {
                     model: User,
@@ -18,28 +18,29 @@ export const getAllBitacora = async (req: Request, res: Response) => {
                     attributes: ['objeto']
                 }
             ],
-            order: [['fecha', 'ASC']] // Ordenar por fecha ascendente
+            order: [['id_bitacora', 'DESC']] // Ordenar por fecha ascendente
         });
         res.json(bitacora);
     } catch (error) {
         console.error('Error al obtener la bitácora:', error);
-        res.status(500).json({ error: 'Error al obtener la bitácora' });
+        res.status(500).json({ error: 'Error al obtener la bitácora' }); 
     }
 }
 
 export const PostBitacora = async (req: Request, res: Response) => {
-    const { fecha, id_usuario, id_objeto, accion, campo_original, nuevo_campo } = req.body;
+    const { id_bitacora, fecha, id_usuario, id_objeto, accion, campo_original, nuevo_campo } = req.body;
 
     try {
         // Ordena los registros por fecha de forma ascendente
         const bitacora = await Bitacora.create({
+            id_bitacora,
             fecha: fecha,
             id_usuario: id_usuario,
             id_objeto: id_objeto,
             campo_original: campo_original.toUpperCase(),
             nuevo_campo: nuevo_campo.toUpperCase(),
             accion: accion.toUpperCase(),
-        }, { order: [['fecha', 'ASC']] });
+        }, { order: [['id_bitacora', 'DESC']] });
 
         res.json({
             msg: 'El evento se ha registrado exitosamente',

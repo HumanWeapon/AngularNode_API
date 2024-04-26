@@ -17,7 +17,7 @@ const objetos_models_1 = require("../models/objetos-models");
 const getAllBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const bitacora = yield bitacora_model_1.Bitacora.findAll({
-            attributes: ['fecha', 'id_usuario', 'id_objeto', 'campo_original', 'nuevo_campo', 'accion',],
+            attributes: ['id_bitacora', 'fecha', 'id_usuario', 'id_objeto', 'campo_original', 'nuevo_campo', 'accion',],
             include: [
                 {
                     model: usuario_models_1.User,
@@ -28,7 +28,7 @@ const getAllBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function*
                     attributes: ['objeto']
                 }
             ],
-            order: [['fecha', 'ASC']] // Ordenar por fecha ascendente
+            order: [['id_bitacora', 'DESC']] // Ordenar por fecha ascendente
         });
         res.json(bitacora);
     }
@@ -39,17 +39,18 @@ const getAllBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getAllBitacora = getAllBitacora;
 const PostBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { fecha, id_usuario, id_objeto, accion, campo_original, nuevo_campo } = req.body;
+    const { id_bitacora, fecha, id_usuario, id_objeto, accion, campo_original, nuevo_campo } = req.body;
     try {
         // Ordena los registros por fecha de forma ascendente
         const bitacora = yield bitacora_model_1.Bitacora.create({
+            id_bitacora,
             fecha: fecha,
             id_usuario: id_usuario,
             id_objeto: id_objeto,
             campo_original: campo_original.toUpperCase(),
             nuevo_campo: nuevo_campo.toUpperCase(),
             accion: accion.toUpperCase(),
-        }, { order: [['fecha', 'ASC']] });
+        }, { order: [['id_bitacora', 'DESC']] });
         res.json({
             msg: 'El evento se ha registrado exitosamente',
             bitacora: bitacora // Si deseas devolver el registro creado en la respuesta
