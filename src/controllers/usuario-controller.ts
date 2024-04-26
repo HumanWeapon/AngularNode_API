@@ -401,6 +401,11 @@ export const forgotPassword = async (req: Request, res: Response) => {
                 <a href="${verificationLink}">${verificationLink}</a>
                 `
             });
+
+            // Una vez que se ha enviado el correo electrónico, elimina el token
+            user.resetToken = null;
+            await user.save();
+
         } catch (error) {
             console.error('Error al enviar el correo electrónico:', error);
             return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
@@ -413,6 +418,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Error al generar el token de restablecimiento' });
     }
 }
+
 
 export const resetPassword = async (req: Request, res: Response) => {
     const { newPassword } = req.body;
