@@ -379,7 +379,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
         }
 
         // Realizar la validación del resetToken
-        if (user.resetToken) {
+        if (user.resetToken == true) {
             return res.status(504).json({ message: 'El token de restablecimiento ya no está disponible' });
         }
 
@@ -454,7 +454,7 @@ export const resetPassword = async (req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         
         // Actualizar la contraseña y limpia el Token de Restablecimiento
-        await user.update({ contrasena: hashedPassword});
+        await user.update({ contrasena: hashedPassword, resetToken: true});
 
         return res.json({ message: 'Contraseña restablecida con éxito' });
     } catch (error) {

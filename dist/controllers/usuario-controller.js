@@ -362,7 +362,7 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
             return res.status(400).json({ message: 'Correo Electronico no encontrado' });
         }
         // Realizar la validación del resetToken
-        if (user.resetToken) {
+        if (user.resetToken == true) {
             return res.status(504).json({ message: 'El token de restablecimiento ya no está disponible' });
         }
         const token = jsonwebtoken_1.default.sign({ userId: user.id_usuario }, config_1.default.jwtSecretReset, { expiresIn: '4m' });
@@ -429,7 +429,7 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         // Hash de la nueva contraseña
         const hashedPassword = yield bcrypt_1.default.hash(newPassword, 10);
         // Actualizar la contraseña y limpia el Token de Restablecimiento
-        yield user.update({ contrasena: hashedPassword });
+        yield user.update({ contrasena: hashedPassword, resetToken: true });
         return res.json({ message: 'Contraseña restablecida con éxito' });
     }
     catch (error) {
