@@ -362,7 +362,7 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
             return res.status(400).json({ message: 'Correo Electronico no encontrado' });
         }
         // Realizar la validación del resetToken
-        if (user.resetToken == user.resetToken) {
+        if (user.resetToken) {
             return res.status(504).json({ message: 'El token de restablecimiento ya no está disponible' });
         }
         const token = jsonwebtoken_1.default.sign({ userId: user.id_usuario }, config_1.default.jwtSecretReset, { expiresIn: '4m' });

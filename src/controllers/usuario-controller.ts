@@ -379,7 +379,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
         }
 
         // Realizar la validación del resetToken
-        if (user.resetToken == user.resetToken) {
+        if (user.resetToken) {
             return res.status(504).json({ message: 'El token de restablecimiento ya no está disponible' });
         }
 
