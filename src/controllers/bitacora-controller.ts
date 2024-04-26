@@ -11,7 +11,7 @@ export const getAllBitacora = async (req: Request, res: Response) => {
             include: [
                 {
                     model: User,
-                    attributes: ['usuario', 'nombre_usuario']
+                    attributes: ['usuario', 'nombre_usuario'] 
                 },
                 {
                     model: Objetos,
@@ -28,29 +28,31 @@ export const getAllBitacora = async (req: Request, res: Response) => {
 }
 
 export const PostBitacora = async (req: Request, res: Response) => {
-
     const { fecha, id_usuario, id_objeto, accion, campo_original, nuevo_campo } = req.body;
 
-    try{
-        await Bitacora.create({
+    try {
+        // Ordena los registros por fecha de forma ascendente
+        const bitacora = await Bitacora.create({
             fecha: fecha,
-            id_usuario: id_usuario, 
+            id_usuario: id_usuario,
             id_objeto: id_objeto,
             campo_original: campo_original.toUpperCase(),
             nuevo_campo: nuevo_campo.toUpperCase(),
             accion: accion.toUpperCase(),
-        })
+        }, { order: [['fecha', 'ASC']] });
+
         res.json({
             msg: 'El evento se ha registrado exitosamente',
-        })
-    }
-    catch (error){
+            bitacora: bitacora // Si deseas devolver el registro creado en la respuesta
+        });
+    } catch (error) {
         res.status(400).json({
             msg: 'Contactate con el administrador',
             error
-        }); 
+        });
     }
 }
+
 
 export const DeleteBitacora = async (req: Request, res: Response) => {
     try {

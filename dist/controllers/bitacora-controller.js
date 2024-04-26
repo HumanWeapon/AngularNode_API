@@ -41,16 +41,18 @@ exports.getAllBitacora = getAllBitacora;
 const PostBitacora = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { fecha, id_usuario, id_objeto, accion, campo_original, nuevo_campo } = req.body;
     try {
-        yield bitacora_model_1.Bitacora.create({
+        // Ordena los registros por fecha de forma ascendente
+        const bitacora = yield bitacora_model_1.Bitacora.create({
             fecha: fecha,
             id_usuario: id_usuario,
             id_objeto: id_objeto,
             campo_original: campo_original.toUpperCase(),
             nuevo_campo: nuevo_campo.toUpperCase(),
             accion: accion.toUpperCase(),
-        });
+        }, { order: [['fecha', 'ASC']] });
         res.json({
             msg: 'El evento se ha registrado exitosamente',
+            bitacora: bitacora // Si deseas devolver el registro creado en la respuesta
         });
     }
     catch (error) {
