@@ -64,7 +64,7 @@ const postParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         else {
             const param = yield parametros_models_1.Parametros.create({
                 parametro: parametro.toUpperCase(),
-                valor: valor,
+                valor: valor.toUpperCase(),
                 estado_parametro: estado_parametro,
                 fecha_creacion: fecha_creacion,
                 fecha_modificacion: fecha_modificacion,
@@ -132,7 +132,7 @@ const updateParametro = (req, res) => __awaiter(void 0, void 0, void 0, function
         yield _parametro.update({
             id_parametro: id_parametro,
             parametro: parametro.toUpperCase(),
-            valor: valor,
+            valor: valor.toUpperCase(),
             estado_parametro: estado_parametro,
             fecha_modificacion: fecha_modificacion,
             modificado_por: modificado_por.toUpperCase(),

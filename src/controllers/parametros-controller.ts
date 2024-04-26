@@ -59,7 +59,7 @@ export const postParametro = async (req: Request, res: Response) => {
         }else{
             const param = await Parametros.create({
                 parametro: parametro.toUpperCase(),
-                valor: valor,
+                valor: valor.toUpperCase(),
                 estado_parametro: estado_parametro,
                 fecha_creacion: fecha_creacion,                
                 fecha_modificacion: fecha_modificacion,
@@ -132,7 +132,7 @@ export const updateParametro = async (req: Request, res: Response) => {
         await _parametro.update({
             id_parametro: id_parametro,
             parametro: parametro.toUpperCase(),
-            valor: valor,
+            valor: valor.toUpperCase(),
             estado_parametro: estado_parametro,
             fecha_modificacion: fecha_modificacion,
             modificado_por: modificado_por.toUpperCase(),        

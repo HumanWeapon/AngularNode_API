@@ -17,7 +17,7 @@ exports.Parametros = connection_1.default.define('roles', {
         allowNull: false
     },
     valor: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
     fecha_creacion: {

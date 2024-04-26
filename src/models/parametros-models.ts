@@ -12,7 +12,7 @@ export const Parametros: any = dataBase.define('roles', {
         allowNull: false
     },
     valor: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },    
     fecha_creacion: {
