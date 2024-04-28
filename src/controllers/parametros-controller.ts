@@ -27,6 +27,13 @@ export const getParametroPuertoCorreo = async (req: Request, res: Response) => {
     res.json(_parametro)
 }
 
+export const getParametroCorreoServidor= async (req: Request, res: Response) => {
+    const _parametro = await Parametros.findOne({
+        where: {parametro: 'CORREO_SERVIDOR'}
+    });
+    res.json(_parametro)
+}
+
 //Obtiene un parametro de la base de datos
 export const getParametro = async (req: Request, res: Response) => {
     const { id_parametro } = req.body;

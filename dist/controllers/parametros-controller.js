@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateParametro = exports.inactivateParametro = exports.updateParametro = exports.deleteParametro = exports.postParametro = exports.getParametro = exports.getParametroPuertoCorreo = exports.getParametroPreguntasdeSeguridad = exports.getAllParametros = void 0;
+exports.activateParametro = exports.inactivateParametro = exports.updateParametro = exports.deleteParametro = exports.postParametro = exports.getParametro = exports.getParametroCorreoServidor = exports.getParametroPuertoCorreo = exports.getParametroPreguntasdeSeguridad = exports.getAllParametros = void 0;
 const parametros_models_1 = require("../models/parametros-models");
 //Obtiene todos los parametros de la base de datos
 const getAllParametros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -33,6 +33,13 @@ const getParametroPuertoCorreo = (req, res) => __awaiter(void 0, void 0, void 0,
     res.json(_parametro);
 });
 exports.getParametroPuertoCorreo = getParametroPuertoCorreo;
+const getParametroCorreoServidor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const _parametro = yield parametros_models_1.Parametros.findOne({
+        where: { parametro: 'CORREO_SERVIDOR' }
+    });
+    res.json(_parametro);
+});
+exports.getParametroCorreoServidor = getParametroCorreoServidor;
 //Obtiene un parametro de la base de datos
 const getParametro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_parametro } = req.body;
