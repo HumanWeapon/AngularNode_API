@@ -6,7 +6,7 @@ import { Roles } from '../models/roles-models';
 import { Objetos } from '../models/objetos-models';
 import { Permisos } from '../models/permisos-models';
 import config from './config';
-import { transporter } from './mailer';
+import { transporter, transporterOutlook } from './mailer';
 import { PreguntasUsuario} from '../models/preguntas_usuario-model'
 
 export const loginUser = async (req: Request, res: Response) => {
@@ -553,6 +553,70 @@ async function actualizarEstadoUsuariosVencidos(): Promise<void> {
         console.log('Actualización de usuarios vencidos ejecutada con éxito');
     } catch (error) {
         console.error('Error al ejecutar la actualización de usuarios vencidos:', error);
+    }
+}
+
+export const reestablecerOutlook = async (req: Request, res: Response) => {
+    const { correo_electronico } = req.body;
+
+    console.log('Correo Electrónico recibido:', correo_electronico); // Agregar este registro de depuración
+
+    if (!correo_electronico) {
+        return res.status(400).json({ message: 'El Correo Electrónico es Requerido!' });
+    }
+
+    let emailStatus = 'OK';
+
+    try {
+        const user = await User.findOne({ where: { correo_electronico } });
+        console.log('Correo Electrónico recibido en el FindOne:', correo_electronico); // Agregar este registro de depuración
+
+        if (!user) {
+            return res.status(400).json({ message: 'Correo Electrónico no encontrado' });
+        }
+
+        // Generar la nueva contraseña aleatoria
+        const newPassword = generarContraseñaAleatoria();
+
+        console.log('Tu nueva Contraseña es: '+ newPassword)
+        // Guardar la nueva contraseña en la base de datos
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.contrasena = hashedPassword;
+        await user.save();
+
+        // Envía el correo electrónico con la nueva contraseña
+        try {
+            await transporterOutlook.sendMail({
+                from: '"Reestablecer Contraseña" <utilidadMiPyme>',
+                to: user.correo_electronico,
+                subject: "Reestablecer Contraseña ✔ Utilidad MiPyme",
+                html: `
+                <div style="text-align: center;">
+                <img src="https://www.comercioexterior.org.ar/img/noticias/grandes/5663-1.png" alt="MIPyme" width="200">
+                <h1 style="font-size: 24px; color: #333333;">MIPyme</h1>
+                </div>
+                <br>
+                <b>Hola ${user.nombre_usuario},</b>
+                <br>
+                <p>Se ha restablecido tu contraseña. A continuación, encontrarás tus nuevos detalles de inicio de sesión:</p>
+                <p>Usuario ${user.usuario}</p>
+                <p>Nueva Contraseña: ${newPassword}</p>
+                <p>Te recomendamos cambiar tu contraseña de restablecimiento en tu perfil por una nueva. Puedes hacerlo ingresando a tu cuenta y navegando a la sección de perfil.</p>
+                `
+            });
+            
+        } catch (error) {
+            console.error('Error al enviar el correo electrónico:', error);
+            return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
+        }
+
+        console.log('Contraseña guardada en la base de datos:', hashedPassword); // Agregar este registro de depuración
+
+        return res.json({ message: 'Se ha enviado la nueva contraseña a tu correo electrónico', userEmail: user.correo_electronico, info: emailStatus });
+    } catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        emailStatus = 'error';
+        return res.status(500).json({ message: 'Error al restablecer la contraseña' });
     }
 }
   

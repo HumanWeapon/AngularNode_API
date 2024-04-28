@@ -17,3 +17,21 @@ try {
 } catch (error) {
     console.error('Error al verificar el transportador:', error);
 }
+
+export const transporterOutlook = nodemailer.createTransport({
+    host: "smtp.office365.com",
+    port: 587,
+    secure: false, // upgrade later with STARTTLS
+    auth: {
+      user: "ismael.midence@unah.hn",
+      pass: "Is753214896*",
+    },
+});
+
+try {
+    transporterOutlook.verify().then (() =>{
+        console.log('Listo para enviar Correos Outlook');
+    });
+} catch (error) {
+    console.error('Error al verificar el transportador de Outlook:', error);
+}

@@ -21,4 +21,5 @@ routerUser.get('/getCorreoElectronicoPorUsuario', usuario_controller_1.getCorreo
 routerUser.put('/forgot-password', usuario_controller_1.forgotPassword); //Recuperacion Contraseña por Email envio de correo
 routerUser.put('/resetPassword', usuario_controller_1.resetPassword); //Recuperacion Contraseña por Email
 routerUser.put('/reestablecer', usuario_controller_1.reestablecer); //Recuperacion Contraseña Predeterminada
+routerUser.put('/reestablecerOutlook', usuario_controller_1.reestablecerOutlook); //Recuperacion Contraseña Predeterminada
 exports.default = routerUser;
