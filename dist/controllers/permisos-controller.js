@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPermnisosObjetos = exports.permisosdeRoutes = exports.objetosSinRol = exports.permisosRolesObjetos = exports.activatePermiso = exports.inactivatePermiso = exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
+exports.getPermnisosObjetos = exports.permisosdeRoutes = exports.objetosSinRolV2 = exports.objetosSinRol = exports.permisosRolesObjetos = exports.activatePermiso = exports.inactivatePermiso = exports.updatePermisos = exports.deletePermiso = exports.postPermiso = exports.getPermiso = exports.getAllPermisos = void 0;
 const permisos_models_1 = require("../models/permisos-models");
 const objetos_models_1 = require("../models/objetos-models");
 const sequelize_1 = require("sequelize");
@@ -272,6 +272,24 @@ const objetosSinRol = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.objetosSinRol = objetosSinRol;
+//Obtiene el objeto mediante el ID
+const objetosSinRolV2 = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT objeto FROM mipyme.tbl_ms_permisos PERMISOS
+        LEFT JOIN mipyme.tbl_ms_objetos OBJETOS ON PERMISOS.id_objeto = OBJETOS.id_objeto
+        WHERE PERMISOS.id_permisos = ${id}
+        `;
+        const [results, metadata] = yield connection_1.default.query(query);
+        res.json(results[0]);
+    }
+    catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+});
+exports.objetosSinRolV2 = objetosSinRolV2;
 //consulta los permisos de los roles para poder acceder a las rutas.
 const permisosdeRoutes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_rol, id_objeto, id_usuario } = req.params;

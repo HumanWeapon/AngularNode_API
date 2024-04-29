@@ -1,11 +1,12 @@
 import {Router} from 'express';
 import validarToken from './validarToken';
-import { activatePermiso, deletePermiso, getAllPermisos, getPermiso, getPermnisosObjetos, inactivatePermiso, objetosSinRol, permisosRolesObjetos, permisosdeRoutes, postPermiso, updatePermisos } from '../controllers/permisos-controller';
+import { activatePermiso, deletePermiso, getAllPermisos, getPermiso, getPermnisosObjetos, inactivatePermiso, objetosSinRol, objetosSinRolV2, permisosRolesObjetos, permisosdeRoutes, postPermiso, updatePermisos } from '../controllers/permisos-controller';
 
 const routerPermisos = Router()
 
 routerPermisos.get('/getAllPermisos',validarToken, getAllPermisos);//Muestra todos los Permisos registrados en la base de datos
 routerPermisos.get('/objetosSinRol/:id',validarToken, objetosSinRol);//Muestra todos los Permisos registrados en la base de datos
+routerPermisos.get('/objetosSinRolV2/:id',validarToken, objetosSinRolV2);//Muestra todos los Permisos registrados en la base de datos
 routerPermisos.get('/permisosdeRoutes/:id_rol/:id_objeto/:id_usuario',validarToken, permisosdeRoutes);//Muestra todos los Permisos registrados en la base de datos
 routerPermisos.get('/getPermiso',validarToken, getPermiso);//Muestra un Permiso seleccionado
 routerPermisos.post('/postPermiso',validarToken, postPermiso); // Inserta Permisos en la base de datos

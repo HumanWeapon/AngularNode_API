@@ -282,6 +282,25 @@ export const objetosSinRol = async (req: Request, res: Response) => {
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 };
+
+//Obtiene el objeto mediante el ID
+export const objetosSinRolV2 = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const query = `
+        SELECT objeto FROM mipyme.tbl_ms_permisos PERMISOS
+        LEFT JOIN mipyme.tbl_ms_objetos OBJETOS ON PERMISOS.id_objeto = OBJETOS.id_objeto
+        WHERE PERMISOS.id_permisos = ${id}
+        `;
+
+        const [results, metadata] = await db.query(query);
+
+        res.json(results[0]);
+    } catch (error) {
+        console.error('Error al consultar contactos:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+};
 //consulta los permisos de los roles para poder acceder a las rutas.
 export const permisosdeRoutes = async (req: Request, res: Response) => {
     const { id_rol, id_objeto, id_usuario } = req.params;
