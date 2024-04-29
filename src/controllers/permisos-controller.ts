@@ -203,7 +203,7 @@ export const activatePermiso = async (req: Request, res: Response) => {
 
 //Activa el usuario de la DBA
 export const permisosRolesObjetos = async (req: Request, res: Response) => {
-    const { id_rol, tipo_objeto } = req.body; // Suponiendo que aquí recibes el id_rol del usuario logeado
+    const { id_rol } = req.body; // Suponiendo que aquí recibes el id_rol del usuario logeado
 
     try {
         const _permiso = await Permisos.findAll({

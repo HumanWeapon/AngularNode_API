@@ -218,7 +218,7 @@ const consultarRequisitosPorIdEmpresa = (req, res) => __awaiter(void 0, void 0, 
     const { id } = req.params;
     try {
         const query = `
-            SELECT 
+            SELECT DISTINCT
                 TR.id_tipo_requisito,
                 TR.id_pais AS ID_P,
                 TR.tipo_requisito,
@@ -228,10 +228,12 @@ const consultarRequisitosPorIdEmpresa = (req, res) => __awaiter(void 0, void 0, 
                 TR.modificado_por,
                 TR.fecha_modificacion,
                 TR.estado,
-                DIRECCIONES.id_pais
+                DIRECCIONES.id_pais,
+                PAISES.pais
             FROM mipyme.tbl_me_tipo_requisito AS TR
             LEFT JOIN mipyme.tbl_me_paises AS P ON TR.id_pais = P.id_pais
             LEFT JOIN mipyme.tbl_me_direcciones DIRECCIONES ON TR.id_pais = DIRECCIONES.id_pais
+            LEFT JOIN  mipyme.tbl_me_paises PAISES ON DIRECCIONES.id_pais = PAISES.id_pais
             WHERE P.estado = 1
                 AND TR.estado = 1
                 AND DIRECCIONES.id_pais IS NOT NULL
