@@ -500,10 +500,10 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
                 <div style="text-align: center;">
                     <p>USUARIO</p>
-                    <p>${user.usuario}</p>
+                    <p style="font-weight: bold; font-size: 16px; text-align: center;>${user.usuario}</p>
                     <br>
                     <p>NUEVA CONTRASEÑA</p>
-                    <input type="text" value="${newPassword}" readonly style="background-color: #007bff; color: #fff; padding: 10px; border-radius: 5px;">
+                    <input type="text" value="${newPassword}" readonly style="background-color: #007bff; color: #fff; padding: 10px; border-radius: 5px; font-weight: bold; font-size: 16px; text-align: center;">
                 </div>
                 <br>
                 <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
