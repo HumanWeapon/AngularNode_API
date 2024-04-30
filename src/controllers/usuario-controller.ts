@@ -390,17 +390,25 @@ export const forgotPassword = async (req: Request, res: Response) => {
                 to: user.correo_electronico,
                 subject: "Recuperacion de Contraseña ✔ Utilidad MiPyme",
                 html: `
+            <div style="background-color: #f2f2f2; padding: 20px;">
                 <div style="text-align: center;">
                 <img src="https://www.comercioexterior.org.ar/img/noticias/grandes/5663-1.png" alt="MIPyme" width="200">
                 <h1 style="font-size: 24px; color: #333333;">MIPyme</h1>
+                <h1 style="font-size: 19px; color: #333333;">Recuperacion de Contraseña</h1>
                 </div>
                 <br>
-                <b>Hola ${user.nombre_usuario},</b>
+                <p>Estimado/a ${user.nombre_usuario},</p>
+                <p>Si no realizaste esta Recuperacion de Contraseña, por favor contáctanos de inmediato para reportar cualquier acceso no autorizado a tu cuenta.</p>
+                <p>Si tienes alguna pregunta o inquietud sobre tu cuenta, no dudes en contactar a nuestro equipo de soporte al cliente para obtener más ayuda.</p>
                 <br>
-                <p>Por favor haz clic en el siguiente enlace para restablecer tu contraseña:</p>
-                <a href="${verificationLink}">${verificationLink}</a>
-                `
-            });
+                <p>Gracias por usar nuestra aplicación.</p>
+                <br>
+                <p>Atentamente,</p>
+                <p> UNAH | Facultad de Ciencias Economicas | Comercio Internacional</p>
+            </div>
+            `
+        
+        });
         } catch (error) {
             console.error('Error al enviar el correo electrónico:', error);
             return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
