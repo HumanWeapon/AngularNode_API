@@ -381,11 +381,11 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 <p>Estimado/a ${user.nombre_usuario},</p>
                 <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
                 <p>Si no realizaste esta Recuperacion de Contraseña, por favor contáctanos de inmediato para reportar cualquier acceso no autorizado a tu cuenta.</p>
-                <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
                 <p>Si tienes alguna pregunta o inquietud sobre tu cuenta, no dudes en contactar a nuestro equipo de soporte al cliente para obtener más ayuda.</p>
                 <br>
+                <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
                 <p>Por favor haz clic en el siguiente enlace para restablecer tu contraseña:</p>
-                <button (click)="window.location.href='${verificationLink}'>${verificationLink}" style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; cursor: pointer; text-decoration: none; border-radius: 5px;">Recuperar Contraseña</button>
+                <a href="${verificationLink}" style="background-color: #007bff; color: #fff; display: inline-block; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Recuperar Contraseña</a>
                 <br><br>
                 <hr style="border-top: 1px solid #ccc; margin: 20px 0;">
                 <p>Gracias por usar nuestra aplicación.</p>
@@ -393,7 +393,6 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 <p>Atentamente,</p>
                 <p>UNAH | Facultad de Ciencias Economicas | Comercio Internacional</p>
             </div>
-                      
             `
             });
         }
