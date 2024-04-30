@@ -498,18 +498,19 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 <p>Si tienes alguna pregunta o inquietud sobre tu cuenta, no dudes en contactar a nuestro equipo de soporte al cliente para obtener más ayuda.</p>
                 <br>
                 <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
-                <p>Se ha restablecido tu contraseña. A continuación, encontrarás los nuevos datos para iniciar sesión:</p>
-                <p>Usuario ${user.usuario}</p>
-                <p>Nueva Contraseña: ${newPassword}</p>
+                <div style="background-color: #007bff; color: #fff; padding: 10px; border-radius: 5px; font-size: 18px;">
+                    <p style="font-family: Arial, sans-serif;">Nueva Contraseña: ${newPassword}</p>
+                </div>
                 <br>
                 <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
-                <p>Te recomendamos cambiar tu contraseña de restablecimiento en tu perfil por una nueva. Puedes hacerlo ingresando a tu cuenta y navegando a la sección de perfil.</p>
+                <p>Te recomendamos cambiar tu contraseña de reestablecimiento en tu perfil por una nueva. Puedes hacerlo ingresando a tu cuenta y navegando a la sección de perfil.</p>
                 <hr style="border-top: 1px solid #ccc; margin: 20px 0;">
                 <p>Gracias por usar nuestra aplicación.</p>
                 <br>
                 <p>Atentamente,</p>
-                <p>UNAH | Facultad de Ciencias Economicas | Comercio Internacional</p>
+                <p style="font-weight: bold; font-size: 16px;">UNAH | Facultad de Ciencias Economicas | Comercio Internacional</p>
             </div>
+            
             `
             });
         }
