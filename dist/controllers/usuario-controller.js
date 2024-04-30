@@ -485,18 +485,32 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 to: user.correo_electronico,
                 subject: "Reestablecer Contraseña ✔ Utilidad MiPyme",
                 html: `
+                <div style="background-color: #f2f2f2; padding: 20px;">
                 <div style="text-align: center;">
-                <img src="https://www.comercioexterior.org.ar/img/noticias/grandes/5663-1.png" alt="MIPyme" width="200">
-                <h1 style="font-size: 24px; color: #333333;">MIPyme</h1>
+                    <img src="https://www.comercioexterior.org.ar/img/noticias/grandes/5663-1.png" alt="MIPyme" width="200">
+                    <h1 style="font-size: 24px; color: #333333;">MIPyme</h1>
+                    <h1 style="font-size: 19px; color: #333333;">Reestablecer Contraseña</h1>
                 </div>
                 <br>
-                <b>Hola ${user.nombre_usuario},</b>
+                <p>Estimado/a ${user.nombre_usuario},</p>
+                <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
+                <p>Si no realizaste el Reestablecimiento de Contraseña, por favor contáctanos de inmediato para reportar cualquier acceso no autorizado a tu cuenta.</p>
+                <p>Si tienes alguna pregunta o inquietud sobre tu cuenta, no dudes en contactar a nuestro equipo de soporte al cliente para obtener más ayuda.</p>
                 <br>
-                <p>Se ha restablecido tu contraseña. A continuación, encontrarás tus nuevos detalles de inicio de sesión:</p>
+                <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
+                <p>Se ha restablecido tu contraseña. A continuación, encontrarás los nuevos datos para iniciar sesión:</p>
                 <p>Usuario ${user.usuario}</p>
                 <p>Nueva Contraseña: ${newPassword}</p>
+                <br>
+                <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
                 <p>Te recomendamos cambiar tu contraseña de restablecimiento en tu perfil por una nueva. Puedes hacerlo ingresando a tu cuenta y navegando a la sección de perfil.</p>
-                `
+                <hr style="border-top: 1px solid #ccc; margin: 20px 0;">
+                <p>Gracias por usar nuestra aplicación.</p>
+                <br>
+                <p>Atentamente,</p>
+                <p>UNAH | Facultad de Ciencias Economicas | Comercio Internacional</p>
+            </div>
+            `
             });
         }
         catch (error) {
