@@ -391,7 +391,7 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 <p>Gracias por usar nuestra aplicación.</p>
                 <br>
                 <p>Atentamente,</p>
-                <p>UNAH | Facultad de Ciencias Economicas | Comercio Internacional</p>
+                <p style="font-weight: bold; font-size: 16px;">UNAH | Facultad de Ciencias Economicas | Comercio Internacional</p>
             </div>
             `
             });
@@ -498,8 +498,12 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 <p>Si tienes alguna pregunta o inquietud sobre tu cuenta, no dudes en contactar a nuestro equipo de soporte al cliente para obtener más ayuda.</p>
                 <br>
                 <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
-                <div style="background-color: #007bff; color: #fff; padding: 10px; border-radius: 5px; font-size: 18px;">
-                    <p style="font-family: Arial, sans-serif;">Nueva Contraseña: ${newPassword}</p>
+                <div style="background-color: #007bff; color: #fff; padding: 10px; border-radius: 5px;">
+                    <p>USUARIO</p>
+                    <p>${user.usuario}</p>
+                    <br>
+                    <p>NUEVA CONTRASEÑA</p>
+                    <input type="text" value="${newPassword}" readonly style="background-color: #f8f9fa; border: none; font-size: 18px;">
                 </div>
                 <br>
                 <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
@@ -510,6 +514,7 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 <p>Atentamente,</p>
                 <p style="font-weight: bold; font-size: 16px;">UNAH | Facultad de Ciencias Economicas | Comercio Internacional</p>
             </div>
+            
             
             `
             });
