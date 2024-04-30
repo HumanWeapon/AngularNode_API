@@ -535,7 +535,7 @@ export const reestablecer = async (req: Request, res: Response) => {
                 <p>Si tienes alguna pregunta o inquietud sobre tu cuenta, no dudes en contactar a nuestro equipo de soporte al cliente para obtener más ayuda.</p>
                 <br>
                 <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
-                <div">
+                <div style="text-align: center;">
                     <p>USUARIO</p>
                     <p>${user.usuario}</p>
                     <br>

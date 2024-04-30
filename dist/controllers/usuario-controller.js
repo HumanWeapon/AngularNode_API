@@ -498,7 +498,7 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 <p>Si tienes alguna pregunta o inquietud sobre tu cuenta, no dudes en contactar a nuestro equipo de soporte al cliente para obtener más ayuda.</p>
                 <br>
                 <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
-                <div">
+                <div style="text-align: center;">
                     <p>USUARIO</p>
                     <p>${user.usuario}</p>
                     <br>
