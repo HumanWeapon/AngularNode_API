@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.reestablecerOutlook = exports.reestablecer = exports.resetPassword = exports.forgotPassword = exports.usuariosAllParametros = exports.usuariosAllRoles = exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.postUsuario = exports.getCorreoElectronicoPorUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
+exports.reestablecerOutlook = exports.reestablecerRecuperar = exports.reestablecer = exports.resetPassword = exports.forgotPassword = exports.usuariosAllParametros = exports.usuariosAllRoles = exports.cambiarContrasena = exports.updateUsuario = exports.activateUsuario = exports.inactivateUsuario = exports.postUsuario = exports.getCorreoElectronicoPorUsuario = exports.getUsuario = exports.getAllUsuarios = exports.loginUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const usuario_models_1 = require("../models/usuario-models");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -532,6 +532,80 @@ const reestablecer = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.reestablecer = reestablecer;
+const reestablecerRecuperar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { correo_electronico } = req.body;
+    console.log('Correo Electrónico recibido:', correo_electronico); // Agregar este registro de depuración
+    if (!correo_electronico) {
+        return res.status(400).json({ message: 'El Correo Electrónico es Requerido!' });
+    }
+    let emailStatus = 'OK';
+    try {
+        const user = yield usuario_models_1.User.findOne({ where: { correo_electronico } });
+        console.log('Correo Electrónico recibido en el FindOne:', correo_electronico); // Agregar este registro de depuración
+        if (!user) {
+            return res.status(400).json({ message: 'Correo Electrónico no encontrado' });
+        }
+        // Generar la nueva contraseña aleatoria
+        const newPassword = generarContraseñaAleatoria();
+        console.log('Tu nueva Contraseña es: ' + newPassword);
+        // Guardar la nueva contraseña en la base de datos
+        const hashedPassword = yield bcrypt_1.default.hash(newPassword, 10);
+        user.contrasena = hashedPassword;
+        yield user.save();
+        // Envía el correo electrónico con la nueva contraseña
+        try {
+            yield mailer_1.transporter.sendMail({
+                from: '"Recuperar Contraseña" <utilidadMiPyme>',
+                to: user.correo_electronico,
+                subject: "Recuperar Contraseña ✔ Utilidad MiPyme",
+                html: `
+                <div style="background-color: #f2f2f2; padding: 20px;">
+                <div style="text-align: center;">
+                    <img src="https://www.comercioexterior.org.ar/img/noticias/grandes/5663-1.png" alt="MIPyme" width="200">
+                    <h1 style="font-size: 24px; color: #333333;">MIPyme</h1>
+                    <h1 style="font-size: 19px; color: #333333;">Recuperar Contraseña</h1>
+                </div>
+                <br>
+                <p>Estimado/a ${user.nombre_usuario},</p>
+                <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
+                <p>Si no realizaste la Recuperacion de Contraseña, por favor contáctanos de inmediato para reportar cualquier acceso no autorizado a tu cuenta.</p>
+                <p>Si tienes alguna pregunta o inquietud sobre tu cuenta, no dudes en contactar a nuestro equipo de soporte al cliente para obtener más ayuda.</p>
+                <br>
+                <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
+                <div style="text-align: center;">
+                    <p>USUARIO</p>
+                    <p style="font-weight: bold; font-size: 16px; text-align: center;">${user.usuario}</p>
+                    <br>
+                    <p>NUEVA CONTRASEÑA</p>
+                    <input type="text" value="${newPassword}" readonly style="background-color: #007bff; color: #fff; padding: 10px; border-radius: 5px; font-weight: bold; font-size: 16px; text-align: center;">
+                </div>
+                <br>
+                <hr style="border-top: 1px solid #ccc; margin: 10px 0;">
+                <p>Te recomendamos cambiar tu contraseña de recuperacion en tu perfil por una nueva. Puedes hacerlo ingresando a tu cuenta y navegando a la sección de perfil.</p>
+                <hr style="border-top: 1px solid #ccc; margin: 20px 0;">
+                <p>Gracias por usar nuestra aplicación.</p>
+                <br>
+                <p>Atentamente,</p>
+                <p style="font-weight: bold; font-size: 16px;">UNAH | Facultad de Ciencias Economicas | Comercio Internacional</p>
+            </div>
+            
+            `
+            });
+        }
+        catch (error) {
+            console.error('Error al enviar el correo electrónico:', error);
+            return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
+        }
+        console.log('Contraseña guardada en la base de datos:', hashedPassword); // Agregar este registro de depuración
+        return res.json({ message: 'Se ha enviado la nueva contraseña a tu correo electrónico', userEmail: user.correo_electronico, info: emailStatus });
+    }
+    catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        emailStatus = 'error';
+        return res.status(500).json({ message: 'Error al restablecer la contraseña' });
+    }
+});
+exports.reestablecerRecuperar = reestablecerRecuperar;
 function actualizarEstadoUsuariosVencidos() {
     return __awaiter(this, void 0, void 0, function* () {
         try {

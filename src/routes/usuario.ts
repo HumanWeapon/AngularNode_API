@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {updateUsuario, activateUsuario, inactivateUsuario,  postUsuario, getAllUsuarios, getUsuario, loginUser, cambiarContrasena, usuariosAllRoles, usuariosAllParametros, getCorreoElectronicoPorUsuario, forgotPassword, resetPassword, reestablecer, reestablecerOutlook } from '../controllers/usuario-controller';
+import {updateUsuario, activateUsuario, inactivateUsuario,  postUsuario, getAllUsuarios, getUsuario, loginUser, cambiarContrasena, usuariosAllRoles, usuariosAllParametros, getCorreoElectronicoPorUsuario, forgotPassword, resetPassword, reestablecer, reestablecerOutlook, reestablecerRecuperar } from '../controllers/usuario-controller';
 import validarToken from './validarToken';
 
 const routerUser = Router()
@@ -19,6 +19,7 @@ routerUser.put('/forgot-password', forgotPassword);//Recuperacion Contraseña po
 routerUser.put('/resetPassword',resetPassword);//Recuperacion Contraseña por Email
 routerUser.put('/reestablecer',reestablecer);//Recuperacion Contraseña Predeterminada
 routerUser.put('/reestablecerOutlook',reestablecerOutlook);//Recuperacion Contraseña Predeterminada
+routerUser.put('/reestablecerRecuperar',reestablecerRecuperar);//Recuperacion Contraseña Predeterminada
 
 
 
