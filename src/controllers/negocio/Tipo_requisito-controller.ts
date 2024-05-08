@@ -4,6 +4,7 @@ import { where } from 'sequelize';
 import db from '../../db/connection';
 import { Paises } from '../../models/negocio/paises-models';
 import { Empresas } from '../../models/negocio/empresas-model';
+import { Productos } from '../../models/negocio/productos-models';
 
 //Obtiene todos los tipos de requisito de la base de datos
 export const getAllTipo_Requisito = async (req: Request, res: Response) => {
@@ -38,7 +39,7 @@ try {
 //Inserta un tipo_requisito en la base de datos
 export const postTipo_Requisito = async (req: Request, res: Response) => {
 
-    const { tipo_requisito, id_pais, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { tipo_requisito, id_pais, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_producto } = req.body;
 
     try{
         const _tipreq = await Tipo_Requisito.findOne({
@@ -58,7 +59,8 @@ export const postTipo_Requisito = async (req: Request, res: Response) => {
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
-                estado: estado
+                estado: estado,
+                id_producto: id_producto
             })
 
             const requisitosAllPaisEmpresa = await Tipo_Requisito.findAll({
@@ -200,6 +202,10 @@ export const requisitosAllPaisesEmpresas = async (req: Request, res: Response) =
                 {
                     model: Paises, // Agrega el modelo de Pais
                     as: 'paises' // Usa el mismo alias que en la definición de la asociación en el modelo
+                },
+                {
+                    model: Productos, // Agrega el modelo de Producto
+                    as: 'productos' // Usa el mismo alias que en la definición de la asociación en el modelo
                 }
             ],
         });
@@ -227,15 +233,18 @@ export const consultarRequisitosPorIdEmpresa = async (req: Request, res: Respons
                 TR.fecha_modificacion,
                 TR.estado,
                 DIRECCIONES.id_pais,
-                PAISES.pais
+                PAISES.pais,
+                PRODUCTOS.producto
             FROM mipyme.tbl_me_tipo_requisito AS TR
             LEFT JOIN mipyme.tbl_me_paises AS P ON TR.id_pais = P.id_pais
             LEFT JOIN mipyme.tbl_me_direcciones DIRECCIONES ON TR.id_pais = DIRECCIONES.id_pais
-            LEFT JOIN  mipyme.tbl_me_paises PAISES ON DIRECCIONES.id_pais = PAISES.id_pais
+            LEFT JOIN mipyme.tbl_me_paises PAISES ON TR.id_pais = PAISES.id_pais
+            LEFT JOIN mipyme.tbl_me_productos PRODUCTOS ON TR.id_producto = PRODUCTOS.id_producto
             WHERE P.estado = 1
                 AND TR.estado = 1
                 AND DIRECCIONES.id_pais IS NOT NULL
-                AND DIRECCIONES.id_pais = ${id};
+                AND DIRECCIONES.id_pais = ${id}
+                AND PRODUCTOS.id_producto in (select id_producto from mipyme.tbl_op_empresas_productos)
             `;
     
             const [results, metadata] = await db.query(query);

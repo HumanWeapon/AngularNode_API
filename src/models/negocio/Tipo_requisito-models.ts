@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import dataBase from '../../db/connection';
 import { Paises } from './paises-models'; // Asegúrate de que la importación sea correcta
-import { Empresas } from './empresas-model'; // Asegúrate de que la importación sea correcta
+import { Productos } from './productos-models';
 
 export const Tipo_Requisito: any = dataBase.define('tipo_requisito', {
     id_tipo_requisito: {
@@ -56,4 +56,10 @@ Tipo_Requisito.belongsTo(Paises, {
     foreignKey: 'id_pais',
     targetKey: 'id_pais',
     as: 'paises' // Alias para la relación
+});
+
+Tipo_Requisito.belongsTo(Productos, {
+    foreignKey: 'id_producto',
+    targetKey: 'id_producto',
+    as: 'productos' // Alias para la relación
 });

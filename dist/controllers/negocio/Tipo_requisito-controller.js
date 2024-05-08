@@ -16,6 +16,7 @@ exports.consultarRequisitosPorIdEmpresa = exports.requisitosAllPaisesEmpresas = 
 const Tipo_requisito_models_1 = require("../../models/negocio/Tipo_requisito-models");
 const connection_1 = __importDefault(require("../../db/connection"));
 const paises_models_1 = require("../../models/negocio/paises-models");
+const productos_models_1 = require("../../models/negocio/productos-models");
 //Obtiene todos los tipos de requisito de la base de datos
 const getAllTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const t_requisito = yield Tipo_requisito_models_1.Tipo_Requisito.findAll();
@@ -48,7 +49,7 @@ const getTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.getTipo_Requisito = getTipo_Requisito;
 //Inserta un tipo_requisito en la base de datos
 const postTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { tipo_requisito, id_pais, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado } = req.body;
+    const { tipo_requisito, id_pais, descripcion, creado_por, fecha_creacion, modificado_por, fecha_modificacion, estado, id_producto } = req.body;
     try {
         const _tipreq = yield Tipo_requisito_models_1.Tipo_Requisito.findOne({
             where: { tipo_requisito: tipo_requisito }
@@ -67,7 +68,8 @@ const postTipo_Requisito = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 fecha_creacion: fecha_creacion,
                 modificado_por: modificado_por.toUpperCase(),
                 fecha_modificacion: fecha_modificacion,
-                estado: estado
+                estado: estado,
+                id_producto: id_producto
             });
             const requisitosAllPaisEmpresa = yield Tipo_requisito_models_1.Tipo_Requisito.findAll({
                 where: { tipo_requisito: newTRE.tipo_requisito },
@@ -202,6 +204,10 @@ const requisitosAllPaisesEmpresas = (req, res) => __awaiter(void 0, void 0, void
                 {
                     model: paises_models_1.Paises,
                     as: 'paises' // Usa el mismo alias que en la definición de la asociación en el modelo
+                },
+                {
+                    model: productos_models_1.Productos,
+                    as: 'productos' // Usa el mismo alias que en la definición de la asociación en el modelo
                 }
             ],
         });
@@ -229,15 +235,18 @@ const consultarRequisitosPorIdEmpresa = (req, res) => __awaiter(void 0, void 0, 
                 TR.fecha_modificacion,
                 TR.estado,
                 DIRECCIONES.id_pais,
-                PAISES.pais
+                PAISES.pais,
+                PRODUCTOS.producto
             FROM mipyme.tbl_me_tipo_requisito AS TR
             LEFT JOIN mipyme.tbl_me_paises AS P ON TR.id_pais = P.id_pais
             LEFT JOIN mipyme.tbl_me_direcciones DIRECCIONES ON TR.id_pais = DIRECCIONES.id_pais
-            LEFT JOIN  mipyme.tbl_me_paises PAISES ON DIRECCIONES.id_pais = PAISES.id_pais
+            LEFT JOIN mipyme.tbl_me_paises PAISES ON TR.id_pais = PAISES.id_pais
+            LEFT JOIN mipyme.tbl_me_productos PRODUCTOS ON TR.id_producto = PRODUCTOS.id_producto
             WHERE P.estado = 1
                 AND TR.estado = 1
                 AND DIRECCIONES.id_pais IS NOT NULL
-                AND DIRECCIONES.id_pais = ${id};
+                AND DIRECCIONES.id_pais = ${id}
+                AND PRODUCTOS.id_producto in (select id_producto from mipyme.tbl_op_empresas_productos)
             `;
         const [results, metadata] = yield connection_1.default.query(query);
         res.json(results);
