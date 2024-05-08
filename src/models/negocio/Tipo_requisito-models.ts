@@ -36,6 +36,14 @@ export const Tipo_Requisito: any = dataBase.define('tipo_requisito', {
     estado: {
         type: DataTypes.NUMBER,
         allowNull: false
+    },
+    id_pais: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    id_producto: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
     }, 
     {

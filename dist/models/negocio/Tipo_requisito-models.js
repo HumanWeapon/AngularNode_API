@@ -40,6 +40,14 @@ exports.Tipo_Requisito = connection_1.default.define('tipo_requisito', {
     estado: {
         type: sequelize_1.DataTypes.NUMBER,
         allowNull: false
+    },
+    id_pais: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
+    },
+    id_producto: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'tbl_me_tipo_requisito',
